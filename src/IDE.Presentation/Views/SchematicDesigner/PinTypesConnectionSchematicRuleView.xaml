@@ -1,0 +1,537 @@
+﻿<UserControl x:Class="IDE.Documents.Views.PinTypesConnectionSchematicRuleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Views/SchematicDesigner/RulesResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <CheckBox IsChecked="{Binding IsEnabled}"
+                  Content="Is enabled"
+                  Grid.Row="0"/>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Resources>
+
+                <Style TargetType="TextBlock"
+                       BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="HorizontalAlignment"
+                            Value="Left"/>
+                    <Setter Property="VerticalAlignment"
+                            Value="Center"/>
+                </Style>
+
+                <Style x:Key="rotatedtext"
+                       TargetType="TextBlock"
+                       BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <RotateTransform Angle="-90" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalAlignment"
+                            Value="Center"/>
+                    <Setter Property="VerticalAlignment"
+                            Value="Bottom"/>
+                    <Setter Property="Margin"
+                            Value="2"/>
+                </Style>
+
+
+            </Grid.Resources>
+
+            <!-- Column headers-->
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Style="{StaticResource rotatedtext}"
+                       Text="NoConnect"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="2"
+                       Style="{StaticResource rotatedtext}"
+                       Text="Power"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="3"
+                       Style="{StaticResource rotatedtext}"
+                       Text="HiZ"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="4"
+                       Style="{StaticResource rotatedtext}"
+                       Text="OpenEmitter"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="5"
+                       Style="{StaticResource rotatedtext}"
+                       Text="OpenCollector"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="6"
+                       Style="{StaticResource rotatedtext}"
+                       Text="IO"/>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="7"
+                       Style="{StaticResource rotatedtext}"
+                       Text="Output"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="8"
+                       Style="{StaticResource rotatedtext}"
+                       Text="Input"/>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="9"
+                       Style="{StaticResource rotatedtext}"
+                       Text="Passive"/>
+
+            <!-- Row headers-->
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="Passive"/>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="Input"/>
+
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Text="Output"/>
+
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="IO"/>
+
+            <TextBlock Grid.Row="5"
+                       Grid.Column="0"
+                       Text="OpenCollector"/>
+
+            <TextBlock Grid.Row="6"
+                       Grid.Column="0"
+                       Text="OpenEmitter"/>
+
+            <TextBlock Grid.Row="7"
+                       Grid.Column="0"
+                       Text="HiZ"/>
+
+            <TextBlock Grid.Row="8"
+                       Grid.Column="0"
+                       Text="Power"/>
+
+            <TextBlock Grid.Row="9"
+                       Grid.Column="0"
+                       Text="NoConnect"/>
+
+            <!-- Passive-->
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding PassivePowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="5"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveOpenCollectorResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="6"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveIOResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="7"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveOutputResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="8"
+                              Margin="2"
+                              SelectedItem="{Binding PassiveInputResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="1"
+                              Grid.Column="9"
+                              Margin="2"
+                              SelectedItem="{Binding PassivePassiveResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!--Input-->
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding InputNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding InputPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding InputHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding InputOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="5"
+                              Margin="2"
+                              SelectedItem="{Binding InputOpenCollectorResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="6"
+                              Margin="2"
+                              SelectedItem="{Binding InputIOResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="7"
+                              Margin="2"
+                              SelectedItem="{Binding InputOutputResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="2"
+                              Grid.Column="8"
+                              Margin="2"
+                              SelectedItem="{Binding InputInputResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- Output-->
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding OutputNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding OutputPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding OutputHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding OutputOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="5"
+                              Margin="2"
+                              SelectedItem="{Binding OutputOpenCollectorResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="6"
+                              Margin="2"
+                              SelectedItem="{Binding OutputIOResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="3"
+                              Grid.Column="7"
+                              Margin="2"
+                              SelectedItem="{Binding OutputOutputResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!--IO-->
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding IONoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding IOPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding IOHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding IOOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="5"
+                              Margin="2"
+                              SelectedItem="{Binding IOOpenCollectorResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="4"
+                              Grid.Column="6"
+                              Margin="2"
+                              SelectedItem="{Binding IOIOResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- OpenCollector-->
+            <ctrls:ItemPicker Grid.Row="5"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding OpenCollectorNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="5"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding OpenCollectorPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="5"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding OpenCollectorHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="5"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding OpenCollectorOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="5"
+                              Grid.Column="5"
+                              Margin="2"
+                              SelectedItem="{Binding OpenCollectorOpenCollectorResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- OpenEmitter-->
+            <ctrls:ItemPicker Grid.Row="6"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding OpenEmitterNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="6"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding OpenEmitterPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="6"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding OpenEmitterHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="6"
+                              Grid.Column="4"
+                              Margin="2"
+                              SelectedItem="{Binding OpenEmitterOpenEmitterResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- HiZ-->
+            <ctrls:ItemPicker Grid.Row="7"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding HiZNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="7"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding HiZPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="7"
+                              Grid.Column="3"
+                              Margin="2"
+                              SelectedItem="{Binding HiZHiZResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- Power-->
+            <ctrls:ItemPicker Grid.Row="8"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding PowerNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <ctrls:ItemPicker Grid.Row="8"
+                              Grid.Column="2"
+                              Margin="2"
+                              SelectedItem="{Binding PowerPowerResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+            <!-- NoConnect-->
+            <ctrls:ItemPicker Grid.Row="9"
+                              Grid.Column="1"
+                              Margin="2"
+                              SelectedItem="{Binding NoConnectNoConnectResponse.Response}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>

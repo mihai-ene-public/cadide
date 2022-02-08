@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Project">
+  <Name>Board project</Name>
+  <Description>An empty project.</Description>
+  <Icon></Icon>
+  <Extension>project</Extension>
+</Template> 

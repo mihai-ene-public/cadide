@@ -1,0 +1,100 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IDE.Core.Common\IDE.Core.Common.csproj">
+			<Name>IDE.Core.Common</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Data\IDE.Core.Data.csproj">
+			<Name>IDE.Core.Data</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Interfaces\IDE.Core.Interfaces.csproj">
+			<Name>IDE.Core.Interfaces</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Model\IDE.Core.Model.csproj">
+			<Name>IDE.Core.Model</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Types\IDE.Core.Types.csproj">
+			<Name>IDE.Core.Types</Name>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json">
+			<Version>10.0.3</Version>
+		</PackageReference>
+		<PackageReference Include="RestSharp">
+			<Version>106.6.10</Version>
+		</PackageReference>
+		<PackageReference Include="System.Management" Version="4.6.0" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="4.6.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.ComponentModel.Annotations">
+			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.ComponentModel.Annotations.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Resources\AboutDialogStrings.Designer.cs">
+			<DependentUpon>AboutDialogStrings.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Resources\AddReferencesDialogStrings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>AddReferencesDialogStrings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\BoardDesignerStrings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>BoardDesignerStrings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\AboutDialogStrings.resx">
+			<LastGenOutput>AboutDialogStrings.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\AddReferencesDialogStrings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>AddReferencesDialogStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\BoardDesignerStrings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>BoardDesignerStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Strings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>

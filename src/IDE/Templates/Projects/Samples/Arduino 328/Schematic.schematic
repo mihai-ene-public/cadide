@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schematic id="2019041115142581000">
+  <properties />
+  <classes />
+  <parts>
+    <part id="2019041115144549000" name="U1" compLibrary="System.IC.Microcontrollers" compId="2019012316253851121" compName="ATMEGA328P_TQFP">
+      <properties />
+    </part>
+    <part id="2019041115154429000" name="C1" compLibrary="System.Capacitors" compId="2019012014511443053" compName="22PF-0603-50V-5%">
+      <properties />
+    </part>
+    <part id="2019041115154728002" name="C2" compLibrary="System.Capacitors" compId="2019012014511443053" compName="22PF-0603-50V-5%">
+      <properties />
+    </part>
+    <part id="2019041115164983000" name="Y1" compLibrary="System.Clocks" compId="2019012313415759037" compName="CRYSTALSMD-HC49UP">
+      <properties />
+    </part>
+    <part id="2019041115192861000" name="ICSP" compLibrary="System.Connectors" compId="2019012314360765191" compName="AVR_SPI_PROG_3X2PTH">
+      <properties />
+    </part>
+    <part id="2019041115263977000" name="C3" compLibrary="System.Capacitors" compId="2019012014511443086" compName="0.1UF-0603-25V-5%">
+      <properties />
+    </part>
+    <part id="2019041115274775000" name="R1" compLibrary="System.Resistors" compId="2019012317022546157" compName="10KOHM-0603-1/10W-1%">
+      <properties />
+    </part>
+    <part id="2019041120122543000" name="GND1" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120123253000" name="GND2" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120123998000" name="GND3" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120124132000" name="GND4" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120252369000" name="C4" compLibrary="System.Capacitors" compId="2019012014511443086" compName="0.1UF-0603-25V-5%" />
+    <part id="2019041120253168001" name="C5" compLibrary="System.Capacitors" compId="2019012014511443086" compName="0.1UF-0603-25V-5%" />
+    <part id="2019041120264838000" name="C6" compLibrary="System.Capacitors" compId="2019012014511443043" compName="10UF-0805-10V-10%" />
+    <part id="2019041120274207000" name="GND5" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120275002000" name="GND6" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+    <part id="2019041120275269000" name="GND7" compLibrary="System.PowerSymbols" compId="2019041120014015000" compName="GND" />
+  </parts>
+  <sheets>
+    <sheet name="Main sheet">
+      <partGates>
+        <partGate id="2019041115144553000" partId="2019041115144549000" gateId="1" x="140.97" y="67.31" scaleX="1" scaleY="1" rot="0" partNameX="-19.050000000000011" partNameY="-35.559999999999995" showName="true" commentX="3.8100000000000023" commentY="-35.559999999999995" comment="ATMEGA 328" showComment="true" />
+        <partGate id="2019041115154429001" partId="2019041115154429000" gateId="1" x="111.76" y="74.93" scaleX="1" scaleY="1" rot="0" partNameX="-5.0799999999999983" partNameY="-3.8100000000000023" showName="true" commentX="-7.6200000000000045" commentY="0" comment="22pF" showComment="true" />
+        <partGate id="2019041115154728003" partId="2019041115154728002" gateId="1" x="99.06" y="67.31" scaleX="1" scaleY="1" rot="180" partNameX="-6.3499999999999943" partNameY="-2.539999999999992" showName="true" commentX="-7.61999999999999" commentY="0" comment="22pF" showComment="true" />
+        <partGate id="2019041115164984000" partId="2019041115164983000" gateId="1" x="104.14" y="66.04" scaleX="1" scaleY="1" rot="90" partNameX="1.269999999999996" partNameY="-3.8100000000000023" showName="true" commentX="1.269999999999996" commentY="0" comment="16MHz" showComment="true" />
+        <partGate id="2019041115192873000" partId="2019041115192861000" gateId="1" x="35.56" y="39.37" scaleX="1" scaleY="1" rot="0" partNameX="-6.3499999999999979" partNameY="-8.89" showName="true" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041115263977001" partId="2019041115263977000" gateId="1" x="96.52" y="29.21" scaleX="1" scaleY="1" rot="0" partNameX="-6.3500000000000085" partNameY="7.1054273576010019E-15" showName="true" commentX="-8.89" commentY="-5.0799999999999983" comment="100nF" showComment="true" />
+        <partGate id="2019041115274784000" partId="2019041115274775000" gateId="1" x="96.52" y="16.51" scaleX="1" scaleY="1" rot="90" partNameX="-5.0799999999999983" partNameY="-3.8100000000000023" showName="true" commentX="-6.3499999999999943" commentY="0" comment="10K" showComment="true" />
+        <partGate id="2019041120122554000" partId="2019041120122543000" gateId="1" x="114.3" y="101.6" scaleX="1" scaleY="1" rot="0" partNameX="0" partNameY="0" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120123254000" partId="2019041120123253000" gateId="1" x="99.06" y="83.820000000000007" scaleX="1" scaleY="1" rot="0" partNameX="-3.8100000000000023" partNameY="1.269999999999996" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120123998001" partId="2019041120123998000" gateId="1" x="111.76" y="83.820000000000007" scaleX="1" scaleY="1" rot="0" partNameX="-3.8100000000000023" partNameY="1.269999999999996" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120124132001" partId="2019041120124132000" gateId="1" x="96.52" y="36.83" scaleX="1" scaleY="1" rot="0" partNameX="0" partNameY="0" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120252369001" partId="2019041120252369000" gateId="1" x="110.49" y="50.8" scaleX="1" scaleY="1" rot="0" partNameX="-5.0799999999999983" partNameY="-3.8100000000000023" showName="true" commentX="-7.6200000000000045" commentY="7.1054273576010019E-15" comment="100nF" showComment="true" />
+        <partGate id="2019041120253168002" partId="2019041120253168001" gateId="1" x="90.17" y="48.26" scaleX="1" scaleY="1" rot="0" partNameX="1.269999999999996" partNameY="-5.0800000000000054" showName="true" commentX="1.2699999999999818" commentY="1.269999999999996" comment="100nF" showComment="true" />
+        <partGate id="2019041120264841000" partId="2019041120264838000" gateId="1" x="82.55" y="48.26" scaleX="1" scaleY="1" rot="0" partNameX="1.269999999999996" partNameY="-5.0799999999999983" showName="true" commentX="0" commentY="1.269999999999996" comment="10uF" showComment="true" />
+        <partGate id="2019041120274215000" partId="2019041120274207000" gateId="1" x="110.49" y="58.42" scaleX="1" scaleY="1" rot="0" partNameX="0" partNameY="0" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120275002001" partId="2019041120275002000" gateId="1" x="90.17" y="58.42" scaleX="1" scaleY="1" rot="0" partNameX="0" partNameY="0" showName="false" commentX="0" commentY="0" showComment="false" />
+        <partGate id="2019041120275269001" partId="2019041120275269000" gateId="1" x="82.55" y="58.42" scaleX="1" scaleY="1" rot="0" partNameX="0" partNameY="0" showName="false" commentX="0" commentY="0" showComment="false" />
+      </partGates>
+      <items />
+      <nets>
+        <net id="2019041116001646000" name="+5V" classId="0">
+          <wire x1="44.45" y1="36.83" x2="54.61" y2="36.83" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="2" />
+          <label x="45.72" y="33.83" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115192873000" pin="2" />
+          <wire x1="96.52" y1="11.43" x2="96.52" y2="6.3500000000000014" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115274784000" pin="1" />
+          <label x="96.52" y="3.3500000000000014" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <wire x1="119.38" y1="43.18" x2="72.39" y2="43.18" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="105.41" y1="45.72" x2="105.41" y2="43.18" width="0.2" lineColor="#FF0000FF" />
+          <junction x="105.41" y="43.18" />
+          <wire x1="90.17" y1="44.45" x2="90.17" y2="43.18" width="0.2" lineColor="#FF0000FF" />
+          <junction x="90.17" y="43.18" />
+          <wire x1="82.55" y1="44.45" x2="82.55" y2="43.18" width="0.2" lineColor="#FF0000FF" />
+          <junction x="82.55" y="43.18" />
+          <wire x1="115.57000000000001" y1="53.34" x2="115.57000000000001" y2="43.18" width="0.2" lineColor="#FF0000FF" />
+          <junction x="115.57000000000001" y="43.18" />
+          <wire x1="116.84" y1="45.72" x2="105.41" y2="45.72" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="119.38" y1="53.34" x2="115.57000000000001" y2="53.34" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="116.84" y1="48.26" x2="116.84" y2="45.72" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="110.49" y1="46.99" x2="110.49" y2="45.72" width="0.2" lineColor="#FF0000FF" />
+          <junction x="110.49" y="45.72" />
+          <wire x1="119.38" y1="45.72" x2="116.84" y2="45.72" width="0.2" lineColor="#FF0000FF" />
+          <junction x="116.84" y="45.72" />
+          <wire x1="119.38" y1="48.26" x2="116.84" y2="48.26" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="18" />
+          <pinref partGateId="2019041120253168002" pin="1" />
+          <pinref partGateId="2019041120264841000" pin="1" />
+          <pinref partGateId="2019041115144553000" pin="20" />
+          <pinref partGateId="2019041120252369001" pin="1" />
+          <pinref partGateId="2019041115144553000" pin="4" />
+          <pinref partGateId="2019041115144553000" pin="6" />
+          <label x="72.39" y="40.18" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115144553000" pin="4" />
+          <pinref partGateId="2019041115144553000" pin="20" />
+          <pinref partGateId="2019041115144553000" pin="18" />
+          <pinref partGateId="2019041115144553000" pin="6" />
+          <pinref partGateId="2019041115192873000" pin="2" />
+          <pinref partGateId="2019041115274784000" pin="1" />
+          <pinref partGateId="2019041120253168002" pin="1" />
+        </net>
+        <net id="2019041116001945000" name="MOSI" classId="0">
+          <wire x1="44.45" y1="39.37" x2="54.61" y2="39.37" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="4" />
+          <label x="45.72" y="36.37" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <wire x1="162.56" y1="91.44" x2="172.72" y2="91.44" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="15" />
+          <label x="165.1" y="88.44" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115144553000" pin="15" />
+          <pinref partGateId="2019041115192873000" pin="4" />
+          <pinref partGateId="2019041115144553000" pin="15" />
+          <pinref partGateId="2019041115192873000" pin="4" />
+        </net>
+        <net id="2019041116002212000" name="GND" classId="0">
+          <wire x1="44.45" y1="41.910000000000004" x2="54.61" y2="41.910000000000004" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="6" />
+          <label x="45.72" y="38.910000000000004" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115192873000" pin="6" />
+          <wire x1="114.3" y1="91.44" x2="114.3" y2="100.33" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="119.38" y1="91.44" x2="114.3" y2="91.44" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="119.38" y1="93.98" x2="114.3" y2="93.98" width="0.2" lineColor="#FF0000FF" />
+          <junction x="114.3" y="93.98" />
+          <wire x1="114.3" y1="96.52" x2="119.38" y2="96.52" width="0.2" lineColor="#FF0000FF" />
+          <junction x="114.3" y="96.52" />
+          <pinref partGateId="2019041120122554000" pin="GND" />
+          <pinref partGateId="2019041115144553000" pin="5" />
+          <pinref partGateId="2019041115144553000" pin="3" />
+          <pinref partGateId="2019041115144553000" pin="21" />
+          <wire x1="96.52" y1="33.02000000000001" x2="96.52" y2="35.56" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115263977001" pin="2" />
+          <pinref partGateId="2019041120124132001" pin="GND" />
+          <label x="97.789999999999992" y="32.56" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041120122554000" pin="GND" />
+          <wire x1="82.55" y1="52.07" x2="82.55" y2="57.15" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041120264841000" pin="2" />
+          <pinref partGateId="2019041120275269001" pin="GND" />
+          <wire x1="110.49" y1="54.61" x2="110.49" y2="57.15" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041120252369001" pin="2" />
+          <pinref partGateId="2019041120274215000" pin="GND" />
+          <wire x1="90.17" y1="52.07" x2="90.17" y2="57.15" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041120253168002" pin="2" />
+          <pinref partGateId="2019041120275002001" pin="GND" />
+          <wire x1="99.06" y1="71.12" x2="99.06" y2="82.55" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115154728003" pin="1" />
+          <pinref partGateId="2019041120123254000" pin="GND" />
+          <wire x1="111.76" y1="78.74" x2="111.76" y2="82.55" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115154429001" pin="2" />
+          <pinref partGateId="2019041120123998001" pin="GND" />
+          <pinref partGateId="2019041115144553000" pin="3" />
+          <pinref partGateId="2019041115144553000" pin="21" />
+          <pinref partGateId="2019041115144553000" pin="5" />
+          <pinref partGateId="2019041115154429001" pin="2" />
+          <pinref partGateId="2019041115154728003" pin="1" />
+          <pinref partGateId="2019041115192873000" pin="6" />
+          <pinref partGateId="2019041115263977001" pin="2" />
+          <pinref partGateId="2019041120123254000" pin="GND" />
+          <pinref partGateId="2019041120123998001" pin="GND" />
+          <pinref partGateId="2019041120124132001" pin="GND" />
+          <pinref partGateId="2019041120253168002" pin="2" />
+          <pinref partGateId="2019041120275002001" pin="GND" />
+          <pinref partGateId="2019041120275269001" pin="GND" />
+        </net>
+        <net id="2019041116002471000" name="RESET" classId="0">
+          <wire x1="26.67" y1="41.910000000000004" x2="16.51" y2="41.910000000000004" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="5" />
+          <label x="16.51" y="38.910000000000004" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115192873000" pin="5" />
+          <wire x1="96.52" y1="21.590000000000003" x2="96.52" y2="25.4" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="114.3" y1="24.130000000000003" x2="96.52" y2="24.130000000000003" width="0.2" lineColor="#FF0000FF" />
+          <junction x="96.52" y="24.130000000000003" />
+          <pinref partGateId="2019041115274784000" pin="2" />
+          <pinref partGateId="2019041115263977001" pin="1" />
+          <label x="99.06" y="21.130000000000003" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <wire x1="114.3" y1="24.13" x2="114.3" y2="38.1" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="114.3" y1="38.1" x2="119.38" y2="38.1" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="29" />
+          <pinref partGateId="2019041115144553000" pin="29" />
+          <pinref partGateId="2019041115192873000" pin="5" />
+          <pinref partGateId="2019041115263977001" pin="1" />
+          <pinref partGateId="2019041115274784000" pin="2" />
+        </net>
+        <net id="2019041116003050000" name="SCK" classId="0">
+          <wire x1="26.67" y1="39.37" x2="16.51" y2="39.37" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="3" />
+          <label x="16.51" y="36.37" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <wire x1="162.56" y1="96.52" x2="172.72" y2="96.52" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="17" />
+          <label x="165.10000000000002" y="93.52" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115144553000" pin="17" />
+          <pinref partGateId="2019041115192873000" pin="3" />
+          <pinref partGateId="2019041115144553000" pin="17" />
+          <pinref partGateId="2019041115192873000" pin="3" />
+        </net>
+        <net id="2019041116003306000" name="MISO" classId="0">
+          <wire x1="26.67" y1="36.83" x2="16.51" y2="36.83" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115192873000" pin="1" />
+          <label x="16.51" y="33.83" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <wire x1="162.56" y1="93.98" x2="172.72" y2="93.98" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="16" />
+          <label x="165.1" y="90.98" scaleX="1" scaleY="1" textColor="#FFFFFFFF" fontFamily="Segoe UI" fontSize="8" bold="false" italic="false" rot="0" textDecoration="None" />
+          <pinref partGateId="2019041115144553000" pin="16" />
+          <pinref partGateId="2019041115192873000" pin="1" />
+          <pinref partGateId="2019041115144553000" pin="16" />
+          <pinref partGateId="2019041115192873000" pin="1" />
+        </net>
+        <net id="2019041120201341000" name="Net2019041120201341000" classId="0">
+          <wire x1="119.38" y1="63.5" x2="115.57000000000001" y2="63.5" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="7" />
+          <wire x1="115.57000000000001" y1="63.5" x2="115.57000000000001" y2="60.96" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="115.57000000000001" y1="60.96" x2="99.06" y2="60.96" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="99.06" y1="60.96" x2="99.06" y2="63.5" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115154728003" pin="2" />
+          <wire x1="104.14" y1="60.96" x2="104.14" y2="63.5" width="0.2" lineColor="#FF0000FF" />
+          <junction x="104.14" y="60.96" />
+          <pinref partGateId="2019041115164984000" pin="1" />
+          <pinref partGateId="2019041115144553000" pin="7" />
+          <pinref partGateId="2019041115154728003" pin="2" />
+          <pinref partGateId="2019041115164984000" pin="1" />
+        </net>
+        <net id="2019041120203809000" name="Net2019041120203809000" classId="0">
+          <wire x1="104.14" y1="68.58" x2="104.14" y2="69.85" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115164984000" pin="2" />
+          <wire x1="104.14" y1="69.85" x2="115.57000000000001" y2="69.85" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="115.57000000000001" y1="69.85" x2="115.57000000000001" y2="68.58" width="0.2" lineColor="#FF0000FF" />
+          <wire x1="115.57000000000001" y1="68.58" x2="119.38" y2="68.58" width="0.2" lineColor="#FF0000FF" />
+          <pinref partGateId="2019041115144553000" pin="8" />
+          <wire x1="111.76" y1="69.85" x2="111.76" y2="71.12" width="0.2" lineColor="#FF0000FF" />
+          <junction x="111.76" y="69.85" />
+          <pinref partGateId="2019041115154429001" pin="1" />
+          <pinref partGateId="2019041115144553000" pin="8" />
+          <pinref partGateId="2019041115154429001" pin="1" />
+          <pinref partGateId="2019041115164984000" pin="2" />
+        </net>
+      </nets>
+    </sheet>
+  </sheets>
+</schematic>

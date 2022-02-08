@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardPreview3DView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="400">
+    <StackPanel DataContext="{Binding Document.BoardPreview3DViewModel}"
+                Margin="10,20,0,0">
+
+        <CheckBox 
+                  IsChecked="{Binding ShowSolderMask,UpdateSourceTrigger=PropertyChanged}"
+                  Content="{x:Static strings:BoardDesignerStrings.Preview3DShowSolderMask}"
+                  />
+
+        <TextBlock Margin="0,10,0,0"
+                   Text="{x:Static strings:BoardDesignerStrings.Preview3DSolderMaskColor}"/>
+        <xctk:ColorPicker SelectedColor="{Binding SolderMaskColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          ShowDropDownButton="False"
+                          BorderBrush="Transparent"
+                          Width="22"
+                          Height="22"/>
+
+        <TextBlock Margin="0,10,0,0"
+                   Text="{x:Static strings:BoardDesignerStrings.Preview3DSilkscreenColor}"/>
+        <xctk:ColorPicker SelectedColor="{Binding SilkScreenColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          ShowDropDownButton="False"
+                          BorderBrush="Transparent"
+                          Width="22"
+                          Height="22"/>
+
+        <CheckBox IsChecked="{Binding DisplayCopperAsLayerColors,UpdateSourceTrigger=PropertyChanged}"
+                  Content="{x:Static strings:BoardDesignerStrings.Preview3DDisplayCopperAsLayerColors}"
+                  Margin="0,10,0,0"
+                  />
+
+        <CheckBox IsChecked="{Binding ShowParts,UpdateSourceTrigger=PropertyChanged}"
+                  Content="{x:Static strings:BoardDesignerStrings.Preview3DShowParts}"
+                  Margin="0,10,0,0"
+                  />
+
+        <CheckBox IsChecked="{Binding ShowPCB,UpdateSourceTrigger=PropertyChanged}"
+                  Content="{x:Static strings:BoardDesignerStrings.Preview3DShowPcb}"
+                  Margin="0,10,0,0"
+                  />
+
+        <CheckBox IsChecked="{Binding ShowDielectric,UpdateSourceTrigger=PropertyChanged}"
+                  Content="{x:Static strings:BoardDesignerStrings.Preview3DShowDielectric}"
+                  Margin="0,10,0,0"
+                  />
+    </StackPanel>
+</UserControl>

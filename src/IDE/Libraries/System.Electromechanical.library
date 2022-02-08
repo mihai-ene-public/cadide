@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library name="System.Electromechanical" version="1.1.0">
+  <symbols>
+    <symbol id="2019012315210613011" name="BUZZER">
+      <line zIndex="0" x1="49.53" y1="48.26" x2="50.8" y2="48.26" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="48.768" x2="50.8" y2="47.752" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.308" y1="46.99" x2="51.308" y2="49.53" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.308" y1="49.53" x2="52.578" y2="49.53" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.578" y1="49.53" x2="52.578" y2="46.99" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.578" y1="46.99" x2="51.308" y2="46.99" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="47.752" x2="53.34" y2="48.768" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="48.26" x2="54.61" y2="48.26" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.88" y1="50.8" x2="55.88" y2="45.72" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.88" y1="45.72" x2="48.26" y2="45.72" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="45.72" x2="48.26" y2="50.8" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="46.228" x2="55.88" y2="46.228" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="50.8" x2="55.88" y2="50.8" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="53.34" y="53.34" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="53.34" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012315210613016" name="HEATSINK">
+      <line zIndex="0" x1="60.16" y1="50" x2="37.3" y2="50" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="44.92" x2="60.16" y2="50" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="50" x2="60.16" y2="55.08" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="37.3" y1="55.08" x2="37.3" y2="50" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="37.3" y1="50" x2="37.3" y2="44.92" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="37.3" y1="50" x2="32.22" y2="44.92" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="37.3" y1="50" x2="29.68" y2="50" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="37.3" y1="50" x2="32.22" y2="55.08" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="50" x2="65.24" y2="44.92" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="50" x2="67.78" y2="50" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="50" x2="65.24" y2="55.08" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012315210613012" name="MOTOR">
+      <line zIndex="0" x1="49.53" y1="46.99" x2="49.53" y2="49.149" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.53" y1="46.99" x2="52.07" y2="46.99" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.07" y1="46.99" x2="52.07" y2="49.149" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.07" y1="54.61" x2="52.07" y2="52.451" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.07" y1="54.61" x2="49.53" y2="54.61" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.53" y1="54.61" x2="49.53" y2="52.451" width="0.2032" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.054" y1="47.752" x2="50.546" y2="47.752" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="47.498" x2="50.8" y2="48.006" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.054" y1="53.848" x2="50.546" y2="53.848" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <circle zIndex="0" x="50.8" y="50.8" diameter="4.064" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" />
+      <pin zIndex="0" name="+" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="+" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="1.27" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="-" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="-" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="1.27" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012315210613013" name="RELAY-SPDT">
+      <line zIndex="0" x1="55.88" y1="43.18" x2="55.88" y2="58.42" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.88" y1="58.42" x2="43.18" y2="58.42" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="43.18" y1="58.42" x2="43.18" y2="43.18" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="43.18" y1="43.18" x2="55.88" y2="43.18" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>48.895</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>45.72</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>47.625</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>48.895</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>51.435</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>47.625</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>50.165</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>51.435</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>53.975</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>50.165</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>52.705</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>53.975</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>45.72</X>
+          <Y>55.88</Y>
+        </startPoint>
+        <endPoint>
+          <X>45.72</X>
+          <Y>52.705</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="55.88" y1="45.72" x2="50.8" y2="45.72" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="45.72" x2="50.8" y2="48.26" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.88" y1="55.88" x2="50.8" y2="55.88" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="55.88" x2="50.8" y2="53.34" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.88" y1="50.8" x2="53.34" y2="50.8" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="50.8" x2="51.435" y2="48.895" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="48.26" x2="51.435" y2="47.625" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="48.26" x2="50.165" y2="47.625" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="53.34" x2="51.397000000000006" y2="53.937" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="53.34" x2="50.165" y2="53.975" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="43.18" y1="45.72" x2="45.72" y2="45.72" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="43.18" y1="55.88" x2="45.72" y2="55.88" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="COIL2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="COIL2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="40.64" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="MAIN" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="MAIN" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="58.42" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="NO" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="NO" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="58.42" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="NC" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="NC" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="58.42" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="COIL1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="COIL1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="40.64" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012315210613015" name="SMALL_SERVO_MOTOR">
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>36.83</X>
+          <Y>46.99</Y>
+        </startPoint>
+        <endPoint>
+          <X>39.37</X>
+          <Y>46.99</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>39.37</X>
+          <Y>59.69</Y>
+        </startPoint>
+        <endPoint>
+          <X>36.83</X>
+          <Y>59.69</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>41.910000000000004</X>
+          <Y>52.07</Y>
+        </startPoint>
+        <endPoint>
+          <X>41.910000000000004</X>
+          <Y>54.61</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>34.29</X>
+          <Y>54.61</Y>
+        </startPoint>
+        <endPoint>
+          <X>34.29</X>
+          <Y>52.07</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="34.29" y1="52.07" x2="36.83" y2="52.07" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="36.83" y1="52.07" x2="36.83" y2="46.99" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="39.37" y1="46.99" x2="39.37" y2="52.07" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="39.37" y1="52.07" x2="41.910000000000004" y2="52.07" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="41.910000000000004" y1="54.61" x2="39.37" y2="54.61" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="39.37" y1="54.61" x2="39.37" y2="59.69" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="34.29" y1="54.61" x2="36.83" y2="54.61" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="36.83" y1="54.61" x2="36.83" y2="59.69" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="36.83" y1="49.53" x2="30.48" y2="49.53" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="30.48" y1="49.53" x2="30.48" y2="57.15" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="30.48" y1="57.15" x2="36.83" y2="57.15" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="39.37" y1="57.15" x2="50.8" y2="57.15" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="57.15" x2="50.8" y2="49.53" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="49.53" x2="39.37" y2="49.53" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.53" y1="49.53" x2="49.53" y2="57.15" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="31.75" y1="49.53" x2="31.75" y2="57.15" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="SIG" showName="true" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="SIG" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="53.34" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="V+" showName="true" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="V+" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="53.34" y="53.34" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="GND" showName="true" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="GND" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="53.34" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012315210613014" name="SPEAKER">
+      <pin zIndex="0" name="+" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="+" showNumber="true" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="40.64" y="48.26" pinLength="5.08" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="-" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="-" showNumber="true" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="40.64" y="53.34" pinLength="5.08" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="45.72" y1="45.72" x2="45.72" y2="55.88" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="45.72" y1="55.88" x2="53.34" y2="55.88" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="55.88" x2="53.34" y2="45.72" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="45.72" x2="45.72" y2="45.72" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.34" y1="45.72" x2="58.42" y2="40.64" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.42" y1="40.64" x2="58.42" y2="60.96" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.42" y1="60.96" x2="53.34" y2="55.88" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+  </symbols>
+  <footprints>
+    <footprint id="2019012315210613007" name="1X03">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="53.81" y1="49.365" x2="54.445" y2="48.73" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54.445" y1="48.73" x2="55.715" y2="48.73" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="55.715" y1="48.73" x2="56.35" y2="49.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.35" y1="50.635" x2="55.715" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="55.715" y1="51.27" x2="54.445" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54.445" y1="51.27" x2="53.81" y2="50.635" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="49.365" y1="48.73" x2="50.635" y2="48.73" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.635" y1="48.73" x2="51.27" y2="49.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="50.635" x2="50.635" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="49.365" x2="51.905" y2="48.73" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.905" y1="48.73" x2="53.175" y2="48.73" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="53.175" y1="48.73" x2="53.81" y2="49.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="53.81" y1="50.635" x2="53.175" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="53.175" y1="51.27" x2="51.905" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.905" y1="51.27" x2="51.27" y2="50.635" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="49.365" x2="48.73" y2="50.635" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="49.365" y1="48.73" x2="48.73" y2="49.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="50.635" x2="49.365" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.635" y1="51.27" x2="49.365" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.35" y1="49.365" x2="56.35" y2="50.635" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="1" layer="1" x="50" y="50" rot="270" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="2" layer="1" x="52.54" y="50" rot="270" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="3" layer="1" x="55.08" y="50" rot="270" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+      <rect x="55.08" y="50" width="0.5080000000000027" height="0.5079999999999956" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <rect x="52.54" y="50" width="0.5079999999999956" height="0.5079999999999956" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <rect x="50" y="50" width="0.5079999999999956" height="0.5079999999999956" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+    </footprint>
+    <footprint id="2019012315210613001" name="BUZZER-12MM-NS">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <circle x="50" y="50" diameter="11.8" borderWidth="0.2032" isFilled="false" layer="201" isLocked="false" />
+      <circle x="50" y="50" diameter="2.54" borderWidth="0.2032" isFilled="false" layer="201" isLocked="false" />
+      <pad number="-" layer="1" x="46.75" y="50" rot="360" width="1.8" height="1.8" cornerRadius="0.9" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="+" layer="1" x="53.25" y="50" rot="360" width="1.8" height="1.8" cornerRadius="0.9" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <mono x="52.667" y="48.857" layer="201" rot="0" fontName="Default" fontSize="1.778" strokeWidth="0.2" isLocked="false">+</mono>
+    </footprint>
+    <footprint id="2019012315210612000" name="BUZZER-12MM">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <circle x="50" y="50" diameter="11.8" borderWidth="0.2032" isFilled="false" layer="501" isLocked="false" />
+      <line x1="57" y1="49.5" x2="57" y2="50.5" width="0.2" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.5" y1="50" x2="57.5" y2="50" width="0.2" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="-" layer="1" x="46.75" y="50" rot="0" width="1.778" height="1.778" cornerRadius="0.889" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="+" layer="1" x="53.25" y="50" rot="0" width="1.778" height="1.778" cornerRadius="0.889" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <circle x="50" y="50" diameter="2.54" borderWidth="0.2032" isFilled="false" layer="201" isLocked="false" />
+    </footprint>
+    <footprint id="2019012315210613000" name="BUZZER-CCV">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="46.698" y1="53.048" x2="47.4" y2="53.6" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.4" y1="56" x2="52.6" y2="56" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.6" y1="56" x2="52.6" y2="53.7" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.4" y1="56" x2="47.4" y2="53.6" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <arc sizeDiameter="4.5" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="501" isLocked="false">
+        <startPoint>
+          <X>54.25</X>
+          <Y>48.5</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.800000000000004</X>
+          <Y>46.5</Y>
+        </endPoint>
+      </arc>
+      <arc sizeDiameter="4.5" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="501" isLocked="false">
+        <startPoint>
+          <X>45.800000000000004</X>
+          <Y>48.400000000000006</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.400000000000006</X>
+          <Y>45.7</Y>
+        </endPoint>
+      </arc>
+      <arc sizeDiameter="4.5" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="501" isLocked="false">
+        <startPoint>
+          <X>54.2</X>
+          <Y>51.6</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.800000000000004</X>
+          <Y>53.5</Y>
+        </endPoint>
+      </arc>
+      <smd number="-" layer="1" x="46" y="50" rot="0" width="3.2" height="2.5" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="+" layer="1" x="54" y="50" rot="0" width="3.2" height="2.5" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="52.6" y1="56" x2="47.4" y2="56" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.6" y1="56" x2="52.6" y2="53.7" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="47.4" y1="56" x2="47.4" y2="53.7" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <circle x="50" y="50" diameter="9" borderWidth="0.127" isFilled="false" layer="201" isLocked="false" />
+      <hole x="46.1" y="52.25" drill="0.8" isPlated="false" height="0" rot="0" drillType="Drill" isLocked="false" />
+      <hole x="52.25" y="46.1" drill="0.8" isPlated="false" height="0" rot="0" drillType="Drill" isLocked="false" />
+    </footprint>
+    <footprint id="2019012315210613010" name="HEATSINK_PRT-9576">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <pad number="P$1" layer="1" x="37.3" y="50" rot="360" width="5.08" height="5.08" cornerRadius="2.54" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2.54" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$2" layer="1" x="62.7" y="50" rot="360" width="5.08" height="5.08" cornerRadius="2.54" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2.54" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="28.41" y1="62.7" x2="28.41" y2="37.3" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="71.59" y1="37.3" x2="71.59" y2="62.7" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="37.3" y1="62.7" x2="37.3" y2="52.286" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="62.7" y1="52.286" x2="62.7" y2="62.7" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="62.7" y1="62.7" x2="71.59" y2="62.7" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="37.3" y1="62.7" x2="28.41" y2="62.7" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="39.332" y1="50.762" x2="60.668" y2="50.762" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.096000000000004" y1="49.238" x2="43.903999999999996" y2="49.238" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.096000000000004" y1="49.238" x2="56.096000000000004" y2="37.3" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="43.903999999999996" y1="49.238" x2="43.903999999999996" y2="37.3" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="28.41" y1="37.3" x2="43.903999999999996" y2="37.3" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="71.59" y1="37.3" x2="56.096000000000004" y2="37.3" width="0.127" layer="501" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019012315210613006" name="PCB_MOUNT_SPEAKER">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <circle x="50" y="50" diameter="29.21" borderWidth="0.2032" isFilled="false" layer="501" isLocked="false" />
+      <line x1="34" y1="49" x2="34" y2="50" width="0.2" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="34.5" y1="49.5" x2="33.5" y2="49.5" width="0.2" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="+" layer="1" x="42.38" y="50" rot="0" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.143" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="-" layer="1" x="57.62" y="50" rot="270" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.143" slotHeight="0" slotRot="0" plated="false" />
+    </footprint>
+    <footprint id="2019012315210613005" name="RELAY-JZC">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <pad number="4" layer="1" x="53.81" y="46.19" rot="90" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.3" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="5" layer="1" x="46.19" y="58.89" rot="90" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.3" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="1" layer="1" x="53.81" y="58.89" rot="90" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.3" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="3" layer="1" x="46.19" y="43.65" rot="90" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.3" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="2" layer="1" x="46.19" y="48.73" rot="90" width="2.286" height="2.286" cornerRadius="1.143" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.3" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="44.746" y1="60.754" x2="44.746" y2="41.746" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="55.254" y1="41.746" x2="55.254" y2="60.754" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="55" y1="60.5" x2="45" y2="60.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="44.746" y1="41.746" x2="55.254" y2="41.746" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="45" y1="60.5" x2="45" y2="42" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="45" y1="42" x2="55" y2="42" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="55" y1="42" x2="55" y2="60.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="55.254" y1="60.754" x2="44.746" y2="60.754" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019012315210613009" name="RELAY-T90">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="23.59" y1="70.66499999999999" x2="23.59" y2="45.265" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="24.5" y1="44.265" x2="36.275" y2="44.265" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="40.44" y1="71.66499999999999" x2="24.5" y2="71.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="24.5" y1="71.66499999999999" x2="23.59" y2="70.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="24.5" y1="44.265" x2="23.59" y2="45.265" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="41.19" y1="70.965" x2="41.19" y2="70.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="37.025" y1="48.43" x2="37.025" y2="44.965" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="41.94" y1="69.66499999999999" x2="55.875" y2="69.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="37.775" y1="49.13" x2="55.775" y2="49.13" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.525" y1="68.965" x2="56.525" y2="49.83" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="41.19" y1="70.965" x2="40.44" y2="71.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="41.19" y1="70.365" x2="41.94" y2="69.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.525" y1="68.965" x2="55.875" y2="69.66499999999999" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="55.775" y1="49.13" x2="56.525" y2="49.83" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="37.775" y1="49.13" x2="37.025" y2="48.43" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="36.275" y1="44.265" x2="37.025" y2="44.965" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="NC" layer="1" x="27.14" y="50" rot="270" width="4.2" height="4.2" cornerRadius="2.1" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2.1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="NO" layer="1" x="34.76" y="50" rot="270" width="4.2" height="4.2" cornerRadius="2.1" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2.1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="MAIN" layer="1" x="37.3" y="67.78" rot="270" width="4.2" height="4.2" cornerRadius="2.1" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2.1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="COIL1" layer="1" x="50" y="63.9" rot="270" width="1.9558" height="1.9558" cornerRadius="0.9779" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="COIL2" layer="1" x="50" y="53.81" rot="270" width="1.9558" height="1.9558" cornerRadius="0.9779" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.1" slotHeight="0" slotRot="0" plated="false" />
+    </footprint>
+    <footprint id="2019012315210613004" name="VIBE-MOTOR-10MM">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <mono x="42.688" y="50.5" layer="501" rot="0" fontName="Default" fontSize="1.27" strokeWidth="0.2" isLocked="false">-</mono>
+      <mono x="45.554" y="55.554" layer="501" rot="0" fontName="Default" fontSize="1.27" strokeWidth="0.2" isLocked="false">+</mono>
+      <pad number="+" layer="1" x="45" y="53.9" rot="0" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="-" layer="1" x="43.65" y="52.54" rot="0" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="48.5" y1="54.8" x2="48.5" y2="57.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.5" y1="57.8" x2="51.5" y2="57.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.5" y1="57.8" x2="51.5" y2="54.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <circle x="50" y="50" diameter="10.0018" borderWidth="0.127" isFilled="false" layer="201" isLocked="false" />
+    </footprint>
+  </footprints>
+  <models />
+  <components>
+    <component id="2019012315210613017" name="BUZZER-PTH" prefix="LS" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613011" symbolName="BUZZER" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210612000" footprintName="BUZZER-12MM">
+        <pad2pinMaps>
+          <map pad="+" gateId="1" pin="1" />
+          <map pad="-" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613019" name="BUZZER-PTH_NO_SILK" prefix="LS" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613011" symbolName="BUZZER" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613001" footprintName="BUZZER-12MM-NS">
+        <pad2pinMaps>
+          <map pad="+" gateId="1" pin="1" />
+          <map pad="-" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613018" name="BUZZER-SMD" prefix="LS" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613011" symbolName="BUZZER" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613000" footprintName="BUZZER-CCV">
+        <pad2pinMaps>
+          <map pad="+" gateId="1" pin="1" />
+          <map pad="-" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613028" name="HEATSINKPRT-9576" prefix="HS" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613016" symbolName="HEATSINK" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613010" footprintName="HEATSINK_PRT-9576">
+        <pad2pinMaps />
+      </footprint>
+    </component>
+    <component id="2019012315210613023" name="MOTOR10MM" prefix="M" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613012" symbolName="MOTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613004" footprintName="VIBE-MOTOR-10MM">
+        <pad2pinMaps>
+          <map pad="+" gateId="1" pin="+" />
+          <map pad="-" gateId="1" pin="-" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613025" name="RELAY-SPDT-JQX-15F" prefix="K" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="K$1" libraryName="local" symbolId="2019012315210613013" symbolName="RELAY-SPDT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613009" footprintName="RELAY-T90">
+        <pad2pinMaps>
+          <map pad="COIL1" gateId="1" pin="COIL1" />
+          <map pad="COIL2" gateId="1" pin="COIL2" />
+          <map pad="MAIN" gateId="1" pin="MAIN" />
+          <map pad="NC" gateId="1" pin="NC" />
+          <map pad="NO" gateId="1" pin="NO" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613024" name="RELAY-SPDT-JZC-11F" prefix="K" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="K$1" libraryName="local" symbolId="2019012315210613013" symbolName="RELAY-SPDT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613005" footprintName="RELAY-JZC">
+        <pad2pinMaps>
+          <map pad="5" gateId="1" pin="COIL1" />
+          <map pad="1" gateId="1" pin="COIL2" />
+          <map pad="4" gateId="1" pin="MAIN" />
+          <map pad="2" gateId="1" pin="NC" />
+          <map pad="3" gateId="1" pin="NO" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613027" name="SERVO" prefix="M" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613015" symbolName="SMALL_SERVO_MOTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613007" footprintName="1X03">
+        <pad2pinMaps>
+          <map pad="3" gateId="1" pin="GND" />
+          <map pad="1" gateId="1" pin="SIG" />
+          <map pad="2" gateId="1" pin="V+" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012315210613026" name="SPEAKER" prefix="LS" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012315210613014" symbolName="SPEAKER" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012315210613006" footprintName="PCB_MOUNT_SPEAKER">
+        <pad2pinMaps>
+          <map pad="+" gateId="1" pin="+" />
+          <map pad="-" gateId="1" pin="-" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+  </components>
+</library>

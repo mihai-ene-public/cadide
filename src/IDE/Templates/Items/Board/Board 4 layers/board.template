@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Board">
+  <Name>Board 4 layers (Top, GND, VCC, Bottom)</Name>
+  <Description>A new empty board on 4 layers: 2 signal and 2 planes</Description>
+  <Icon></Icon>
+  <Extension>board</Extension>
+</Template> 

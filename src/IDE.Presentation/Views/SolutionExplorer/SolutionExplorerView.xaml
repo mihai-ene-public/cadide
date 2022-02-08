@@ -1,0 +1,287 @@
+﻿<UserControl x:Class="IDE.Documents.Views.SolutionExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+             xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/Controls/InplaceEditBox/Views/EditBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--<conv:SolutionExplorerDocumentTypeToImageConverter x:Key="documentTypeToImageConverter" />-->
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+
+        <KeyBinding Key="F2"
+                    Command="{Binding SelectedItem.BeginRenameCommand, ElementName=treeSolutions}" />
+        <!--<KeyBinding Key="Delete"
+                    Command="{Binding DeleteSelectedItemsCommand}" />-->
+
+        <KeyBinding Key="C"
+                    Modifiers="Ctrl"
+                    Command="{Binding CopySelectedItemsCommand}" />
+        <KeyBinding Key="X"
+                    Modifiers="Ctrl"
+                    Command="{Binding CutSelectedItemsCommand}" />
+        <KeyBinding Key="V"
+                    Modifiers="Ctrl"
+                    CommandParameter="{Binding SelectedItem, ElementName=treeSolutions, UpdateSourceTrigger=PropertyChanged}"
+                    Command="{Binding PasteItemsCommand}" />
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid  Background="{DynamicResource ToolBarBackground}" />
+        <ToolBar Grid.Row="0"
+                 VerticalAlignment="Stretch"
+                 ToolBarTray.IsLocked="True"
+                 SnapsToDevicePixels="True"
+                
+                 behav:HideToolbarOverflowButton.HideGrip="True">
+            
+            <!-- refresh is collapsed because we have a serious bug: after refresh then delete in item inside a folder, the entire folder is DELETED!!!-->
+            <Button Command="{Binding RefreshNodesCommand}"
+                    Visibility="Collapsed"
+                    SnapsToDevicePixels="True"
+                    ToolTip="{x:Static resources:Strings.CmdSolutionExplorerRefreshNodesTooltip}"
+                    ToolTipService.ShowOnDisabled="True"
+                    Margin="5,0"
+                    Width="24"
+                    Height="24"
+                    FocusVisualStyle="{x:Null}">
+                <fa:FontAwesome Icon="Solid_SyncAlt"
+                                FontSize="16"
+                                Foreground="{DynamicResource TextBrush}" />
+            </Button>
+
+            <Button Command="{Binding CollapseAllNodesCommand}"
+                    SnapsToDevicePixels="True"
+                    ToolTip="{x:Static resources:Strings.CmdSolutionExplorerCollapseAllNodesTooltip}"
+                    ToolTipService.ShowOnDisabled="True"
+                    Margin="5,0"
+                    Width="24"
+                    Height="24"
+                    FocusVisualStyle="{x:Null}">
+                <fa:FontAwesome Icon="Solid_AngleUp"
+                                FontSize="16"
+                                Foreground="{DynamicResource TextBrush}" />
+            </Button>
+        </ToolBar>
+
+        <Grid Grid.Row="1">
+
+            <TreeView x:Name="treeSolutions"
+                      ItemsSource="{Binding Solutions, IsAsync=True}"
+                      Focusable="True">
+                <i:Interaction.Behaviors>
+                    <behav:TreeViewMultipleSelectionBehavior SelectedItems="{Binding SelectedNodes}" />
+                </i:Interaction.Behaviors>
+                <TreeView.Resources>
+                    <ContextMenu x:Key="treeContextMenu">
+                        <ContextMenu.Resources>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled"
+                                             Value="False">
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContextMenu.Resources>
+                        <MenuItem Header="{x:Static resources:Strings.CmdCompileHeader}"
+                                  Command="{x:Static cmd:AppCommand.CompileCommand}"
+                                  CommandParameter="{Binding}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdBuildHeader}"
+                                  Command="{x:Static cmd:AppCommand.BuildCommand}"
+                                  CommandParameter="{Binding}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdShowConfigurationManagerHeader}"
+                                  Command="{x:Static cmd:AppCommand.OpenConfigurationManagerCommand}"
+                                  CommandParameter="{Binding}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdShowProjectDependenciesHeader}"
+                                  Command="{x:Static cmd:AppCommand.OpenProjectDependenciesCommand}"
+                                  CommandParameter="{Binding}" />
+                        <Separator />
+                        <MenuItem Header="{x:Static resources:Strings.MenuAddHeader}">
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddProjectHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddProjectCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddExistingProjectHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddExistingProjectCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddGroupFolderHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddGroupFolderCommand}"
+                                      CommandParameter="{Binding}" />
+                           
+                            <!-- Virtual Solution Folder-->
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddFolderHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddFolderCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewItemHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewItemCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddExistingItemHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddExistingItemCommand}"
+                                      CommandParameter="{Binding}" />
+                            <Separator />
+                            <!-- The most common-->
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddSymbolHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewSymbolCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddFootprintHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewFootprintCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewModelHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewModelCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewComponentHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewComponentCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewBoardHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewBoardCommand}"
+                                      CommandParameter="{Binding}" />
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewSchematicHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewSchematicCommand}"
+                                      CommandParameter="{Binding}" />
+                            <!--<MenuItem Header="{x:Static resources:Strings.CmdAddNewFontHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewFontCommand}"
+                                      CommandParameter="{Binding}" />-->
+                            <MenuItem Header="{x:Static resources:Strings.CmdAddNewDiagramHeader}"
+                                      Command="{x:Static cmd:AppCommand.AddNewDiagramCommand}"
+                                      CommandParameter="{Binding}" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{x:Static resources:Strings.CmdOpenContainingFolderHeader}"
+                                  Command="{Binding OpenContainingFolderCommand}" />
+                        <Separator />
+                        <MenuItem Header="{x:Static resources:Strings.CmdCutHeader}"
+                                  Command="{Binding Data.CutSelectedItemsCommand, Source={StaticResource windowProxy}}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdCopyHeader}"
+                                  Command="{Binding Data.CopySelectedItemsCommand, Source={StaticResource windowProxy}}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdPasteHeader}"
+                                  Command="{Binding Data.PasteItemsCommand, Source={StaticResource windowProxy}}"
+                                  CommandParameter="{Binding}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdDeleteHeader}"
+                                  Command="{Binding Data.DeleteSelectedItemsCommand, Source={StaticResource windowProxy}}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdRenameHeader}"
+                                  Command="{Binding BeginRenameCommand}"
+                                  InputGestureText="F2" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdUpdateReferencesHeader}"
+                                  Command="{Binding Data.UpdateSelectedReferencesCommand, Source={StaticResource windowProxy}}" />
+
+                        <Separator />
+                        <MenuItem Header="{x:Static resources:Strings.CmdManageReferencesHeader}"
+                                      Command="{x:Static cmd:AppCommand.ManageReferencesCommand}"
+                                      CommandParameter="{Binding}" />
+                        <Separator />
+                        <MenuItem Header="{x:Static resources:Strings.CmdShowPropertiesHeader}"
+                                  Command="{x:Static cmd:AppCommand.ShowPropertiesCommand}"
+                                  CommandParameter="{Binding}" />
+
+                    </ContextMenu>
+                </TreeView.Resources>
+
+                <!-- This is to have a full selection of the tree item-->
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <!--BasedOn="{StaticResource {x:Type TreeViewItem}}-->
+
+                        <Setter Property="behav:MouseDoubleClickBehavior.Command"
+                                Value="{x:Static cmd:AppCommand.OpenItemCommand}" />
+                        <Setter Property="behav:MouseDoubleClickBehavior.CommandParameter"
+                                Value="{Binding}" />
+                        <Setter Property="IsExpanded"
+                                Value="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Setter Property="behav:TreeViewMultipleSelectionBehavior.IsItemSelected"
+                                Value="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Style.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Grid.ColumnSpan"
+                                        Value="3" />
+
+                            </Style>
+
+                        </Style.Resources>
+
+                        <Style.Triggers>
+                            <Trigger Property="behav:TreeViewMultipleSelectionBehavior.IsItemSelected"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="Gray" />
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsCut}"
+                                         Value="true">
+                                <Setter Property="Opacity"
+                                        Value="0.7"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children, IsAsync=True}">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="3"
+                                    ContextMenu="{StaticResource treeContextMenu}">
+
+                            <Image Width="12"
+                                   Height="12"
+                                   Source="{Binding Converter={x:Static conv:SolutionExplorerDocumentTypeToImageConverter.Instance},Mode=OneWay, Delay=100, IsAsync=True}"
+                                   VerticalAlignment="Center" />
+
+                            <ctrls:EditBox Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           DisplayText="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           ToolTip="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           IsEditableOnDoubleClick="True"
+                                           FontSize="12"
+                                           FontFamily="Segoe UI"
+                                           Focusable="True"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           IsReadOnly="{Binding IsReadOnly}"
+                                           RenameCommand="{Binding RenameCommand}"
+                                           ToolTipService.ShowOnDisabled="True"
+                                           Margin="5, 0, 0, 0" />
+                            <!---->
+                        <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
+
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <!-- <TextBlock Text="{Binding SelectedNodes.Count}" />-->
+            <TextBlock Text="Loading..."
+                       Background="Black"
+                       Opacity="0.75"
+                       Padding="5"
+                       Margin="0,0,15,0"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Visibility="{Binding IsLoading, IsAsync=True, FallbackValue=Collapsed, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top"
+                       TextAlignment="Center" />
+        </Grid>
+    </Grid>
+</UserControl>

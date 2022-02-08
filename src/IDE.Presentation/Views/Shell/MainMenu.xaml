@@ -1,0 +1,107 @@
+<UserControl x:Class="IDE.App.Views.Shell.MainMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="50"
+             d:DesignWidth="500"
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:EdiViewsConv="clr-namespace:IDE.Core.Converters"
+             xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
+             xmlns:ThemeBehav="clr-namespace:IDE.Core.Behaviors"
+             xmlns:conv="clr-namespace:IDE.Core.Converters">
+    <!--xmlns:vm="clr-namespace:IDE.App.Enums"-->
+    <Grid>
+        <Menu Grid.Row="0"
+              ToolTipService.ShowOnDisabled="True">
+            <!--<Menu.Resources>
+                <Style TargetType="MenuItem"
+                       BasedOn="{StaticResource {x:Type MenuItem}}"
+                       >
+                    <Setter Property="Visibility"
+                            Value="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}" />
+                </Style>
+            </Menu.Resources>-->
+            <MenuItem Header="{x:Static resources:Strings.MenuFileHeader}">
+
+
+                <MenuItem Header="{x:Static resources:Strings.MenuFileCloseHeader}"
+                          Command="cmd:AppCommand.CloseFile"
+                          CommandParameter="{Binding ActiveDocument}"
+                          Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                          ToolTip="{x:Static resources:Strings.MenuFileCloseTooltip}" />
+
+                <MenuItem Header="{x:Static resources:Strings.MenuFileCloseSolutionHeader}"
+                          Command="cmd:AppCommand.CloseSolution"
+                          CommandParameter="{Binding ActiveDocument}"
+                          Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                          ToolTip="{x:Static resources:Strings.MenuFileCloseSolutionTooltip}" />
+                <Separator />
+                <MenuItem Header="{x:Static resources:Strings.MenuFileExitHeader}"
+                          Command="cmd:AppCommand.Exit"
+                          ToolTip="{x:Static resources:Strings.MenuFileExitTooltip}" />
+            </MenuItem>
+
+            <MenuItem Header="{x:Static resources:Strings.MenuViewHeader}">
+
+                <MenuItem ItemsSource="{Binding Tools}"
+                          Header="Tool Windows"
+                          Visibility="{Binding Tools, Mode=OneWay, Converter={EdiViewsConv:ZeroToVisibilityConverter}}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem"
+                               BasedOn="{StaticResource {x:Type MenuItem}}">
+                            <Setter Property="Header"
+                                    Value="{Binding Name, Mode=OneWay}" />
+                            <!-- Setter Property="IsCheckable" Value="True" / -->
+                            <Setter Property="IsChecked"
+                                    Value="{Binding IsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Setter Property="Command"
+                                    Value="cmd:AppCommand.ShowToolWindow" />
+                            <Setter Property="CommandParameter"
+                                    Value="{Binding Path=., Mode=OneWay}" />
+                            <Setter Property="ToolTipService.ShowOnDisabled"
+                                    Value="True" />
+                            <Setter Property="ToolTip"
+                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}" />
+                            <Setter Property="Margin"
+                                    Value="3,3,3,0" />
+
+                            <!-- http://social.msdn.microsoft.com/Forums/en-US/wpf/thread/63696841-0358-4f7a-abe1-e6062518e3d6 -->
+                            <Setter Property="ThemeBehav:MergeStyleBehaviour.AutoMergeStyle"
+                                    Value="True" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+
+                <MenuItem Header="Start Page"
+                          Command="cmd:AppCommand.ShowStartPage"
+                          ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}" />
+
+            </MenuItem>
+
+            <!-- XXXXXXXXXXXXXXXXXXXX -->
+            <MenuItem Header="{x:Static resources:Strings.MenuToolsHeader}">
+
+                <MenuItem Header="{x:Static resources:Strings.MenuToolsConvertFromEagleHeader}"
+                          Command="cmd:AppCommand.ImportEagleCommand"
+                          Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}" />
+
+                <MenuItem Header="{x:Static resources:Strings.MenuToolsSettingsHeader}"
+                          Command="cmd:AppCommand.ProgramSettings"
+                          ToolTip="{x:Static resources:Strings.MenuToolsSettingsTooltip}" />
+            </MenuItem>
+
+            <MenuItem Header="{x:Static resources:Strings.MenuHelpHeader}">
+                <MenuItem Header="{x:Static resources:Strings.MenuAboutHeader}"
+                          Command="cmd:AppCommand.About"
+                          ToolTip="{x:Static resources:Strings.MenuAboutTooltip}" />
+
+                <MenuItem Header="{x:Static resources:Strings.MenuActivateLicenseHeader}"
+                          Command="cmd:AppCommand.ShowLicenseActivation"
+                          ToolTip="{x:Static resources:Strings.MenuActivateLicenseTooltip}"
+                          Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"/>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</UserControl>

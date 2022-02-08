@@ -1,0 +1,215 @@
+﻿<UserControl x:Class="IDE.Documents.Views.CanvasDesignerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:s="clr-namespace:IDE.Core.StyleSelectors"
+             xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:localCtrls="clr-namespace:IDE.Controls"
+             xmlns:coreControls="clr-namespace:IDE.Core.Controls"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="1200">
+    <!--<UserControl.InputBindings>-->
+
+    <!--<KeyBinding Key="Z"
+                    Modifiers="Ctrl"
+                    Command="{Binding UndoCommand}" />
+
+        <KeyBinding Key="Y"
+                    Modifiers="Ctrl"
+                    Command="{Binding RedoCommand}" />-->
+
+    <!--<KeyBinding Key="Del"
+                    Command="{Binding DeleteSelectedItemsCommand}" />
+
+        <KeyBinding Key="C"
+                    Modifiers="Ctrl"
+                    Command="{Binding CopySelectedItemsCommand}" />
+        <KeyBinding Key="V"
+                    Modifiers="Ctrl"
+                    Command="{Binding PasteSelectedItemsCommand}" />-->
+
+    <!--<KeyBinding Key="X"
+                    Modifiers="Alt"
+                    Command="{Binding CanvasModel.MirrorXCommand}" />
+        <KeyBinding Key="Y"
+                    Modifiers="Alt"
+                    Command="{Binding CanvasModel.MirrorYCommand}" />-->
+
+    <!--<KeyBinding Key="L"
+                    Modifiers="Alt"
+                    Command="{Binding CanvasModel.ChangeFootprintPlacement}" />-->
+
+    <!--</UserControl.InputBindings>-->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- DiagramDesigner Dll resources, you need all of these -->
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/Styles/ZoomBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/Styles/DesignerItems.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/DataTemplates/SchematicDesignerDataTemplates.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/DataTemplates/BoardDesignerDataTemplates.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/Styles/SchematicDesignerStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--<Button Content="Undo"
+                Command="{Binding UndoCommand}" />-->
+
+        <!--Toolbox -->
+        <local:ToolBoxControl DataContext="{Binding Toolbox}"
+                              Grid.Column="0"
+                              Grid.RowSpan="2" />
+
+        <!-- Top bar-->
+        <localCtrls:ToolbarControl Grid.Row="0"
+                                   Grid.Column="1" />
+
+        <!-- Diagram Control -->
+        <ScrollViewer Name="DesignerScrollViewer"
+                      Background="Transparent"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      DataContext="{Binding CanvasModel}">
+
+            <ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
+                          SnapsToDevicePixels="True"
+                          Background="Transparent"
+                          Grid.Row="1"
+                          Name="itemsControl"
+                          ClipToBounds="False"
+                          ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}"><!-- we had Items IsAsync=true-->
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <coreControls:DrawingCanvas Loaded="DesignerCanvas_Loaded"
+                                                    x:Name="PART_DrawingCanvas"
+                                                    UseLayoutRounding="True"
+                                                    SnapsToDevicePixels="True"
+                                                    Width="{Binding DocumentWidth, FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    Height="{Binding DocumentHeight,FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    ClipToBounds="False"
+                                                    Scale="{Binding Scale, UpdateSourceTrigger=PropertyChanged}"
+                                                    Offset="{Binding Offset, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    Origin="{Binding Origin, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}">
+                            <coreControls:DrawingCanvas.Resources>
+                                <!--<DrawingBrush x:Key="drawingGridBrush"
+                                              TileMode="Tile"
+                                              Viewport="{Binding CanvasGrid.ViewPortSize, FallbackValue=4, Converter={x:Static conv:MilimetersToScreenPointsRectConverter.Instance}}"
+                                              ViewportUnits="Absolute">
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing Brush="{Binding CanvasBackground,FallbackValue=#FF616161, Converter={x:Static conv:ColorToBrushConverter.Instance}}">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry  Rect="0,0,100,100" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="0,0,100,100" />
+                                                </GeometryDrawing.Geometry>
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Brush="{Binding GridColor,FallbackValue=Gray, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                                         Thickness="1" />
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>-->
+
+                                <VisualBrush x:Key="visualGridBrush">
+                                    <VisualBrush.Visual>
+                                        <Canvas>
+                                            <!-- we can add as many items to create a composite grid-->
+                                            <Rectangle Width="{Binding DocumentWidth, FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                       Height="{Binding DocumentHeight,FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}">
+                                                <Rectangle.Fill>
+                                                    <DrawingBrush TileMode="Tile"
+                                                                  Viewport="{Binding CanvasGrid.ViewPortSize, FallbackValue=4, Converter={x:Static conv:MilimetersToScreenPointsRectConverter.Instance}}"
+                                                                  ViewportUnits="Absolute">
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <GeometryDrawing Brush="{Binding CanvasBackground,FallbackValue=#FF616161, Converter={x:Static conv:ColorToBrushConverter.Instance}}">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <RectangleGeometry  Rect="0,0,100,100" />
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                                <GeometryDrawing>
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <RectangleGeometry Rect="0,0,100,100" />
+                                                                    </GeometryDrawing.Geometry>
+                                                                    <GeometryDrawing.Pen>
+                                                                        <Pen Brush="{Binding GridColor,FallbackValue=Gray, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                                                             Thickness="1" />
+                                                                    </GeometryDrawing.Pen>
+                                                                </GeometryDrawing>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+
+                                            <Line X1="{Binding Origin.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Y1="0"
+                                                  X2="{Binding Origin.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Y2="{Binding DocumentHeight, FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Stroke="WhiteSmoke"
+                                                  StrokeThickness="0.1"></Line>
+
+                                            <Line X1="0"
+                                                  Y1="{Binding Origin.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  X2="{Binding DocumentWidth, FallbackValue=800, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Y2="{Binding Origin.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Stroke="WhiteSmoke"
+                                                  StrokeThickness="0.1"></Line>
+                                        </Canvas>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                                
+
+                                <Style TargetType="{x:Type coreControls:DrawingCanvas}">
+                                    <Setter Property="Background"
+                                            Value="{StaticResource visualGridBrush}">
+                                    </Setter>
+
+                                </Style>
+                            </coreControls:DrawingCanvas.Resources>
+
+                           
+                        </coreControls:DrawingCanvas>
+
+                    </ItemsPanelTemplate>
+
+                </ItemsControl.ItemsPanel>
+
+            </ItemsControl>
+
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

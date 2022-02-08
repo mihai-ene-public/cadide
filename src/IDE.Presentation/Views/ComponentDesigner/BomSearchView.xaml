@@ -1,0 +1,306 @@
+﻿<mui:ModernWindow x:Class="IDE.Documents.Views.BomSearchView"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:local="clr-namespace:IDE.Documents.Views"
+                  xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+                  behav:DialogCloser.DialogResult="{Binding WindowCloseResult}"
+                  Style="{DynamicResource EmptyDialog}"
+                  mc:Ignorable="d"
+                  Title="BOM Search"
+                  Height="600"
+                  Width="1200">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"
+                     BorderThickness="1"
+                     BorderBrush="Gray"
+                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="Search"
+                    Grid.Column="1"
+                    IsDefault="True"
+                    Margin="10,0,0,0"
+                    Width="75"
+                    Command="{Binding SearchCommand}" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <GridSplitter Grid.Row="1"
+                          Height="5"
+                          VerticalAlignment="Top" />
+            <DataGrid Margin="0,10"
+                      Grid.Row="0"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding BomResults}"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridColumnHeader}"
+                           BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Left" />
+                    </Style>
+                    <!--body content datagrid cell vertical centering-->
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="SizeToCells"
+                                            IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="48"
+                                       Height="48"
+                                       Margin="3"
+                                       Stretch="Uniform"
+                                       Source="{Binding ImageURLSmall}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Supplier"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Supplier, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Supplier Part Number"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Manufacturer"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping"
+                                        Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="MPN"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding MPN, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Description"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping"
+                                        Value="Wrap" />
+                                <!--<Setter Property="TextBlock.TextAlignment"
+                                        Value="Center" />-->
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="RoHS"
+                                        Width="80"
+                                        Binding="{Binding RoHS, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Packaging"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Packaging, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Package/Case"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Package, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Stock"
+                                        Width="150"
+                                        MinWidth="75"
+                                        Binding="{Binding Stock, UpdateSourceTrigger=PropertyChanged}"
+                                        IsReadOnly="True" />
+
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Row="1"
+                  Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+                       Stretch="Uniform"
+                       Source="{Binding SelectedItem.ImageURLMedium}" />
+                <Grid Grid.Column="1"
+                      Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                               FontSize="18"
+                               Text="Properties" />
+                    <ListView Margin="10,10,0,0"
+                              Grid.Row="1"
+                              ItemsSource="{Binding SelectedItem.Properties}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}"
+                                               Grid.Column="0" />
+                                    <TextBlock Grid.Column="1"
+                                               HorizontalAlignment="Left"
+                                               Text="{Binding Value}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+                <Grid Grid.Column="2"
+                      Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <GridSplitter Grid.Row="1"
+                                  Height="5"
+                                  VerticalAlignment="Top" />
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Datasheets"
+                                   FontSize="18"
+                                   Grid.Row="0" />
+                        <ListView Grid.Row="1"
+                                  Margin="10,0,0,10"
+                                  ItemsSource="{Binding SelectedItem.Datasheets}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock ToolTip="{Binding Value}">
+                                            <Hyperlink NavigateUri="{Binding Value}"
+                                                       RequestNavigate="Hyperlink_RequestNavigate">
+                                                <TextBlock Text="{Binding Name}" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Margin="0,10,0,0"
+                                   FontSize="18"
+                                   Text="{Binding SelectedItem.Currency, StringFormat={}Prices ({0}), FallbackValue=Prices}" />
+                        <ListView Grid.Row="1"
+                                  Margin="10,0,0,0"
+                                  ItemsSource="{Binding SelectedItem.Prices}"
+                                  ScrollViewer.CanContentScroll="True"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="3*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Number}" />
+                                        <TextBlock Grid.Column="1"
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,0,0,0"
+                                                   Text="{Binding Price, StringFormat={}{0:0.0000}}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+
+                </Grid>
+
+            </Grid>
+        </Grid>
+        <Separator Grid.Row="2"
+                   VerticalAlignment="Top" />
+        
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="2">
+
+           
+            <TextBlock Text="Powered by"
+                       VerticalAlignment="Center"
+                       FontSize="13"
+                       Margin="3,0,5,0" />
+
+            <Image Source="{StaticResource Octopart.logo}"
+                   Height="14"
+                   Width="auto"
+                   Margin="0,3,0,0"
+                   Stretch="Uniform" />
+        </StackPanel>
+
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0"
+                    Grid.Row="2">
+
+            <CheckBox VerticalAlignment="Center"
+                      Content="Add parameters to component"
+                      IsChecked="{Binding AddParameters, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button MinWidth="75"
+                    Margin="10,0,0,0"
+                    Content="OK"
+                    Command="{Binding OKCommand}" />
+
+            <Button MinWidth="75"
+                    Margin="10,0,0,0"
+                    Content="Cancel"
+                    IsCancel="True" />
+
+        </StackPanel>
+    </Grid>
+</mui:ModernWindow>

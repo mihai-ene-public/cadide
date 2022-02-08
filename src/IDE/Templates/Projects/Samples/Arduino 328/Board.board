@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<board id="2019041120513252000" units="mm">
+  <description />
+  <schematic schematicId="2019041115142581000" hintPath="Schematics\Schematic.schematic" />
+  <layers>
+    <layer id="501" stackOrder="0" name="Top Silkscreen" layerType="SilkScreen" color="#FFE1E100" thickness="0.015" dielectricConstant="3.2" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.2" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="1" stackOrder="0" name="Top" layerType="Signal" color="#FFA52A2A" material="Copper" thickness="0.035" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="601" stackOrder="0" name="Dielectric" layerType="Dielectric" color="#FF0000FF" thickness="1" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="99" stackOrder="0" name="Bottom" layerType="Signal" color="#FF0000CD" thickness="0.035" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="499" stackOrder="0" name="Bottom Solder" layerType="SolderMask" color="#FF8F008F" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="399" stackOrder="0" name="Bottom Paste" layerType="PasteMask" color="#FFC0C0C0" thickness="0.2" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="599" stackOrder="0" name="Bottom Silkscreen" layerType="SilkScreen" color="#FFFFD700" thickness="0.015" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+    <layer id="1001" stackOrder="0" name="Border Outline" layerType="BoardOutline" color="#FFFFA500" thickness="0" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+  </layers>
+  <layerGroups />
+  <drillPairs>
+    <pair layerIdStart="1" layerIdEnd="99" />
+  </drillPairs>
+  <layerPairs />
+  <boardOutline layerId="0" startPointX="0" startPointY="0" width="0.2">
+    <line endPointX="100" endPointY="0" />
+    <line endPointX="100" endPointY="80" />
+    <line endPointX="0" endPointY="80" />
+    <line endPointX="0" endPointY="0" />
+  </boardOutline>
+  <items>
+    <line x1="0" y1="0" x2="100" y2="0" width="0.2" layer="1001" lineStyle="Solid" />
+    <line x1="100" y1="0" x2="100" y2="80" width="0.2" layer="1001" lineStyle="Solid" />
+    <line x1="100" y1="80" x2="0" y2="80" width="0.2" layer="1001" lineStyle="Solid" />
+    <line x1="0" y1="80" x2="0" y2="0" width="0.2" layer="1001" lineStyle="Solid" />
+  </items>
+  <properties />
+  <classes />
+  <parts>
+    <part id="2019041120513866000" partId="2019041115144549000" partName="U1" compLibrary="System.IC.Microcontrollers" compId="2019012316253851121" library="System.IC.Microcontrollers" footprintId="2019012316253851000" x="51.5" y="19.25" rot="0" partNameX="-3" partNameY="-6.5" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513879000" partId="2019041115154429000" partName="C1" compLibrary="System.Capacitors" compId="2019012014511443053" library="System.Capacitors" footprintId="2019012014511442003" x="44.355199999999996" y="31.200000000000003" rot="180" partNameX="-0.89999999999999858" partNameY="0.90000000000000213" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513881000" partId="2019041115154728002" partName="C2" compLibrary="System.Capacitors" compId="2019012014511443053" library="System.Capacitors" footprintId="2019012014511442003" x="35.955200000000026" y="31.2" rot="180" partNameX="-0.90000000000000568" partNameY="0.80000000000000426" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513884000" partId="2019041115164983000" partName="Y1" compLibrary="System.Clocks" compId="2019012313415759037" library="System.Clocks" footprintId="2019012313415759002" x="40.305200000000021" y="27.2" rot="0" partNameX="-1.0499999999999972" partNameY="2.6999999999999993" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513899000" partId="2019041115192861000" partName="ICSP" compLibrary="System.Connectors" compId="2019012314360765191" library="System.Connectors" footprintId="2019012314360763012" x="53.191199999999995" y="29.799999999999997" rot="0" partNameX="-2.5499999999999972" partNameY="3.0499999999999972" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513906000" partId="2019041115263977000" partName="C3" compLibrary="System.Capacitors" compId="2019012014511443086" library="System.Capacitors" footprintId="2019012014511442003" x="53.550799999999995" y="11.399999999999999" rot="270" partNameX="-1" partNameY="-2.75" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513923000" partId="2019041115274775000" partName="R1" compLibrary="System.Resistors" compId="2019012317022546157" library="System.Resistors" footprintId="2019012317022546011" x="51.450800000000015" y="11.4" rot="90" partNameX="-1" partNameY="-2.75" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513965000" partId="2019041120252369000" partName="C4" compLibrary="System.Capacitors" compId="2019012014511443086" library="System.Capacitors" footprintId="2019012014511442003" x="42.850800000000028" y="21.35" rot="90" partNameX="-1" partNameY="-3" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513967000" partId="2019041120253168001" partName="C5" compLibrary="System.Capacitors" compId="2019012014511443086" library="System.Capacitors" footprintId="2019012014511442003" x="59.950800000000037" y="21.5" rot="0" partNameX="-1" partNameY="-2" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+    <part id="2019041120513968000" partId="2019041120264838000" partName="C6" compLibrary="System.Capacitors" compId="2019012014511443043" library="System.Capacitors" footprintId="2019012014511442001" x="40.600800000000049" y="21.4" rot="90" partNameX="-1.25" partNameY="-3" partNameRot="0" showName="true" partNameFontFamily="Arial" partNameFontSize="1" partNameStrokeWidth="0.2" placement="Top" />
+  </parts>
+  <nets>
+    <net id="2019041116001646000" name="+5V" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="4" />
+        <pad footprintInstanceId="2019041120513866000" padNumber="6" />
+        <pad footprintInstanceId="2019041120513866000" padNumber="18" />
+        <pad footprintInstanceId="2019041120513866000" padNumber="20" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513923000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513965000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513967000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513968000" padNumber="1" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>55.8,19.7 58.2,19.7 58.9,20.4 58.9,21.5</vertices>
+      </track>
+      <track width="0.254" layer="1">
+        <vertices>59,21.5 57.6,21.5 57.4,21.3 55.9,21.3</vertices>
+      </track>
+      <track width="0.254" layer="1">
+        <vertices>40.6,20.5 43,20.5 47.2,20.5</vertices>
+      </track>
+      <track width="0.254" layer="1">
+        <vertices>47.2,18.8 43.4,18.8 42.9,19.3 42.9,20.1 42.8,20.2</vertices>
+      </track>
+    </net>
+    <net id="2019041116001945000" name="MOSI" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="15" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="4" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>53.5,23.5 53.5,26.7 53.1,27.1 53.1,28.5 53.2,28.6</vertices>
+      </track>
+    </net>
+    <net id="2019041116002212000" name="GND" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="3" />
+        <pad footprintInstanceId="2019041120513866000" padNumber="5" />
+        <pad footprintInstanceId="2019041120513866000" padNumber="21" />
+        <pad footprintInstanceId="2019041120513879000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513881000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="6" />
+        <pad footprintInstanceId="2019041120513906000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513965000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513967000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513968000" padNumber="2" />
+      </pads>
+    </net>
+    <net id="2019041116002471000" name="RESET" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="29" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="5" />
+        <pad footprintInstanceId="2019041120513906000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513923000" padNumber="2" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>55.7,31 55.7,33 57.4,34.7 60,34.7 62,32.7 62,26.6 64.7,23.9 64.7,19.3 57.6,12.2 51.5,12.2 51.4,12.3 51.4,13.4 51.1,13.7 51.1,15</vertices>
+      </track>
+    </net>
+    <net id="2019041116003050000" name="SCK" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="17" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="3" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>53.3,31.1 53.6,31.1 54.9,29.8 56.9,29.8 57.3,29.4 57.3,22.7 56.7,22.1 55.8,22.1</vertices>
+      </track>
+    </net>
+    <net id="2019041116003306000" name="MISO" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="16" />
+        <pad footprintInstanceId="2019041120513899000" padNumber="1" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>54.3,23.6 54.3,27.2 54.5,27.4 54.5,29.2 54.2,29.5 53.9,29.5 53.7,29.7 52.5,29.7 51.2,31 50.7,31</vertices>
+      </track>
+    </net>
+    <net id="2019041120201341000" name="Net2019041120201341000" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="7" />
+        <pad footprintInstanceId="2019041120513881000" padNumber="2" />
+        <pad footprintInstanceId="2019041120513884000" padNumber="1" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>34.8,31.3 34.8,28 35.8,27 35.8,25.6 36.8,24.6 43.2,24.6 44.2,23.6 44.2,22.6 45.5,21.3 47.3,21.3</vertices>
+      </track>
+    </net>
+    <net id="2019041120203809000" name="Net2019041120203809000" classId="0">
+      <pads>
+        <pad footprintInstanceId="2019041120513866000" padNumber="8" />
+        <pad footprintInstanceId="2019041120513879000" padNumber="1" />
+        <pad footprintInstanceId="2019041120513884000" padNumber="2" />
+      </pads>
+      <track width="0.254" layer="1">
+        <vertices>45.1,31.2 45.1,27.8 45.7,27.2 45.7,22.6 46.2,22.1 47.2,22.1</vertices>
+      </track>
+    </net>
+    <net id="0" name="Undefined" classId="0">
+      <pads />
+    </net>
+  </nets>
+  <boardDesignRules>
+    <electricalClearance id="0" name="Electrical clearance" isEnabled="true" priority="1" min="0.254" max="0" default="0.254" layerFilter="All">
+      <ruleFilterObject1 objectType="All" objectId="0" />
+      <ruleFilterObject2 objectType="All" objectId="0" />
+      <layerSpecs />
+    </electricalClearance>
+    <trackWidth id="0" name="Track width" isEnabled="true" priority="1" min="0.254" default="0.254" max="0" layerFilter="All">
+      <ruleFilterObject objectType="All" objectId="0" />
+      <layerSpecs />
+    </trackWidth>
+    <viaDefinition id="0" name="Via definition" isEnabled="true" priority="1" diameterMin="0.7" diameterMax="0.7" diameterDefault="0.7" drillMin="0.3" drillMax="0.3" drillDefault="0.3">
+      <ruleFilterObject objectType="DrillPair" objectId="0" />
+    </viaDefinition>
+    <manufacturingHoleSize id="0" name="Hole size" isEnabled="true" priority="1" min="0.3" max="6" />
+    <manufacturingClearance id="0" name="Hole to hole clearance" isEnabled="true" priority="1" clearanceType="HoleToHoleClearance" value="0.254" />
+  </boardDesignRules>
+  <outputOptions>
+    <NCDrillUnits>mm</NCDrillUnits>
+    <NCDrillFormatBeforeDecimal>4</NCDrillFormatBeforeDecimal>
+    <NCDrillFormatAfterDecimal>4</NCDrillFormatAfterDecimal>
+    <GerberUnits>mm</GerberUnits>
+    <GerberFormatBeforeDecimal>4</GerberFormatBeforeDecimal>
+    <GerberFormatAfterDecimal>6</GerberFormatAfterDecimal>
+    <GerberPlotBoardOutlineOnAllLayers>true</GerberPlotBoardOutlineOnAllLayers>
+    <GerberCreateZipFile>true</GerberCreateZipFile>
+    <GerberVersion>X1</GerberVersion>
+  </outputOptions>
+</board>

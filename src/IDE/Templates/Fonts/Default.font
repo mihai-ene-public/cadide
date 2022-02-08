@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font>
+  
+  <!-- $ % & ' ( )  , ; < = > ? @ [ \ ] ^ ` { | } ~  -->
+
+
+
+  <symbol id="0" name=" " />
+  <symbol id="0" name="!">
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.60000000000000009" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="&quot;">
+    <line x1="0.7" y1="0.1" x2="0.6" y2="0.3" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.4" y1="0.1" x2="0.3" y2="0.3" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="/">
+    <line x1="0.7" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name=":">
+    <line x1="0.5" y1="0.4" x2="0.5" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.8" x2="0.5" y2="0.8" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="#">
+    <line x1="0.8" y1="0.2" x2="0.60000000000000009" y2="0.8" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.45002187490463263" y1="0.20002190579471069" x2="0.25000000000000006" y2="0.8" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.175" y1="0.37500000000000011" x2="0.87499999999999989" y2="0.37500000000000011" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.17500000000000002" y1="0.65" x2="0.875" y2="0.65" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="+">
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.9" y1="0.49999999403953554" x2="0.099999999999999978" y2="0.4999999940395356" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="-">
+    <line x1="0.8" y1="0.5" x2="0.2" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="_">
+    <line x1="0.2" y1="0.85" x2="0.8" y2="0.85" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="*">
+    <line x1="0.8" y1="0.30000000000000004" x2="0.225" y2="0.675" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.2" x2="0.5" y2="0.8" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.225" y1="0.30000000000000004" x2="0.8" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name=".">
+    <line x1="0.5" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="0">
+    <line x1="0.3" y1="0.3" x2="0.3" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.7" y1="0.3" x2="0.7" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.7" y1="0.3" x2="0.3" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="1">
+    <line x1="0.60000000000000009" y1="0.1" x2="0.60000000000000009" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.60000000000000009" y1="0.1" x2="0.40000000000000013" y2="0.30000000000000004" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="2">
+    <line x1="0.70000000000000007" y1="0.9" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.39999999999999991" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.70</X>
+        <Y>0.30</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="3">
+    <line x1="0.5" y1="0.9" x2="0.3" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.1" x2="0.3" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.5" x2="0.5" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="4">
+    <line x1="0.4" y1="0.1" x2="0.30000000000000004" y2="0.60000000000000009" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.70000000000000007" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="5">
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.1" x2="0.30000000000000004" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.4" x2="0.70000000000000007" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="6">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.3" y1="0.4" x2="0.3" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.6</X>
+        <Y>0.1</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.4</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="7">
+    <line x1="0.7" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.7" y1="0.1" x2="0.3" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="8">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="9">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.7" y1="0.6" x2="0.7" y2="0.3" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.4</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.6</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="A">
+    <line x1="0.3" y1="0.3" x2="0.3" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.6" x2="0.7" y2="0.6" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.7" y1="0.3" x2="0.7" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="B">
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.1" x2="0.5" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.5" x2="0.5" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="C">
+    <line x1="0.3" y1="0.3" x2="0.3" y2="0.7" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="D">
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.3" y1="0.1" x2="0.5" y2="0.1" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="E">
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.1" x2="0.7" y2="0.1" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.9" x2="0.7" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.5" x2="0.7" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="F">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.70000000000000007" y2="0.1" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000018" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="G">
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.7" y1="0.6" x2="0.6" y2="0.6" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.3" y1="0.3" x2="0.3" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="H">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.70000000000000007" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000018" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="I">
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="J">
+    <line x1="0.70000000000000007" y1="0.1" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="K">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000007" y2="0.2" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="L">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.9" x2="0.70000000000000018" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="M">
+    <line x1="0.2" y1="0.1" x2="0.2" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.79999999999999993" y1="0.1" x2="0.8" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.4" x2="0.8" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="N">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.2" x2="0.70000000000000007" y2="0.8" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.70000000000000007" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="O">
+    <line x1="0.3" y1="0.3" x2="0.3" y2="0.7" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.7</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="P">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.60000000000000009" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.60000000000000009" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="Q">
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.8" x2="0.8" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="R">
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.1" x2="0.6" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.3" y1="0.5" x2="0.6" y2="0.5" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.6</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.6</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.6" y1="0.5" x2="0.8" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="S">
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.30000000000000004" y1="0.4" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.3</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.3</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="T">
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.2" y1="0.1" x2="0.8" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="U">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="0" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="V">
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.8" y1="0.1" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="W">
+    <line x1="0.2" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.8" y1="0.1" x2="0.70000000000000007" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="X">
+    <line x1="0.2" y1="0.1" x2="0.8" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.8" y1="0.1" x2="0.2" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="Y">
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.8" y1="0.1" x2="0.5" y2="0.4" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.5" y1="0.4" x2="0.5" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="Z">
+    <line x1="0.30000000000000004" y1="0.1" x2="0.70000000000000007" y2="0.1" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" layer="0" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="a">
+    <arc sizeDiameter="0.3" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.225</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.55</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.27499999999999991</X>
+        <Y>0.85</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.42500000000000004" x2="0.70000000000000007" y2="0.85000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.35" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.675</X>
+        <Y>0.575</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.55</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.85000000000000009</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.275</X>
+        <Y>0.85000000000000009</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="b">
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.5" x2="0.5" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.3" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="c">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="d">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.2" x2="0.70000000000000007" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.5" y1="0.5" x2="0.70000000000000007" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.5" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="e">
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.4" y2="0.60000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.3" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.7</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.8</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.8</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.40000000000000008</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.30000000000000004" y1="0.4" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.8" y1="0.5" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="f">
+    <line x1="0.5" y1="0.4" x2="0.5" y2="1" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.3" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.3" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="g">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.4</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.8</X>
+        <Y>0.60000000000000009</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>1.05</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.75</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.4" y1="0.70000000000000007" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.19999999999999996" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.95000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>1.05</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="h">
+    <line x1="0.35000000000000003" y1="0.15000000000000002" x2="0.35000000000000003" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.35000000000000003</X>
+        <Y>0.70000000000000018</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.65</X>
+        <Y>0.65</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.65" y1="0.65" x2="0.65" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="i">
+    <line x1="0.5" y1="0.9" x2="0.5" y2="0.60000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.5" y1="0.35000000000000003" x2="0.5" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="j">
+    <line x1="0.55" y1="0.45" x2="0.55" y2="0.8" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.55</X>
+        <Y>0.8</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.35000000000000003</X>
+        <Y>0.95000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.55" y1="0.2" x2="0.55" y2="0.2" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="k">
+    <line x1="0.4" y1="0.30000000000000004" x2="0.4" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.55" x2="0.70000000000000007" y2="0.45" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.55" x2="0.70000000000000007" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="l">
+    <line x1="0.45" y1="0.15000000000000002" x2="0.45" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.45" y1="0.9" x2="0.5" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="m">
+    <line x1="0.20000000000000007" y1="0.95000000000000007" x2="0.20000000000000007" y2="0.4" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.50000000000000011" y1="0.4" x2="0.50000000000000011" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.8" y1="0.4" x2="0.8" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.3" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.2</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.4</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.30000000000000004" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.8</X>
+        <Y>0.4</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="n">
+    <line x1="0.35000000000000003" y1="0.95000000000000007" x2="0.35000000000000003" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.35000000000000003" x2="0.70000000000000007" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.35000000000000003" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.35000000000000003</X>
+        <Y>0.35000000000000003</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.35000000000000003</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="o">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.55</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.54999999999999993</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="true" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.54999999999999993</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.54999999999999993</X>
+        <Y>0.4</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="p">
+    <line x1="0.4" y1="0.95000000000000007" x2="0.4" y2="0.45" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.65</X>
+        <Y>0.45</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.65</X>
+        <Y>0.75</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.65" y1="0.45" x2="0.4" y2="0.45" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.65" y1="0.75" x2="0.4" y2="0.75" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="q">
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.4</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.4</X>
+        <Y>0.35</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.65" y1="0.95000000000000007" x2="0.65" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.35000000000000003" x2="0.65" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.70000000000000007" x2="0.65" y2="0.70000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="r">
+    <line x1="0.4" y1="0.95000000000000007" x2="0.4" y2="0.55" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.25" borderWidth="0.2" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.4</X>
+        <Y>0.55</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.65</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="s">
+    <line x1="0.70000000000000007" y1="0.3000000000000001" x2="0.75" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.65" y1="0.25000000000000011" x2="0.55" y2="0.25000000000000011" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.55" y1="0.25000000000000011" x2="0.45" y2="0.3000000000000001" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.45" y1="0.3000000000000001" x2="0.4" y2="0.40000000000000013" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.40000000000000013" x2="0.45" y2="0.55000000000000016" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.45" y1="0.55000000000000016" x2="0.60000000000000009" y2="0.65000000000000013" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.60000000000000009" y1="0.65000000000000013" x2="0.70000000000000007" y2="0.70000000000000018" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.70000000000000018" x2="0.70000000000000007" y2="0.80000000000000016" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.80000000000000016" x2="0.65" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.65" y1="0.9" x2="0.55" y2="0.95000000000000029" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.55" y1="0.95000000000000029" x2="0.45" y2="0.95000000000000029" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.45" y1="0.95000000000000029" x2="0.35000000000000003" y2="0.85000000000000009" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="t">
+    <line x1="0.4" y1="0.15000000000000002" x2="0.4" y2="0.9" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.2" y1="0.35000000000000003" x2="0.60000000000000009" y2="0.35000000000000003" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.20000000000000007" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.4</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.95000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="u">
+    <line x1="0.35000000000000003" y1="0.44999999999999996" x2="0.35000000000000003" y2="0.85" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.44999999999999996" x2="0.70000000000000007" y2="0.85" width="0.2" layer="501" lineStyle="Solid" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" layer="0">
+      <startPoint>
+        <X>0.35000000000000003</X>
+        <Y>0.85</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.85</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="0" name="v">
+    <line x1="0.30000000000000004" y1="0.5" x2="0.5" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.5" y1="0.95000000000000007" x2="0.75" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="w">
+    <line x1="0.2" y1="0.5" x2="0.4" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.4" y1="0.95000000000000007" x2="0.55" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.55" y1="0.5" x2="0.70000000000000007" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.95000000000000007" x2="0.85000000000000009" y2="0.5" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="x">
+    <line x1="0.3000000000000001" y1="0.5" x2="0.70000000000000007" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.5" x2="0.3000000000000001" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="y">
+    <line x1="0.35000000000000003" y1="0.45" x2="0.5" y2="0.70000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.75" y1="0.45" x2="0.4" y2="1" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+  <symbol id="0" name="z">
+    <line x1="0.30000000000000004" y1="0.45" x2="0.70000000000000007" y2="0.45" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.70000000000000007" y1="0.45" x2="0.35000000000000003" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+    <line x1="0.35000000000000003" y1="0.95000000000000007" x2="0.75" y2="0.95000000000000007" width="0.2" layer="501" lineStyle="Solid" />
+  </symbol>
+</font>

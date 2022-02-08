@@ -1,0 +1,95 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>false</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\IDE.Controls.WPF\IDE.Controls.WPF.csproj">
+			<Name>IDE.Controls.WPF</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Common\IDE.Core.Common.csproj">
+			<Name>IDE.Core.Common</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Data\IDE.Core.Data.csproj">
+			<Name>IDE.Core.Data</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Interfaces\IDE.Core.Interfaces.csproj">
+			<Name>IDE.Core.Interfaces</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Model\IDE.Core.Model.csproj">
+			<Name>IDE.Core.Model</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Presentation\IDE.Core.Presentation.csproj">
+			<Name>IDE.Core.Presentation</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Types\IDE.Core.Types.csproj">
+			<Name>IDE.Core.Types</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Resources\IDE.Resources.csproj">
+			<Name>IDE.Resources</Name>
+		</ProjectReference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="AvalonEdit" Version="6.0.1" />
+		<PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.0" />
+		<PackageReference Include="HelixToolkit" Version="2.16.1" />
+		<!--<PackageReference Include="HelixToolkit.SharpDX.Core" Version="2.16.1" />-->
+		<PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.16.1" />
+		<PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Reference Include="FirstFloor.ModernUI">
+			<HintPath>..\_REFERENCES\Mui\FirstFloor.ModernUI.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Expression.Interactions">
+			<HintPath>..\_REFERENCES\Microsoft.Expression.Interactions.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Windows.Shell">
+			<HintPath>..\_REFERENCES\Mui\Microsoft.Windows.Shell.dll</HintPath>
+		</Reference>
+		<Reference Include="System.Windows.Interactivity">
+			<HintPath>..\_REFERENCES\System.Windows.Interactivity.dll</HintPath>
+		</Reference>
+		<Reference Include="Triangle">
+			<HintPath>..\_REFERENCES\Triangle.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Compile Update="Controls\Local\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<EmbeddedResource Update="Controls\Local\Strings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>

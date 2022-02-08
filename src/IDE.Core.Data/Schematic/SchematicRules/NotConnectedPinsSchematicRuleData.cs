@@ -1,0 +1,12 @@
+﻿using System.Xml.Serialization;
+
+
+namespace IDE.Core.Storage
+{
+    public class NotConnectedPinsSchematicRuleData : SchematicRuleData
+    {
+        [XmlAttribute("ruleResponse")]
+        public SchematicRuleResponse RuleResponse { get; set; }
+
+    }
+}

@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Images\document.png" />
+		<None Remove="Images\folder.png" />
+		<None Remove="Images\MessageIcons\Error.png" />
+		<None Remove="Images\MessageIcons\Information.png" />
+		<None Remove="Images\MessageIcons\InternalError.png" />
+		<None Remove="Images\MessageIcons\Unknown.png" />
+		<None Remove="Images\MessageIcons\Warning.png" />
+		<None Remove="Images\PCB-icon.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Images\document.png" />
+		<Resource Include="Images\folder.png" />
+		<Resource Include="Images\MessageIcons\Error.png" />
+		<Resource Include="Images\MessageIcons\Information.png" />
+		<Resource Include="Images\MessageIcons\InternalError.png" />
+		<Resource Include="Images\MessageIcons\Unknown.png" />
+		<Resource Include="Images\MessageIcons\Warning.png" />
+		<Resource Include="Images\PCB-icon.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Local\Strings.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Local\Strings.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>

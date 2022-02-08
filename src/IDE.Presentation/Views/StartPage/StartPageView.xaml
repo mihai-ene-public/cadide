@@ -1,0 +1,213 @@
+<UserControl x:Class="IDE.Documents.Views.StartPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+             xmlns:cmdLabel="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+              xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="1000"
+             Background="{DynamicResource ToolViewBackground}"
+             Focusable="True"
+             KeyboardNavigation.IsTabStop="True"
+             Name="StartPageViewObject"
+             behav:KeyboardFocus.On="{Binding ElementName=StartPageViewObject}">
+    <!-- The KeyboardFocus attached property is necessary to support CTRL+TAB in AvalonDock -->
+    <UserControl.Resources>
+        <BitmapImage UriSource="pack://application:,,,/IDE.Resources;component/Images/PCB-icon.png"
+                     x:Key="Logo" />
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid VerticalAlignment="Stretch"
+              HorizontalAlignment="Stretch"
+              Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Project Name -->
+            <TextBlock Grid.Column="0"
+                       Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top">
+                  <TextBlock Text="Modern PCB Designer"
+                             FontSize="48" />
+            </TextBlock>
+            <Grid Grid.Row="1">
+                <Border SnapsToDevicePixels="True"
+                        BorderBrush="{DynamicResource StartPageBorderForegroundColor}"
+                        BorderThickness="1">
+
+                    <Grid Margin="15"
+                          HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"
+                                              MinWidth="250" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0"
+                                    Grid.Column="0">
+                            <!--Grid.Column="0"-->
+
+                            <TextBlock Text="{x:Static resources:Strings.StartPageStartLabel}"
+                                       FontSize="20" />
+                            <!-- Open Project ...-->
+                            <TextBlock HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,10,0,0">
+                                        <Hyperlink TextDecorations="None"
+                                                   Command="cmd:AppCommand.Open"
+                                                   ToolTip="{x:Static cmdLabel:Strings.STR_STARTPAGE_FILEOPEN_TT}">
+                                              <StackPanel Orientation="Horizontal">
+                                  
+                                                   <Image Source="{StaticResource folder-open}"
+                                                          Height="20"
+                                                          Width="20"
+                                                          Stretch="Uniform" />
+                                                  <TextBlock Text="{x:Static resources:Strings.StartPageOpenProject}"
+                                                             VerticalAlignment="Center"
+                                                             FontSize="16"
+                                                             Margin="10,0" />
+                                              </StackPanel> 
+                            
+                                        </Hyperlink>  
+                            </TextBlock>
+
+                            <!-- New project ...-->
+                            <TextBlock HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,10,0,0">
+                        
+                                <Hyperlink TextDecorations="None"
+                                           Command="cmd:AppCommand.New"
+                                           ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}">
+                                <StackPanel Orientation="Horizontal">
+                                            <Image Source="{StaticResource file-empty}"
+                                                   Height="20"
+                                                   Width="20"
+                                                   Stretch="Uniform" />
+                                     <TextBlock Text="{x:Static resources:Strings.StartPageNewProject}"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Margin="10,0" />
+                                    </StackPanel>
+                              </Hyperlink>
+                            </TextBlock>
+
+                            <!-- New project from samples ...-->
+                            <!--<TextBlock HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,10,0,0">
+                        
+                                <Hyperlink TextDecorations="None"
+                                           Command="cmd:AppCommand.New"
+                                           CommandParameter="SampleProject"
+                                           ToolTip="Create a new project from a sample as a starting project">
+                                <StackPanel Orientation="Horizontal">
+                                            <Image Source="{StaticResource file-empty}"
+                                                   Height="20"
+                                                   Width="20"
+                                                   Stretch="Uniform" />
+                                     <TextBlock Text="{x:Static resources:Strings.StartPageNewProjectFromSamples}"
+                                                VerticalAlignment="Center"
+                                                FontSize="16"
+                                                Margin="10,0" />
+                                    </StackPanel>
+                              </Hyperlink>
+                            </TextBlock>-->
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,30,0,0">
+                            <TextBlock Text="{x:Static resources:Strings.StartPageRecentLabel}"
+                                       FontSize="20" />
+                            <local:RecentFilesView />
+
+                        </StackPanel>
+
+                        <!-- here will be an web browser-->
+                        <!-- New features link-->
+                        <!-- News link-->
+                        <!-- Video tutorials link-->
+                        <Grid Grid.Column="1"
+                              Grid.RowSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="10"
+                                        Grid.Column="1">
+
+                                <TextBlock Text="{x:Static resources:Strings.StartPageVideoTutorialsLabel}"
+                                           FontSize="16"
+                                           FontWeight="Bold" />
+
+                                <ctrls:WebHyperlink Margin="30,5,5,5"
+                                               VerticalAlignment="Bottom"
+                                               NavigateUri="https://www.youtube.com/channel/UCeiSu6x4TuQagOilvYrhofg"
+                                               Text="{x:Static resources:Strings.StartPageYoutubeChannelText}" />
+                                <!--VerticalAlignment="Bottom"Margin="30,5,5,5"-->
+
+                                <TextBlock Text="{x:Static resources:Strings.StartPageOnlineTutorialsLabel}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Margin="0,10,0,0" />
+                                <ctrls:WebHyperlink Margin="30,5,5,5"
+                                                    VerticalAlignment="Bottom"
+                                                    NavigateUri="https://modernpcbstudio.com/blog/tag/tutorials"
+                                                    Text="{x:Static resources:Strings.StartPageWebsiteText}" />
+
+                                <TextBlock Text="{x:Static resources:Strings.StartPageUpdatesLabel}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Margin="0,10,0,0" />
+                                <ctrls:WebHyperlink Margin="30,5,5,5"
+                                                    VerticalAlignment="Bottom"
+                                                    NavigateUri="https://modernpcbstudio.com/downloads"
+                                                    Text="{x:Static resources:Strings.StartPageDownloadsPageText}" />
+
+                                <TextBlock Text="{x:Static resources:Strings.StartPageGithubLabel}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Margin="0,10,0,0" />
+                                <ctrls:WebHyperlink Margin="30,5,5,5"
+                                                    VerticalAlignment="Bottom"
+                                                    NavigateUri="https://github.com/modernpcbstudio?tab=repositories"
+                                                    Text="{x:Static resources:Strings.StartPageRepositoriesText}" />
+
+                            </StackPanel>
+
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Image Source="{DynamicResource Logo}"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Width="100" />
+
+        </Grid>
+    </ScrollViewer>
+
+</UserControl>

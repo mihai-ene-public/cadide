@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Board">
+  <Name>Board 2 layers (Top - Bottom)</Name>
+  <Description>A new empty board on 2 layers: Top and bottom</Description>
+  <Icon></Icon>
+  <Extension>board</Extension>
+</Template> 

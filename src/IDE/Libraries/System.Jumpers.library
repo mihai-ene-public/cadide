@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library name="System.Jumpers" version="1.1.0">
+  <symbols>
+    <symbol id="2019012316461615019" name="SMT-JUMPER_2_NC_PASTE">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>51.778</X>
+          <Y>50.127</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.778</X>
+          <Y>51.397</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.746</X>
+          <Y>51.397</Y>
+        </startPoint>
+        <endPoint>
+          <X>49.746</X>
+          <Y>50.127</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="53.34" y1="50.8" x2="52.07" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="50.8" x2="49.53" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <circle zIndex="0" x="50.8" y="50.8" diameter="3.8688125" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF" />
+    </symbol>
+    <symbol id="2019012316461615020" name="SMT-JUMPER_2_NC_TRACE">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.165</X>
+          <Y>52.07</Y>
+        </startPoint>
+        <endPoint>
+          <X>50.165</X>
+          <Y>49.53</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="53.34" y1="50.8" x2="52.07" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="50.8" x2="49.53" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="49.53" y1="50.8" x2="52.07" y2="50.8" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>51.435</X>
+          <Y>49.53</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.435</X>
+          <Y>52.07</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+    </symbol>
+    <symbol id="2019012316461615021" name="SMT-JUMPER_2_NO">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>52.413000000000004</X>
+          <Y>50.127</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.413000000000004</X>
+          <Y>51.397</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.111</X>
+          <Y>51.397</Y>
+        </startPoint>
+        <endPoint>
+          <X>49.111</X>
+          <Y>50.127</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="53.302" y1="50.762" x2="52.413000000000004" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.222" y1="50.762" x2="49.111" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012316461615022" name="SMT-JUMPER_3_1-NC_PASTE">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>52.159</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>52.159</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>49.365</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>49.365</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="52.032000000000004" y1="51.397" x2="49.492" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="51.397" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.762" x2="49.492" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.127" x2="52.032000000000004" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="50.127" x2="52.032000000000004" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.222" y1="50.762" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <rect zIndex="0" x="50.762" y="50.762" rot="0" width="2.54" height="1.27" borderWidth="0" borderColor="#FF000080" fillColor="#FF000080" radiusX="0" radiusY="0" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <poly zIndex="0" borderWidth="0.254" borderColor="#FF000080" fillColor="#00FFFFFF">
+        <vertex x="49.238" y="50" />
+        <vertex x="49.238" y="52.286" />
+        <vertex x="50.762" y="53.81" />
+        <vertex x="52.286" y="52.286" />
+        <vertex x="52.286" y="50" />
+      </poly>
+    </symbol>
+    <symbol id="2019012316461615023" name="SMT-JUMPER_3_1-NC_TRACE">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>52.159</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>52.159</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>49.365</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>49.365</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="48.222" y1="50.762" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <rect zIndex="0" x="50.8" y="50.8" rot="0" width="2.54" height="1.27" borderWidth="0" borderColor="#FF000080" fillColor="#FF000080" radiusX="0" radiusY="0" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="3.175" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="50.8" x2="50.8" y2="53.34" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012316461615024" name="SMT-JUMPER_3_2-NC_PASTE">
+      <arc zIndex="0" borderWidth="1.27" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>52.159</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>52.159</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="1.27" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>50.127</X>
+          <Y>49.365</Y>
+        </startPoint>
+        <endPoint>
+          <X>51.397</X>
+          <Y>49.365</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="52.032000000000004" y1="51.397" x2="49.492" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="51.397" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.762" x2="49.492" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.127" x2="52.032000000000004" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="50.127" x2="52.032000000000004" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.26" y1="50.8" x2="49.53" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <rect zIndex="0" x="50.762" y="50.762" rot="0" width="2.54" height="1.27" borderWidth="0" borderColor="#FF000080" fillColor="#FF000080" radiusX="0" radiusY="0" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="49.53" x2="50.8" y2="52.07" width="3.175" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012316461615025" name="SMT-JUMPER_3_2-NC_TRACE">
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.53</X>
+          <Y>52.705000000000005</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.07</X>
+          <Y>52.705000000000005</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="0.762" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.53</X>
+          <Y>48.894999999999996</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.07</X>
+          <Y>48.894999999999996</Y>
+        </endPoint>
+        <size>
+          <Width>2.032</Width>
+          <Height>2.032</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="52.032000000000004" y1="51.397" x2="49.492" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="51.397" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.762" x2="49.492" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.492" y1="50.127" x2="52.032000000000004" y2="50.127" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="50.127" x2="52.032000000000004" y2="51.397" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.222" y1="50.762" x2="49.492" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <rect zIndex="0" x="50.762" y="50.762" rot="0" width="2.54" height="1.27" borderWidth="0" borderColor="#FF000080" fillColor="#FF000080" radiusX="0" radiusY="0" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="50.8" y1="48.26" x2="50.8" y2="53.34" width="0.254" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012316461615026" name="SMT-JUMPER_3_NO">
+      <arc zIndex="0" borderWidth="1.27" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.53</X>
+          <Y>52.705</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.07</X>
+          <Y>52.705</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <arc zIndex="0" borderWidth="1.27" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0" lineCap="Round">
+        <startPoint>
+          <X>49.53</X>
+          <Y>48.895</Y>
+        </startPoint>
+        <endPoint>
+          <X>52.07</X>
+          <Y>48.895</Y>
+        </endPoint>
+        <size>
+          <Width>1</Width>
+          <Height>1</Height>
+        </size>
+      </arc>
+      <line zIndex="0" x1="48.26" y1="50.8" x2="49.53" y2="50.8" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <rect zIndex="0" x="50.8" y="50.8" rot="0" width="2.54" height="1.27" borderWidth="0" borderColor="#FF000080" fillColor="#FF000080" radiusX="0" radiusY="0" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="1.905" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="1.905" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+  </symbols>
+  <footprints>
+    <footprint id="2019012316461615015" name="SMT-JUMPER_2_NC_PASTE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <rect x="50" y="50" width="2.4891999999999967" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.5936" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.4064" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615014" name="SMT-JUMPER_2_NC_PASTE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="50.8636" y1="51.016" x2="49.1364" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.8636" y1="48.984" x2="51.1176" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="49.238" x2="49.1364" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="50.762" x2="49.1364" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.8636" y1="51.016" x2="51.1176" y2="50.762" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.1176" y1="50.762" x2="51.1176" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="50.762" x2="48.8824" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="49.1364" y1="48.984" x2="50.8636" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <rect x="50" y="50" width="2.4891999999999967" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.5936" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.4064" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615013" name="SMT-JUMPER_2_NC_TRACE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.492" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.508" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="49.8095" y="49.873" />
+        <vertex x="50.1905" y="49.873" />
+        <vertex x="50.1905" y="50.127" />
+        <vertex x="49.8095" y="50.127" />
+      </poly>
+      <rect x="50" y="50" width="0.406400000000005" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615012" name="SMT-JUMPER_2_NC_TRACE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="50.762" y1="51.016" x2="49.238" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.762" y1="48.984" x2="51.2192" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.7808" y1="49.4412" x2="49.238" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.7808" y1="50.5588" x2="49.238" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.762" y1="51.016" x2="51.2192" y2="50.5588" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.2192" y1="50.5588" x2="51.2192" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.7808" y1="50.5588" x2="48.7808" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="49.238" y1="48.984" x2="50.762" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="49.492" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.508" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="49.8095" y="49.873" />
+        <vertex x="50.1905" y="49.873" />
+        <vertex x="50.1905" y="50.127" />
+        <vertex x="49.8095" y="50.127" />
+      </poly>
+      <rect x="50" y="50" width="0.406400000000005" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615017" name="SMT-JUMPER_2_NO_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.5936" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.4064" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615016" name="SMT-JUMPER_2_NO_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="50.8636" y1="51.016" x2="49.1364" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.8636" y1="48.984" x2="51.1176" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="49.238" x2="49.1364" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="50.762" x2="49.1364" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="50.8636" y1="51.016" x2="51.1176" y2="50.762" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.1176" y1="50.762" x2="51.1176" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8824" y1="50.762" x2="48.8824" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="49.1364" y1="48.984" x2="50.8636" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="49.5936" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.4064" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615018" name="SMT-JUMPER_3_0-NO_TRACE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="48.984" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.016" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615006" name="SMT-JUMPER_3_1-NC_PASTE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <rect x="50.6223" y="50" width="2.0574000000000012" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615002" name="SMT-JUMPER_3_1-NC_PASTE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="51.27" y1="51.016" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="48.984" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="49.238" x2="48.73" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.016" x2="51.524" y2="50.762" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.524" y1="50.762" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.476" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="48.984" x2="51.27" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <rect x="50.6223" y="50" width="2.0574000000000012" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615007" name="SMT-JUMPER_3_1-NC_TRACE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="48.984" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.016" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="50.3175" y="49.873" />
+        <vertex x="50.6985" y="49.873" />
+        <vertex x="50.6985" y="50.127" />
+        <vertex x="50.3175" y="50.127" />
+      </poly>
+      <rect x="50.507999999999996" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615001" name="SMT-JUMPER_3_1-NC_TRACE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="51.27" y1="51.016" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="48.984" x2="51.7272" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="49.4412" x2="48.73" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="50.5588" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.016" x2="51.7272" y2="50.5588" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.7272" y1="50.5588" x2="51.7272" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="50.5588" x2="48.2728" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="48.984" x2="51.27" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="48.984" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.016" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="50.3175" y="49.873" />
+        <vertex x="50.6985" y="49.873" />
+        <vertex x="50.6985" y="50.127" />
+        <vertex x="50.3175" y="50.127" />
+      </poly>
+      <rect x="50.507999999999996" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615005" name="SMT-JUMPER_3_2-NC_PASTE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <rect x="50" y="50" width="3.3020000000000067" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615004" name="SMT-JUMPER_3_2-NC_PASTE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="51.27" y1="51.016" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="48.984" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="49.238" x2="48.73" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.016" x2="51.524" y2="50.762" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.524" y1="50.762" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.476" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="48.984" x2="51.27" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <rect x="50" y="50" width="3.3020000000000067" height="2.235200000000006" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="301" isLocked="false" />
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615008" name="SMT-JUMPER_3_2-NC_TRACE_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="48.984" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.016" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="49.3015" y="49.873" />
+        <vertex x="50.6985" y="49.873" />
+        <vertex x="50.6985" y="50.127" />
+        <vertex x="49.3015" y="50.127" />
+      </poly>
+      <rect x="50.507999999999996" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+      <rect x="49.492000000000004" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615003" name="SMT-JUMPER_3_2-NC_TRACE_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="51.27" y1="51.016" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="48.984" x2="51.7272" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="49.4412" x2="48.73" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="50.5588" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.016" x2="51.7272" y2="50.5588" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.7272" y1="50.5588" x2="51.7272" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.2728" y1="50.5588" x2="48.2728" y2="49.4412" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="48.984" x2="51.27" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="48.984" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.016" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <poly borderWidth="0.127" isFilled="true" order="0" type="Fill" generateThermals="true" thermalWidth="0.2" layer="401" isLocked="false">
+        <vertex x="49.3015" y="49.873" />
+        <vertex x="50.6985" y="49.873" />
+        <vertex x="50.6985" y="50.127" />
+        <vertex x="49.3015" y="50.127" />
+      </poly>
+      <rect x="50.507999999999996" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+      <rect x="49.492000000000004" y="50" width="0.4063999999999979" height="0.2540000000000049" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="1" isLocked="false" />
+    </footprint>
+    <footprint id="2019012316461615009" name="SMT-JUMPER_3_NO_NO-SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012316461615000" name="SMT-JUMPER_3_NO_SILK">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="51.27" y1="51.016" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="48.984" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="49.238" x2="48.73" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.73" y2="51.016" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.016" x2="51.524" y2="50.762" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.524" y1="50.762" x2="51.524" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.476" y1="50.762" x2="48.476" y2="49.238" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="48.984" x2="51.27" y2="48.984" width="0.1524" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="49.1872" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.8128" y="50" rot="0" width="0.635" height="1.27" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="false" adjustPasteMaskInRules="true" />
+    </footprint>
+  </footprints>
+  <models />
+  <components>
+    <component id="2019012316461615033" name="JUMPER-SMT_2_NC_PASTE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615019" symbolName="SMT-JUMPER_2_NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615015" footprintName="SMT-JUMPER_2_NC_PASTE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615034" name="JUMPER-SMT_2_NC_PASTE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615019" symbolName="SMT-JUMPER_2_NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615014" footprintName="SMT-JUMPER_2_NC_PASTE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615031" name="JUMPER-SMT_2_NC_TRACE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615020" symbolName="SMT-JUMPER_2_NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615013" footprintName="SMT-JUMPER_2_NC_TRACE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615032" name="JUMPER-SMT_2_NC_TRACE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615020" symbolName="SMT-JUMPER_2_NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615012" footprintName="SMT-JUMPER_2_NC_TRACE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615027" name="JUMPER-SMT_2_NO_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615021" symbolName="SMT-JUMPER_2_NO" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615017" footprintName="SMT-JUMPER_2_NO_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615029" name="JUMPER-SMT_2_NO_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615021" symbolName="SMT-JUMPER_2_NO" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615016" footprintName="SMT-JUMPER_2_NO_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615044" name="JUMPER-SMT_3_1-NC_PASTE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615022" symbolName="SMT-JUMPER_3_1-NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615006" footprintName="SMT-JUMPER_3_1-NC_PASTE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615045" name="JUMPER-SMT_3_1-NC_PASTE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615022" symbolName="SMT-JUMPER_3_1-NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615002" footprintName="SMT-JUMPER_3_1-NC_PASTE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615039" name="JUMPER-SMT_3_1-NC_TRACE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615023" symbolName="SMT-JUMPER_3_1-NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615007" footprintName="SMT-JUMPER_3_1-NC_TRACE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615038" name="JUMPER-SMT_3_1-NC_TRACE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615023" symbolName="SMT-JUMPER_3_1-NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615001" footprintName="SMT-JUMPER_3_1-NC_TRACE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615043" name="JUMPER-SMT_3_2-NC_PASTE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615024" symbolName="SMT-JUMPER_3_2-NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615005" footprintName="SMT-JUMPER_3_2-NC_PASTE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615042" name="JUMPER-SMT_3_2-NC_PASTE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615024" symbolName="SMT-JUMPER_3_2-NC_PASTE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615004" footprintName="SMT-JUMPER_3_2-NC_PASTE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615040" name="JUMPER-SMT_3_2-NC_TRACE_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615025" symbolName="SMT-JUMPER_3_2-NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615008" footprintName="SMT-JUMPER_3_2-NC_TRACE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615041" name="JUMPER-SMT_3_2-NC_TRACE_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615025" symbolName="SMT-JUMPER_3_2-NC_TRACE" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615003" footprintName="SMT-JUMPER_3_2-NC_TRACE_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615035" name="JUMPER-SMT_3_NO_NO-SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615026" symbolName="SMT-JUMPER_3_NO" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615009" footprintName="SMT-JUMPER_3_NO_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615037" name="JUMPER-SMT_3_NO_NO_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615026" symbolName="SMT-JUMPER_3_NO" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615018" footprintName="SMT-JUMPER_3_0-NO_TRACE_NO-SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012316461615036" name="JUMPER-SMT_3_NO_SILK" prefix="JP" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012316461615026" symbolName="SMT-JUMPER_3_NO" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012316461615000" footprintName="SMT-JUMPER_3_NO_SILK">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+          <map pad="3" gateId="1" pin="3" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+  </components>
+</library>

@@ -1,0 +1,97 @@
+﻿<UserControl x:Class=" IDE.Controls.MeshDesigner3DXControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/DataTemplates/MeshDesignerXDataTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <hx:Viewport3DX x:Name="PART_Viewport"
+                    ZoomExtentsWhenLoaded="False"
+                    ShowCoordinateSystem="True"
+                    CoordinateSystemLabelForeground="White"
+                    EnableCurrentPosition="True"
+                    ZoomAroundMouseDownPoint="True"
+                    RotateAroundMouseDownPoint="True"
+                    SnapsToDevicePixels="True"
+                    ModelUpDirection="0,0,-1"
+                    ShowCameraInfo="False"
+                    UseDefaultGestures="False"
+                    Loaded="HelixViewport3D_Loaded"
+                    PreviewMouseMove="HelixViewport3D_PreviewMouseMove"
+                    PreviewMouseDown="HelixViewport3D_PreviewMouseDown"
+                    PreviewMouseUp="HelixViewport3D_PreviewMouseUp"
+        >
+        <hx:Viewport3DX.InputBindings>
+            <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+            <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+            <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+            <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+            <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+            <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+            <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+            <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+            <!--<MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleWheel" />-->
+            <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="MiddleClick" />
+        </hx:Viewport3DX.InputBindings>
+        <hx:Viewport3DX.EffectsManager>
+            <hx:DefaultEffectsManager/>
+        </hx:Viewport3DX.EffectsManager>
+        <hx:Viewport3DX.Camera>
+            <hx:PerspectiveCamera Position="30,30, -40"
+                                   LookDirection="-18,-21,30"
+                                   UpDirection="-0.6,-0.8,-0.2"
+                                   FieldOfView="61" />
+        </hx:Viewport3DX.Camera>
+        <hx:AmbientLight3D  Color="#666" />
+        <hx:DirectionalLight3D Color="Gray" Direction = "0,0,1"/>
+        <hx:DirectionalLight3D Color="Gray" Direction = "0,0,-1"/>
+        <hx:DirectionalLight3D Color="Gray" Direction = "1,-1,0"/>
+        <hx:DirectionalLight3D Color="Gray" Direction = "-1,1,0"/>
+        <hx:DirectionalLight3D Color="Gray" Direction = "-1,-1,0"/>
+        <hx:DirectionalLight3D Color="Gray" Direction = "1,1,0"/>
+        <hx:DirectionalLight3D Color="#777" Direction = "{Binding Camera.LookDirection, ElementName=PART_Viewport}"/> <!--Direction = "-2,-5,-2"-->
+        <ctrls:GridLinesVisual3D Width="30"
+                                 Length="30"
+                                 MajorDistance="{Binding CanvasModel.CanvasGrid.MajorDistance}"
+                                 MinorDistance="{Binding CanvasModel.CanvasGrid.MinorDistance}"
+                                 Thickness="1" />
+
+        <!-- X - axis-->
+        <ctrls:TruncatedConeVisual3D BaseRadius="0.01"
+                                         BaseCap="True"
+                                         TopRadius="0.01"
+                                         TopCap="True"
+                                         Color="Red"
+                                         Normal="1,0,0"
+                                         Origin="0,0,0"
+                                         Height="15"><!--Color="#FF964B4B"-->
+
+        </ctrls:TruncatedConeVisual3D>
+
+        <!-- Y - axis-->
+        <ctrls:TruncatedConeVisual3D BaseRadius="0.01"
+                                         BaseCap="True"
+                                         TopRadius="0.01"
+                                         TopCap="True"
+                                         Color="LimeGreen"
+                                         Normal="0,1,0"
+                                         Origin="0,0,0"
+                                         Height="15"><!--Color="#FF4B964B"-->
+
+        </ctrls:TruncatedConeVisual3D>
+
+        <!--<helix:DirectionalHeadLight Brightness="0.65" />-->
+        <ctrls:ItemsModel3D ItemsSource="{Binding CanvasModel.Items}" />
+    </hx:Viewport3DX>
+</UserControl>

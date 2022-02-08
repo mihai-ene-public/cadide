@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="IDE.Controls.ToolbarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
+             xmlns:toolbars="clr-namespace:IDE.Core.Toolbars;assembly=IDE.Core.Presentation"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+              xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             mc:Ignorable="d"
+             d:DesignHeight="30"
+             d:DesignWidth="1200">
+    <UserControl.Resources>
+        <utils:BindingProxy x:Key="windowProxy"
+                            Data="{Binding}" />
+
+
+        <DataTemplate DataType="{x:Type toolbars:SymbolToolbar}">
+            <ctrls:SymbolToolbarView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type toolbars:SchematicToolbar}">
+            <ctrls:SchematicToolbarView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type toolbars:FootprintToolbar}">
+            <ctrls:FootprintToolbarView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type toolbars:ModelToolbar}">
+            <ctrls:ModelToolbarView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type toolbars:BoardToolbar}">
+            <ctrls:BoardToolbarView/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Background="#77222222">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <!-- Grid size: maybe it could be on a toolbar but won't have a quick access for multiple monitor-->
+        <StackPanel HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                    Grid.Column="0"
+                    Margin="0,5"
+                    >
+
+            <StackPanel HorizontalAlignment="Left"
+                         Orientation="Horizontal"
+                         DataContext="{Binding CanvasModel.CanvasGrid}">
+
+                <TextBlock Text="Grid:"
+                       VerticalAlignment="Center" />
+
+                <ctrls:UnitCombobox DataContext="{Binding GridSizeModel}"
+                                ItemsSource="{Binding DefaultValues}"
+                                VerticalAlignment="Center"
+                                Margin="5,0,0,0"
+                                Width="150"
+                                IsEditable="True"
+                                IsTextSearchEnabled="False"
+                                BorderThickness="0"
+                                MinWidth="100"
+                                MinHeight="10"
+                                Text="{Binding SelectedItem, ValidatesOnDataErrors=True, Converter={x:Static conv:TextToLengthUnitsConverter.Instance}, Delay=500, UpdateSourceTrigger=PropertyChanged}">
+                </ctrls:UnitCombobox>
+            </StackPanel>
+
+            <TextBlock Text="Scale:"
+                       Margin="10,0,0,0"
+                       VerticalAlignment="Center" />
+            <ComboBox Text="{Binding CanvasModel.Scale, StringFormat='{}{0:#,#.00}', UpdateSourceTrigger=PropertyChanged, FallbackValue=1.00}"
+                      Margin="5,0"
+                      HorizontalContentAlignment="Right"
+                      VerticalContentAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      IsEditable="True"
+                      IsReadOnly="True"
+                      Width="60"
+                      IsTextSearchEnabled="False"
+                      IsTabStop="False"
+                      Focusable="False">
+                <ComboBoxItem>0.25</ComboBoxItem>
+                <ComboBoxItem>0.50</ComboBoxItem>
+                <ComboBoxItem>1.00</ComboBoxItem>
+                <ComboBoxItem>1.50</ComboBoxItem>
+                <ComboBoxItem>2.00</ComboBoxItem>
+                <ComboBoxItem>4.00</ComboBoxItem>
+            </ComboBox>
+
+        </StackPanel>
+
+        <ContentControl Content="{Binding Toolbar}"
+                        HorizontalAlignment="Left"
+                        Margin="10,0,0,0"
+                        Grid.Column="1">
+
+        </ContentControl>
+    </Grid>
+</UserControl>

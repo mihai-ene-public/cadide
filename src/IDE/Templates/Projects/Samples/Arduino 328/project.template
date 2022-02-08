@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="SampleProject">
+  <Name>Arduino - start project</Name>
+  <Description>A starting project that already have an ATMEGA 328 micro, decouple caps, a crystal and a ICSP header.
+ You can customize it as you see fit; you may add a LCD display, buttons, etc.
+ 
+ You will have to update references first.
+ 
+ You must route the board.</Description>
+  <Icon></Icon>
+  <Extension>project</Extension>
+</Template> 

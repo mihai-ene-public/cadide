@@ -1,0 +1,125 @@
+<UserControl x:Class="IDE.App.Views.Shell.MainToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
+             xmlns:cmdLabel="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+             xmlns:toolbars="clr-namespace:IDE.Core.Toolbars;assembly=IDE.Core.Presentation"
+             xmlns:views="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <utils:BindingProxy x:Key="windowProxy"
+                            Data="{Binding}" />
+    </UserControl.Resources>
+    <Grid>
+
+        <ItemsControl ItemsSource="{Binding Source={x:Static toolbars:ToolbarManager.Toolbars}}">
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type toolbars:GeneralToolbar}">
+                    
+                    <ToolBar  VerticalAlignment="Stretch"
+                              ToolBarTray.IsLocked="True"
+                              SnapsToDevicePixels="True"
+                              behav:HideToolbarOverflowButton.HideGrip="True">
+
+                        <Button Command="cmd:AppCommand.Save"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static resources:Strings.CommandSaveTooltip}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.save}"
+                                   Height="18"
+                                   Width="18"
+                                   SnapsToDevicePixels="True" />
+                        </Button>
+
+                        <Button Command="cmd:AppCommand.SaveAll"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static resources:Strings.CommandSaveAllTooltip}"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.saveall}"
+                                   Height="18"
+                                   Width="18"
+                                   SnapsToDevicePixels="True" />
+                        </Button>
+
+                        <!--<Separator Margin="9,3"
+                                   SnapsToDevicePixels="True" />
+
+                        <Button Command="Copy"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static cmdLabel:Strings.STR_CmdName_Copy_TT}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.copy}"
+                                   Height="18"
+                                   Width="18"
+                                   SnapsToDevicePixels="True" />
+                        </Button>
+
+                        <Button Command="Cut"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static cmdLabel:Strings.STR_CmdName_Cut_TT}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.cut}"
+                                   Height="18"
+                                   Width="18"
+                                   SnapsToDevicePixels="True" />
+                        </Button>
+
+                        <Button Command="Paste"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static cmdLabel:Strings.STR_CmdName_Paste_TT}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.paste}"
+                                   Height="18"
+                                   Width="18"
+                                   SnapsToDevicePixels="True" />
+                        </Button>
+
+                        <Separator Margin="9,3" />
+
+                        <Button Command="Undo"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static cmdLabel:Strings.STR_CmdName_Undo_TT}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.undo}"
+                                   Height="18"
+                                   Width="18" />
+                        </Button>
+
+                        <Button Command="Redo"
+                                SnapsToDevicePixels="True"
+                                ToolTip="{x:Static cmdLabel:Strings.STR_CmdName_Redo_TT}"
+                                ToolTipService.ShowOnDisabled="True"
+                                FocusVisualStyle="{x:Null}">
+                            <Image Source="{DynamicResource appbar.redo}"
+                                   Height="18"
+                                   Width="18" />
+                        </Button>-->
+
+                    </ToolBar>
+                </DataTemplate>
+                
+               
+
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
+</UserControl>

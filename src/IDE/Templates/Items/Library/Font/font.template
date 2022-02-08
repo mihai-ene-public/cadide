@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Font">
+  <Name>Font</Name>
+  <Description>A new font with some default symbols</Description>
+  <Icon></Icon>
+  <Extension>font</Extension>
+</Template> 

@@ -1,0 +1,5 @@
+﻿We have 2 folders: Items and Projects
+For evey folder from above we have a subfolder for every group we want to create. These are the template types.
+For every subfolder in the group we have a folder which contains the file(s) for the template and a manifest file (.template)
+The manifest may have any name; the extension is .template. It will be the only file with this extension.
+Manifest file contains some metadata only. All the files except the manifest will be added to the Solution/Project

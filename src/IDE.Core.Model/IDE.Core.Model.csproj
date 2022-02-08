@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Globals">
+		<SccProjectName>SAK</SccProjectName>
+		<SccProvider>SAK</SccProvider>
+		<SccAuxPath>SAK</SccAuxPath>
+		<SccLocalPath>SAK</SccLocalPath>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Utilities\" />
+		<Folder Include="PDF\PdfPrimitives\" />
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\IDE.Core.Common\IDE.Core.Common.csproj">
+			<Name>IDE.Core.Common</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Data\IDE.Core.Data.csproj">
+			<Name>IDE.Core.Data</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Interfaces\IDE.Core.Interfaces.csproj">
+			<Name>IDE.Core.Interfaces</Name>
+		</ProjectReference>
+		<ProjectReference Include="..\IDE.Core.Types\IDE.Core.Types.csproj">
+			<Name>IDE.Core.Types</Name>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IxMilia.Dxf" Version="0.8.0" />
+		<PackageReference Include="Newtonsoft.Json">
+			<Version>10.0.3</Version>
+		</PackageReference>
+		<PackageReference Include="RestSharp">
+			<Version>106.6.10</Version>
+		</PackageReference>
+	</ItemGroup>
+</Project>

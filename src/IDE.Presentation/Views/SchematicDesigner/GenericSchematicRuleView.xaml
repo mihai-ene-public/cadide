@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="IDE.Documents.Views.GenericSchematicRuleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             mc:Ignorable="d" 
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Views/SchematicDesigner/RulesResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <CheckBox IsChecked="{Binding IsEnabled}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                   Content="{Binding Description, FallbackValue='Description'}"/>
+        <ctrls:ItemPicker Grid.Row="9"
+                              Grid.Column="1"
+                              Margin="10, 2,2,2"
+                              SelectedItem="{Binding RuleResponse}"
+                              SelectedItemTemplate="{StaticResource ResponseSelectedItemTemplate}"
+                              ItemsSource="{Binding SchematicRuleResponses}"
+                              ItemTemplate="{StaticResource ResponseItemTemplate}"/>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,86 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="/IDE.Presentation;component/Themes/ModernDialogEx.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Calendar.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/CheckBox.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ComboBox.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ContextMenu.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/DataGrid.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/DatePicker.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/GridSplitter.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Hyperlink.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Label.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ListBox.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ListView.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/MenuItem.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/PasswordBox.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ProgressBar.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/RadioButton.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ScrollBar.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/Slider.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TextBlock.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TextBox.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ToolTip.xaml" />
+        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TreeView.xaml" />
+        <!--<ResourceDictionary Source="/Xceed.Wpf.AvalonDock.Themes.Expression;component/DarkTheme.xaml" />-->
+        <ResourceDictionary Source="/IDE.Controls.WPF;component/AvalonDock/DarkTheme.xaml" />
+        <ResourceDictionary Source="/IDE.Controls.WPF;component/WPFToolkit/Themes/Generic.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Edi.ModernUI.Dark.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Controls.TabControl.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Controls.Toolbar.xaml" />
+
+        <!-- This type of combobox is used in the toolbar of the MainWindow -->
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/ComboBox.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Controls.TextBox.xaml" />
+
+        <!-- Statusbar is white without this -->
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/StatusBar.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/MenuItem.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/MenuStyles.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Label.xaml" />
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Hyperlink.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/TextBlock.xaml" />
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Slider.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/ToolTip.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Controls.ListBox.xaml" />
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/Controls.GroupBox.xaml" />
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/MetroStyles/GridSplitter.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/DocumentViewer.xaml" />
+
+        <!--<ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/EdiAvalonEdit.xaml" />-->
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/PinableListView.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/UnitCombobox.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/MessageBox.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/HelixViewport3DX.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroIcons/Icons.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Theme.Other.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/Themes/MetroDark.xaml" />
+
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/EditableLabel.xaml" />
+
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

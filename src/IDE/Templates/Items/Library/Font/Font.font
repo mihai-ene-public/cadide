@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font>
+
+  <!-- $ % & ' ( )  , ; < = > ? @ [ \ ] ^ ` c d e f g h i j k l m n o p q r s t u v w x y z { | } ~  -->
+
+
+
+  <symbol id="2018042404060716001" name=" ">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" />
+  </symbol>
+  <symbol id="2018042319263153000" name="!">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.60000000000000009" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.5" y1="0.9" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="&quot;">
+    <rect x="0.5" y="0.5" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.7" y1="0.1" x2="0.6" y2="0.3" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.4" y1="0.1" x2="0.3" y2="0.3" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="/">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.7" y1="0.1" x2="0.3" y2="0.9" width="0.2" lineStyle="Solid" />
+  </symbol>
+  <symbol id="2018042319263153000" name=":">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.5" y1="0.4" x2="0.5" y2="0.4" width="0.2" lineStyle="Solid" />
+    <line x1="0.5" y1="0.8" x2="0.5" y2="0.8" width="0.2" lineStyle="Solid" />
+  </symbol>
+  <symbol id="2018042319263153000" name="#">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.8" y1="0.2" x2="0.60000000000000009" y2="0.8" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.45002187490463263" y1="0.20002190579471069" x2="0.25000000000000006" y2="0.8" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.175" y1="0.37500000000000011" x2="0.87499999999999989" y2="0.37500000000000011" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.17500000000000002" y1="0.65" x2="0.875" y2="0.65" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="+">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.9" y1="0.49999999403953554" x2="0.099999999999999978" y2="0.4999999940395356" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="-">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.8" y1="0.5" x2="0.2" y2="0.5" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="_">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.2" y1="0.85" x2="0.8" y2="0.85" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="*">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.8" y1="0.30000000000000004" x2="0.225" y2="0.675" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.5" y1="0.2" x2="0.5" y2="0.8" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.225" y1="0.30000000000000004" x2="0.8" y2="0.70000000000000007" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name=".">
+    <rect x="0.5" y="0.49999999999999994" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.5" y1="0.9" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+  </symbol>
+
+  <symbol id="2018042404050110000" name="0">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042404060716000" name="1">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" />
+    <line x1="0.60000000000000009" y1="0.1" x2="0.60000000000000009" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.60000000000000009" y1="0.1" x2="0.40000000000000013" y2="0.30000000000000004" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042404080410000" name="2">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.39999999999999991" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042404102664000" name="3">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" />
+    <line x1="0.5" y1="0.9" x2="0.29999999999999993" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.5" y1="0.1" x2="0.30000000000000004" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.5" x2="0.50000000000000011" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.50000000000000011</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.50000000000000011</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042404143322000" name="4">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.4" y1="0.1" x2="0.30000000000000004" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.70000000000000007" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042404163033000" name="5">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+
+    </arc>
+    <line x1="0.70000000000000007" y1="0.1" x2="0.30000000000000004" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.4" x2="0.70000000000000007" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.4" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042404185704000" name="6">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <arc sizeDiameter="0.05" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.3</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.30000000000000004" y1="0.4" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.099999999999999978</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.4</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042404291020000" name="7">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.30000000000000004" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042404302327000" name="8">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.1" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042404280491000" name="9">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <arc sizeDiameter="0.05" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000018</X>
+        <Y>0.29999999999999993</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.29999999999999982</X>
+        <Y>0.29999999999999993</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.7" y1="0.6" x2="0.7" y2="0.29999999999999993" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.29999999999999982</X>
+        <Y>0.29999999999999993</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.29999999999999993</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.4" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.39999999999999991</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.7</X>
+        <Y>0.6</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042317474821000" name="A">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.3" y2="0.90000000000000013" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.3" y1="0.6000000000000002" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000018" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.90000000000000013" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042317481442000" name="B">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.3" y1="0.1" x2="0.5" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.3" y1="0.5" x2="0.5" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.3" y1="0.9" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+
+    </arc>
+  </symbol>
+  <symbol id="2018042318090297000" name="C">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042318101934000" name="D">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.29999999999999993" y1="0.1" x2="0.49999999999999989" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.9" x2="0.49999999999999989" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042318223952000" name="E">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.70000000000000007" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.9" x2="0.70000000000000007" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000018" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042318234738000" name="F">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.70000000000000007" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000018" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042318241741000" name="G">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.05" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.60000000000000009" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.05" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319253508000" name="H">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.70000000000000007" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000018" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319263153000" name="I">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319270384000" name="J">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042319281523000" name="K">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.70000000000000007" y2="0.2" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319293448000" name="L">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.9" x2="0.70000000000000018" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319301472000" name="M">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.2" y1="0.1" x2="0.2" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.79999999999999993" y1="0.1" x2="0.8" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.5" y1="0.4" x2="0.8" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319312381000" name="N">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.2" x2="0.70000000000000007" y2="0.8" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.70000000000000007" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319322734000" name="O">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319343342000" name="P">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.60000000000000009" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.60000000000000009" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042319333637000" name="Q">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.8" x2="0.8" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319353949000" name="R">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.29999999999999993" y1="0.1" x2="0.60000000000000009" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.5" x2="0.60000000000000009" y2="0.5" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.5</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.60000000000000009</X>
+        <Y>0.1</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.60000000000000009" y1="0.5" x2="0.8" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319362027000" name="S">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.70000000000000007" y1="0.60000000000000009" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.30000000000000004" y1="0.4" x2="0.70000000000000007" y2="0.60000000000000009" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.30000000000000004</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.30000000000000004</Y>
+      </endPoint>
+    </arc>
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042319384348000" name="T">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.5" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.2" y1="0.1" x2="0.8" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319392850000" name="U">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.30000000000000004" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.70000000000000007" y2="0.70000000000000007" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <arc sizeDiameter="0.2" borderWidth="0.2" BorderColor="#FF000080" FillColor="#00FFFFFF" IsFilled="false" SweepDirection="Counterclockwise" IsLargeArc="false" RotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.70000000000000007</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.70000000000000007</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042319413966000" name="V">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.8" y1="0.1" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319432827000" name="W">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.2" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.8" y1="0.1" x2="0.70000000000000007" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.5" y1="0.30000000000000004" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.5" y1="0.30000000000000004" x2="0.70000000000000007" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319445005000" name="X">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.2" y1="0.1" x2="0.8" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.8" y1="0.1" x2="0.2" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319453553000" name="Y">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.2" y1="0.1" x2="0.5" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.8" y1="0.1" x2="0.5" y2="0.4" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.5" y1="0.4" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319462508000" name="Z">
+    <rect x="0" y="0" rot="0" width="1" height="1" borderWidth="0.025" />
+    <line x1="0.30000000000000004" y1="0.1" x2="0.70000000000000007" y2="0.1" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.9" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+    <line x1="0.70000000000000007" y1="0.1" x2="0.30000000000000004" y2="0.9" width="0.2" lineStyle="Solid" LineColor="#FF000080" />
+  </symbol>
+  <symbol id="2018042319462508000" name="a">
+    <rect x="0.49999999701976755" y="0.5" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <arc borderWidth="0.2" sizeDiameter="0.3" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.7</X>
+        <Y>0.4</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.225</Y>
+      </endPoint>
+
+    </arc>
+    <arc borderWidth="0.2" sizeDiameter="0.2" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.30000000000000004</X>
+        <Y>0.55</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.27499999999999991</X>
+        <Y>0.85</Y>
+      </endPoint>
+    </arc>
+    <line x1="0.70000000000000007" y1="0.42500000000000004" x2="0.70000000000000007" y2="0.85000000000000009" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <arc borderWidth="0.2" sizeDiameter="0.35" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.675</X>
+        <Y>0.575</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.3</X>
+        <Y>0.55</Y>
+      </endPoint>
+    </arc>
+    <arc borderWidth="0.2" sizeDiameter="0.4" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Clockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.70000000000000007</X>
+        <Y>0.85000000000000009</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.275</X>
+        <Y>0.85000000000000009</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+  <symbol id="2018042319462508000" name="b">
+    <rect x="0.5" y="0.5" rot="0" width="1" height="1" borderWidth="0.025" borderColor="#FF000080" fillColor="#00FFFFFF" radiusX="0" radiusY="0" />
+    <line x1="0.3" y1="0.1" x2="0.3" y2="0.9" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.3" y1="0.5" x2="0.5" y2="0.5" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <line x1="0.3" y1="0.9" x2="0.5" y2="0.9" width="0.2" lineStyle="Solid" lineColor="#FF000080" />
+    <arc borderWidth="0.2" sizeDiameter="0.2" borderColor="#FF000080" fillColor="#00FFFFFF" isFilled="false" sweepDirection="Counterclockwise" isLargeArc="false" rotationAngle="0">
+      <startPoint>
+        <X>0.5</X>
+        <Y>0.9</Y>
+      </startPoint>
+      <endPoint>
+        <X>0.5</X>
+        <Y>0.5</Y>
+      </endPoint>
+    </arc>
+  </symbol>
+</font>

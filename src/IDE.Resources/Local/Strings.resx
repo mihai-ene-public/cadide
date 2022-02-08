@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CmdAddExistingItemHeader" xml:space="preserve">
+    <value>Existing Item...</value>
+  </data>
+  <data name="CmdAddExistingProjectHeader" xml:space="preserve">
+    <value>Existing Project...</value>
+  </data>
+  <data name="CmdAddFolderHeader" xml:space="preserve">
+    <value>New Folder</value>
+  </data>
+  <data name="CmdAddFootprintHeader" xml:space="preserve">
+    <value>Footprint...</value>
+  </data>
+  <data name="CmdAddGroupFolderHeader" xml:space="preserve">
+    <value>New Group Folder</value>
+  </data>
+  <data name="CmdAddNewBoardHeader" xml:space="preserve">
+    <value>Board...</value>
+  </data>
+  <data name="CmdAddNewComponentHeader" xml:space="preserve">
+    <value>Component...</value>
+  </data>
+  <data name="CmdAddNewDiagramHeader" xml:space="preserve">
+    <value>Diagram...</value>
+  </data>
+  <data name="CmdAddNewFontHeader" xml:space="preserve">
+    <value>Font...</value>
+  </data>
+  <data name="CmdAddNewItemHeader" xml:space="preserve">
+    <value>New Item...</value>
+  </data>
+  <data name="CmdAddNewModelHeader" xml:space="preserve">
+    <value>Model...</value>
+  </data>
+  <data name="CmdAddNewSchematicHeader" xml:space="preserve">
+    <value>Schematic...</value>
+  </data>
+  <data name="CmdAddProjectHeader" xml:space="preserve">
+    <value>New Project...</value>
+  </data>
+  <data name="CmdAddSchematicSheetTooltip" xml:space="preserve">
+    <value>Add a new sheet</value>
+  </data>
+  <data name="CmdAddSymbolHeader" xml:space="preserve">
+    <value>Symbol...</value>
+  </data>
+  <data name="CmdBuildHeader" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="CmdBuildTooltip" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="CmdCompileHeader" xml:space="preserve">
+    <value>Compile</value>
+  </data>
+  <data name="CmdCompileTooltip" xml:space="preserve">
+    <value>Compile</value>
+  </data>
+  <data name="CmdCopyHeader" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CmdCutHeader" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="CmdDeleteHeader" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CmdDeleteSchematicSheetTooltip" xml:space="preserve">
+    <value>Delete sheet</value>
+  </data>
+  <data name="CmdImportSymbolText" xml:space="preserve">
+    <value>Import symbol</value>
+  </data>
+  <data name="CmdImportSymbolTooltip" xml:space="preserve">
+    <value>Imports primitives from an existing symbol --</value>
+  </data>
+  <data name="CmdManageReferencesHeader" xml:space="preserve">
+    <value>Manage References...</value>
+  </data>
+  <data name="CmdMoveDownTooltip" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="CmdMoveUpTooltip" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="CmdOpenContainingFolderHeader" xml:space="preserve">
+    <value>Open Folder in File Explorer</value>
+  </data>
+  <data name="CmdPasteHeader" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="CmdRenameHeader" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="CmdRenameSchematicSheetTooltip" xml:space="preserve">
+    <value>Rename sheet</value>
+  </data>
+  <data name="CmdShowConfigurationManagerHeader" xml:space="preserve">
+    <value>Configuration Manager</value>
+  </data>
+  <data name="CmdShowConfigurationManagerTooltip" xml:space="preserve">
+    <value>Opens configuration manager</value>
+  </data>
+  <data name="CmdShowProjectDependenciesHeader" xml:space="preserve">
+    <value>Project Dependencies</value>
+  </data>
+  <data name="CmdShowPropertiesHeader" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="CmdSolutionExplorerCollapseAllNodesTooltip" xml:space="preserve">
+    <value>Collapse all</value>
+  </data>
+  <data name="CmdSolutionExplorerRefreshNodesTooltip" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="CmdUpdateReferencesHeader" xml:space="preserve">
+    <value>Update References</value>
+  </data>
+  <data name="CmdZoomToFitText" xml:space="preserve">
+    <value>Zoom To Fit</value>
+  </data>
+  <data name="CmdZoomToFitTooltip" xml:space="preserve">
+    <value>Zoom all content of the canvas to fit on the screen</value>
+  </data>
+  <data name="CmdZoomToSelectedText" xml:space="preserve">
+    <value>Zoom to selected</value>
+  </data>
+  <data name="CmdZoomToSelectedTooltip" xml:space="preserve">
+    <value>Zoom to selected items to fit on screen</value>
+  </data>
+  <data name="CommandSaveAllText" xml:space="preserve">
+    <value>Save all</value>
+  </data>
+  <data name="CommandSaveAllTooltip" xml:space="preserve">
+    <value>Save all</value>
+  </data>
+  <data name="CommandSaveText" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CommandSaveTooltip" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CommandShow2DText" xml:space="preserve">
+    <value>Show 2D</value>
+  </data>
+  <data name="CommandShow2DTooltip" xml:space="preserve">
+    <value>Show document in plain view</value>
+  </data>
+  <data name="CommandShow3DText" xml:space="preserve">
+    <value>Show 3D</value>
+  </data>
+  <data name="MenuAboutHeader" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MenuAboutTooltip" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MenuActivateLicenseHeader" xml:space="preserve">
+    <value>Activate license...</value>
+  </data>
+  <data name="MenuActivateLicenseTooltip" xml:space="preserve">
+    <value>Activate or deactivate license for the application</value>
+  </data>
+  <data name="MenuAddHeader" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="MenuFileCloseHeader" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="MenuFileCloseSolutionHeader" xml:space="preserve">
+    <value>Close solution</value>
+  </data>
+  <data name="MenuFileCloseSolutionTooltip" xml:space="preserve">
+    <value>Close current solution</value>
+  </data>
+  <data name="MenuFileCloseTooltip" xml:space="preserve">
+    <value>Close current file</value>
+  </data>
+  <data name="MenuFileExitHeader" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="MenuFileExitTooltip" xml:space="preserve">
+    <value>Closes application</value>
+  </data>
+  <data name="MenuFileHeader" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MenuHelpHeader" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="MenuToolsConvertFromEagleHeader" xml:space="preserve">
+    <value>Convert from EAGLE</value>
+  </data>
+  <data name="MenuToolsHeader" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="MenuToolsSettingsHeader" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MenuToolsSettingsTooltip" xml:space="preserve">
+    <value>Modify settings of the application</value>
+  </data>
+  <data name="MenuViewHeader" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="NewItemDialogNewProject" xml:space="preserve">
+    <value>New Project</value>
+  </data>
+  <data name="ProjectPropertiesBuildHeader" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="ProjectPropertiesCompanyLabel" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="ProjectPropertiesDescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ProjectPropertiesFileNameLabel" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="ProjectPropertiesGeneralHeader" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ProjectPropertiesNamespaceLabel" xml:space="preserve">
+    <value>Namespace</value>
+  </data>
+  <data name="ProjectPropertiesOutputFolderLabel" xml:space="preserve">
+    <value>Output folder</value>
+  </data>
+  <data name="ProjectPropertiesProductLabel" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="ProjectPropertiesPropertiesHeader" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="ProjectPropertiesPropertyNameColumn" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ProjectPropertiesPropertyTypeColumn" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ProjectPropertiesPropertyValueColumn" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="ProjectPropertiesTitleLabel" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ProjectPropertiesVersionLabel" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="SchematicPropertiesBomHeader" xml:space="preserve">
+    <value>BOM</value>
+  </data>
+  <data name="SchematicPropertiesNetClassesHeader" xml:space="preserve">
+    <value>Net Classes</value>
+  </data>
+  <data name="SeetingsEnvGeneralCurrentThemeLabel" xml:space="preserve">
+    <value>Current theme</value>
+  </data>
+  <data name="SetingsEnvGeneralLanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SettingsBoardCanvasBackColorLabel" xml:space="preserve">
+    <value>Canvas background color</value>
+  </data>
+  <data name="SettingsBoardGridColorLabel" xml:space="preserve">
+    <value>Grid color</value>
+  </data>
+  <data name="SettingsBoardIgnoreObstaclesLabel" xml:space="preserve">
+    <value>Ignore obstacles</value>
+  </data>
+  <data name="SettingsBoardOnlineDRCLabel" xml:space="preserve">
+    <value>Compile board on document change</value>
+  </data>
+  <data name="SettingsBoardPushObstaclesLabel" xml:space="preserve">
+    <value>Push obstacles</value>
+  </data>
+  <data name="SettingsBoardRepourPolysOnDocumentChangeLabel" xml:space="preserve">
+    <value>Repour polygons on document change</value>
+  </data>
+  <data name="SettingsBoardShowUnconnectedSignalsLabel" xml:space="preserve">
+    <value>Show unconnected signals</value>
+  </data>
+  <data name="SettingsBoardStopAtFirstObstacleLabel" xml:space="preserve">
+    <value>Stop at first obstacle</value>
+  </data>
+  <data name="SettingsBoardWalkAroundObstaclesLabel" xml:space="preserve">
+    <value>Walkaround obstacles</value>
+  </data>
+  <data name="SettingsEnvGeneralAutoDetectFileIsChangedLabel" xml:space="preserve">
+    <value>Auto detect file changes outside environment</value>
+  </data>
+  <data name="SettingsEnvGeneralAutoReloadFilesLabel" xml:space="preserve">
+    <value>Auto reload files</value>
+  </data>
+  <data name="SettingsEnvGeneralCheckForUpdatesLabel" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="SettingsEnvGeneralNumberItemsVisibleInMRULabel" xml:space="preserve">
+    <value>Number items visible recent</value>
+  </data>
+  <data name="SettingsEnvGeneralNumberItemsVisibleInWindowMenuLabel" xml:space="preserve">
+    <value>Number of items visible in window menu</value>
+  </data>
+  <data name="SettingsSchematicCanvasBackColorLabel" xml:space="preserve">
+    <value>Canvas background color</value>
+  </data>
+  <data name="SettingsSchematicGridColorLabel" xml:space="preserve">
+    <value>Grid color</value>
+  </data>
+  <data name="StartPageDownloadsPageText" xml:space="preserve">
+    <value>Downloads page</value>
+  </data>
+  <data name="StartPageGithubLabel" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="StartPageNewProject" xml:space="preserve">
+    <value>New project ...</value>
+  </data>
+  <data name="StartPageNewProjectFromSamples" xml:space="preserve">
+    <value>New project from samples ...</value>
+  </data>
+  <data name="StartPageOnlineTutorialsLabel" xml:space="preserve">
+    <value>Online tutorials</value>
+  </data>
+  <data name="StartPageOpenProject" xml:space="preserve">
+    <value>Open project ...</value>
+  </data>
+  <data name="StartPageRecentLabel" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="StartPageRepositoriesText" xml:space="preserve">
+    <value>Repositories</value>
+  </data>
+  <data name="StartPageStartLabel" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="StartPageUpdatesLabel" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="StartPageVideoTutorialsLabel" xml:space="preserve">
+    <value>Video tutorials</value>
+  </data>
+  <data name="StartPageWebsiteText" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="StartPageYoutubeChannelText" xml:space="preserve">
+    <value>YouTube Channel</value>
+  </data>
+</root>

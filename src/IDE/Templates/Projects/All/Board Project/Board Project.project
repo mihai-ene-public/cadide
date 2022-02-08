@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project OutputType="Board">
+  <References>
+    <Library libraryName="System.Batteries" hintPath="Libraries\System.Batteries.library" />
+    <Library libraryName="System.Capacitors" hintPath="Libraries\System.Capacitors.library" />
+    <Library libraryName="System.Clocks" hintPath="Libraries\System.Clocks.library" />
+    <Library libraryName="System.Coils" hintPath="Libraries\System.Coils.library" />
+    <Library libraryName="System.Common.Footprints" hintPath="Libraries\System.Common.Footprints.library" />
+    <Library libraryName="System.Common.Models" hintPath="Libraries\System.Common.Models.library" />
+    <Library libraryName="System.DiscreteSemiconductors" hintPath="Libraries\System.DiscreteSemiconductors.library" />
+    <Library libraryName="System.Displays" hintPath="Libraries\System.Displays.library" />
+    <Library libraryName="System.Electromechanical" hintPath="Libraries\System.Electromechanical.library" />
+    <Library libraryName="System.Fuses" hintPath="Libraries\System.Fuses.library" />
+    <Library libraryName="System.IC.Amplifiers" hintPath="Libraries\System.IC.Amplifiers.library" />
+    <Library libraryName="System.IC.Comms" hintPath="Libraries\System.IC.Comms.library" />
+    <Library libraryName="System.IC.Logic" hintPath="Libraries\System.IC.Logic.library" />
+    <Library libraryName="System.IC.Memory" hintPath="Libraries\System.IC.Memory.library" />
+    <Library libraryName="System.IC.Microcontrollers" hintPath="Libraries\System.IC.Microcontrollers.library" />
+    <Library libraryName="System.IC.Misc" hintPath="Libraries\System.IC.Misc.library" />
+    <Library libraryName="System.IC.Power" hintPath="Libraries\System.IC.Power.library" />
+    <Library libraryName="System.Jumpers" hintPath="Libraries\System.Jumpers.library" />
+    <Library libraryName="System.LEDs" hintPath="Libraries\System.LEDs.library" />
+    <Library libraryName="System.PowerSymbols" hintPath="Libraries\System.PowerSymbols.library" />
+    <Library libraryName="System.Resistors" hintPath="Libraries\System.Resistors.library" />
+    <Library libraryName="System.Switches" hintPath="Libraries\System.Switches.library" />
+    <Library libraryName="System.Widgets" hintPath="Libraries\System.Widgets.library" />
+  </References>
+</Project>

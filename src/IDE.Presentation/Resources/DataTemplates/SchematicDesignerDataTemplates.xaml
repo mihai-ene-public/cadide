@@ -1,0 +1,1087 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IDE.Documents.Views"
+                    xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+                    xmlns:designersLocal="clr-namespace:IDE.Core.Designers"
+                    xmlns:s="clr-namespace:IDE.Core.StyleSelectors"
+                    xmlns:conv="clr-namespace:IDE.Core.Converters"
+                    xmlns:ctrls="clr-namespace:IDE.Core.Controls"
+                    xmlns:ctrls2="clr-namespace:IDE.Controls"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+
+    <SolidColorBrush x:Key="isSelectedBrush"
+                     Color="#FFFF6A00" />
+    <SolidColorBrush x:Key="isDimmedBrush"
+                     Color="#FF424242" />
+    <SolidColorBrush x:Key="isHighlightedBrush"
+                     Color="#FFC0FF00" />
+    <SolidColorBrush x:Key="isPinConnectionMouseHovered"
+                     Color="#FFFFDC00" />
+
+    <DataTemplate DataType="{x:Type designers:LineSchematicCanvasItem}">
+
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Line x:Name="PART_Line"
+                          X1="{Binding X1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y1="{Binding Y1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          X2="{Binding X2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y2="{Binding Y2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          StrokeEndLineCap="Round"
+                          StrokeStartLineCap="Round"
+                          Stroke="{Binding LineColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          StrokeDashCap="Round">
+                        <!--IsHitTestVisible="{Binding CanEdit}"-->
+                    </Line>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="Dash"
+                                     Binding="{Binding LineStyle}">
+                            <Setter TargetName="PART_Line"
+                                    Property="StrokeDashArray"
+                                    Value="2,2">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="Dot"
+                                     Binding="{Binding LineStyle}">
+                            <Setter TargetName="PART_Line"
+                                    Property="StrokeDashArray"
+                                    Value="0,2">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="DashDot"
+                                     Binding="{Binding LineStyle}">
+                            <Setter TargetName="PART_Line"
+                                    Property="StrokeDashArray"
+                                    Value="2,2,0,2">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="Flat"
+                                     Binding="{Binding LineCap}">
+                            <Setter TargetName="PART_Line"
+                                    Property="StrokeStartLineCap"
+                                    Value="Flat" />
+                            <Setter TargetName="PART_Line"
+                                    Property="StrokeEndLineCap"
+                                    Value="Flat" />
+
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+        <!--<DataTemplate.Triggers>
+          
+          
+        </DataTemplate.Triggers>-->
+
+        <!--
+        7F0000
+        0094FF
+        FF0000C0
+        -->
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:TextCanvasItem}">
+        <ctrls:DragThumb Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <!--IsHitTestVisible="{Binding CanEdit}"-->
+                <ControlTemplate>
+                    <Grid SnapsToDevicePixels="True"
+                          Background="{Binding BackgroundColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                        <!--<TextBlock x:Name="PART_TextDesigner"
+                                   Foreground="{Binding TextColor, FallbackValue=White, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   SnapsToDevicePixels="True"
+                                   FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                   FontSize="{Binding FontSize}"
+                                   FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0,0"
+                                   TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                   TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                   TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType"
+                                   Text="{Binding Text}">
+
+                        </TextBlock>-->
+                        <ctrls2:EditableLabel x:Name="PART_TextDesigner"
+                                              Foreground="{Binding TextColor, FallbackValue=White, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              SnapsToDevicePixels="True"
+                                              FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                              FontSize="{Binding FontSize}"
+                                              FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="0,0"
+                                              Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                                              TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                              TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                              TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              TextOptions.TextFormattingMode="Ideal"
+                                              TextOptions.TextHintingMode="Animated"
+                                              TextOptions.TextRenderingMode="ClearType"
+                                              Text="{Binding Text, Mode=TwoWay}"
+                                              DisplayText="{Binding Text}"
+                                              ShrinkFontSizeWhenEditingBy="2"
+                                              Focusable="True"
+                                              IsReadOnly="False"
+                                              IsEditing="{Binding IsEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                        </ctrls2:EditableLabel>
+
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Grid.RenderTransform>
+                    </Grid>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:NetWireCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Polyline x:Name="PART_NetWire"
+                                  Points="{Binding Points, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Binding Net.Name}"
+                                  StrokeEndLineCap="Round"
+                                  StrokeStartLineCap="Round"
+                                  Stroke="{Binding LineColor, FallbackValue=#FF0000FF, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                  StrokeDashCap="Round"
+                                  StrokeLineJoin="Round">
+                        </Polyline>
+                        <Polyline x:Name="PART_NetWireSelected"
+                                  Visibility="{Binding SelectedPoints, Converter={x:Static conv:CountToVisibilityConverter.Instance}}"
+                                  Points="{Binding SelectedPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Binding Net.Name}"
+                                  StrokeEndLineCap="Round"
+                                  StrokeStartLineCap="Round"
+                                  Stroke="{StaticResource isSelectedBrush}"
+                                  StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                  StrokeDashCap="Round"
+                                  StrokeLineJoin="Round">
+                        </Polyline>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <Setter TargetName="PART_NetWire"
+                                    Property="Stroke"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Net.IsHighlighted}">
+                            <Setter TargetName="PART_NetWire"
+                                    Property="Stroke"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:BusWireCanvasItem}">
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Polyline x:Name="PART_BusWire"
+                                  Points="{Binding Points, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Binding Bus.Name}"
+                                  StrokeEndLineCap="Round"
+                                  StrokeStartLineCap="Round"
+                                  Stroke="{Binding LineColor, FallbackValue=#FF0000FF, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                  StrokeDashCap="Round"
+                                  StrokeLineJoin="Round">
+                        </Polyline>
+                        <Polyline x:Name="PART_BusWireSelected"
+                                  Visibility="{Binding SelectedPoints, Converter={x:Static conv:CountToVisibilityConverter.Instance}}"
+                                  Points="{Binding SelectedPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Binding Bus.Name}"
+                                  StrokeEndLineCap="Round"
+                                  StrokeStartLineCap="Round"
+                                  Stroke="{StaticResource isSelectedBrush}"
+                                  StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                  StrokeDashCap="Round"
+                                  StrokeLineJoin="Round">
+                        </Polyline>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <Setter TargetName="PART_BusWire"
+                                    Property="Stroke"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Bus.IsHighlighted}">
+                            <Setter TargetName="PART_BusWire"
+                                    Property="Stroke"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:NetLabelCanvasItem}">
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <!--<TextBlock x:Name="PART_NetLabel"
+                                   Foreground="{Binding TextColor, FallbackValue=White, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   SnapsToDevicePixels="True"
+                                   FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                   FontSize="{Binding FontSize}"
+                                   FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                   Text="{Binding NetName, UpdateSourceTrigger=PropertyChanged}"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType">
+                        </TextBlock>-->
+
+                        <ctrls2:EditableLabel x:Name="PART_NetLabel"
+                                              Foreground="{Binding TextColor, FallbackValue=White, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              SnapsToDevicePixels="True"
+                                              FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                              FontSize="{Binding FontSize}"
+                                              FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="0,0"
+                                              TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                              TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                              TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              TextOptions.TextFormattingMode="Ideal"
+                                              TextOptions.TextHintingMode="Animated"
+                                              TextOptions.TextRenderingMode="ClearType"
+                                              Text="{Binding NetSegmentName, Mode=TwoWay}"
+                                              DisplayText="{Binding NetName}"
+                                              Focusable="True"
+                                              IsReadOnly="False"
+                                              IsEditing="{Binding IsEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <Setter TargetName="PART_NetLabel"
+                                    Property="Foreground"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Net.IsHighlighted}">
+                            <Setter TargetName="PART_NetLabel"
+                                    Property="Foreground"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:BusLabelCanvasItem}">
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <ctrls2:EditableLabel x:Name="PART_BusLabel"
+                                              Foreground="{Binding TextColor, FallbackValue=White, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              SnapsToDevicePixels="True"
+                                              FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                              FontSize="{Binding FontSize}"
+                                              FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="0,0"
+                                              TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                              TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                              TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              TextOptions.TextFormattingMode="Ideal"
+                                              TextOptions.TextHintingMode="Animated"
+                                              TextOptions.TextRenderingMode="ClearType"
+                                              Text="{Binding BusSegmentName, Mode=TwoWay}"
+                                              DisplayText="{Binding BusName, Mode=TwoWay}"
+                                              Focusable="True"
+                                              IsReadOnly="False"
+                                              IsEditing="{Binding IsEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+                        </Grid.RenderTransform>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <Setter TargetName="PART_BusLabel"
+                                    Property="Foreground"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Bus.IsHighlighted}">
+                            <Setter TargetName="PART_BusLabel"
+                                    Property="Foreground"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:JunctionCanvasItem}">
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Path x:Name="PART_Junction"
+                          Fill="#FF000080"
+                          ToolTip="{Binding Net.Name, UpdateSourceTrigger=PropertyChanged}">
+                        <Path.Data>
+                            <EllipseGeometry Center="{Binding Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                             RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                             RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                        </Path.Data>
+                    </Path>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Net.IsHighlighted}">
+                            <Setter TargetName="PART_Junction"
+                                    Property="Fill"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <Setter TargetName="PART_Junction"
+                                    Property="Fill"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                        </DataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:SchematicSymbolCanvasItem}">
+        <ctrls:DragThumb RenderTransformOrigin="0.5,0.5"
+                         Width="{Binding DisplayWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                         Height="{Binding DisplayHeight, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas>
+
+                        <ItemsControl x:Name="PART_Items"
+                                      IsHitTestVisible="True"
+                                      ItemsSource="{Binding Items}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter />
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas IsHitTestVisible="True"
+                                            Background="Transparent" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                    ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <RotateTransform Angle="{Binding Rot}" />
+
+                                    <!--<TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />-->
+                                </TransformGroup>
+                            </ItemsControl.RenderTransform>
+                        </ItemsControl>
+
+                        <!-- Part Name -->
+                        <ctrls:PositionThumb Position="{Binding SymbolNamePosition, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ShowName, Converter={x:Static conv:BoolToVisibilityConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                            <ctrls:PositionThumb.Template>
+                                <ControlTemplate>
+                                    <!--<TextBlock Foreground="White"
+                                               FontSize="10"
+                                               Text="{Binding SymbolName, UpdateSourceTrigger=PropertyChanged}"
+                                               TextOptions.TextFormattingMode="Ideal"
+                                               TextOptions.TextHintingMode="Animated"
+                                               TextOptions.TextRenderingMode="ClearType" />-->
+                                    <ctrls2:EditableLabel x:Name="PART_TextDesigner"
+                                                          SnapsToDevicePixels="True"
+                                                          FontSize="10"
+                                                          Margin="0,0"
+                                                          TextOptions.TextFormattingMode="Ideal"
+                                                          TextOptions.TextHintingMode="Animated"
+                                                          TextOptions.TextRenderingMode="ClearType"
+                                                          Text="{Binding PartName, Mode=TwoWay}"
+                                                          DisplayText="{Binding SymbolName}"
+                                                          Focusable="True"
+                                                          IsReadOnly="False"
+                                                          IsEditing="{Binding IsPartNameEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                    </ctrls2:EditableLabel>
+                                </ControlTemplate>
+                            </ctrls:PositionThumb.Template>
+                            <ctrls:PositionThumb.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding SymbolNamePosition.Rotation}" />
+
+                                    <TranslateTransform  X="{Binding SymbolNamePosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding SymbolNamePosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </TransformGroup>
+                            </ctrls:PositionThumb.RenderTransform>
+                        </ctrls:PositionThumb>
+
+                        <!-- Comment-->
+                        <ctrls:PositionThumb Position="{Binding CommentPosition, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ShowComment, Converter={x:Static conv:BoolToVisibilityConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                            <ctrls:PositionThumb.Template>
+                                <ControlTemplate>
+                                    <!--<TextBlock Foreground="White"
+                                               FontSize="10"
+                                               Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                               TextOptions.TextFormattingMode="Ideal"
+                                               TextOptions.TextHintingMode="Animated"
+                                               TextOptions.TextRenderingMode="ClearType" />-->
+
+                                    <ctrls2:EditableLabel SnapsToDevicePixels="True"
+                                                          FontSize="10"
+                                                          Margin="0,0"
+                                                          TextOptions.TextFormattingMode="Ideal"
+                                                          TextOptions.TextHintingMode="Animated"
+                                                          TextOptions.TextRenderingMode="ClearType"
+                                                          Text="{Binding Comment, Mode=TwoWay}"
+                                                          DisplayText="{Binding Comment}"
+                                                          Focusable="True"
+                                                          IsReadOnly="False"
+                                                          IsEditing="{Binding IsCommentEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                    </ctrls2:EditableLabel>
+                                </ControlTemplate>
+                            </ctrls:PositionThumb.Template>
+                            <ctrls:PositionThumb.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding CommentPosition.Rotation}" />
+
+                                    <TranslateTransform  X="{Binding CommentPosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding CommentPosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <!--<TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />-->
+
+                                </TransformGroup>
+                            </ctrls:PositionThumb.RenderTransform>
+                        </ctrls:PositionThumb>
+
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:VolatileGroupCanvasItem}">
+        <ctrls:DragThumb RenderTransformOrigin="0.5,0.5"
+                         Width="{Binding DisplayWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                         Height="{Binding DisplayHeight, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas RenderTransformOrigin="0.5,0.5">
+                        <ItemsControl x:Name="PART_Items"
+                                      ItemsSource="{Binding Items}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter />
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas IsHitTestVisible="True"
+                                            Background="Transparent" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <ContextMenu x:Key="PinContextMenu"
+                 Visibility="{Binding HasItems, RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+        <MenuItem Header="Disconnect"
+                  Command="{Binding DisconnectPinCommand}"
+                  ToolTip="Disconnect this pin from the net"
+                  Visibility="{Binding IsConnected, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}" />
+
+    </ContextMenu>
+    <!-- Pin will be redone: Rectangle - Line; X, Y will be the center of connection-->
+    <DataTemplate DataType="{x:Type designers:PinCanvasItem}">
+
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas IsHitTestVisible="True"
+                            Background="Transparent"
+                            ClipToBounds="False">
+                        <!--RenderTransformOrigin="0,0.5"-->
+
+                        <Line x:Name="PART_PinLine"
+                              X1="0"
+                              Y1="0"
+                              X2="{Binding LineX2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                              Y2="{Binding LineY2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                              StrokeEndLineCap="Round"
+                              StrokeStartLineCap="Round"
+                              Stroke="{Binding PinColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                              StrokeDashCap="Round">
+                            <!--IsHitTestVisible="{Binding CanEdit}"-->
+                        </Line>
+
+                        <Path x:Name="PART_PinConnection"
+                              Fill="Red"
+                              Opacity="0.75"
+                              ContextMenu="{StaticResource PinContextMenu}">
+                            <!--<Path.ContextMenu>
+                                <ContextMenu Visibility="{Binding HasItems, RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                                    <MenuItem Header="Disconnect"
+                                              Command="{Binding DisconnectPinCommand}"
+                                              ToolTip="Disconnect this pin from the net"
+                                              Visibility="{Binding IsConnected, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}" />
+                                </ContextMenu>
+                            </Path.ContextMenu>-->
+                            <Path.Data>
+                                <EllipseGeometry Center="0,0"
+                                                 RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                 RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </Path.Data>
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseMove">
+                                    <designersLocal:SetPropertyAction PropertyName="IsConnectionHovered"
+                                                                      TargetObject="{Binding}"
+                                                                      PropertyValue="True" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <designersLocal:SetPropertyAction PropertyName="IsConnectionHovered"
+                                                                      TargetObject="{Binding}"
+                                                                      PropertyValue="False" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Path>
+
+                        <!--<TextBlock x:Name="PART_PinName"
+                                   Foreground="{Binding PinNameColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="12,-6,0,0"
+                                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding ShowName, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   RenderTransformOrigin="0.25,0.5"
+                                   FontSize="8"
+                                   FontWeight="DemiBold"
+                                   Width="{Binding Name,Converter={x:Static conv:TextToGridWidthConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType">
+                            <TextBlock.RenderTransform>
+                                <RotateTransform Angle="{Binding Orientation, UpdateSourceTrigger=PropertyChanged, Converter={x:Static conv:PinOrientationToAngleConverter.Instance}, ConverterParameter=text}" />
+                            </TextBlock.RenderTransform>
+                        </TextBlock>-->
+
+                        <!-- Pin Name-->
+                        <ctrls:PositionThumb Position="{Binding PinNamePosition, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ShowName, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                             RenderTransformOrigin="0.25,0.5"
+                                             Width="{Binding Name,Converter={x:Static conv:TextToGridWidthConverter.Instance}}"
+                                             Panel.ZIndex="-1000">
+                            <ctrls:PositionThumb.Template>
+                                <!---->
+                                <ControlTemplate>
+                                    <TextBlock x:Name="PART_PinName"
+                                               Foreground="{Binding PinNameColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                               FontSize="8"
+                                               FontWeight="DemiBold"
+                                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                               TextOptions.TextFormattingMode="Ideal"
+                                               TextOptions.TextHintingMode="Animated"
+                                               TextOptions.TextRenderingMode="ClearType" />
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Value="True"
+                                                     Binding="{Binding IsSelected}">
+                                            <Setter TargetName="PART_PinName"
+                                                    Property="Foreground"
+                                                    Value="{StaticResource isSelectedBrush}">
+                                            </Setter>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="True"
+                                                     Binding="{Binding Net.IsHighlighted}">
+                                            <Setter TargetName="PART_PinName"
+                                                    Property="Foreground"
+                                                    Value="{StaticResource isHighlightedBrush}">
+                                            </Setter>
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </ctrls:PositionThumb.Template>
+                            <ctrls:PositionThumb.RenderTransform>
+                                <TransformGroup>
+                                    <!--<RotateTransform Angle="{Binding PinNamePosition.Rotation}" />-->
+                                    <RotateTransform Angle="{Binding Orientation, UpdateSourceTrigger=PropertyChanged, Converter={x:Static conv:PinOrientationToAngleConverter.Instance}, ConverterParameter=text}" />
+
+                                    <TranslateTransform  X="{Binding LineX2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                         Y="{Binding LineY2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+
+                                    <TranslateTransform  X="{Binding PinNamePosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding PinNamePosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </TransformGroup>
+                            </ctrls:PositionThumb.RenderTransform>
+                        </ctrls:PositionThumb>
+
+                        <!--<TextBlock x:Name="PART_PinNumber"
+                                   Foreground="{Binding PinNumberColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding ShowNumber, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   FontSize="6"
+                                   Margin="1,-9,0,0"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType">-->
+                        <!--IsHitTestVisible="False"-->
+                        <!--
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="{Binding Orientation, UpdateSourceTrigger=PropertyChanged, Converter={x:Static conv:PinOrientationToAngleConverter.Instance}, ConverterParameter=text}" />
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>-->
+
+                        <!-- Pin Number-->
+                        <ctrls:PositionThumb Position="{Binding PinNumberPosition, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ShowNumber, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                             Width="{Binding Number,Converter={x:Static conv:TextToGridWidthConverter.Instance}}"
+                                             RenderTransformOrigin="0.12,1.05"
+                                             Panel.ZIndex="-1000">
+                            <!--Width="{Binding Number,Converter={x:Static conv:TextToGridWidthConverter.Instance}}"-->
+                            <ctrls:PositionThumb.Template>
+                                <!--RenderTransformOrigin="0.12,1.05"-->
+                                <ControlTemplate>
+                                    <TextBlock x:Name="PART_PinNumber"
+                                               Foreground="{Binding PinNumberColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                               FontSize="6"
+                                               Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
+                                               TextOptions.TextFormattingMode="Ideal"
+                                               TextOptions.TextHintingMode="Animated"
+                                               TextOptions.TextRenderingMode="ClearType" />
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Value="True"
+                                                     Binding="{Binding IsSelected}">
+                                            <Setter TargetName="PART_PinNumber"
+                                                    Property="Foreground"
+                                                    Value="{StaticResource isSelectedBrush}">
+                                            </Setter>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="True"
+                                                     Binding="{Binding Net.IsHighlighted}">
+                                            <Setter TargetName="PART_PinNumber"
+                                                    Property="Foreground"
+                                                    Value="{StaticResource isHighlightedBrush}">
+                                            </Setter>
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </ctrls:PositionThumb.Template>
+                            <ctrls:PositionThumb.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding Orientation, UpdateSourceTrigger=PropertyChanged, Converter={x:Static conv:PinOrientationToAngleConverter.Instance}, ConverterParameter=text}" />
+
+                                    <!--<TranslateTransform  X="{Binding LineX2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                         Y="{Binding LineY2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />-->
+
+                                    <TranslateTransform  X="{Binding PinNumberPosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding PinNumberPosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </TransformGroup>
+                            </ctrls:PositionThumb.RenderTransform>
+                        </ctrls:PositionThumb>
+
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Orientation, UpdateSourceTrigger=PropertyChanged, Converter={x:Static conv:PinOrientationToAngleConverter.Instance}}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </TransformGroup>
+                        </Canvas.RenderTransform>
+
+                    </Canvas>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsConnected}">
+                            <Setter TargetName="PART_PinConnection"
+                                    Property="Fill"
+                                    Value="#0094FF">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsSelected}">
+                            <!--<Setter TargetName="PART_PinName"
+                                    Property="Foreground"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>-->
+                            <Setter TargetName="PART_PinLine"
+                                    Property="Stroke"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>
+                            <!--<Setter TargetName="PART_PinNumber"
+                                    Property="Foreground"
+                                    Value="{StaticResource isSelectedBrush}">
+                            </Setter>-->
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Net.IsHighlighted}">
+                            <!--<Setter TargetName="PART_PinName"
+                                    Property="Foreground"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>-->
+                            <Setter TargetName="PART_PinLine"
+                                    Property="Stroke"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>
+                            <!--<Setter TargetName="PART_PinNumber"
+                                    Property="Foreground"
+                                    Value="{StaticResource isHighlightedBrush}">
+                            </Setter>-->
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsConnectionHovered}">
+                            <Setter TargetName="PART_PinConnection"
+                                    Property="Fill"
+                                    Value="{StaticResource isPinConnectionMouseHovered}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:CircleCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Path x:Name="PART_Circle"
+                          Fill="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          Stroke="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                        <Path.Data>
+                            <EllipseGeometry Center="{Binding Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                             RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                             RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                        </Path.Data>
+                    </Path>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:EllipseCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Path x:Name="PART_Ellipse"
+                          Fill="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          Stroke="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                        <Path.Data>
+                            <EllipseGeometry Center="{Binding Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                             RadiusX="{Binding RadiusX, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                             RadiusY="{Binding RadiusY, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                        </Path.Data>
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="{Binding Rot}"
+                                             CenterX="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                             CenterY="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                        </Path.RenderTransform>
+                    </Path>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:ArcCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Path  Fill="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                               Stroke="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                               StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                               StrokeEndLineCap="Round"
+                               StrokeStartLineCap="Round"
+                               StrokeDashCap="Round"
+                               Name="PART_Arc">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding StartPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                IsFilled="{Binding IsFilled,UpdateSourceTrigger=PropertyChanged}"
+                                                IsClosed="False">
+
+                                        <ArcSegment Point="{Binding EndPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    Size="{Binding Size, Converter={x:Static conv:MilimetersToScreenSizeConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    SweepDirection="{Binding SweepDirection, Converter={x:Static conv:XSweepDirectionToSweepDirectionConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsLargeArc="{Binding IsLargeArc,UpdateSourceTrigger=PropertyChanged}"
+                                                    RotationAngle="{Binding RotationAngle,UpdateSourceTrigger=PropertyChanged}"
+                                                    IsStroked="True"
+                                                    IsSmoothJoin="True" />
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+
+                        <!-- complete ellipse when selected-->
+                        <Path  Fill="Transparent"
+                               Stroke="{StaticResource isSelectedBrush}"
+                               StrokeThickness="0.5"
+                               StrokeEndLineCap="Round"
+                               StrokeStartLineCap="Round"
+                               StrokeDashCap="Round"
+                               StrokeDashArray="2,2"
+                               Visibility="{Binding IsSelected, FallbackValue=Collapsed, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding EndPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                IsFilled="{Binding IsFilled,UpdateSourceTrigger=PropertyChanged}"
+                                                IsClosed="False">
+                                        <ArcSegment Point="{Binding StartPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance},UpdateSourceTrigger=PropertyChanged}"
+                                                    Size="{Binding Size, Converter={x:Static conv:MilimetersToScreenSizeConverter.Instance},UpdateSourceTrigger=PropertyChanged}"
+                                                    SweepDirection="{Binding SweepDirection, Converter={x:Static conv:XSweepDirectionToSweepDirectionConverter.Instance},UpdateSourceTrigger=PropertyChanged}"
+                                                    IsLargeArc="{Binding IsLargeArc,Converter={x:Static conv:InverseBooleanConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    RotationAngle="{Binding RotationAngle,UpdateSourceTrigger=PropertyChanged}"
+                                                    IsStroked="True"
+                                                    IsSmoothJoin="True" />
+                                        <!---->
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="Flat"
+                                     Binding="{Binding LineCap}">
+                            <Setter TargetName="PART_Arc"
+                                    Property="StrokeStartLineCap"
+                                    Value="Flat" />
+                            <Setter TargetName="PART_Arc"
+                                    Property="StrokeEndLineCap"
+                                    Value="Flat" />
+
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:RectangleCanvasItem}">
+        <ctrls:DragThumb>
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Path Fill="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          Stroke="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                        <Path.Data>
+                            <RectangleGeometry Rect="{Binding Rect, Converter={x:Static conv:MilimetersToScreenPointsRectConverter.Instance}}"
+                                               RadiusX="{Binding RadiusX, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                               RadiusY="{Binding RadiusY, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                        </Path.Data>
+
+                        <Path.RenderTransform>
+                            <!--<RotateTransform Angle="{Binding Rot}"
+                                               CenterX="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                               CenterY="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />-->
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+                        </Path.RenderTransform>
+                    </Path>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:ImageCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid RenderTransformOrigin="0, 0">
+                        <Border x:Name="PART_Border"
+                                BorderBrush="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                Background="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                CornerRadius="{Binding CornerRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                            <Grid>
+                                <Border x:Name="PART_mask"
+                                        Background="White"
+                                        CornerRadius="{Binding CornerRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                        BorderThickness="0"
+                                        Width="{Binding ActualWidth ,ElementName=PART_Image}"
+                                        Height="{Binding ActualHeight ,ElementName=PART_Image}" />
+                                <Image x:Name="PART_Image"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Stretch="{Binding Stretch, UpdateSourceTrigger=PropertyChanged}"
+                                       Source="{Binding ImageBytes, Converter={x:Static conv:BytesToImageConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                                    <Image.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=PART_mask}" />
+                                    </Image.OpacityMask>
+                                </Image>
+                            </Grid>
+
+                        </Border>
+
+                        <Border BorderThickness="1"
+                                Visibility="{Binding IsSelected, FallbackValue=Collapsed, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                            <Border.BorderBrush>
+                                <VisualBrush>
+                                    <VisualBrush.Visual>
+                                        <Rectangle StrokeDashArray="2 2"
+                                                   Stroke="{StaticResource isSelectedBrush}"
+                                                   StrokeThickness="2"
+                                                   RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}"
+                                                   RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}"
+                                                   Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                                                   Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Border.BorderBrush>
+                        </Border>
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ScaleX, UpdateSourceTrigger=PropertyChanged}"
+                                                ScaleY="{Binding ScaleY, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Grid.RenderTransform>
+                    </Grid>
+
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:PolygonCanvasItem}">
+        <ctrls:DragThumb>
+            <!--IsHitTestVisible="{Binding CanEdit}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Polygon x:Name="poly"
+                             Points="{Binding Path=PolygonPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                             Fill="{Binding FillColor, FallbackValue=Transparent, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                             Stroke="{Binding BorderColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                             StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                             StrokeLineJoin="Round" />
+                    <!--IsHitTestVisible="{Binding CanEdit}"-->
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+</ResourceDictionary>

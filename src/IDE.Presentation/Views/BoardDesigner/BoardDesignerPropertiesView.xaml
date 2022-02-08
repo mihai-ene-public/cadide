@@ -1,0 +1,2349 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardDesignerPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:storage="clr-namespace:IDE.Core.Storage;assembly=IDE.Core.Data"
+             xmlns:commonTypes="clr-namespace:IDE.Core.Interfaces;assembly=IDE.Core.Interfaces"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+             xmlns:wiz="clr-namespace:IDE.Core.Wizards"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             mc:Ignorable="d"
+             FontFamily="Arial"
+             d:DesignHeight="800"
+             d:DesignWidth="1200">
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/Controls/InplaceEditBox/Views/EditBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ObjectDataProvider x:Key="boardUnitsEnum"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="storage:Units" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="boardOutputUnitsEnum"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="commonTypes:OutputUnits" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <ObjectDataProvider x:Key="boardOutputGerberVersionEnum"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="commonTypes:GerberVersion" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <ObjectDataProvider x:Key="LayerStackupSpecEnum"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="viewModels:LayerStackupSpec" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+
+            <Style TargetType="DataGridColumnHeader"
+                   BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Left" />
+            </Style>
+
+            <Style x:Key="title_Style"
+                   TargetType="TextBlock"
+                   BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontSize"
+                        Value="24" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+            </Style>
+            <Style x:Key="subTitle_Style"
+                   TargetType="TextBlock"
+                   BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontSize"
+                        Value="16" />
+                <Setter Property="FontWeight"
+                        Value="Bold" />
+            </Style>
+
+            <Style TargetType="{x:Type TabItem}"
+                   BasedOn="{StaticResource {x:Type TabItem}}"
+                   x:Key="tabItemStyle">
+
+                <Setter Property="Padding"
+                        Value="3" />
+                <Setter Property="Width"
+                        Value="110" />
+
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Width="2"
+                                           HorizontalAlignment="Left"
+                                           Margin="0,0,5,0"
+                                           Fill="Gray" />
+                                <ContentPresenter Grid.Column="1"
+                                                  Content="{TemplateBinding Content}" />
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <TabControl TabStripPlacement="Left">
+
+            <TabItem Header="{x:Static strings:BoardDesignerStrings.GeneralTabHeader}"
+                     Style="{StaticResource tabItemStyle}">
+                <TabItem.Content>
+                    <StackPanel Margin="5,10">
+                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.CurrentSchematicText}" />
+                        <TextBlock Text="{Binding SchematicReference.hintPath, UpdateSourceTrigger=PropertyChanged, FallbackValue={x:Static strings:BoardDesignerStrings.NotSetText}}"
+                                   Margin="20,5"
+                                   TextDecorations="Underline"
+                                   FontSize="14" />
+                        <Button HorizontalAlignment="Left"
+                                MinWidth="200"
+                                Margin="0,5"
+                                Content="{x:Static strings:BoardDesignerStrings.SetSchematicReferenceButtonText}"
+                                Command="{Binding SetSchematicReferenceCommand}" />
+                        <Separator />
+
+                        <!--<TextBlock Text="Board units"
+                                   Margin="0,10,0,5" />
+                        <ComboBox  HorizontalAlignment="Left"
+                                   MinWidth="200"
+                                   ItemsSource="{Binding Source={StaticResource boardUnitsEnum}}"
+                                  SelectedItem="{Binding BoardUnits, UpdateSourceTrigger=PropertyChanged}" />-->
+
+                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.DescriptionText}"
+                                   Margin="0,10,0,5" />
+                        <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="200"
+                                 AcceptsReturn="True" />
+                    </StackPanel>
+
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="{x:Static strings:BoardDesignerStrings.LayersTabHeader}"
+                     Style="{StaticResource tabItemStyle}">
+                <TabItem.Content>
+
+                    <TabControl TabStripPlacement="Left"
+                                HorizontalContentAlignment="Left">
+
+                        <TabItem Header="{x:Static strings:BoardDesignerStrings.StackupTabHeader}"
+                                 Style="{StaticResource tabItemStyle}">
+                            <TabItem.Content>
+                                <StackPanel>
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.LayersText}"
+                                               Style="{StaticResource subTitle_Style}" />
+                                    <Separator />
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox  Margin="5"
+                                                   Width="75"
+                                                   VerticalContentAlignment="Center"
+                                                   ItemsSource="{Binding Source={StaticResource LayerStackupSpecEnum}}"
+                                                   SelectedItem="{Binding LayerDisplay, UpdateSourceTrigger=PropertyChanged}"
+                                                   ToolTip="{x:Static strings:BoardDesignerStrings.LayerStackupSpecTooltip}" />
+
+                                        <Button Command="{Binding MoveLayerDownCommand}"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                                                Focusable="False"
+                                                Margin="3,0"
+                                                Width="24"
+                                                Height="24"
+                                                Padding="2">
+                                            <Image Source="{StaticResource arrow-down}"
+                                                   Stretch="Uniform" />
+                                        </Button>
+                                        <Button Command="{Binding MoveLayerUpCommand}"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                                                Focusable="False"
+                                                Margin="3,0"
+                                                Width="24"
+                                                Height="24"
+                                                Padding="2">
+                                            <Image Source="{StaticResource arrow-up}"
+                                                   Stretch="Uniform" />
+                                        </Button>
+
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Width="100"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewSignalLayerTooltip}"
+                                                Command="{Binding AddLayerCommand}"
+                                                CommandParameter="Signal"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{StaticResource plus}"
+                                                       Width="16"
+                                                       Height="16" />
+                                                <TextBlock Text="Signal"
+                                                           Margin="5,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Width="100"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewPlaneLayerTooltip}"
+                                                Command="{Binding AddLayerCommand}"
+                                                CommandParameter="Plane"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{StaticResource plus}"
+                                                       Width="16"
+                                                       Height="16" />
+                                                <TextBlock Text="Plane"
+                                                           Margin="5,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Focusable="False"
+                                                Width="100"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewMechanicalLayerTooltip}"
+                                                Command="{Binding AddLayerCommand}"
+                                                CommandParameter="Mechanical"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{StaticResource plus}"
+                                                       Width="16"
+                                                       Height="16" />
+                                                <TextBlock Text="Mechanical"
+                                                           Margin="5,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Width="100"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewDielectricLayerTooltip}"
+                                                Command="{Binding AddLayerCommand}"
+                                                CommandParameter="Dielectric"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{StaticResource plus}"
+                                                       Width="16"
+                                                       Height="16" />
+                                                <TextBlock Text="Dielectric"
+                                                           Margin="5,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Width="100"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewGenericLayerTooltip}"
+                                                Command="{Binding AddLayerCommand}"
+                                                CommandParameter="Generic"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{StaticResource plus}"
+                                                       Width="16"
+                                                       Height="16" />
+                                                <TextBlock Text="Generic"
+                                                           Margin="5,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+
+
+                                        <!--<Button Content="Presets..."
+                                                Margin="5"
+                                                IsEnabled="False"
+                                                Width="75" />-->
+
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.ExportLayersTooltip}"
+                                                Command="{Binding ExportLayersCommand}"
+                                                CommandParameter="Generic"
+                                                HorizontalContentAlignment="Left">
+                                            <fa:FontAwesome Icon="Solid_FileExport"
+                                                            FontSize="16" />
+                                        </Button>
+
+                                        <Button Margin="1,5"
+                                                Padding="2"
+                                                Focusable="False"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.ImportLayersTooltip}"
+                                                Command="{Binding ImportLayersCommand}"
+                                                CommandParameter="Generic"
+                                                HorizontalContentAlignment="Left">
+                                            <fa:FontAwesome Icon="Solid_FileImport"
+                                                            FontSize="16" />
+                                        </Button>
+                                    </StackPanel>
+
+                                    <DataGrid ItemsSource="{Binding StackLayers}"
+                                              SelectedItem="{Binding SelectedStackLayer,UpdateSourceTrigger=PropertyChanged}"
+                                              IsSynchronizedWithCurrentItem="True"
+                                              AutoGenerateColumns="False"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              EnableRowVirtualization="True"
+                                              VirtualizingStackPanel.IsVirtualizing="True"
+                                              VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <!-- Layer Color-->
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerColorColumnHeader}"
+                                                                    Width="100">
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <xctk:ColorPicker SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                                                          HorizontalAlignment="Center"
+                                                                          ShowDropDownButton="False"
+                                                                          BorderBrush="WhiteSmoke"
+                                                                          Width="22" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Rectangle Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Center"
+                                                                   Height="16"
+                                                                   Width="18"
+                                                                   Margin="5,3" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn Binding="{Binding LayerName}"
+                                                                Header="{x:Static strings:BoardDesignerStrings.LayerNameColumnHeader}"
+                                                                Width="150">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.VerticalAlignment"
+                                                                Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerTypeColumnHeader}"
+                                                                    IsReadOnly="True">
+                                                <!--<DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Source={StaticResource layerTypeEnum}}"
+                                                                  SelectedItem="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>-->
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}"
+                                                                   VerticalAlignment="Center" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn Binding="{Binding Material}"
+                                                                Header="{x:Static strings:BoardDesignerStrings.LayerMaterialColumnHeader}"
+                                                                Width="100">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.VerticalAlignment"
+                                                                Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Binding="{Binding Thickness}"
+                                                                Header="{x:Static strings:BoardDesignerStrings.LayerThicknessColumnHeader}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.VerticalAlignment"
+                                                                Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <!--<DataGridTextColumn Binding="{Binding DielectricConstant}"
+                                                                Header="Dielectric Constant">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.VerticalAlignment"
+                                                                Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>-->
+
+                                            <DataGridTemplateColumn IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Command="{Binding Data.DeleteLayerCommand, Source={StaticResource windowProxy}}"
+                                                                CommandParameter="{Binding}"
+                                                                Padding="2"
+                                                                Focusable="False">
+                                                            <Image Source="{StaticResource cross}"
+                                                                   Width="12"
+                                                                   Height="12" />
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,10">
+                                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.TotalBoardThicknessLabel}" />
+                                        <TextBlock Text="{Binding StackupTotalThickness, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem.Content>
+                        </TabItem>
+                        <TabItem Header="{x:Static strings:BoardDesignerStrings.LayerGroupsTabHeader}"
+                                 Style="{StaticResource tabItemStyle}">
+                            <TabItem.Content>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="250"
+                                                          MinWidth="200" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Row="0"
+                                                Grid.ColumnSpan="4"
+                                                Margin="20,0,0,20">
+                                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.LayerGroupsLabel}"
+                                                   Style="{StaticResource subTitle_Style}" />
+
+                                        <Separator />
+                                    </StackPanel>
+                                    <GridSplitter Width="3"
+                                                  Grid.Column="0"
+                                                  Grid.Row="2"
+                                                  Margin="0,5"
+                                                  HorizontalAlignment="Right" />
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.LayerGroupsLabel}"
+                                               Grid.Column="0"
+                                               Grid.Row="1"
+                                               Margin="5,0"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Left" />
+                                    <StackPanel  Grid.Column="0"
+                                                 Grid.Row="1"
+                                                 Margin="5,0"
+                                                 Orientation="Horizontal"
+                                                 HorizontalAlignment="Right">
+
+                                        <Button Command="{Binding AddLayerGroupCommand}"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewLayerGroupTooltip}"
+                                                Grid.Column="3"
+                                                Focusable="False"
+                                                Margin="3,0"
+                                                Width="24"
+                                                Height="24"
+                                                Padding="2">
+                                            <Image Source="{StaticResource file-empty}"
+                                                   Stretch="Uniform" />
+                                        </Button>
+                                        <Button Command="{Binding RemoveLayerGroupCommand}"
+                                                ToolTip="{x:Static strings:BoardDesignerStrings.RemoveLayerGroupTooltip}"
+                                                Grid.Column="4"
+                                                Focusable="False"
+                                                Margin="3,0"
+                                                Width="24"
+                                                Height="24"
+                                                Padding="2">
+                                            <Image Source="{StaticResource cross}"
+                                                   Stretch="Uniform" />
+                                        </Button>
+
+                                    </StackPanel>
+
+                                    <TreeView Grid.Column="0"
+                                              Grid.Row="2"
+                                              Margin="5"
+                                              BorderThickness="1"
+                                              ItemsSource="{Binding Board.LayerGroups}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedLayerGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </i:Interaction.Behaviors>
+
+                                        <!-- This is to have a full selection of the tree item-->
+                                        <TreeView.ItemContainerStyle>
+                                            <Style TargetType="{x:Type TreeViewItem}">
+
+                                                <Setter Property="IsExpanded"
+                                                        Value="True" />
+
+                                                <Style.Resources>
+                                                    <Style TargetType="{x:Type Border}">
+                                                        <Setter Property="Grid.ColumnSpan"
+                                                                Value="3" />
+                                                    </Style>
+
+                                                </Style.Resources>
+
+                                            </Style>
+                                        </TreeView.ItemContainerStyle>
+                                        <TreeView.ItemTemplate>
+
+                                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                <!--DataType="{x:Type designers:RuleCategoryItem}"-->
+                                                <StackPanel Orientation="Horizontal"
+                                                            Margin="3">
+
+                                                    <Image Width="16"
+                                                           Height="16"
+                                                           Source="pack://application:,,,/IDE.Resources;component/Images/folder.png" />
+
+                                                    <!--<TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                   Margin="5,0"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />-->
+                                                    <ctrls:EditBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                   DisplayText="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                   IsEditableOnDoubleClick="True"
+                                                                   FontSize="12"
+                                                                   FontFamily="Segoe UI"
+                                                                   Margin="5,0"
+                                                                   Focusable="True"
+                                                                   IsReadOnly="{Binding IsReadOnly}"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Left"
+                                                                   RenameCommand="{Binding RenameCommand}"
+                                                                   ToolTipService.ShowOnDisabled="True" />
+
+                                                </StackPanel>
+                                            </HierarchicalDataTemplate>
+
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.AssignedLayersLabel}"
+                                               Grid.Column="1"
+                                               Grid.Row="1"
+                                               VerticalAlignment="Center"
+                                               Margin="5,0" />
+                                    <ListView Name="list_AssignedLayers"
+                                              Grid.Column="1"
+                                              Grid.Row="2"
+                                              Margin="5"
+                                              BorderThickness="1"
+                                              ItemsSource="{Binding SelectedLayerGroup.Layers}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="32" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="75" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Rectangle Grid.Column="0"
+                                                               Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                                               Width="18"
+                                                               Height="16"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Left" />
+                                                    <TextBlock Grid.Column="1"
+                                                               VerticalAlignment="Center"
+                                                               Text="{Binding LayerName, UpdateSourceTrigger=PropertyChanged, FallbackValue=unknown}" />
+                                                    <TextBlock Grid.Column="2"
+                                                               VerticalAlignment="Center"
+                                                               Text="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                    <StackPanel Grid.Column="2"
+                                                Grid.Row="2">
+                                        <Button CommandParameter="{Binding SelectedItems, ElementName=list_AvailableLayers}"
+                                                Command="{Binding AddLayersToGroupCommand}"
+                                                Margin="5"
+                                                Padding="4"
+                                                Width="32"
+                                                Height="32"
+                                                Focusable="False">
+                                            <Image Source="{StaticResource arrow-up}"
+                                                   RenderTransformOrigin="0.5,0.5"
+                                                   Stretch="Uniform">
+                                                <Image.RenderTransform>
+                                                    <RotateTransform Angle="-90"
+                                                                     CenterX="0.5"
+                                                                     CenterY="0.5" />
+                                                </Image.RenderTransform>
+                                            </Image>
+                                        </Button>
+                                        <Button CommandParameter="{Binding SelectedItems, ElementName=list_AssignedLayers}"
+                                                Command="{Binding RemoveLayersFromGroupCommand}"
+                                                Margin="5"
+                                                Padding="4"
+                                                Width="32"
+                                                Height="32"
+                                                Focusable="False">
+                                            <Image Source="{StaticResource arrow-down}"
+                                                   RenderTransformOrigin="0.5,0.5"
+                                                   Stretch="Uniform">
+                                                <Image.RenderTransform>
+                                                    <RotateTransform Angle="-90"
+                                                                     CenterX="0.5"
+                                                                     CenterY="0.5" />
+                                                </Image.RenderTransform>
+                                            </Image>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.AvailableLayersLabel}"
+                                               Grid.Column="3"
+                                               Grid.Row="1"
+                                               VerticalAlignment="Center"
+                                               Margin="5,0" />
+                                    <ListView Name="list_AvailableLayers"
+                                              Grid.Column="3"
+                                              Grid.Row="2"
+                                              Margin="5"
+                                              BorderThickness="1"
+                                              ItemsSource="{Binding LayerGroupsAvailableLayers}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="32" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="75" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Rectangle Grid.Column="0"
+                                                               Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                                               Width="18"
+                                                               Height="16"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Left" />
+                                                    <TextBlock Grid.Column="1"
+                                                               VerticalAlignment="Center"
+                                                               Text="{Binding LayerName, UpdateSourceTrigger=PropertyChanged, FallbackValue=unknown}" />
+                                                    <TextBlock Grid.Column="2"
+                                                               VerticalAlignment="Center"
+                                                               Text="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+                                </Grid>
+                            </TabItem.Content>
+                        </TabItem>
+                        <TabItem Header="{x:Static strings:BoardDesignerStrings.DrillPairsTabHeader}"
+                                 Style="{StaticResource tabItemStyle}">
+                            <TabItem.Content>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.DrillPairsLabel}"
+                                               Style="{StaticResource subTitle_Style}" />
+                                    <Separator />
+                                    <Button Command="{Binding LayersAddDrillPairCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.AddNewDrillPairTooltip}"
+                                            Focusable="False"
+                                            HorizontalAlignment="Left"
+                                            Margin="5,10"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource plus}"
+                                               Stretch="Uniform" />
+                                    </Button>
+                                    <DataGrid ItemsSource="{Binding DrillPairs}"
+                                              AutoGenerateColumns="False"
+                                              CanUserAddRows="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.StartLayerColumnHeader}"
+                                                                    Width="*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding LayerStart.LayerName, TargetNullValue='- None -'}"
+                                                                   VerticalAlignment="Center" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Data.AvailableDrillLayers, Source={StaticResource windowProxy}}"
+                                                                  SelectedItem="{Binding LayerStart, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.StopLayerColumnHeader}"
+                                                                    Width="*">
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Data.AvailableDrillLayers, Source={StaticResource windowProxy}}"
+                                                                  SelectedItem="{Binding LayerEnd, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding LayerEnd.LayerName, TargetNullValue='- None -'}"
+                                                                   VerticalAlignment="Center" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </TabItem.Content>
+                        </TabItem>
+                        <TabItem Header="{x:Static strings:BoardDesignerStrings.LayerPairsTabHeader}"
+                                 Style="{StaticResource tabItemStyle}">
+                            <TabItem.Content>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.LayerPairsLabel}"
+                                               Style="{StaticResource subTitle_Style}" />
+                                    <Separator />
+                                    <Button Command="{Binding LayersAddLayerPairCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.AddNewLayerPairTooltip}"
+                                            Focusable="False"
+                                            HorizontalAlignment="Left"
+                                            Margin="5,10"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource plus}"
+                                               Stretch="Uniform" />
+                                    </Button>
+                                    <DataGrid ItemsSource="{Binding LayerPairs}"
+                                              AutoGenerateColumns="False"
+                                              CanUserAddRows="False">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.TopLayerColumnHeader}"
+                                                                    Width="*">
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Data.AvailableLayerPairsLayers, Source={StaticResource windowProxy}}"
+                                                                  SelectedItem="{Binding LayerStart, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding LayerStart.LayerName, TargetNullValue='- None -'}"
+                                                                   VerticalAlignment="Center" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.BottomLayerColumnHeader}"
+                                                                    Width="*">
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Data.AvailableLayerPairsLayers, Source={StaticResource windowProxy}}"
+                                                                  SelectedItem="{Binding LayerEnd, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding LayerEnd.LayerName, TargetNullValue='- None -'}"
+                                                                   VerticalAlignment="Center" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </TabItem.Content>
+                        </TabItem>
+                    </TabControl>
+
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="{x:Static strings:BoardDesignerStrings.RulesTabHeader}"
+                     Style="{StaticResource tabItemStyle}">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="250" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <GridSplitter Width="3"
+                                      Grid.Column="2"
+                                      HorizontalAlignment="Left" />
+                        <Rectangle Width="2"
+                                   HorizontalAlignment="Right"
+                                   Fill="Gray" />
+                        <StackPanel  Grid.Column="0"
+                                     Grid.Row="0"
+                                     Margin="0,0,5,0">
+                            <Button Command="{Binding RemoveRuleNodeCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.RemoveRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="0,3,0,10"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource cross}"
+                                       Stretch="Uniform" />
+                            </Button>
+
+                            <Button Command="{Binding AddGroupRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddGroupRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource folder-open}"
+                                       Stretch="Uniform" />
+                            </Button>
+                            <Button Command="{Binding AddElectricalClearanceRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddElectricalClearanceRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.electricalClearance}"
+                                       Stretch="Uniform" />
+                            </Button>
+                            <Button Command="{Binding AddTrackWidthRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddTrackWidthRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.trackWidth}"
+                                       Stretch="Uniform" />
+                            </Button>
+                            <Button Command="{Binding AddViaDefinitionRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddViaDefinitionRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.viaDefinition}"
+                                       Stretch="Uniform" />
+                            </Button>
+
+                            <!-- DO NOT DELETE: it is hard to check, but we'll implement it later-->
+                            <!--<Button Command="{Binding AddMinAnnularRingRuleCommand}"
+                                    ToolTip="Add Min annular ring rule"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource file-empty}"
+                                       Stretch="Uniform" />
+                            </Button>-->
+
+                            <Button Command="{Binding AddHoleSizeRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddHoleSizeRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.holeSize}"
+                                       Stretch="Uniform" />
+                            </Button>
+                            <Button Command="{Binding AddMaskExpansionCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddMaskExpansionRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.maskExpansion}"
+                                       Stretch="Uniform" />
+                            </Button>
+
+                            <Button Command="{Binding AddManufacturingClearanceRuleCommand}"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.AddManufacturingClearanceRuleTooltip}"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource rules.manufClearance}"
+                                       Stretch="Uniform" />
+                            </Button>
+
+                            <!--<Button Command="{Binding AddMatchedLengthsRuleCommand}"
+                                    ToolTip="Add Matching lengths rule"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Visibility="Collapsed"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource file-empty}"
+                                       Stretch="Uniform" />
+                            </Button>-->
+
+                            <Separator />
+
+                            <Button Margin="1,5"
+                                    Padding="2"
+                                    Focusable="False"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.ExportRulesTooltip}"
+                                    Command="{Binding ExportRulesCommand}"
+                                    CommandParameter="Generic"
+                                    HorizontalContentAlignment="Left">
+                                <fa:FontAwesome Icon="Solid_FileExport"
+                                                FontSize="16" />
+                            </Button>
+
+                            <Button Margin="1,5"
+                                    Padding="2"
+                                    Focusable="False"
+                                    ToolTip="{x:Static strings:BoardDesignerStrings.ImportRulesTooltip}"
+                                    Command="{Binding ImportRulesCommand}"
+                                    CommandParameter="Generic"
+                                    HorizontalContentAlignment="Left">
+                                <fa:FontAwesome Icon="Solid_FileImport"
+                                                FontSize="16" />
+                            </Button>
+
+                        </StackPanel>
+                        <TreeView Grid.Column="1"
+                                  Name="treeRules"
+                                  ItemsSource="{Binding Rules}">
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding CurrentRuleNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </i:Interaction.Behaviors>
+
+                            <!-- This is to have a full selection of the tree item-->
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+
+                                    <Setter Property="IsExpanded"
+                                            Value="True" />
+                                    <Style.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="Grid.ColumnSpan"
+                                                    Value="3" />
+
+                                        </Style>
+
+                                    </Style.Resources>
+
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            <TreeView.ItemTemplate>
+
+                                <HierarchicalDataTemplate ItemsSource="{Binding Children, FallbackValue={x:Null}}"
+                                                          DataType="{x:Type designers:AbstractBoardRule}">
+                                    <StackPanel Orientation="Horizontal"
+                                                Name="PART_ItemPanel"
+                                                Margin="3">
+
+                                        <Image Width="16"
+                                               Height="16"
+                                               Source="{Binding Converter={x:Static conv:BoardRuleToImageConverter.Instance}}" />
+
+                                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                   Name="PART_ItemName"
+                                                   Margin="5,0"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Left" />
+                                    </StackPanel>
+                                    <HierarchicalDataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}"
+                                                     Value="false">
+                                            <Setter TargetName="PART_ItemPanel"
+                                                    Property="Opacity"
+                                                    Value="0.5" />
+                                            <Setter TargetName="PART_ItemName"
+                                                    Property="TextBlock.TextDecorations"
+                                                    Value="Strikethrough" />
+                                        </DataTrigger>
+                                    </HierarchicalDataTemplate.Triggers>
+                                </HierarchicalDataTemplate>
+
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+
+                        <ContentControl Grid.Column="2"
+                                        Margin="10,10,5,5"
+                                        Content="{Binding SelectedItem, ElementName=treeRules, UpdateSourceTrigger=PropertyChanged}">
+                            <ContentControl.Resources>
+
+                                <DataTemplate DataType="{x:Type designers:ElectricalClearanceRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.ECRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Line X1="10"
+                                                      Y1="60"
+                                                      X2="40"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="40"
+                                                      Y1="30"
+                                                      X2="90"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                                <Line X1="20"
+                                                      Y1="80"
+                                                      X2="50"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="50"
+                                                      Y1="50"
+                                                      X2="90"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterFirstObjectLabel}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter1.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter1.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter1.BoardObjects}"
+                                                          SelectedItem="{Binding Filter1.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterSecondObjectLabel}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter2.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter2.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter2.BoardObjects}"
+                                                          SelectedItem="{Binding Filter2.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+                                            <wiz:SingleOptionGroupView Margin="0,5,0,0"
+                                                                       DataContext="{Binding RuleLayerFilters}" />
+
+                                            <Grid Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=All}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="75" />
+                                                    <ColumnDefinition Width="75" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}"
+                                                           Grid.Row="0"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center" />
+                                                <TextBox Grid.Row="0"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding DefaultClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                <TextBox Grid.Row="1"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding MinClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock Grid.Row="2"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                                <TextBox Grid.Row="2"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding MaxClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </Grid>
+                                            <StackPanel Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=PerLayer}">
+                                                <DataGrid ItemsSource="{Binding LayerSpecs}"
+                                                          AutoGenerateColumns="False">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding LayerName}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleLayerNameHeader}"
+                                                                            IsReadOnly="True" />
+
+                                                        <DataGridTextColumn Binding="{Binding Default}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                                        <DataGridTextColumn Binding="{Binding Min}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                        <DataGridTextColumn Binding="{Binding Max}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:TrackWidthRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.TrackWidthRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Line X1="40"
+                                                      Y1="30"
+                                                      X2="90"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="30"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByLabel}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+                                            <wiz:SingleOptionGroupView Margin="0,5,0,0"
+                                                                       DataContext="{Binding RuleLayerFilters}" />
+
+                                            <Grid Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=All}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="75" />
+                                                    <ColumnDefinition Width="75" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}"
+                                                           Grid.Row="0"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center" />
+                                                <TextBox Grid.Row="0"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding DefaultWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                <TextBox Grid.Row="1"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding MinWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <TextBlock Grid.Row="2"
+                                                           Grid.Column="0"
+                                                           VerticalAlignment="Center"
+                                                           Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                                <TextBox Grid.Row="2"
+                                                         Grid.Column="1"
+                                                         Margin="5"
+                                                         Text="{Binding MaxWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </Grid>
+                                            <StackPanel Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=PerLayer}">
+                                                <DataGrid ItemsSource="{Binding LayerSpecs}"
+                                                          AutoGenerateColumns="False">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding LayerName}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleLayerNameHeader}"
+                                                                            IsReadOnly="True" />
+
+                                                        <DataGridTextColumn Binding="{Binding Default}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                                        <DataGridTextColumn Binding="{Binding Min}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                        <DataGridTextColumn Binding="{Binding Max}"
+                                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:ViaDefinitionRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.ViaDefinitionRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Ellipse Width="75"
+                                                         Height="75"
+                                                         Stroke="Brown"
+                                                         Fill="Transparent"
+                                                         StrokeThickness="25" />
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByDrillPair}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="200" />
+                                                    <ColumnDefinition Width="200" />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0"
+                                                            Margin="10">
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.DiameterLabel}"
+                                                               Style="{StaticResource subTitle_Style}" />
+                                                    <Separator Margin="0,10" />
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                                    <TextBox Text="{Binding DiameterDefault,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                    <TextBox Text="{Binding DiameterMin,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                                    <TextBox Text="{Binding DiameterMax,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1"
+                                                            Margin="10">
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.HoleLabel}"
+                                                               Style="{StaticResource subTitle_Style}" />
+                                                    <Separator Margin="0,10" />
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                                    <TextBox Text="{Binding DrillDefault,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                                    <TextBox Text="{Binding DrillMin,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                                    <TextBox Text="{Binding DrillMax,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:MaskExpansionRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.MaskExpansionRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Rectangle Width="60"
+                                                           Height="100"
+                                                           Canvas.Top="0"
+                                                           Canvas.Left="20"
+                                                           Fill="#FF800080" />
+                                                <Rectangle Width="40"
+                                                           Height="80"
+                                                           Canvas.Top="10"
+                                                           Canvas.Left="30"
+                                                           Fill="Brown" />
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.AppliesForLabel}"
+                                                           VerticalAlignment="Center" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          ItemsSource="{Binding MaskRuleTypes}"
+                                                          SelectedValue="{Binding MaskRuleType}"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName" />
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+
+                                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.ExpansionLabel}" />
+                                            <TextBox Text="{Binding Expansion,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                                <!--<DataTemplate DataType="{x:Type designers:MaskPasteMaskExpansionRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Paste mask expansion" />
+                                        <TextBox Text="{Binding Expansion, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </DataTemplate>-->
+                                <!-- Plane-->
+                                <!--<DataTemplate DataType="{x:Type designers:PlanePowerPlaneConnectStyleRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Expansion" />
+                                        <TextBox Text="{Binding Expansion, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="Air gap (mm)" />
+                                        <TextBox Text="{Binding AirGap, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="Conductor Width (mm)" />
+                                        <TextBox Text="{Binding ConductorWidth, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlanePowerPlaneClearanceRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Clearance" />
+                                        <TextBox Text="{Binding Clearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlanePolygonConnectStyleRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Air gap width" />
+                                        <TextBox Text="{Binding AirGapWidth, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>-->
+
+                                <!-- Placement -->
+                                <!--
+                                <DataTemplate DataType="{x:Type designers:PlacementComponentClearanceRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Min Vertical Clearance" />
+                                        <TextBox Text="{Binding MinVerticalClearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Min Horizontal Clearance" />
+                                        <TextBox Text="{Binding MinHorizontalClearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlacementHeightRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Min" />
+                                        <TextBox Text="{Binding Min, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Max" />
+                                        <TextBox Text="{Binding Max, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Preferred" />
+                                        <TextBox Text="{Binding Preferred, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>-->
+
+                                <!--Manufacturing-->
+                                <!--<DataTemplate DataType="{x:Type designers:ManufacturingMinAnnularRingRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Minimum annular ring"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+
+                                                <Ellipse Width="75"
+                                                         Height="75"
+                                                         Stroke="Brown"
+                                                         Fill="Transparent"
+                                                         StrokeThickness="25" />
+
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="Name" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="Comment" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Text="Min annular ring" />
+                                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>-->
+
+                                <DataTemplate DataType="{x:Type designers:ManufacturingHoleSizeRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.ManufacturingHoleSizeRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+                                                <Ellipse Width="75"
+                                                         Height="75"
+                                                         Canvas.Top="15"
+                                                         Canvas.Left="15"
+                                                         Fill="#AAFFFFFF" />
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <!--<TextBlock Margin="0,10,0,5"
+                                                       Text="Filter by drill pair" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="200" />
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />-->
+                                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                            <TextBox Text="{Binding Min,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+
+                                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                            <TextBox Text="{Binding Max,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+
+                                <DataTemplate DataType="{x:Type designers:ManufacturingClearanceRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.ManufacturingClearanceRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Ellipse Width="75"
+                                                         Height="75"
+                                                         Stroke="Brown"
+                                                         Fill="Transparent"
+                                                         StrokeThickness="25" />
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding ClearanceType}"
+                                                          ItemsSource="{Binding ClearanceTypes}" />
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+
+                                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.ClearanceLabel}" />
+                                            <TextBox Text="{Binding Value,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                </DataTemplate>
+
+                                <!--<DataTemplate DataType="{x:Type designers:MatchLengthsRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Match lengths"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+
+                                                <Line X1="10"
+                                                      Y1="60"
+                                                      X2="40"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="40"
+                                                      Y1="30"
+                                                      X2="90"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                                <Line X1="20"
+                                                      Y1="80"
+                                                      X2="50"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="50"
+                                                      Y1="50"
+                                                      X2="90"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="Name" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="Comment" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="Filter by" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+
+                                            <TextBlock Text="Tolerance" />
+                                            <TextBox Text="{Binding Tolerance, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                </DataTemplate>-->
+
+                                <DataTemplate DataType="{x:Type designers:GroupRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="{x:Static strings:BoardDesignerStrings.GroupRuleTitle}"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Drawing -->
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+                                                <Line X1="10"
+                                                      Y1="60"
+                                                      X2="40"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="40"
+                                                      Y1="30"
+                                                      X2="90"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                                <Line X1="20"
+                                                      Y1="80"
+                                                      X2="50"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="50"
+                                                      Y1="50"
+                                                      X2="90"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                                <CheckBox Margin="0,10,0,0"
+                                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                                          VerticalContentAlignment="Center"
+                                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByLabel}" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+
+                                        </StackPanel>
+                                    </Grid>
+
+                                </DataTemplate>
+
+                            </ContentControl.Resources>
+                        </ContentControl>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="{x:Static strings:BoardDesignerStrings.BOMTabHeader}">
+                <local:PartsBomView DataContext="{Binding PartsBOMViewModel}" />
+
+            </TabItem>
+            <TabItem Header="{x:Static strings:BoardDesignerStrings.OutputTabHeader}"
+                     Style="{StaticResource tabItemStyle}">
+                <TabControl TabStripPlacement="Left"
+                            HorizontalContentAlignment="Left">
+                    <TabItem Header="{x:Static strings:BoardDesignerStrings.ManufacturingTabHeader}"
+                             Style="{StaticResource tabItemStyle}">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.NCDrillFilesTitle}"
+                                           Style="{StaticResource title_Style}" />
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,10,0,0">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.Units}"
+                                               Margin="0,5,10,5"
+                                               MinWidth="50" />
+                                    <ComboBox  HorizontalAlignment="Left"
+                                               Width="60"
+                                               VerticalAlignment="Center"
+                                               ItemsSource="{Binding Source={StaticResource boardOutputUnitsEnum}}"
+                                               SelectedItem="{Binding BuildOptions.NCDrillUnits, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,5">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.FormatLabel}"
+                                               Margin="0,5,10,5"
+                                               MinWidth="50" />
+                                    <ComboBox  HorizontalAlignment="Left"
+                                               Width="60"
+                                               VerticalAlignment="Center"
+                                               ItemsSource="{Binding BuildOptions.NCDrillFormatBeforeDecimalValues}"
+                                               SelectedItem="{Binding BuildOptions.NCDrillFormatBeforeDecimal, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text=":"
+                                               Margin="5" />
+                                    <ComboBox  HorizontalAlignment="Left"
+                                               Width="60"
+                                               VerticalAlignment="Center"
+                                               ItemsSource="{Binding BuildOptions.NCDrillFormatAfterDecimalValues}"
+                                               SelectedItem="{Binding BuildOptions.NCDrillFormatAfterDecimal, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                <Separator Margin="0,10" />
+                            </StackPanel>
+
+                            <Grid Grid.Row="1"
+                                  Margin="0,10,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="{x:Static strings:BoardDesignerStrings.GerberFilesLabel}"
+                                           Style="{StaticResource title_Style}" />
+
+                                <StackPanel Grid.Row="1"
+                                            Margin="0,10,0,0">
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,5"
+                                                Visibility="Collapsed">
+                                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.VersionLabel}"
+                                                   Margin="0,5,10,5"
+                                                   MinWidth="50" />
+                                        <ComboBox  HorizontalAlignment="Left"
+                                                   Width="60"
+                                                   VerticalAlignment="Center"
+                                                   ItemsSource="{Binding Source={StaticResource boardOutputGerberVersionEnum}}"
+                                                   SelectedItem="{Binding BuildOptions.GerberVersion, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.Units}"
+                                                   Margin="0,5,10,5"
+                                                   MinWidth="50" />
+                                        <ComboBox  HorizontalAlignment="Left"
+                                                   Width="60"
+                                                   VerticalAlignment="Center"
+                                                   ItemsSource="{Binding Source={StaticResource boardOutputUnitsEnum}}"
+                                                   SelectedItem="{Binding BuildOptions.GerberUnits, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,5">
+                                        <TextBlock Text="{x:Static strings:BoardDesignerStrings.FormatLabel}"
+                                                   Margin="0,5,10,5"
+                                                   MinWidth="50" />
+                                        <ComboBox  HorizontalAlignment="Left"
+                                                   Width="60"
+                                                   VerticalAlignment="Center"
+                                                   ItemsSource="{Binding BuildOptions.GerberFormatBeforeDecimalValues}"
+                                                   SelectedItem="{Binding BuildOptions.GerberFormatBeforeDecimal, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text=":"
+                                                   Margin="5" />
+                                        <ComboBox  HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   Width="60"
+                                                   ItemsSource="{Binding BuildOptions.GerberFormatAfterDecimalValues}"
+                                                   SelectedItem="{Binding BuildOptions.GerberFormatAfterDecimal, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+
+                                    <CheckBox Margin="0,10,0,0"
+                                              Content="{x:Static strings:BoardDesignerStrings.PlotOutlineOnAllLayers}"
+                                              VerticalContentAlignment="Center"
+                                              IsChecked="{Binding BuildOptions.GerberPlotBoardOutlineOnAllLayers,UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <CheckBox Margin="0,10,0,0"
+                                              Content="{x:Static strings:BoardDesignerStrings.CreateZipFileForBoard}"
+                                              VerticalContentAlignment="Center"
+                                              IsChecked="{Binding BuildOptions.GerberCreateZipFile, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="2"
+                                          Margin="0,20,0,0"
+                                          ItemsSource="{Binding BuildOptions.GerberPlotLayers}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          CanUserResizeRows="False"
+                                          RowHeaderWidth="0"
+                                          EnableRowVirtualization="True"
+                                          VirtualizingStackPanel.IsVirtualizing="True"
+                                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                          GridLinesVisibility="None">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.PlotColumnHeader}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Plot, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.MirrorColumnHeader}"
+                                                                Visibility="Collapsed">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding MirrorPlot, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerNameColumnHeader}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Rectangle Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Center"
+                                                                   Height="16"
+                                                                   Width="18"
+                                                                   Margin="5,3" />
+                                                        <TextBlock Text="{Binding LayerName}"
+                                                                   Margin="5,0,0,0"
+                                                                   VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn Binding="{Binding GerberFileName}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.GerberFileNameColumnHeader}"
+                                                            Width="200">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style>
+                                                    <Setter Property="TextBlock.VerticalAlignment"
+                                                            Value="Center" />
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding GerberExtension}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.FileExtensionColumnHeader}"
+                                                            Width="100">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style>
+                                                    <Setter Property="TextBlock.VerticalAlignment"
+                                                            Value="Center" />
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerTypeColumnHeader}"
+                                                                IsReadOnly="True">
+
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}"
+                                                               VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+
+
+                    <TabItem Header="{x:Static strings:BoardDesignerStrings.BOMTabHeader}"
+                             Style="{StaticResource tabItemStyle}">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.ColumnsText}"
+                                           Grid.Column="0"
+                                           Grid.Row="0"
+                                           Margin="5,0"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+                                <StackPanel  Grid.Column="0"
+                                             Grid.Row="0"
+                                             Margin="5,0"
+                                             Orientation="Horizontal"
+                                             HorizontalAlignment="Right">
+                                    <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputAllColumns}"
+                                            Command="{Binding BuildOptions.Bom.MoveBomOutColumnDownCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                                            Focusable="False"
+                                            Margin="3,0"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource arrow-down}"
+                                               Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputAllColumns}"
+                                            Command="{Binding BuildOptions.Bom.MoveBomOutColumnUpCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                                            Focusable="False"
+                                            Margin="3,0"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource arrow-up}"
+                                               Stretch="Uniform" />
+                                    </Button>
+
+                                </StackPanel>
+
+                                <DataGrid x:Name="grid_BomOutputAllColumns"
+                                          Grid.Column="0"
+                                          Grid.Row="1"
+                                          Margin="5"
+                                          ItemsSource="{Binding BuildOptions.Bom.Columns}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          CanUserResizeRows="False"
+                                          CanUserSortColumns="False"
+                                          RowHeaderWidth="0"
+                                          EnableRowVirtualization="True"
+                                          VirtualizingStackPanel.IsVirtualizing="True"
+                                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                          GridLinesVisibility="None">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.ShowColumnHeader}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Show, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn Binding="{Binding ColumnName}"
+                                                            IsReadOnly="True"
+                                                            Header="{x:Static strings:BoardDesignerStrings.ColumnNameColumnHeader}"
+                                                            Width="150">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style>
+                                                    <Setter Property="TextBlock.VerticalAlignment"
+                                                            Value="Center" />
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <StackPanel Grid.Column="1"
+                                            Grid.Row="1"
+                                            Margin="10,25,10,0">
+
+                                    <Button CommandParameter="{Binding SelectedItems, ElementName=grid_BomOutputAllColumns}"
+                                            Command="{Binding BuildOptions.Bom.AddBomOutputGroupCommand}"
+                                            Margin="5"
+                                            Padding="4"
+                                            Width="24"
+                                            Height="24"
+                                            Focusable="False">
+                                        <Image Source="{StaticResource arrow-down}"
+                                               RenderTransformOrigin="0.5,0.5"
+                                               Stretch="Uniform">
+                                            <Image.RenderTransform>
+                                                <RotateTransform Angle="-90"
+                                                                 CenterX="0.5"
+                                                                 CenterY="0.5" />
+                                            </Image.RenderTransform>
+                                        </Image>
+                                    </Button>
+
+                                    <Button CommandParameter="{Binding SelectedItems, ElementName=grid_BomOutputGroupedColumns}"
+                                            Command="{Binding BuildOptions.Bom.RemoveBomOutputGroupCommand}"
+                                            Margin="5,10,5,5"
+                                            Padding="4"
+                                            Width="24"
+                                            Height="23"
+                                            Focusable="False">
+                                        <Image Source="{StaticResource arrow-up}"
+                                               RenderTransformOrigin="0.5,0.5"
+                                               Stretch="Uniform">
+                                            <Image.RenderTransform>
+                                                <RotateTransform Angle="-90"
+                                                                 CenterX="0.5"
+                                                                 CenterY="0.5" />
+                                            </Image.RenderTransform>
+                                        </Image>
+                                    </Button>
+                                </StackPanel>
+
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.GroupByLabel}"
+                                           Grid.Column="2"
+                                           Grid.Row="0"
+                                           Margin="5,0"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left" />
+
+                                <StackPanel  Grid.Column="2"
+                                             Grid.Row="0"
+                                             Margin="5,0"
+                                             Orientation="Horizontal"
+                                             HorizontalAlignment="Right">
+                                    <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputGroupedColumns}"
+                                            Command="{Binding BuildOptions.Bom.MoveBomOutGroupDownCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                                            Focusable="False"
+                                            Margin="3,0"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource arrow-down}"
+                                               Stretch="Uniform" />
+                                    </Button>
+
+                                    <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputGroupedColumns}"
+                                            Command="{Binding BuildOptions.Bom.MoveBomOutGroupUpCommand}"
+                                            ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                                            Focusable="False"
+                                            Margin="3,0"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="2">
+                                        <Image Source="{StaticResource arrow-up}"
+                                               Stretch="Uniform" />
+                                    </Button>
+
+                                </StackPanel>
+
+                                <DataGrid x:Name="grid_BomOutputGroupedColumns"
+                                          Grid.Column="2"
+                                          Grid.Row="1"
+                                          Margin="5"
+                                          ItemsSource="{Binding BuildOptions.Bom.GroupColumns}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          CanUserResizeRows="False"
+                                          CanUserSortColumns="False"
+                                          RowHeaderWidth="0"
+                                          EnableRowVirtualization="True"
+                                          VirtualizingStackPanel.IsVirtualizing="True"
+                                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                          GridLinesVisibility="None">
+                                    <DataGrid.Columns>
+                                        <!--<DataGridTemplateColumn Header="Show">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Show, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>-->
+
+                                        <DataGridTextColumn Binding="{Binding ColumnName}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.ColumnNameColumnHeader}"
+                                                            IsReadOnly="True"
+                                                            Width="150">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style>
+                                                    <Setter Property="TextBlock.VerticalAlignment"
+                                                            Value="Center" />
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+
+                                </DataGrid>
+                            </Grid>
+
+                            <DataGrid Grid.Row="2"
+                                      Margin="5"
+                                      ItemsSource="{Binding BuildOptions.Bom.BomPreviewItems}"
+                                      AutoGenerateColumns="True"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      CanUserResizeRows="False"
+                                      RowHeaderWidth="0"
+                                      EnableRowVirtualization="True"
+                                      VirtualizingStackPanel.IsVirtualizing="True"
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                      GridLinesVisibility="None">
+
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="{x:Static strings:BoardDesignerStrings.AssemblyTabHeader}"
+                             Style="{StaticResource tabItemStyle}"
+                             Visibility="{Binding BuildOptions.Assembly.IsOutputAssemblyEditable, Mode=OneTime, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <local:OutputAssemblyDrawingsOptionsView Grid.Row="0" />
+                            <local:OutputAssemblyPickAndPlaceOptionsView Margin="0,30,0,0"
+                                                                         Grid.Row="1" />
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="3D"
+                             Style="{StaticResource tabItemStyle}"
+                             Visibility="Collapsed">
+                        <TextBlock Foreground="Brown"
+                                   Text="Coming soon"
+                                   FontWeight="Bold"
+                                   FontSize="22"
+                                   HorizontalAlignment="Center" />
+                    </TabItem>
+                    <TabItem Header="Documentation"
+                             Style="{StaticResource tabItemStyle}"
+                             Visibility="Collapsed">
+                        <TextBlock Foreground="Brown"
+                                   Text="Coming soon"
+                                   FontWeight="Bold"
+                                   FontSize="22"
+                                   HorizontalAlignment="Center" />
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

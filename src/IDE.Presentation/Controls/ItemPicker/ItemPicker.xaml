@@ -1,0 +1,57 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IDE.Controls">
+    <Style TargetType="{x:Type local:ItemPicker}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ItemPicker}">
+                    <Grid>
+                        <ToggleButton x:Name="PART_ItemPickerToggleButton"
+                                      IsTabStop="True"
+                                      MinHeight="22"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      Padding="{TemplateBinding Padding}"
+                                      IsChecked="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            
+                            <ContentControl Focusable="False"
+                                            Content="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}}"
+                                            ContentTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <!-- SelectedItem Template-->
+                        </ToggleButton>
+
+                        <!--<ContentControl Focusable="False"
+                                            Content="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}}"
+                                            ContentTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"/>-->
+
+
+                        <Popup x:Name="PART_ItemPickerPopup"
+                           VerticalAlignment="Bottom"
+                           IsOpen="{Binding ElementName=PART_ItemPickerToggleButton, Path=IsChecked}"
+                           StaysOpen="False"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           HorizontalOffset="1"
+                           VerticalOffset="1"
+                           PopupAnimation="Slide"
+                          >
+                            <Border Background="Black"
+                                    BorderThickness="0"
+                                    BorderBrush="Silver">
+                                <ListBox x:Name="PART_ItemsSource"
+                                         SelectionMode="Single"
+                                         ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource TemplatedParent}}"
+                                         ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                         >
+                                </ListBox>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

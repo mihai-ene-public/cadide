@@ -1,0 +1,270 @@
+﻿<UserControl x:Class="IDE.Documents.Views.MeshDesignerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:views="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1200">
+  
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Toolbox -->
+        <local:ToolBoxControl DataContext="{Binding Toolbox}"
+                              Grid.Column="0"
+                              Grid.RowSpan="2" />
+
+        <!-- Top bar-->
+        <ctrls:ToolbarControl Grid.Row="0"
+                              Grid.Column="2" />
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Visibility="{Binding ShowPackageGenerator,Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Auto">
+                <ItemsControl Grid.Row="0"
+                          ItemsSource="{Binding PackageGenerator.PackageGenerators}"
+                          Visibility="{Binding PackageGenerator.ShowList,Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button CommandParameter="{Binding}"
+                                Command="{Binding Data.PackageGenerator.SelectGeneratorCommand, Source={StaticResource windowProxy}}"
+                                Content="{Binding Name}"
+                                Margin="5,3"
+                                MinWidth="75" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Grid Grid.Row="0"
+                  Visibility="{Binding PackageGenerator.ShowList,Converter={x:Static conv:BoolToVisibilityConverter.Instance}, ConverterParameter=true}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal">
+                    <Button Command="{Binding PackageGenerator.BackCommand}"
+                            Margin="5"
+                            Padding="4"
+                            Width="28"
+                            Height="28"
+                            Focusable="False"
+                            ToolTip="Back">
+                        <Image Source="{StaticResource arrow-up}"
+                               RenderTransformOrigin="0.5,0.5"
+                               Stretch="Uniform">
+                            <Image.RenderTransform>
+                                <RotateTransform Angle="-90"
+                                                 CenterX="0.5"
+                                                 CenterY="0.5" />
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+
+                    <TextBlock Text="{Binding PackageGenerator.CurrentPackageGenerator.Name, FallbackValue='Generator Name'}"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Margin="10,0,0,0" />
+                </StackPanel>
+
+
+                <ScrollViewer Grid.Row="2"
+                              HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Auto">
+                    <ContentControl Content="{Binding PackageGenerator.CurrentPackageGenerator}"
+                                    Grid.Row="2"
+                                    Margin="0,10,0,0">
+                        <ContentControl.Resources>
+                            <Style TargetType="TextBox"
+                                   BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="Margin"
+                                        Value="3" />
+                            </Style>
+
+                            <DataTemplate DataType="{x:Type views:AxialPackageGenerator}">
+                                <ctrls:AxialPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:BGAPackageGenerator}">
+                                <ctrls:BGAPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:ChipPackageGenerator}">
+                                <ctrls:ChipPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:CrystalSMDPackageGenerator}">
+                                <ctrls:CrystalSMDPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:DIPPackageGenerator}">
+                                <ctrls:DIPPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:DFNPackageGenerator}">
+                                <ctrls:DFNPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:DPakPackageGenerator}">
+                                <ctrls:DPakPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:ECapPackageGenerator}">
+                                <ctrls:ECapPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:MelfPackageGenerator}">
+                                <ctrls:MelfPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:PinHeaderStraightPackageGenerator}">
+                                <ctrls:PinHeaderStraightPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:QFNPackageGenerator}">
+                                <ctrls:QFNPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:QFPPackageGenerator}">
+                                <ctrls:QFPPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:SODPackageGenerator}">
+                                <ctrls:SODPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:SMAPackageGenerator}">
+                                <ctrls:SMAPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:SOICPackageGenerator}">
+                                <ctrls:SOICPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:SOT23PackageGenerator}">
+                                <ctrls:SOT23PackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:SOT223PackageGenerator}">
+                                <ctrls:SOT223PackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:RadialGenericRoundPackageGenerator}">
+                                <ctrls:RadialGenericRoundPackageGeneratorView />
+                            </DataTemplate>
+
+                            <DataTemplate DataType="{x:Type views:RadialLEDPackageGenerator}">
+                                <ctrls:RadialLEDPackageGeneratorView />
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                </ScrollViewer>
+            </Grid>
+
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+
+
+
+                <Button Content="_OK"
+                        Command="{Binding PackageGenerator.OKCommand}"
+                        Padding="3"
+                        Margin="6"
+                        MinHeight="24"
+                        MinWidth="80" />
+
+                <Button Content="_Cancel"
+                        Command="{Binding PackageGenerator.CancelCommand}"
+                        Padding="3"
+                        Margin="6"
+                        MinHeight="24"
+                        MinWidth="80" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Parametric package-->
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Visibility="{Binding ShowParametricPackageGenerator,Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Auto">
+                <ItemsControl Grid.Row="0"
+                          ItemsSource="{Binding ParametricPackageVM.PackageItems}"
+                          >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button CommandParameter="{Binding}"
+                                Command="{Binding Data.ParametricPackageVM.SelectGeneratorCommand, Source={StaticResource windowProxy}}"
+                                Content="{Binding Name}"
+                                Margin="5,3"
+                                MinWidth="75" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal">
+
+
+
+                <Button Content="_OK"
+                        Command="{Binding ParametricPackageVM.OKCommand}"
+                        Padding="3"
+                        Margin="6"
+                        MinHeight="24"
+                        MinWidth="80" />
+
+                <Button Content="_Cancel"
+                        Command="{Binding ParametricPackageVM.CancelCommand}"
+                        Padding="3"
+                        Margin="6"
+                        MinHeight="24"
+                        MinWidth="80" />
+            </StackPanel>
+
+        </Grid>
+
+        <!--<ctrls:MeshDesigner3DControl Grid.Row="1"
+                                     Grid.Column="2"/>-->
+
+        <ctrls:MeshDesigner3DXControl Grid.Row="1"
+                                      Grid.Column="2"/>
+    </Grid>
+</UserControl>

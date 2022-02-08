@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Project">
+  <Name>Library project</Name>
+  <Description>An empty library project. Here you can define components, footprints, symbols, etc</Description>
+  <Icon></Icon>
+  <Extension>project</Extension>
+</Template> 

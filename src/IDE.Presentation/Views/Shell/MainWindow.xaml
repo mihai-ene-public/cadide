@@ -1,0 +1,130 @@
+<mui:ModernWindow x:Class="IDE.App.Views.Shell.MainWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:view="clr-namespace:IDE.App.Views.Shell"
+                  xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+                  xmlns:conv="clr-namespace:IDE.Core.Converters"
+                  xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+                  Title="{Binding ApplicationTitle}"
+                  Icon="pack://application:,,,/IDE;component/pcb-icon.ico"
+                  xmlns:cmdLabel="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+                  xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
+                  behav:DialogCloser.DialogResult="{Binding DialogCloseResult}"
+                  behav:WindowMaximized.IsNotMaximized="{Binding IsNotMaximized,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  MinWidth="1000">
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <!--<ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/Styles/AvalonDockStyles.xaml" />-->
+                    <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Resources/DataTemplates/ViewDataTemplates.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+
+                <conv:ActiveDocumentConverter x:Key="ActiveDocumentConverter" />
+
+                <DataTemplate x:Key="AvalonDock_DocumentHeader">
+                    <DataTemplate.Resources>
+                        <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+                    </DataTemplate.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+                        <!-- Show IsReadOnly Icon in document tab if that properties' present and true -->
+                        <Image Source="{DynamicResource Image_DocTabReadOnly}"
+                               Margin="3,0,0,0"
+                               VerticalAlignment="Center">
+                            <Image.Visibility>
+                                <PriorityBinding FallbackValue="Collapsed">
+                                    <Binding Path="Content.IsReadOnly"
+                                             Mode="OneWay"
+                                             Converter="{StaticResource BoolToVisibilityConverter}" />
+                                </PriorityBinding>
+                            </Image.Visibility>
+                            <Image.ToolTip>
+                                <PriorityBinding FallbackValue="">
+                                    <Binding Path="Content.IsReadOnlyReason"
+                                             Mode="OneWay" />
+                                </PriorityBinding>
+                            </Image.ToolTip>
+                        </Image>
+                    </StackPanel>
+                </DataTemplate>
+            </ResourceDictionary>
+
+            
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <view:MainToolbar Grid.Row="0"
+                          SnapsToDevicePixels="True"
+                          Margin="3,0" />
+
+        <!--<ADView:AvalonDockView  Grid.Row="1"
+                                x:Name="dockView"
+                                x:FieldModifier="private" />-->
+        <avalonDock:DockingManager Grid.Row="1"
+                                   AnchorablesSource="{Binding Tools}"
+                                   x:Name="dockingManager"
+                                   DocumentsSource="{Binding Files}"
+                                   ActiveContent="{Binding ActiveDocument, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"
+                                   DocumentHeaderTemplate="{StaticResource AvalonDock_DocumentHeader}"
+                                   AllowDrop="True"
+                                   >
+            <avalonDock:DockingManager.DocumentContextMenu>
+                <ContextMenu xmlns:AvalondockConv="clr-namespace:Xceed.Wpf.AvalonDock.Converters;assembly=IDE.Controls.WPF">
+                    <ContextMenu.Resources>
+                        <AvalondockConv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                    </ContextMenu.Resources>
+
+                    <MenuItem Header="{x:Static cmdLabel:Strings.STR_AppCommand_OpenContainingFolder}"
+                              Command="{Binding Model.OpenContainingFolderCommand}"
+                              ToolTipService.ShowOnDisabled="True"
+                              ToolTip="{x:Static cmdLabel:Strings.STR_AppCommand_OpenContainingFolder_TT}" />
+
+                    <MenuItem Header="{x:Static cmdLabel:Strings.STR_AppCommand_CopyFileURLToClipboard}"
+                              Command="{Binding Model.CopyFullPathtoClipboard}"
+                              ToolTipService.ShowOnDisabled="True"
+                              ToolTip="{x:Static cmdLabel:Strings.STR_AppCommand_CopyFileURLToClipboard_TT}" />
+
+                    <Separator />
+
+                    <MenuItem Header="Close"
+                              Command="{Binding CloseCommand}"
+                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <MenuItem Header="Close All But This"
+                              Command="{Binding Model.Workspace.CloseAllFilesExceptCurrentCommand}"
+                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <MenuItem Header="Close all"
+                              Command="{Binding Model.Workspace.CloseAllFilesCommand}"
+                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                    <MenuItem Header="Float"
+                              Command="{Binding FloatCommand}" />
+
+                    <MenuItem Header="Dock as Tabbed Document"
+                              Command="{Binding DockAsDocumentCommand}" />
+
+                    <MenuItem Header="New Horizontal Tab Group"
+                              Command="{Binding NewHorizontalTabGroupCommand}"
+                              Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    </MenuItem>
+                </ContextMenu>
+            </avalonDock:DockingManager.DocumentContextMenu>
+
+            <avalonDock:LayoutRoot>
+            </avalonDock:LayoutRoot>
+
+        </avalonDock:DockingManager>
+
+
+    </Grid>
+
+</mui:ModernWindow>

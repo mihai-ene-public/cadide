@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library name="System.Resistors" version="1.1.0">
+  <symbols>
+    <symbol id="2019012317022546036" name="POTENTIOMETER">
+      <line zIndex="0" x1="50.762" y1="55.842" x2="50.762" y2="55.334" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.762" y1="55.334" x2="49.746" y2="54.572" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="54.572" x2="52.032000000000004" y2="53.302" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="53.302" x2="49.746" y2="52.032000000000004" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="52.032000000000004" x2="52.032000000000004" y2="50.762" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="50.762" x2="49.746" y2="49.492" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="49.492" x2="52.032000000000004" y2="48.222" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.032000000000004" y1="48.222" x2="49.746" y2="46.952" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="46.952" x2="50.762" y2="46.19" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.762" y1="46.19" x2="50.762" y2="45.682" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.794" y1="52.921" x2="53.429" y2="54.191" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.429" y1="54.191" x2="52.794" y2="54.191" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.794" y1="54.191" x2="52.159" y2="54.191" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.159" y1="54.191" x2="52.794" y2="52.921" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="A" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="A" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="58.42" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="E" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="E" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="43.18" pinLength="2.54" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="S" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="S" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <poly zIndex="0" borderWidth="0.5" borderColor="#FF000080" fillColor="#00FFFFFF">
+        <vertex x="53.302" y="52.032000000000004" />
+        <vertex x="52.032000000000004" y="50.762" />
+        <vertex x="53.302" y="49.492" />
+      </poly>
+      <line zIndex="0" x1="52.794" y1="55.461" x2="52.794" y2="54.191" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012317022546032" name="RESISTOR">
+      <line zIndex="0" x1="48.222" y1="50.762" x2="48.603" y2="49.746" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="48.603" y1="49.746" x2="49.238" y2="51.778" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.238" y1="51.778" x2="49.873" y2="49.746" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.873" y1="49.746" x2="50.508" y2="51.778" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="50.508" y1="51.778" x2="51.143" y2="49.746" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.143" y1="49.746" x2="51.778" y2="51.778" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.778" y1="51.778" x2="52.413000000000004" y2="49.746" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="52.413000000000004" y1="49.746" x2="53.048" y2="51.778" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.048" y1="51.778" x2="53.302" y2="50.762" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="45.72" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012317022546034" name="RPACK-BUSSED-5">
+      <line zIndex="0" x1="55.334" y1="50.762" x2="55.715" y2="49.746" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.715" y1="49.746" x2="56.35" y2="51.778" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.35" y1="51.778" x2="56.985" y2="49.746" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.985" y1="49.746" x2="57.62" y2="51.778" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="57.62" y1="51.778" x2="58.255" y2="49.746" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.255" y1="49.746" x2="58.89" y2="51.778" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.89" y1="51.778" x2="59.525" y2="49.746" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="59.525" y1="49.746" x2="60.16" y2="51.778" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="51.778" x2="60.414" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.334" y1="53.302" x2="55.715" y2="52.286" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.715" y1="52.286" x2="56.35" y2="54.318" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.35" y1="54.318" x2="56.985" y2="52.286" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.985" y1="52.286" x2="57.62" y2="54.318" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="57.62" y1="54.318" x2="58.255" y2="52.286" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.255" y1="52.286" x2="58.89" y2="54.318" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.89" y1="54.318" x2="59.525" y2="52.286" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="59.525" y1="52.286" x2="60.16" y2="54.318" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="54.318" x2="60.414" y2="53.302" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.334" y1="55.842" x2="55.715" y2="54.826" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.715" y1="54.826" x2="56.35" y2="56.858000000000004" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.35" y1="56.858000000000004" x2="56.985" y2="54.826" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.985" y1="54.826" x2="57.62" y2="56.858000000000004" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="57.62" y1="56.858000000000004" x2="58.255" y2="54.826" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.255" y1="54.826" x2="58.89" y2="56.858000000000004" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.89" y1="56.858000000000004" x2="59.525" y2="54.826" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="59.525" y1="54.826" x2="60.16" y2="56.858000000000004" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="56.858000000000004" x2="60.414" y2="55.842" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.334" y1="58.382" x2="55.715" y2="57.366" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.715" y1="57.366" x2="56.35" y2="59.397999999999996" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.35" y1="59.397999999999996" x2="56.985" y2="57.366" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.985" y1="57.366" x2="57.62" y2="59.397999999999996" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="57.62" y1="59.397999999999996" x2="58.255" y2="57.366" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.255" y1="57.366" x2="58.89" y2="59.397999999999996" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.89" y1="59.397999999999996" x2="59.525" y2="57.366" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="59.525" y1="57.366" x2="60.16" y2="59.397999999999996" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="59.397999999999996" x2="60.414" y2="58.382" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.334" y1="60.922" x2="55.715" y2="59.906" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.715" y1="59.906" x2="56.35" y2="61.938" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.35" y1="61.938" x2="56.985" y2="59.906" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="56.985" y1="59.906" x2="57.62" y2="61.938" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="57.62" y1="61.938" x2="58.255" y2="59.906" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.255" y1="59.906" x2="58.89" y2="61.938" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="58.89" y1="61.938" x2="59.525" y2="59.906" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="59.525" y1="59.906" x2="60.16" y2="61.938" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.16" y1="61.938" x2="60.414" y2="60.922" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="50.762" x2="55.334" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="53.302" x2="55.334" y2="53.302" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="55.842" x2="55.334" y2="55.842" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="55.334" y1="58.382" x2="53.302" y2="58.382" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="60.922" x2="55.334" y2="60.922" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.414" y1="60.922" x2="61.684" y2="60.922" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="60.922" x2="61.684" y2="58.382" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="58.382" x2="60.414" y2="58.382" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="58.382" x2="61.684" y2="55.842" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="55.842" x2="60.414" y2="55.842" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="55.842" x2="61.684" y2="53.302" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="53.302" x2="60.414" y2="53.302" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="60.414" y1="50.762" x2="61.684" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="50.762" x2="61.684" y2="53.302" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="48.222" x2="63.462" y2="48.222" width="0.4064" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="63.462" y1="48.222" x2="63.462" y2="50.762" width="0.4064" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="63.462" y1="50.762" x2="63.462" y2="63.462" width="0.4064" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="63.462" y1="63.462" x2="53.302" y2="63.462" width="0.4064" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="53.302" y1="63.462" x2="53.302" y2="48.222" width="0.4064" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="61.684" y1="50.762" x2="63.462" y2="50.762" width="0.1524" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <circle zIndex="0" x="61.684" y="50.762" diameter="0.508" borderWidth="0.4064" borderColor="#FF000080" fillColor="#00FFFFFF" />
+      <circle zIndex="0" x="61.684" y="53.302" diameter="0.508" borderWidth="0.4064" borderColor="#FF000080" fillColor="#00FFFFFF" />
+      <circle zIndex="0" x="61.684" y="55.842" diameter="0.508" borderWidth="0.4064" borderColor="#FF000080" fillColor="#00FFFFFF" />
+      <circle zIndex="0" x="61.684" y="58.382" diameter="0.508" borderWidth="0.4064" borderColor="#FF000080" fillColor="#00FFFFFF" />
+      <pin zIndex="0" name="1" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="1" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="66.04" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="2" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="2" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="3" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="3" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="53.34" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="4" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="4" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="5" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="5" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="58.42" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="6" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="6" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="60.96" pinLength="2.54" width="0.5" pinType="Passive" orientation="Left" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+    </symbol>
+    <symbol id="2019012317022546035" name="TRIMPOT">
+      <pin zIndex="0" name="CCW" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="CCW" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="45.72" pinLength="2.54" width="0.5" pinType="Passive" orientation="Up" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="CW" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="CW" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="50.8" y="55.88" pinLength="2.54" width="0.5" pinType="Passive" orientation="Down" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <pin zIndex="0" name="WIPER" showName="false" pinNameX="1" pinNameY="-1.45" pinNameRot="0" number="WIPER" showNumber="false" pinNumberX="0.3" pinNumberY="-2.25" pinNumberRot="0" x="55.88" y="50.8" pinLength="2.54" width="0.5" pinType="Passive" orientation="Right" swapLevel="0" pinColor="#FF000080" pinNameColor="#FF000080" pinNumberColor="#FF000080" />
+      <line zIndex="0" x1="50.762" y1="53.302" x2="49.746" y2="52.921" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="52.921" x2="51.778" y2="52.286" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.778" y1="52.286" x2="49.746" y2="51.651" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="51.651" x2="51.778" y2="51.016" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.778" y1="51.016" x2="49.746" y2="50.381" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="50.381" x2="51.778" y2="49.746" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.778" y1="49.746" x2="49.746" y2="49.111" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="49.746" y1="49.111" x2="51.778" y2="48.476" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <line zIndex="0" x1="51.778" y1="48.476" x2="50.762" y2="48.222" width="0.5" lineStyle="Solid" lineCap="Round" lineColor="#FF000080" />
+      <poly zIndex="0" borderWidth="0.5" borderColor="#FF000080" fillColor="#00FFFFFF">
+        <vertex x="51.778" y="50.762" />
+        <vertex x="53.302" y="51.778" />
+        <vertex x="53.302" y="49.746" />
+      </poly>
+    </symbol>
+  </symbols>
+  <footprints>
+    <footprint id="2019012317022546010" name="0805-ARV">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="48.095" y="51" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="49.365" y="51" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.635" y="51" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="4" layer="1" x="51.905" y="51" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="8" layer="1" x="48.095" y="49" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="7" layer="1" x="49.365" y="49" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="6" layer="1" x="50.635" y="49" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="5" layer="1" x="51.905" y="49" rot="0" width="0.65" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="52.5" y1="51.4" x2="52.5" y2="48.6" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.5" y1="48.6" x2="47.5" y2="51.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.5616" y1="48.288040625" x2="52.4384" y2="48.288040625" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.4384" y1="48.288040625" x2="52.4384" y2="51.711959375" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.4384" y1="51.711959375" x2="47.5616" y2="51.711959375" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="47.5616" y1="51.711959375" x2="47.5616" y2="48.288040625" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019012317022546026" name="POT-PTH-ALPS">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="56.730000000000004" y1="45.07" x2="56.730000000000004" y2="54.93" width="0.2032" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="56.730000000000004" y1="54.93" x2="44.653999999999996" y2="54.93" width="0.2032" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="44.653999999999996" y1="54.93" x2="44.653999999999996" y2="45.07" width="0.2032" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="44.653999999999996" y1="45.07" x2="56.730000000000004" y2="45.07" width="0.2032" layer="201" lineStyle="Solid" isLocked="false" />
+      <pad number="P$1" layer="1" x="57" y="52.5" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$2" layer="1" x="57" y="50" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$3" layer="1" x="57" y="47.5" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$4" layer="1" x="50" y="54.4" rot="360" width="4" height="4" cornerRadius="2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$5" layer="1" x="50" y="45.6" rot="360" width="4" height="4" cornerRadius="2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="2" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="56.827" y1="44.943" x2="56.827" y2="46.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.7" y1="51.1" x2="56.7" y2="51.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="44.527" y1="55.057" x2="48.375" y2="55.057" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.64" y1="44.943" x2="56.827" y2="44.943" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.639" y1="55.057" x2="56.827" y2="55.057" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="44.527" y1="44.943" x2="48.375" y2="44.943" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="44.527" y1="44.943" x2="44.527" y2="55.057" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.827" y1="53.6" x2="56.827" y2="55.027" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="56.7" y1="48.6" x2="56.7" y2="48.9" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019012317022546023" name="POT-SWITCH-PTH">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <pad number="2" layer="1" x="50" y="50" rot="360" width="2.4" height="2.4" cornerRadius="1.2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.2" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="3" layer="1" x="50" y="45" rot="360" width="2.4" height="2.4" cornerRadius="1.2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.2" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="1" layer="1" x="50" y="55" rot="360" width="2.4" height="2.4" cornerRadius="1.2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.2" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="S2" layer="1" x="44.5" y="55" rot="360" width="2.4" height="2.4" cornerRadius="1.2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.2" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="S1" layer="1" x="44.5" y="45" rot="360" width="2.4" height="2.4" cornerRadius="1.2" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.2" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="53.8" y1="43.5" x2="53.8" y2="47.27" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <mono x="54.699" y="52.27" layer="201" rot="0" fontName="Default" fontSize="0.4064" strokeWidth="0.2" isLocked="false">mounting surface</mono>
+      <line x1="53.8" y1="47.27" x2="53.8" y2="52.73" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="53.8" y1="52.73" x2="53.8" y2="53.1" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="53.8" y1="53.1" x2="53.8" y2="54" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="53.8" y1="54" x2="53.8" y2="56.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="54.318" y1="48.333" x2="54.064" y2="48.333" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="54.318" y1="52.016" x2="54.064" y2="52.016" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="42.3" y1="43.5" x2="42.3" y2="56.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="42.3" y1="56.5" x2="53.8" y2="56.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="42.3" y1="43.5" x2="53.8" y2="43.5" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="53.8" y1="47.27" x2="58" y2="47.27" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="58" y1="47.27" x2="58" y2="48.27" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="58" y1="48.27" x2="58" y2="51.73" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="58" y1="51.73" x2="58" y2="52.73" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="58" y1="52.73" x2="53.8" y2="52.73" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="58" y1="48.27" x2="60" y2="48.27" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="60" y1="51.73" x2="58" y2="51.73" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="42.126" y1="43.396" x2="53.683" y2="43.396" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="53.683" y1="43.396" x2="53.683" y2="45.809" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="42.126" y1="56.604" x2="53.683" y2="56.604" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="53.683" y1="56.604" x2="53.683" y2="54.191" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="42.126" y1="56.604" x2="42.126" y2="43.396" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <mono x="56.28" y="53.72" layer="201" rot="0" fontName="Default" fontSize="0.4064" strokeWidth="0.2" isLocked="false">*2.8mm diameter x 2mm tab at 9 o'clock (from front)</mono>
+      <line x1="60" y1="48.3" x2="59" y2="49" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="59" y1="49" x2="60" y2="50" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="60" y1="50" x2="59" y2="51" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="59" y1="51" x2="60" y2="51.7" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="53.8" y1="53.1" x2="55.8" y2="53.1" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="55.8" y1="53.1" x2="55.8" y2="54" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="55.8" y1="54" x2="53.8" y2="54" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019012317022546014" name="RPACK-SIP-PTH-5">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="48.73" y1="50" x2="51.27" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="62.7" x2="48.73" y2="62.7" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="50" x2="48.73" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="51.27" x2="48.73" y2="62.7" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="62.7" x2="51.27" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.27" y1="51.27" x2="51.27" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.73" y1="51.27" x2="51.27" y2="51.27" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="P$1" layer="1" x="50" y="50" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$2" layer="1" x="50" y="52.54" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$3" layer="1" x="50" y="55.08" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$4" layer="1" x="50" y="57.62" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$5" layer="1" x="50" y="60.16" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="P$6" layer="1" x="50" y="62.7" rot="360" width="1.6764" height="1.6764" cornerRadius="0.8382" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.8" slotHeight="0" slotRot="0" plated="false" />
+    </footprint>
+    <footprint id="2019012317022546015" name="TRIMPOT-PTH-3386U">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <circle x="50" y="49.425" diameter="8" borderWidth="0.127" isFilled="false" layer="201" isLocked="false" />
+      <line x1="45.235" y1="54.765" x2="46" y2="54.765" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54" y1="54.765" x2="54.765" y2="54.765" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54.765" y1="54.765" x2="54.765" y2="45.235" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54.765" y1="45.235" x2="45.235" y2="45.235" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="45.235" y1="45.235" x2="45.235" y2="54.765" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.5" y1="47.8" x2="49.5" y2="47.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.5" y1="47.8" x2="49.5" y2="51.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.5" y1="51.8" x2="50.5" y2="51.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="50.5" y1="51.8" x2="50.5" y2="47.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="50.5" y1="47.8" x2="51.5" y2="47.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="50" y1="46.3" x2="48.5" y2="47.8" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.5" y1="47.8" x2="50" y2="46.3" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="46" y1="54.765" x2="46" y2="54.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="46" y1="54.365" x2="54" y2="54.365" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="54" y1="54.365" x2="54" y2="54.765" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <pad number="1" layer="1" x="47.46" y="50.015" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="2" layer="1" x="50" y="50.015" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="3" layer="1" x="52.54" y="50.015" rot="360" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="1.016" slotHeight="0" slotRot="0" plated="false" />
+    </footprint>
+    <footprint id="2019012317022546018" name="TRIMPOT-SMD-3MM-CLOSED">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="49" y1="48.4" x2="48.4" y2="48.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.4" y1="48.4" x2="48.4" y2="51.6" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51" y1="48.4" x2="51.6" y2="48.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.6" y1="48.4" x2="51.6" y2="51.6" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="49.15" y="51.65" rot="0" width="1" height="0.9" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="48.35" rot="0" width="1.1" height="0.9" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="50.85" y="51.65" rot="0" width="1" height="0.9" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012317022546016" name="TRIMPOT-SMD-3MM-OPEN">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="48.8984" y1="48.4" x2="47.9936" y2="48.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.9936" y1="48.4" x2="47.9936" y2="51.5238" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.1016" y1="48.4" x2="52.0064" y2="48.4" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.0064" y1="48.4" x2="52.0064" y2="51.5238" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="48.8452" y="51.4214" rot="0" width="1.0922" height="1.6002" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="48.5786" rot="0" width="1.6002" height="1.6002" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51.1548" y="51.4214" rot="0" width="1.0922" height="1.6002" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012317022546017" name="TRIMPOT-SMD-5MM">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <line x1="47.5" y1="52.14" x2="47.5" y2="47.14" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="47.5" y1="47.14" x2="52.5" y2="47.14" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.5" y1="47.14" x2="52.5" y2="52.14" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.5" y1="52.14" x2="47.5" y2="52.14" width="0.127" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.6" y1="47.04" x2="47.4" y2="47.04" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.4" y1="47.04" x2="47.4" y2="48.44" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.409221875" y1="47.04" x2="52.6" y2="47.04" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.6" y1="47.04" x2="52.6" y2="48.44" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.90601875" y1="52.24" x2="47.4" y2="52.24" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.4" y1="52.24" x2="47.4" y2="51.54" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.1" y1="52.24" x2="52.6" y2="52.24" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.6" y1="52.24" x2="52.6" y2="51.54" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="A" layer="1" x="51.15" y="52.54" rot="0" width="1.3" height="1.3" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="B" layer="1" x="50" y="46.7615" rot="-270" width="2" height="1.4016" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="C" layer="1" x="48.85" y="52.54" rot="0" width="1.3" height="1.3" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+    </footprint>
+    <footprint id="2019012317022546009" name="TRIMPOT-SMD-TC33X">
+      <layers>
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="true" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <circle x="50" y="50" diameter="2.3" borderWidth="0.1016" isFilled="false" layer="201" isLocked="false" />
+      <line x1="48.55" y1="48.25" x2="48.55" y2="51.65" width="0.254" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.55" y1="51.65" x2="51.45" y2="51.65" width="0.254" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.45" y1="51.65" x2="51.45" y2="48.25" width="0.254" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.45" y1="48.25" x2="48.55" y2="48.25" width="0.254" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.55" y1="50.4" x2="48.55" y2="48.25" width="0.254" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="48.55" y1="48.25" x2="49.15" y2="48.25" width="0.254" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.45" y1="50.4" x2="51.45" y2="48.25" width="0.254" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="51.45" y1="48.25" x2="50.85" y2="48.25" width="0.254" layer="501" lineStyle="Solid" isLocked="false" />
+      <smd number="1" layer="1" x="49" y="51.825" rot="0" width="1.2" height="1.2" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50" y="48.5" rot="0" width="1.5" height="1.6" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="3" layer="1" x="51" y="51.825" rot="0" width="1.2" height="1.2" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="48.196600000000004" y1="47.4981" x2="51.803399999999996" y2="47.4981" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.803399999999996" y1="47.4981" x2="51.803399999999996" y2="52.6289" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.803399999999996" y1="52.6289" x2="48.196600000000004" y2="52.6289" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.196600000000004" y1="52.6289" x2="48.196600000000004" y2="47.4981" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+    </footprint>
+    <footprint id="2019060919265975000" name="RES-0402" library="System.Common.Footprints">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.5" y="50" rot="0" width="0.6" height="0.6" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.5" y="50" rot="0" width="0.6" height="0.6" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="49.7296" y1="49.7714" x2="50.2704" y2="49.7714" width="0.1524" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="50.2704" y1="50.2286" x2="49.7296" y2="50.2286" width="0.1524" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8" y1="49.35" x2="51.2" y2="49.35" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.2" y1="49.35" x2="51.2" y2="50.65" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.2" y1="50.65" x2="48.8" y2="50.65" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.8" y1="50.65" x2="48.8" y2="49.35" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <rect x="49.596000000000004" y="50" width="0.30000000000000426" height="0.6096000000000004" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <rect x="50.4088" y="50" width="0.29999999999999716" height="0.6096000000000004" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <model centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" modelId="2019061115411246000" modelName="RES-0402" modelLibrary="System.Common.Models" />
+    </footprint>
+    <footprint id="2019060919281043000" name="RES-0603" library="System.Common.Footprints">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.15" y="50" rot="0" width="1.1" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.85" y="50" rot="0" width="1.1" height="1" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="48.4" y1="49.3" x2="51.6" y2="49.3" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.6" y1="49.3" x2="51.6" y2="50.7" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.6" y1="50.7" x2="48.4" y2="50.7" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.4" y1="50.7" x2="48.4" y2="49.3" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.644" y1="49.568" x2="50.356" y2="49.568" width="0.1016" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.644" y1="50.419" x2="50.356" y2="50.419" width="0.1016" layer="201" lineStyle="Solid" isLocked="false" />
+      <rect x="49.41185" y="49.9949" width="0.5001000000000033" height="0.9500000000000028" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <rect x="50.58025" y="49.9949" width="0.5001000000000033" height="0.9500000000000028" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <model centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" modelId="2019061115455191000" modelName="RES-0603" modelLibrary="System.Common.Models" />
+    </footprint>
+    <footprint id="2019060919283084000" name="RES-0805" library="System.Common.Footprints">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="49.1" y="50" rot="0" width="0.8" height="1.25" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="50.9" y="50" rot="0" width="0.8" height="1.25" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="48.5" y1="49.2" x2="51.5" y2="49.2" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.5" y1="49.2" x2="51.5" y2="50.8" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="51.5" y1="50.8" x2="48.5" y2="50.8" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="48.5" y1="50.8" x2="48.5" y2="49.2" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <model centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" modelId="2019061115481528000" modelName="RES-0805" modelLibrary="System.Common.Models" />
+    </footprint>
+    <footprint id="2019060919291200000" name="RES-1206" library="System.Common.Footprints">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <smd number="1" layer="1" x="48.6" y="50" rot="0" width="1.6" height="1.8" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <smd number="2" layer="1" x="51.4" y="50" rot="0" width="1.6" height="1.8" cornerRadius="0" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" />
+      <line x1="47.6" y1="48.9" x2="52.4" y2="48.9" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.4" y1="51.1" x2="47.6" y2="51.1" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="47.6" y1="51.1" x2="47.6" y2="48.9" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="52.4" y1="48.9" x2="52.4" y2="51.1" width="0.0508" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.035" y1="49.213" x2="50.965" y2="49.213" width="0.1016" layer="201" lineStyle="Solid" isLocked="false" />
+      <line x1="49.035" y1="50.787" x2="50.965" y2="50.787" width="0.1016" layer="201" lineStyle="Solid" isLocked="false" />
+      <rect x="48.673249999999996" y="50.0009" width="0.7500999999999962" height="1.7000000000000028" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <rect x="51.326750000000004" y="49.9991" width="0.7500999999999962" height="1.7000000000000028" rot="0" borderWidth="0" isFilled="true" cornerRadius="0" layer="201" isLocked="false" />
+      <model centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" modelId="2019061115530352000" modelName="RES-1206" modelLibrary="System.Common.Models" />
+    </footprint>
+    <footprint id="2019060919315461000" name="RES-AXIAL-0.3" library="System.Common.Footprints">
+      <layers>
+        <layer id="1" stackOrder="0" name="Top layer" layerType="Signal" color="#FFA52A2A" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="201" stackOrder="0" name="Mechanical" layerType="Mechanical" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="301" stackOrder="0" name="Top Paste" layerType="PasteMask" color="#FFAAAAAA" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="401" stackOrder="0" name="Top Solder" layerType="SolderMask" color="#FF800080" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="501" stackOrder="0" name="Top Overlay" layerType="SilkScreen" color="#FFE1E100" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+        <layer id="701" stackOrder="0" name="Milling" layerType="MultiLayer" color="#80FFFFFF" thickness="0.01" dielectricConstant="0" plot="false" mirrorPlot="false" gerberExtension="GBR" />
+      </layers>
+      <pad number="1" layer="1" x="46.19" y="50" rot="0" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <pad number="2" layer="1" x="53.81" y="50" rot="0" width="1.8796" height="1.8796" cornerRadius="0.9398" autoGenerateSolderMask="true" adjustSolderMaskInRules="true" autoGeneratePasteMask="true" adjustPasteMaskInRules="true" holeOffsetX="0" holeOffsetY="0" drillType="Drill" drill="0.9" slotHeight="0" slotRot="0" plated="false" />
+      <line x1="47.46" y1="49.238" x2="52.54" y2="49.238" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.54" y1="49.238" x2="52.54" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.54" y1="50" x2="52.54" y2="50.762" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.54" y1="50.762" x2="47.46" y2="50.762" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.46" y1="50.762" x2="47.46" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.46" y1="50" x2="47.46" y2="49.238" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="52.54" y1="50" x2="52.794" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <line x1="47.46" y1="50" x2="47.206" y2="50" width="0.2032" layer="501" lineStyle="Solid" isLocked="false" />
+      <model centerX="0" centerY="0" centerZ="-1.8" rotationX="0" rotationY="0" rotationZ="0" modelId="2020112611072009000" modelName="RES-Axial-0.3" modelLibrary="System.Common.Models" />
+    </footprint>
+  </footprints>
+  <models>
+    <model id="2019061115411246000" name="RES-0402" library="System.Common.Models">
+      <chipParametricPackage id="0" centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" E="0.5" D="1" L="0.3" A="0.3" IsCapacitor="false" />
+    </model>
+    <model id="2019061115455191000" name="RES-0603" library="System.Common.Models">
+      <chipParametricPackage id="0" centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" E="0.8" D="1.6" L="0.3" A="0.4" IsCapacitor="false" />
+    </model>
+    <model id="2019061115481528000" name="RES-0805" library="System.Common.Models">
+      <chipParametricPackage id="0" centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" E="1.25" D="2" L="0.3" A="0.7" IsCapacitor="false" />
+    </model>
+    <model id="2019061115530352000" name="RES-1206" library="System.Common.Models">
+      <chipParametricPackage id="0" centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" E="1.6" D="3.2" L="0.3" A="0.7" IsCapacitor="false" />
+    </model>
+    <model id="2020112611072009000" name="RES-Axial-0.3" library="System.Common.Models">
+      <axialParametricPackage id="0" centerX="0" centerY="0" centerZ="0" rotationX="0" rotationY="0" rotationZ="0" Appearance="Resistor" Placement="Horizontal" IsDiode="false" D="7.62" D1="5.08" A="4" E="2" B="0.5" />
+    </model>
+  </models>
+  <components>
+    <component id="2019012317022547005" name="POTENTIOMETER-PTH-9MM-1/20W-20%" prefix="VR" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546036" symbolName="POTENTIOMETER" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012317022546026" footprintName="POT-PTH-ALPS">
+        <pad2pinMaps>
+          <map pad="P$3" gateId="1" pin="A" />
+          <map pad="P$1" gateId="1" pin="E" />
+          <map pad="P$2" gateId="1" pin="S" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022547010" name="RESISTOR-0402" prefix="R" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546032" symbolName="RESISTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="System.Common.Footprints" footprintId="2019060919265975000" footprintName="RES-0402">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022547011" name="RESISTOR-0603" prefix="R" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546032" symbolName="RESISTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="System.Common.Footprints" footprintId="2019060919281043000" footprintName="RES-0603">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022547012" name="RESISTOR-0805" prefix="R" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546032" symbolName="RESISTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="System.Common.Footprints" footprintId="2019060919283084000" footprintName="RES-0805">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022547013" name="RESISTOR-1206" prefix="R" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546032" symbolName="RESISTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="System.Common.Footprints" footprintId="2019060919291200000" footprintName="RES-1206">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022547008" name="RESISTOR-AXIAL-0.3" prefix="R" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="G$1" libraryName="local" symbolId="2019012317022546032" symbolName="RESISTOR" swaplevel="0" />
+      </gates>
+      <footprint libraryName="System.Common.Footprints" footprintId="2019060919315461000" footprintName="RES-AXIAL-0.3">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="1" />
+          <map pad="2" gateId="1" pin="2" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022546188" name="TRIMPOT-PTH-10MM-KNOB-1/2W-10%" prefix="VR" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="R?" libraryName="local" symbolId="2019012317022546035" symbolName="TRIMPOT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012317022546015" footprintName="TRIMPOT-PTH-3386U">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="CCW" />
+          <map pad="3" gateId="1" pin="CW" />
+          <map pad="2" gateId="1" pin="WIPER" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022546190" name="TRIMPOT-SMD-3MM-CLOSED-1/8W-20%" prefix="VR" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="R?" libraryName="local" symbolId="2019012317022546035" symbolName="TRIMPOT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012317022546018" footprintName="TRIMPOT-SMD-3MM-CLOSED">
+        <pad2pinMaps>
+          <map pad="1" gateId="1" pin="CCW" />
+          <map pad="3" gateId="1" pin="CW" />
+          <map pad="2" gateId="1" pin="WIPER" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022546191" name="TRIMPOT-SMD-3MM-OPEN-1/10W-25%" prefix="VR" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="R?" libraryName="local" symbolId="2019012317022546035" symbolName="TRIMPOT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012317022546009" footprintName="TRIMPOT-SMD-TC33X">
+        <pad2pinMaps>
+          <map pad="3" gateId="1" pin="CCW" />
+          <map pad="1" gateId="1" pin="CW" />
+          <map pad="2" gateId="1" pin="WIPER" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+    <component id="2019012317022546189" name="TRIMPOT-SMD-5MM-CLOSED-1/4W-20%" prefix="VR" componentType="Standard">
+      <properties />
+      <bomItems />
+      <gates>
+        <gate id="1" name="R?" libraryName="local" symbolId="2019012317022546035" symbolName="TRIMPOT" swaplevel="0" />
+      </gates>
+      <footprint libraryName="local" footprintId="2019012317022546017" footprintName="TRIMPOT-SMD-5MM">
+        <pad2pinMaps>
+          <map pad="A" gateId="1" pin="CCW" />
+          <map pad="C" gateId="1" pin="CW" />
+          <map pad="B" gateId="1" pin="WIPER" />
+        </pad2pinMaps>
+      </footprint>
+    </component>
+  </components>
+</library>

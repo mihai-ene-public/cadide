@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Template Type="Misc">
+  <Name>Text</Name>
+  <Description>A new empty text</Description>
+  <Icon></Icon>
+  <Extension>txt</Extension>
+</Template> 

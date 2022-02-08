@@ -1,0 +1,89 @@
+﻿<mui:ModernWindow x:Class="IDE.Presentation.Views.ImporterDialogs.EagleImporterView"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:IDE.Presentation.Views.ImporterDialogs"
+                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  mc:Ignorable="d"
+                  Style="{DynamicResource EmptyDialog}"
+                  xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+                  behav:DialogCloser.DialogResult="{Binding WindowCloseResult}"
+                  d:DesignHeight="450"
+                  d:DesignWidth="600">
+    <Grid Margin="10,30,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Text="Eagle file path" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="0,5,5,5"
+                     Text="{Binding SourceFile, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0,5"
+                    Padding="0"
+                    Content="..."
+                    Command="{Binding SelectFileCommand}" />
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="Destination folder" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="0"
+                     Margin="0,5,5,5"
+                     Text="{Binding DestinationFolder, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="0,5"
+                    Padding="0"
+                    Content="..."
+                    Command="{Binding SelectSolutionFolderCommand}" />
+        </Grid>
+        <Grid Grid.Row="1"
+              Margin="2,0"
+              VerticalAlignment="Bottom"
+              HorizontalAlignment="Right"
+              Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="StandardButtons" />
+                <ColumnDefinition Width="Auto"
+                                  SharedSizeGroup="StandardButtons" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="_OK"
+                    Command="{Binding OKCommand}"
+                    IsDefault="True"
+                    Grid.Column="0"
+                    Padding="3"
+                    Margin="6"
+                    MinHeight="24"
+                    MinWidth="80" />
+
+            <Button Content="_Cancel"
+                    Command="{Binding CancelCommand}"
+                    IsCancel="True"
+                    Grid.Column="1"
+                    Padding="3"
+                    Margin="6"
+                    MinHeight="24"
+                    MinWidth="80" />
+        </Grid>
+    </Grid>
+</mui:ModernWindow>

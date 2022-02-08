@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="IDE.Documents.Views.DocumentOverviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:behav="clr-namespace:IDE.Core.Behaviors"
+             xmlns:viewModels="clr-namespace:IDE.Core.ViewModels;assembly=IDE.Core.Presentation"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Brushes.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--<ToolBar VerticalAlignment="Stretch"
+                 Grid.Row="0"
+                 Background="#353535"
+                 ToolBarTray.IsLocked="True"
+                 SnapsToDevicePixels="True"
+                 behaviors:HideToolbarOverflowButton.HideGrip="True">-->
+        <StackPanel Grid.Row="0"
+                    Background="{DynamicResource ToolBarBackground}"
+                    Orientation="Horizontal">
+            <Button Command="{Binding RefreshCommand}"
+                    SnapsToDevicePixels="True"
+                    ToolTip="Refresh overview"
+                    ToolTipService.ShowOnDisabled="True"
+                    Margin="5"
+                    Padding="0"
+                    Width="20"
+                    Height="20"
+                    Focusable="False"
+                    FocusVisualStyle="{x:Null}">
+                <fa:FontAwesome  Icon="Solid_SyncAlt"
+                                FontSize="16"
+                                Foreground="{DynamicResource TextBrush}" />
+            </Button>
+        </StackPanel>
+        <!--</ToolBar>-->
+
+        <TreeView Grid.Row="1"
+                  ItemsSource="{Binding Document.Categories, IsAsync=True}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children, IsAsync=True}"
+                                          DataType="{x:Type viewModels:OverviewSelectNode}">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="3">
+
+                        <Image Width="16"
+                               Height="16"
+                               VerticalAlignment="Center"
+                               Source="{Binding DataItem, Converter={x:Static conv:CanvasItemToImageConverter.Instance},Mode=OneWay, Delay=100, IsAsync=True}" />
+
+                        <TextBlock Text="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate ItemsSource="{Binding Children, IsAsync=True}"
+                                          DataType="{x:Type viewModels:OverviewFolderNode}">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="3">
+
+                        <Image Width="16"
+                               Height="16"
+                               VerticalAlignment="Center"
+                               Source="{StaticResource folder-open}" />
+
+                        <TextBlock Text="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+
+            <i:Interaction.Behaviors>
+                <behav:TreeViewMultipleSelectionBehavior SelectedItems="{Binding SelectedNodes}" />
+            </i:Interaction.Behaviors>
+
+            <!-- This is to have a full selection of the tree item-->
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+
+                    <Setter Property="IsExpanded"
+                             Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <Setter Property="behav:TreeViewMultipleSelectionBehavior.IsItemSelected"
+                            Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!-- BUG: when selecting in Overview and focus and select on canvas, it loses connection with canvas -->
+                    <Style.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Grid.ColumnSpan"
+                                    Value="3" />
+
+                        </Style>
+
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <Trigger Property="behav:TreeViewMultipleSelectionBehavior.IsItemSelected"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="Gray" />
+                            <!--<Setter Property="{Binding IsSelected}"
+                                    Value="True" />-->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+
+        </TreeView>
+    </Grid>
+</UserControl>

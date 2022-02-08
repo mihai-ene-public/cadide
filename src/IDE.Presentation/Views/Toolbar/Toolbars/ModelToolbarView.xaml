@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="IDE.Controls.ModelToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:IDE.Controls"
+              xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             mc:Ignorable="d" 
+             d:DesignWidth="800">
+    <ToolBar  VerticalAlignment="Stretch"
+                      ToolBarTray.IsLocked="True"
+                      SnapsToDevicePixels="True"
+                      behaviors:HideToolbarOverflowButton.HideGrip="True">
+
+        <Button Command="{Binding Document.ShowPackageGeneratorCommand}"
+                        Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Define the model using a generator"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_Microchip"
+                                    FontSize="16"
+                                    Foreground="{DynamicResource TextBrush}" />
+        </Button>
+
+        <Button Command="{Binding Document.ShowParametricPackageCommand}"
+                        Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Define the model using parameters"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_Microchip"
+                                    FontSize="16"
+                                    Foreground="Orange" />
+        </Button>
+
+
+        <Button Command="{Binding Document.AddModelCommand}"
+                        Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Imports primitives from an existing model"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16"
+                                    Foreground="{DynamicResource TextBrush}" />
+        </Button>
+
+        <Button Command="{Binding Document.ImportModelCommand}"
+                        Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Import a model"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16"
+                                    Foreground="{DynamicResource TextBrush}" />
+        </Button>
+        <Button Command="{Binding Document.GroupItemsCommand}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Create a group from selected items"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_ObjectGroup"
+                                    FontSize="16"
+                                    Foreground="{DynamicResource TextBrush}" />
+        </Button>
+        <Button Command="{Binding Document.UngroupItemsCommand}"
+                        SnapsToDevicePixels="True"
+                        ToolTip="Split a selected group to its items"
+                        ToolTipService.ShowOnDisabled="True"
+                        Margin="5,0"
+                        FocusVisualStyle="{x:Null}">
+            <fa:FontAwesome Icon="Solid_ObjectUngroup"
+                                    FontSize="16"
+                                    Foreground="{DynamicResource TextBrush}" />
+        </Button>
+
+    </ToolBar>
+</UserControl>

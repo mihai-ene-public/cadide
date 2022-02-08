@@ -1,0 +1,1605 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IDE.Documents.Views"
+                    xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+                    xmlns:s="clr-namespace:IDE.Core.StyleSelectors"
+                    xmlns:conv="clr-namespace:IDE.Core.Converters"
+                    xmlns:ctrls="clr-namespace:IDE.Core.Controls"
+                    xmlns:controls="clr-namespace:IDE.Controls"
+                    xmlns:utils="clr-namespace:IDE.Core.Utilities"
+                    xmlns:ctrls2="clr-namespace:IDE.Controls"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+
+    <SolidColorBrush x:Key="isSelectedBrush"
+                     Color="#FFFF6A00" />
+    <SolidColorBrush x:Key="selectedSegmentsBrush"
+                     Color="#99FFFFFF" />
+    <SolidColorBrush x:Key="isMaskedBrush"
+                     Color="#FF424242" />
+    <SolidColorBrush x:Key="isHighlightedBrush"
+                     Color="#FFC0FF00" />
+    <SolidColorBrush x:Key="isPinConnectionMouseHovered"
+                     Color="#FFFFDC00" />
+    <SolidColorBrush x:Key="isFaultyBrush"
+                     Color="#99FFFFFF" />
+
+    <!-- TODO: in schematic we removed CanEdit with hittestVisible; see if we need it here-->
+    <DataTemplate DataType="{x:Type designers:LineBoardCanvasItem}">
+
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Line x:Name="PART_Line"
+                          X1="{Binding X1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y1="{Binding Y1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          X2="{Binding X2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y2="{Binding Y2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          StrokeEndLineCap="Round"
+                          StrokeStartLineCap="Round"
+                          Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          StrokeDashCap="Round">
+
+                    </Line>
+                    <ControlTemplate.Triggers>
+
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_Line"
+                                    Property="Stroke"
+                                    Value="{StaticResource isMaskedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Stroke"
+                                        TargetName="PART_Line"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:TextBoardCanvasItem}">
+        <ctrls:DragThumb Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                         Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid SnapsToDevicePixels="True"
+                          Background="Transparent">
+                        <!--<TextBlock x:Name="PART_TextDesigner"
+                                   Foreground="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   SnapsToDevicePixels="True"
+                                   FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                   FontSize="{Binding FontSize}"
+                                   FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0,0"
+                                   TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                   TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                   TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType"
+                                   Text="{Binding Text}">
+                        </TextBlock>-->
+
+                        <ctrls2:EditableLabel x:Name="PART_TextDesigner"
+                                              Foreground="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              SnapsToDevicePixels="True"
+                                              FontFamily="{Binding FontFamily, Converter={x:Static conv:FontNameToFontFamilyConverter.Instance}}"
+                                              FontSize="{Binding FontSize}"
+                                              FontWeight="{Binding Bold, Converter={x:Static conv:BoolToBoldConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              FontStyle="{Binding Italic, Converter={x:Static conv:BoolToItalicConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              Margin="0,0"
+                                              Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                                              TextDecorations="{Binding TextDecoration, FallbackValue=None, Converter={x:Static conv:TextDecorationEnumToTextDecorationConverter.Instance}}"
+                                              TextAlignment="{Binding TextAlign, Converter={x:Static conv:XTextAlignmentToTextAlignmentConverter.Instance}}"
+                                              TextWrapping="{Binding WordWrap, FallbackValue=NoWrap, Converter={x:Static conv:BoolToTextWrappingConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              TextOptions.TextFormattingMode="Ideal"
+                                              TextOptions.TextHintingMode="Animated"
+                                              TextOptions.TextRenderingMode="ClearType"
+                                              Text="{Binding Text, Mode=TwoWay}"
+                                              DisplayText="{Binding Text}"
+                                              ShrinkFontSizeWhenEditingBy="2"
+                                              Focusable="True"
+                                              IsReadOnly="False"
+                                              IsEditing="{Binding IsEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                        </ctrls2:EditableLabel>
+
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Grid.RenderTransform>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_TextDesigner"
+                                    Property="Foreground"
+                                    Value="{StaticResource isMaskedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Foreground"
+                                        TargetName="PART_TextDesigner"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:TextSingleLineBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid SnapsToDevicePixels="True">
+                        <ItemsControl x:Name="PART_LetterItems"
+                                      IsHitTestVisible="True"
+                                      ItemsSource="{Binding LetterItems, IsAsync=True}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <ItemsControl x:Name="PART_Items"
+                                                  ItemsSource="{Binding Items}"
+                                                  ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                                        <!---->
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas Width="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                                                        Height="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+
+                        </Grid.RenderTransform>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:DesignatorBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid SnapsToDevicePixels="True">
+                        <ItemsControl x:Name="PART_LetterItems"
+                                      IsHitTestVisible="True"
+                                      ItemsSource="{Binding LetterItems}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+
+                                    <ItemsControl x:Name="PART_Items"
+                                                  ItemsSource="{Binding Items}"
+                                                  ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                                        <!---->
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas Width="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                                                        Height="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!--<Grid.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Grid.RenderTransform>-->
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <!--<DataTemplate DataType="{x:Type designers:DesignatorBoardCanvasItem}">
+
+        <Grid SnapsToDevicePixels="True"
+              Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+              Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ItemsControl x:Name="PART_LetterItems"
+                          IsHitTestVisible="True"
+                          ItemsSource="{Binding LetterItems}"
+                          ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <ItemsControl x:Name="PART_Items"
+                                      ItemsSource="{Binding Items}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid Width="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
+                                          Height="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="{Binding Rot}" />
+
+                    <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                         Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                </TransformGroup>
+
+
+            </Grid.RenderTransform>
+        </Grid>
+
+
+    </DataTemplate>-->
+
+    <DataTemplate DataType="{x:Type designers:RectangleBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Panel.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <controls:RectangleBoardShape Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                  CornerRadius="{Binding CornerRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                  Fill="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                  Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                  StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                  DimmedBrush="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                  MaskedBrush="{StaticResource isMaskedBrush}"
+                                                  IsFilled="{Binding IsFilled}"
+                                                  IsMasked="{Binding Layer.IsMasked}"
+                                                  DocumentHasHighlightedNets="{Binding LayerDocument.HasHighlightedNets, FallbackValue=False, UpdateSourceTrigger=PropertyChanged}"
+                                                  IsHighlighted="False">
+                        <controls:RectangleBoardShape.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </TransformGroup>
+
+                        </controls:RectangleBoardShape.RenderTransform>
+                    </controls:RectangleBoardShape>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:PolygonBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Panel.ZIndex="-1">
+            <!--Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas>
+
+                        <!-- the real poured poly-->
+                        <Path x:Name="PART_polygon"
+                              Fill="Transparent"
+                              Visibility="{Binding IsPlaceholderVisible, Converter={x:Static conv:BoolToVisibilityConverter.InstanceReverse}}"
+                              Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeLineJoin="Round"
+                              Data="{Binding PolygonGeometry, Converter={x:Static conv:IGeometryOutlineToGeometryConverter.Instance}, IsAsync=True}">
+                        </Path>
+
+                        <!-- placeholder-->
+                        <Polygon x:Name="PART_Placeholder"
+                                 Visibility="{Binding IsPlaceholderVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                 Points="{Binding PolygonPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                 Fill="{x:Null}"
+                                 Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                 StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                 StrokeLineJoin="Round" />
+
+
+
+                        <!--<TextBlock x:Name="PART_SignalName"
+                                   Visibility="{Binding SignalNameIsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   IsHitTestVisible="False"
+                                   Foreground="White"
+                                   SnapsToDevicePixels="True"
+                                   FontFamily="Segoe UI"
+                                   FontSize="{Binding SignalNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0,0"
+                                   TextAlignment="Center"
+                                   TextWrapping="NoWrap"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType"
+                                   Text="{Binding Signal.Name, UpdateSourceTrigger=PropertyChanged}"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform  X="{Binding SignalNamePosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding SignalNamePosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                </TransformGroup>
+
+                            </TextBlock.RenderTransform>
+                        </TextBlock>-->
+                    </Canvas>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsFaulty}">
+                            <Setter TargetName="PART_polygon"
+                                    Property="Stroke"
+                                    Value="{StaticResource isFaultyBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_polygon"
+                                    Property="Stroke"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFilled}"
+                                     Value="True">
+                            <Setter TargetName="PART_polygon"
+                                    Property="Fill"
+                                    Value="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding PolygonType}"
+                                     Value="Keepout">
+                            <Setter TargetName="PART_polygon"
+                                    Property="Opacity"
+                                    Value="0.2" />
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Value="True"
+                                           Binding="{Binding Layer.IsMasked}" />
+                                <Condition Value="True"
+                                           Binding="{Binding IsFilled}" />
+                            </MultiDataTrigger.Conditions>
+                            <!-- we want this when IsFilled and IsMasked-->
+                            <Setter TargetName="PART_polygon"
+                                    Property="Fill"
+                                    Value="{StaticResource isMaskedBrush}" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Stroke"
+                                        TargetName="PART_polygon"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Setter Property="Fill"
+                                        TargetName="PART_polygon"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- when show placeholder = true and borderwidth = 0 show stroke with min value-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Value="True"
+                                           Binding="{Binding IsPlaceholderVisible}" />
+                                <Condition Value="0"
+                                           Binding="{Binding BorderWidth}" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="PART_Placeholder"
+                                    Property="StrokeThickness"
+                                    Value="1" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:CircleBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Panel.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <controls:EllipseBoardShape Center="{Binding Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                                RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                Fill="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                DimmedBrush="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                MaskedBrush="{StaticResource isMaskedBrush}"
+                                                IsFilled="{Binding IsFilled}"
+                                                IsMasked="{Binding Layer.IsMasked}"
+                                                DocumentHasHighlightedNets="{Binding LayerDocument.HasHighlightedNets, FallbackValue=False, UpdateSourceTrigger=PropertyChanged}"
+                                                IsHighlighted="False">
+
+                    </controls:EllipseBoardShape>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:ArcBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Path Fill="Transparent"
+                              x:Name="PART_Arc"
+                              Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeThickness="{Binding BorderWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeEndLineCap="Round"
+                              StrokeStartLineCap="Round"
+                              StrokeDashCap="Round">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding StartPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                IsFilled="{Binding IsFilled, UpdateSourceTrigger=PropertyChanged}"
+                                                IsClosed="{Binding IsFilled, UpdateSourceTrigger=PropertyChanged}">
+                                        <ArcSegment Point="{Binding EndPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    Size="{Binding Size, Converter={x:Static conv:MilimetersToScreenSizeConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    SweepDirection="{Binding SweepDirection, Converter={x:Static conv:XSweepDirectionToSweepDirectionConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsLargeArc="{Binding IsLargeArc,UpdateSourceTrigger=PropertyChanged}"
+                                                    RotationAngle="{Binding RotationAngle,UpdateSourceTrigger=PropertyChanged}"
+                                                    IsStroked="True"
+                                                    IsSmoothJoin="True" />
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+
+                        <!-- complete ellipse when selected-->
+                        <Path  Fill="Transparent"
+                               Stroke="{StaticResource isSelectedBrush}"
+                               StrokeThickness="0.5"
+                               StrokeEndLineCap="Round"
+                               StrokeStartLineCap="Round"
+                               StrokeDashCap="Round"
+                               StrokeDashArray="2,2"
+                               Visibility="{Binding IsSelected, FallbackValue=Collapsed, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding EndPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                IsFilled="{Binding IsFilled,UpdateSourceTrigger=PropertyChanged}"
+                                                IsClosed="False">
+                                        <ArcSegment Point="{Binding StartPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance},UpdateSourceTrigger=PropertyChanged}"
+                                                    Size="{Binding Size, Converter={x:Static conv:MilimetersToScreenSizeConverter.Instance},UpdateSourceTrigger=PropertyChanged}"
+                                                    SweepDirection="{Binding SweepDirection, Converter={x:Static conv:XSweepDirectionToSweepDirectionConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsLargeArc="{Binding IsLargeArc,Converter={x:Static conv:InverseBooleanConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                    RotationAngle="{Binding RotationAngle,UpdateSourceTrigger=PropertyChanged}"
+                                                    IsStroked="True"
+                                                    IsSmoothJoin="True" />
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_Arc"
+                                    Property="Stroke"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFilled}"
+                                     Value="True">
+                            <Setter TargetName="PART_Arc"
+                                    Property="Fill"
+                                    Value="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Value="True"
+                                           Binding="{Binding Layer.IsMasked}" />
+                                <Condition Value="True"
+                                           Binding="{Binding IsFilled}" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="PART_Arc"
+                                    Property="Fill"
+                                    Value="{StaticResource isMaskedBrush}" />
+                        </MultiDataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Stroke"
+                                        TargetName="PART_Arc"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:HoleCanvasItem}">
+
+        <!-- always visible-->
+        <ctrls:DragThumb Canvas.ZIndex="2000">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+
+                    <Path x:Name="PART_Drill"
+                          Fill="White"
+                          Opacity="0.5"
+                          Stroke="Gray"
+                          StrokeThickness="0">
+                        <Path.Data>
+                            <EllipseGeometry Center="{Binding Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                             RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                             RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                        </Path.Data>
+                    </Path>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding DrillType}"
+                                     Value="Slot">
+                            <Setter TargetName="PART_Drill"
+                                    Property="Data">
+                                <Setter.Value>
+                                    <RectangleGeometry Rect="{Binding Rect, Converter={x:Static conv:MilimetersToScreenPointsRectConverter.Instance}}"
+                                                       RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                       RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Drill"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="{Binding Rot}" />
+
+                                        <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                             Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:PadSmdCanvasItem}">
+        <ctrls:DragThumb RenderTransformOrigin="0.5,0.5"
+                         Canvas.ZIndex="{Binding ZIndex}"
+                         Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                         Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <controls:SmdPadShape x:Name="PART_PadShape"
+                                          Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          CornerRadius="{Binding CornerRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          CopperBrush="{Binding CopperLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          CopperVisible="{Binding CopperLayer.IsVisible}"
+                                          CopperZIndex="{Binding CopperLayer.ZIndex}"
+                                          PasteBrush="{Binding PasteLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          PasteVisible="{Binding PasteLayer.IsVisible}"
+                                          PasteZIndex="{Binding PasteLayer.ZIndex}"
+                                          SolderBrush="{Binding SolderMaskLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          SolderVisible="{Binding SolderMaskLayer.IsVisible}"
+                                          SolderZIndex="{Binding SolderMaskLayer.ZIndex}"
+                                          PadNumber="{Binding Number}"
+                                          PadNumberFontSize="{Binding PadNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          SignalName="{Binding Signal.Name}"
+                                          SignalNameFontSize="{Binding SignalNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          SignalNameIsVisible="{Binding PadSignalNameIsVisible}">
+                        <controls:SmdPadShape.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </TransformGroup>
+
+                        </controls:SmdPadShape.RenderTransform>
+                    </controls:SmdPadShape>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Copper Layer-->
+                        <DataTrigger Binding="{Binding CopperLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="CopperBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding CopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="CopperBrush"
+                                        Value="{Binding CopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding CopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="CopperBrush"
+                                        Value="{Binding CopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+
+                        <!-- Paste Layer-->
+                        <DataTrigger Binding="{Binding PasteLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="PasteBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding PasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="PasteBrush"
+                                        Value="{Binding PasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding PasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="PasteBrush"
+                                        Value="{Binding PasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- SolderMaskLayer Layer-->
+                        <DataTrigger Binding="{Binding SolderMaskLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="SolderBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding SolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="SolderBrush"
+                                        Value="{Binding SolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!-- a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding SolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="SolderBrush"
+                                        Value="{Binding SolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:PadThtCanvasItem}">
+        <ctrls:DragThumb RenderTransformOrigin="0.5,0.5"
+                         Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                         Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <controls:ThtPadShape x:Name="PART_PadShape"
+                                          Width="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          Height="{Binding Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          CornerRadius="{Binding CornerRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          TopCopperBrush="{Binding TopCopperLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          TopCopperVisible="{Binding TopCopperLayer.IsVisible}"
+                                          TopCopperZIndex="{Binding TopCopperLayer.ZIndex}"
+                                          TopPasteBrush="{Binding TopPasteLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          TopPasteVisible="{Binding TopPasteLayer.IsVisible}"
+                                          TopPasteZIndex="{Binding TopPasteLayer.ZIndex}"
+                                          TopSolderBrush="{Binding TopSolderMaskLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          TopSolderVisible="{Binding TopSolderMaskLayer.IsVisible}"
+                                          TopSolderZIndex="{Binding TopSolderMaskLayer.ZIndex}"
+                                          BottomCopperBrush="{Binding BottomCopperLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          BottomCopperVisible="{Binding BottomCopperLayer.IsVisible}"
+                                          BottomCopperZIndex="{Binding BottomCopperLayer.ZIndex}"
+                                          BottomPasteBrush="{Binding BottomPasteLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          BottomPasteVisible="{Binding BottomPasteLayer.IsVisible}"
+                                          BottomPasteZIndex="{Binding BottomPasteLayer.ZIndex}"
+                                          BottomSolderBrush="{Binding BottomSolderMaskLayer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}"
+                                          BottomSolderVisible="{Binding BottomSolderMaskLayer.IsVisible}"
+                                          BottomSolderZIndex="{Binding BottomSolderMaskLayer.ZIndex}"
+                                          PadNumber="{Binding Number}"
+                                          PadNumberFontSize="{Binding PadNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          SignalName="{Binding Signal.Name}"
+                                          SignalNameFontSize="{Binding SignalNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          SignalNameIsVisible="{Binding PadSignalNameIsVisible}"
+                                          Drill="{Binding Hole.Drill, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          DrillType="{Binding Hole.DrillType}"
+                                          DrillOffset="{Binding Hole.Center, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}}"
+                                          SlotHeight="{Binding Hole.Height, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                          SlotRot="{Binding Hole.Rot}">
+                        <controls:ThtPadShape.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Rot}" />
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </TransformGroup>
+
+                        </controls:ThtPadShape.RenderTransform>
+                    </controls:ThtPadShape>
+
+                    <ControlTemplate.Triggers>
+                        <!--Copper Layer-->
+                        <DataTrigger Binding="{Binding TopCopperLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="TopCopperBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopCopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopCopperBrush"
+                                        Value="{Binding TopCopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopCopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopCopperBrush"
+                                        Value="{Binding TopCopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+
+                        <!--Paste Layer-->
+                        <DataTrigger Binding="{Binding TopPasteLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="TopPasteBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopPasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopPasteBrush"
+                                        Value="{Binding TopPasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopPasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopPasteBrush"
+                                        Value="{Binding TopPasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--SolderMaskLayer Layer-->
+                        <DataTrigger Binding="{Binding TopSolderMaskLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="TopSolderBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopSolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopSolderBrush"
+                                        Value="{Binding TopSolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding TopSolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="TopSolderBrush"
+                                        Value="{Binding TopSolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--Bottom Copper Layer-->
+                        <DataTrigger Binding="{Binding BottomCopperLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="BottomCopperBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomCopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomCopperBrush"
+                                        Value="{Binding BottomCopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomCopperLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomCopperBrush"
+                                        Value="{Binding BottomCopperLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+
+                        <!--Paste Layer-->
+                        <DataTrigger Binding="{Binding BottomPasteLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="BottomPasteBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomPasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomPasteBrush"
+                                        Value="{Binding BottomPasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomPasteLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomPasteBrush"
+                                        Value="{Binding BottomPasteLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--SolderMaskLayer Layer-->
+                        <DataTrigger Binding="{Binding BottomSolderMaskLayer.IsMasked}"
+                                     Value="True">
+                            <Setter TargetName="PART_PadShape"
+                                    Property="BottomSolderBrush"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomSolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomSolderBrush"
+                                        Value="{Binding BottomSolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                        <!--a special case when a pad doesn't have a signal-->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding BottomSolderMaskLayer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal}"
+                                           Value="{x:Null}" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter TargetName="PART_PadShape"
+                                        Property="BottomSolderBrush"
+                                        Value="{Binding BottomSolderMaskLayer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:TrackBoardCanvasItem}">
+
+        <DataTemplate.Resources>
+            <utils:BindingProxy x:Key="trackProxy"
+                                Data="{Binding}" />
+        </DataTemplate.Resources>
+
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding ZIndex, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <ContentControl>
+                        <Canvas>
+                            <Polyline x:Name="PART_Track"
+                                      Points="{Binding Points, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{Binding Signal.Name}"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round"
+                                      Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                      StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                      StrokeDashCap="Round"
+                                      StrokeLineJoin="Round">
+                            </Polyline>
+                            <Polyline x:Name="PART_TrackSelected"
+                                      Visibility="{Binding SelectedPoints, Converter={x:Static conv:CountToVisibilityConverter.Instance}}"
+                                      Points="{Binding SelectedPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                      ToolTip="{Binding Signal.Name}"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round"
+                                      Stroke="{StaticResource selectedSegmentsBrush}"
+                                      StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                      StrokeDashCap="Round"
+                                      StrokeLineJoin="Round">
+                            </Polyline>
+
+                            <ItemsControl ItemsSource="{Binding SignalNames}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <!--<TextBlock x:Name="PART_SignalName"
+                                                   Panel.ZIndex="{Binding TextZIndex}"
+                                                   Visibility="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                   IsHitTestVisible="False"
+                                                   Foreground="White"
+                                                   FontFamily="Segoe UI"
+                                                   FontSize="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                   Margin="0"
+                                                   Padding="0"
+                                                   TextAlignment="Center"
+                                                   TextWrapping="NoWrap"
+                                                   TextOptions.TextFormattingMode="Ideal"
+                                                   TextOptions.TextHintingMode="Animated"
+                                                   TextOptions.TextRenderingMode="ClearType"
+                                                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                   >
+                                            <TextBlock.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="{Binding Position.Rotation}" />
+
+                                                    <TranslateTransform  X="{Binding Position.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                                         Y="{Binding Position.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                                </TransformGroup>
+
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>-->
+                                        <controls:TextPath x:Name="PART_SignalName"
+                                                           Panel.ZIndex="{Binding TextZIndex}"
+                                                           Visibility="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                           IsHitTestVisible="False"
+                                                           Fill="White"
+                                                           FontFamily="Segoe UI"
+                                                           FontSize="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                           Margin="0"
+                                                           TextOptions.TextFormattingMode="Ideal"
+                                                           TextOptions.TextHintingMode="Animated"
+                                                           TextOptions.TextRenderingMode="ClearType"
+                                                           Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
+                                            <controls:TextPath.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="{Binding Position.Rotation}" />
+
+                                                    <TranslateTransform  X="{Binding Position.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                                         Y="{Binding Position.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                                </TransformGroup>
+
+                                            </controls:TextPath.RenderTransform>
+                                        </controls:TextPath>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy} }"
+                                                         Value="false">
+                                                <Setter TargetName="PART_SignalName"
+                                                        Property="Visibility"
+                                                        Value="Collapsed" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                        </Canvas>
+
+                    </ContentControl>
+
+                    <ControlTemplate.Triggers>
+
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsFaulty}">
+                            <Setter TargetName="PART_Track"
+                                    Property="Stroke"
+                                    Value="{StaticResource isFaultyBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_Track"
+                                    Property="Stroke"
+                                    Value="{StaticResource isMaskedBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Stroke"
+                                        TargetName="PART_Track"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <!-- TODO: Via should take into account start and end layers-->
+    <DataTemplate DataType="{x:Type designers:ViaCanvasItem}">
+
+        <ctrls:DragThumb Panel.ZIndex="10000">
+            <!--Visibility="{Binding IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"-->
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid RenderTransformOrigin="0.5,0.5">
+                        <Path  Fill="#FFB8860B"
+                               Opacity="1"
+                               Stroke="Gray"
+                               StrokeThickness="0">
+                            <Path.Data>
+                                <EllipseGeometry Center="0,0"
+                                                 RadiusX="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                 RadiusY="{Binding Radius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </Path.Data>
+                        </Path>
+
+                        <Path Fill="White"
+                              Opacity="0.5"
+                              Stroke="Gray"
+                              StrokeThickness="0">
+                            <Path.Data>
+                                <EllipseGeometry Center="0,0"
+                                                 RadiusX="{Binding DrillRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                                 RadiusY="{Binding DrillRadius, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}" />
+                            </Path.Data>
+                        </Path>
+
+                        <!--<TextBlock x:Name="PART_SignalName"
+                                   Visibility="{Binding SignalNameIsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   IsHitTestVisible="False"
+                                   Foreground="White"
+                                   SnapsToDevicePixels="True"
+                                   FontFamily="Segoe UI"
+                                   FontSize="{Binding SignalNameFontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0,0"
+                                   TextAlignment="Center"
+                                   TextWrapping="NoWrap"
+                                   TextOptions.TextFormattingMode="Ideal"
+                                   TextOptions.TextHintingMode="Animated"
+                                   TextOptions.TextRenderingMode="ClearType"
+                                   Text="{Binding Signal.Name, UpdateSourceTrigger=PropertyChanged}"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform  X="{Binding SignalNamePosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding SignalNamePosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                </TransformGroup>
+
+                            </TextBlock.RenderTransform>
+                        </TextBlock>-->
+
+                        <Grid.RenderTransform>
+                            <TransformGroup>
+
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Grid.RenderTransform>
+                    </Grid>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:FootprintBoardCanvasItem}">
+        <ctrls:DragThumb RenderTransformOrigin="0.5,0.5"
+                         Panel.ZIndex="{Binding ZIndex}"
+                         Width="{Binding DisplayWidth, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                         Height="{Binding DisplayHeight, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas x:Name="PART_Footprint">
+                        <ItemsControl x:Name="PART_Items"
+                                      IsHitTestVisible="True"
+                                      ItemsSource="{Binding Items}"
+                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas IsHitTestVisible="True"
+                                            Background="{x:Null}" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding Rot}" />
+                                </TransformGroup>
+                            </ItemsControl.RenderTransform>
+                        </ItemsControl>
+
+                        <!-- Part Name -->
+                        <ctrls:PositionThumb Position="{Binding PartNamePosition, UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ShowName, Converter={x:Static conv:BoolToVisibilityConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                            <ctrls:PositionThumb.Template>
+                                <ControlTemplate>
+                                    <ContentControl Content="{Binding Designator, UpdateSourceTrigger=PropertyChanged}" />
+                                </ControlTemplate>
+                            </ctrls:PositionThumb.Template>
+                            <ctrls:PositionThumb.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding PartNamePosition.Rotation}" />
+
+                                    <TranslateTransform  X="{Binding PartNamePosition.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                         Y="{Binding PartNamePosition.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                </TransformGroup>
+                            </ctrls:PositionThumb.RenderTransform>
+                        </ctrls:PositionThumb>
+
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                     Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                            </TransformGroup>
+
+                        </Canvas.RenderTransform>
+                    </Canvas>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="Bottom"
+                                     Binding="{Binding Placement}">
+                            <Setter TargetName="PART_Footprint"
+                                    Property="RenderTransform">
+                                <Setter.Value>
+                                    <TransformGroup>
+                                        <ScaleTransform  ScaleX="-1" />
+                                        <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                             Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                    </TransformGroup>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:RegionBoardCanvasItem}">
+        <ctrls:DragThumb IsHitTestVisible="False">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Path x:Name="PART_BoardOutline"
+                              Stroke="#77FFA500"
+                              Fill="#7333"
+                              StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              StrokeEndLineCap="Round"
+                              StrokeStartLineCap="Round"
+                              StrokeDashCap="Round">
+                            <Path.Data>
+                                <PathGeometry>
+
+                                    <PathFigure StartPoint="{Binding StartPoint, Converter={x:Static conv:MilimetersToScreenPointConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                                IsFilled="True"
+                                                IsClosed="True"
+                                                Segments="{Binding Items, Delay=500, Converter={x:Static conv:ListRegionItemToPathSegmentCollectionConverter.Instance}, UpdateSourceTrigger=PropertyChanged}">
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:PlaneBoardCanvasItem}">
+        <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                         Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}"
+                         IsHitTestVisible="True">
+            <ctrls:DragThumb.Template>
+                <ControlTemplate>
+                    <Canvas>
+                        <Path x:Name="PART_Plane"
+                              Fill="Transparent"
+                              Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                              Data="{Binding RegionGeometry, Converter={x:Static conv:IGeometryToGeometryConverter.Instance}, IsAsync=True}">
+                        </Path>
+                    </Canvas>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding IsFaulty}">
+                            <Setter TargetName="PART_Plane"
+                                    Property="Stroke"
+                                    Value="{StaticResource isFaultyBrush}">
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Value="True"
+                                     Binding="{Binding Layer.IsMasked}">
+                            <Setter TargetName="PART_Plane"
+                                    Property="Stroke"
+                                    Value="{StaticResource isMaskedBrush}" />
+
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsFilled}"
+                                     Value="True">
+                            <Setter TargetName="PART_Plane"
+                                    Property="Fill"
+                                    Value="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTrigger>
+
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Value="True"
+                                           Binding="{Binding Layer.IsMasked}" />
+                                <Condition Value="True"
+                                           Binding="{Binding IsFilled}" />
+                            </MultiDataTrigger.Conditions>
+                            <!-- we want this when IsFilled and IsMasked-->
+                            <Setter TargetName="PART_Plane"
+                                    Property="Fill"
+                                    Value="{StaticResource isMaskedBrush}" />
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
+                                           Value="True" />
+                                <Condition Binding="{Binding Layer.IsMasked}"
+                                           Value="False" />
+                                <Condition Binding="{Binding Signal.IsHighlighted}"
+                                           Value="False" />
+
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Stroke"
+                                        TargetName="PART_Plane"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Setter Property="Fill"
+                                        TargetName="PART_Plane"
+                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </ctrls:DragThumb.Template>
+        </ctrls:DragThumb>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:BoardNetGraph}">
+
+        <ItemsControl IsHitTestVisible="False"
+                      ItemsSource="{Binding Lines}"
+                      Opacity="0.3">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas IsHitTestVisible="False" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Line x:Name="PART_Line"
+                          X1="{Binding X1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y1="{Binding Y1, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          X2="{Binding X2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          Y2="{Binding Y2, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          ToolTip="{Binding Net.Name}"
+                          IsHitTestVisible="False"
+                          StrokeEndLineCap="Round"
+                          StrokeStartLineCap="Round"
+                          Stroke="{Binding LineColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                          StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                          StrokeDashCap="Round">
+                    </Line>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type designers:LayerDesignerItem}">
+
+        <ItemsControl x:Name="PART_Items"
+                      ItemsSource="{Binding Items, IsAsync=True, Delay=50}"
+                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ctrls:DrawingCanvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </DataTemplate>
+
+</ResourceDictionary>

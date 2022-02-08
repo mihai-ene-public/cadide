@@ -1,0 +1,210 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
+                    xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit"
+                    xmlns:ctrls="clr-namespace:IDE.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        Checkbox style for pin visual
+        Original source of animation (is replaced with own XAML image)
+        http://stackoverflow.com/questions/7459642/how-do-i-create-a-wpf-checkbox-control-template-in-xaml-with-the-following-requi
+      -->
+    <Style TargetType="{x:Type ctrls:PinnableCheckbox}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="true" />
+        <!-- Setter Property="OverridesDefaultStyle" Value="true" -->
+        <Setter Property="FocusVisualStyle"
+                Value="{DynamicResource CheckBoxFocusVisual}" />
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <ScaleTransform CenterX="50"
+                                CenterY="50"
+                                ScaleX=".15"
+                                ScaleY=".15" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+
+                            <Grid>
+                                <!--<Canvas Width="75"
+                                        Height="75"
+                                        x:Name="NoCheckMark"
+                                        Opacity="0"
+                                        Visibility="Visible">
+                                    <Path Data="M 65.79911,52.087565 47.84237,34.299105 c -0.86439,-0.8898 -2.08968,-1.44278 -3.4372,-1.44278 -2.64345,0 -4.808278,2.13863 -4.808278,4.75959 V 71.318278 H 9.548435 c -3.31682,0 -6.00895,2.692665 -6.00895,6.009481 0,3.317081 2.69213,6.010011 6.00895,6.010011 h 30.048457 v 36.10504 c 0,2.61911 2.164828,4.76039 4.808278,4.76039 1.32106,0 2.52306,-0.53076 3.38957,-1.39409 l 18.02951,-17.83742 h 41.08159 v 3.60654 c 0,3.31655 2.69266,6.01001 6.00948,6.01001 3.31681,0 6.00948,-2.69346 6.00948,-6.01001 V 48.481565 c 0,-3.31682 -2.69267,-6.00949 -6.00948,-6.00949 -3.31708,0 -6.00948,2.69267 -6.00948,6.00949 v 3.606 z m 36.29845,21.634717 H 70.84789 c -2.64477,0 -4.80801,-2.163233 -4.80801,-4.808008 0,-2.644246 2.16324,-4.807744 4.80801,-4.807744 H 95.25 h 6.84756 c 2.64478,0 4.80828,2.163498 4.80828,4.807744 0,2.64451 -2.1635,4.808008 -4.80828,4.808008 z"
+                                          Fill="White" />
+                                </Canvas>-->
+                                <Rectangle Width="100"
+                                           Height="70"
+                                           Opacity="0"
+                                           x:Name="NoCheckMark">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <GeometryDrawing Brush="White"
+                                                                 Geometry="M 65.79911,52.087565 47.84237,34.299105 c -0.86439,-0.8898 -2.08968,-1.44278 -3.4372,-1.44278 -2.64345,0 -4.808278,2.13863 -4.808278,4.75959 V 71.318278 H 9.548435 c -3.31682,0 -6.00895,2.692665 -6.00895,6.009481 0,3.317081 2.69213,6.010011 6.00895,6.010011 h 30.048457 v 36.10504 c 0,2.61911 2.164828,4.76039 4.808278,4.76039 1.32106,0 2.52306,-0.53076 3.38957,-1.39409 l 18.02951,-17.83742 h 41.08159 v 3.60654 c 0,3.31655 2.69266,6.01001 6.00948,6.01001 3.31681,0 6.00948,-2.69346 6.00948,-6.01001 V 48.481565 c 0,-3.31682 -2.69267,-6.00949 -6.00948,-6.00949 -3.31708,0 -6.00948,2.69267 -6.00948,6.00949 v 3.606 z m 36.29845,21.634717 H 70.84789 c -2.64477,0 -4.80801,-2.163233 -4.80801,-4.808008 0,-2.644246 2.16324,-4.807744 4.80801,-4.807744 H 95.25 h 6.84756 c 2.64478,0 4.80828,2.163498 4.80828,4.807744 0,2.64451 -2.1635,4.808008 -4.80828,4.808008 z">
+                                                </GeometryDrawing>
+
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                                <!--<Canvas Width="75"
+                                        Height="75"
+                                        >
+
+                                    <Path Fill="White"
+                                          Data="M150.061,232.739l-67.232,67.868  c-3.363,3.267-5.453,7.898-5.453,12.991c0,9.991,8.083,18.173,17.989,18.173h127.379V445.34c0,12.536,10.177,22.711,22.713,22.711  c12.537,0,22.715-10.175,22.715-22.711V331.771h136.46c9.899,0,17.992-8.182,17.992-18.173c0-4.993-2.006-9.536-5.269-12.811  l-67.417-68.143V77.375h13.631c12.535,0,22.715-10.177,22.715-22.713c0-12.536-10.18-22.713-22.715-22.713H136.432  c-12.536,0-22.713,10.177-22.713,22.713c0,12.537,10.177,22.713,22.713,22.713h13.629V232.739z M231.83,95.548v118.109  c0,9.996-8.176,18.172-18.172,18.172c-9.994,0-18.171-8.176-18.171-18.172V95.548c0-9.996,8.177-18.173,18.171-18.173  C223.653,77.375,231.83,85.552,231.83,95.548z" />
+                                    
+                                </Canvas>-->
+
+                                <Rectangle Width="62"
+                                           Height="100"
+                                           x:Name="CheckMark">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <GeometryDrawing Brush="White"
+                                                                 Geometry="M150.061,232.739l-67.232,67.868  c-3.363,3.267-5.453,7.898-5.453,12.991c0,9.991,8.083,18.173,17.989,18.173h127.379V445.34c0,12.536,10.177,22.711,22.713,22.711  c12.537,0,22.715-10.175,22.715-22.711V331.771h136.46c9.899,0,17.992-8.182,17.992-18.173c0-4.993-2.006-9.536-5.269-12.811  l-67.417-68.143V77.375h13.631c12.535,0,22.715-10.177,22.715-22.713c0-12.536-10.18-22.713-22.715-22.713H136.432  c-12.536,0-22.713,10.177-22.713,22.713c0,12.537,10.177,22.713,22.713,22.713h13.629V232.739z M231.83,95.548v118.109  c0,9.996-8.176,18.172-18.172,18.172c-9.994,0-18.171-8.176-18.171-18.172V95.548c0-9.996,8.177-18.173,18.171-18.173  C223.653,77.375,231.83,85.552,231.83,95.548z">
+                                                </GeometryDrawing>
+
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                            </Grid>
+
+                        </BulletDecorator.Bullet>
+                    </BulletDecorator>
+
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked"
+                                           Value="False" />
+                            </MultiTrigger.Conditions>
+
+                            <MultiTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="NoCheckMark"
+                                                         To="0.3"
+                                                         Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="NoCheckMark"
+                                                         To="0"
+                                                         Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.ExitActions>
+
+                        </MultiTrigger>
+
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <!-- Setter TargetName="CheckBorder" Property="Opacity" Value="1"/ -->
+                            <Setter TargetName="CheckMark"
+                                    Property="Opacity"
+                                    Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                                 Value="False">
+                            <!-- Setter TargetName="CheckBorder" Property="Opacity" Value="0"/ -->
+                            <Setter TargetName="CheckMark"
+                                    Property="Opacity"
+                                    Value="0" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <Style TargetType="{x:Type ctrls:PinableListViewItem}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="true" />
+        <Setter Property="Padding"
+                Value="1" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <!-- This is required for the PathTrimmingTextBlock -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border Name="ListemBackgroundBorder"
+                            Padding="3"
+                            BorderBrush="Transparent"
+                            BorderThickness="1"
+                            CornerRadius="3"
+                            SnapsToDevicePixels="true"
+                            Background="Transparent">
+                        <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter TargetName="ListemBackgroundBorder"
+                                    Property="Background"
+                                    Value="{StaticResource ListViewItemMouseOverGradient}" />
+                            <Setter TargetName="ListemBackgroundBorder"
+                                    Property="BorderBrush"
+                                    Value="{StaticResource ListViewItemMouseOverBorder}" />
+                            <Setter TargetName="ListemBackgroundBorder"
+                                    Property="BorderThickness"
+                                    Value="1" />
+                        </Trigger>
+                        <!-- Trigger Property="IsSelected" Value="true">
+              <Setter TargetName="Border" Property="Background" Value="Black"/>
+            </Trigger -->
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="{StaticResource PinableListViewForegroundDisabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ctrls:PinableListView}">
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrls:PinableListView}">
+                    <Border Padding="0"
+                            BorderThickness="0"
+                            BorderBrush="Transparent"
+                            Background="{StaticResource ToolViewBackground}"
+                            Name="Bd"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer Padding="0"
+                                      Focusable="False">
+                            <ItemsPresenter SnapsToDevicePixels="True" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

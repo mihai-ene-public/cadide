@@ -1,0 +1,86 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:IDE.Documents.Views"
+                    xmlns:docs="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
+                    xmlns:models="clr-namespace:IDE.Core.ViewModels;assembly=IDE.Core.Presentation"
+                    xmlns:errors="clr-namespace:IDE.Core.Errors;assembly=IDE.Core.Presentation"
+                    xmlns:mru="clr-namespace:IDE.Core.MRU;assembly=IDE.Core.Presentation"
+                    >
+    <DataTemplate DataType="{x:Type docs:ComponentDesignerFileViewModel}">
+        <local:ComponentDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:BoardDesignerFileViewModel}">
+        <local:BoardDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:SimpleTextDocumentViewModel}">
+        <local:SimpleTextDocumentView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:FootprintDesignerFileViewModel}">
+        <local:FootprintDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:MeshDesignerViewModel}">
+        <local:MeshDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:OutputViewModel}">
+        <local:OutputView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:PropertiesToolWindowViewModel}">
+        <local:PropertiesWindowView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:DocumentOverviewViewModel}">
+        <local:DocumentOverviewView />
+    </DataTemplate>
+
+    <!--todo: aim to remove this-->
+    <DataTemplate DataType="{x:Type mru:RecentFilesModel}">
+        <!--<local:RecentFilesView />-->
+        <StackPanel />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:SchematicDesignerViewModel}">
+        <local:SchematicDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:SchematicSheetsViewModel}">
+        <local:SchematicSheetsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:SolutionExplorerViewModel}">
+        <local:SolutionExplorerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:StartPageViewModel}">
+        <local:StartPageView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type docs:SymbolDesignerViewModel}">
+        <local:SymbolDesignerView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:LayersToolWindowViewModel}">
+        <local:LayersToolWindow />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type errors:ErrorsToolWindowViewModel}">
+        <local:ErrorsToolWindow />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type docs:SolutionProjectPropertiesViewModel}">
+        <local:SolutionProjectPropertiesView />
+    </DataTemplate>
+    <!--<DataTemplate DataType="{x:Type docs:FontDesignerViewModel}">
+        <local:FontDesignerView />
+    </DataTemplate>-->
+    <DataTemplate DataType="{x:Type models:SelectionFilterToolViewModel}">
+        <local:SelectionFilterToolView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:Preview3DWindowViewModel}">
+        <local:BoardPreview3DView />
+    </DataTemplate>
+</ResourceDictionary>
