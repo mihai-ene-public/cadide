@@ -10,31 +10,6 @@
     //[Export(typeof(IAppCoreModel))]
     public class AppCoreModel : IAppCoreModel
 	{
-		//protected static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-		#region constructors
-		/// <summary>
-		/// Class constructor
-		/// </summary>
-		//[ImportingConstructor]
-		public AppCoreModel()
-		{
-		}
-		#endregion constructors
-
-		#region properties
-		///// <summary>
-		///// Gets a string that denotes an internet link to
-		///// a web site where users can enter their issues.
-		///// </summary>
-		//public string IssueTrackerLink
-		//{
-		//	get
-		//	{
-		//		return AppHelpers.IssueTrackerLink;
-		//	}
-		//}
-
 		/// <summary>
 		/// Gets the file name of the layout file that is useful for AvalonDock.
 		/// </summary>
@@ -102,45 +77,23 @@
 			}
 		}
 
-		/// <summary>
-		/// Gets the company string of this application.
-		/// </summary>
-		public string Company
-		{
-			get
-			{
-				return AppHelpers.Company;
-			}
-		}
 
-		/// <summary>
-		/// Get path and file name to application specific session file
-		/// </summary>
-		public string DirFileAppSessionData
-		{
-			get
-			{
-				return AppHelpers.DirFileAppSessionData;
-			}
-		}
+        /// <summary>
+        /// Get path and file name to application specific session file
+        /// </summary>
+        public string DirFileAppSessionData => AppHelpers.DirFileAppSessionData;
 
-		/// <summary>
-		/// Get path and file name to application specific settings file
-		/// </summary>
-		public string DirFileAppSettingsData
+        /// <summary>
+        /// Get path and file name to application specific settings file
+        /// </summary>
+        public string DirFileAppSettingsData
 		{
 			get
 			{
 				return AppHelpers.DirFileAppSettingsData;
 			}
 		}
-		#endregion properties
 
-		#region methods
-		/// <summary>
-		/// Create a dedicated directory to store program settings and session data
-		/// </summary>
-		/// <returns></returns>
 		public bool CreateAppDataFolder()
 		{
 			try
@@ -150,22 +103,11 @@
 			}
 			catch //(Exception exp)
 			{
-				//logger.Error(exp);
 				return false;
 			}
 
 			return true;
 		}
 
-		///// <summary>
-		///// Restore the applications window from minimized state
-		///// into non-minimzed state and send it to the top to make
-		///// sure its visible for the user.
-		///// </summary>
-		//public void RestoreCurrentMainWindow()
-		//{
-		//	AppHelpers.RestoreCurrentMainWindow();
-		//}
-		#endregion methods
 	}
 }

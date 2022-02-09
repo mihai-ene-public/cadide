@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using IDE.Core.ViewModels;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -7,12 +8,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Modern PCB Designer")]
+[assembly: AssemblyTitle("CadIde")]
 [assembly: AssemblyDescription("An integraded environment for PCBs.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Modern PCB Designer")]
-[assembly: AssemblyCopyright("©2020")]
+[assembly: AssemblyProduct("CadIde")]
+[assembly: AssemblyCopyright("©2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

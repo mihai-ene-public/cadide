@@ -1,6 +1,5 @@
 ﻿using IDE.App.Views.Shell;
 using IDE.Core.Interfaces;
-using IDE.Core.Presentation.Licensing;
 using IDE.Core.Settings;
 using IDE.Core.Utilities;
 using IDE.Core.ViewModels;
@@ -41,9 +40,6 @@ namespace IDE
             ApplicationInitializer.Initialize();
 
             CreateShell();
-
-            var licenseManager = new LicenseManager();
-            licenseManager.VerifyLicensing();
 
             // Show the startpage if application starts for the very first time
             // (This requires that command binding was succesfully done before this line)

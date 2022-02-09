@@ -36,7 +36,7 @@
                        Grid.Row="0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top">
-                  <TextBlock Text="Modern PCB Designer"
+                  <TextBlock Text="Cad Ide"
                              FontSize="48" />
             </TextBlock>
             <Grid Grid.Row="1">
@@ -155,33 +155,32 @@
                             <StackPanel Margin="10"
                                         Grid.Column="1">
 
-                                <TextBlock Text="{x:Static resources:Strings.StartPageVideoTutorialsLabel}"
+                                <!--<TextBlock Text="{x:Static resources:Strings.StartPageVideoTutorialsLabel}"
                                            FontSize="16"
                                            FontWeight="Bold" />
 
                                 <ctrls:WebHyperlink Margin="30,5,5,5"
                                                VerticalAlignment="Bottom"
-                                               NavigateUri="https://www.youtube.com/channel/UCeiSu6x4TuQagOilvYrhofg"
-                                               Text="{x:Static resources:Strings.StartPageYoutubeChannelText}" />
-                                <!--VerticalAlignment="Bottom"Margin="30,5,5,5"-->
+                                               NavigateUri="https://www.youtube.com/channel/comingsoon"
+                                               Text="{x:Static resources:Strings.StartPageYoutubeChannelText}" />-->
 
-                                <TextBlock Text="{x:Static resources:Strings.StartPageOnlineTutorialsLabel}"
+                                <!--<TextBlock Text="{x:Static resources:Strings.StartPageOnlineTutorialsLabel}"
                                            FontSize="16"
                                            FontWeight="Bold"
                                            Margin="0,10,0,0" />
                                 <ctrls:WebHyperlink Margin="30,5,5,5"
                                                     VerticalAlignment="Bottom"
-                                                    NavigateUri="https://modernpcbstudio.com/blog/tag/tutorials"
-                                                    Text="{x:Static resources:Strings.StartPageWebsiteText}" />
+                                                    NavigateUri=""
+                                                    Text="{x:Static resources:Strings.StartPageWebsiteText}" />-->
 
-                                <TextBlock Text="{x:Static resources:Strings.StartPageUpdatesLabel}"
+                                <!--<TextBlock Text="{x:Static resources:Strings.StartPageUpdatesLabel}"
                                            FontSize="16"
                                            FontWeight="Bold"
                                            Margin="0,10,0,0" />
                                 <ctrls:WebHyperlink Margin="30,5,5,5"
                                                     VerticalAlignment="Bottom"
-                                                    NavigateUri="https://modernpcbstudio.com/downloads"
-                                                    Text="{x:Static resources:Strings.StartPageDownloadsPageText}" />
+                                                    NavigateUri=""
+                                                    Text="{x:Static resources:Strings.StartPageDownloadsPageText}" />-->
 
                                 <TextBlock Text="{x:Static resources:Strings.StartPageGithubLabel}"
                                            FontSize="16"
@@ -189,7 +188,7 @@
                                            Margin="0,10,0,0" />
                                 <ctrls:WebHyperlink Margin="30,5,5,5"
                                                     VerticalAlignment="Bottom"
-                                                    NavigateUri="https://github.com/modernpcbstudio?tab=repositories"
+                                                    NavigateUri="https://github.com/mihai-ene-public?tab=repositories"
                                                     Text="{x:Static resources:Strings.StartPageRepositoriesText}" />
 
                             </StackPanel>

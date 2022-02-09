@@ -19,7 +19,7 @@ namespace IDE.Resources.Local {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -525,24 +525,6 @@ namespace IDE.Resources.Local {
         public static string MenuAboutTooltip {
             get {
                 return ResourceManager.GetString("MenuAboutTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Activate license....
-        /// </summary>
-        public static string MenuActivateLicenseHeader {
-            get {
-                return ResourceManager.GetString("MenuActivateLicenseHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Activate or deactivate license for the application.
-        /// </summary>
-        public static string MenuActivateLicenseTooltip {
-            get {
-                return ResourceManager.GetString("MenuActivateLicenseTooltip", resourceCulture);
             }
         }
         

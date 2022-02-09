@@ -116,17 +116,6 @@ namespace IDE.Core.Commands
             get { return about; }
         }
 
-        static ICommand showLicenseActivation;
-        public static ICommand ShowLicenseActivation
-        {
-            get
-            {
-                if (showLicenseActivation == null)
-                    showLicenseActivation = CreateUICommand("Activate or deactivate a license", "LicenseActivation");
-
-                return showLicenseActivation;
-            }
-        }
 
         public static ICommand ProgramSettings
         {
@@ -594,8 +583,6 @@ namespace IDE.Core.Commands
             {
                 if (changeModeCommand == null)
                 {
-                    //var inputs = new InputGestureCollection();
-                    //inputs.Add(new KeyGesture(Key.Tab));
                     changeModeCommand = CreateUICommand("Change Mode", "changeMode", typeof(AppCommand), XKey.Tab);
                 }
 
@@ -614,59 +601,12 @@ namespace IDE.Core.Commands
             {
                 if (cyclePlacementOrRotateCommand == null)
                 {
-                    //var inputs = new InputGestureCollection();
-                    //inputs.Add(new KeyGesture(Key.Space));
                     cyclePlacementOrRotateCommand = CreateUICommand("CyclePlacementOrRotate", "CyclePlacementOrRotate", typeof(AppCommand), XKey.Space);
                 }
 
                 return cyclePlacementOrRotateCommand;
             }
         }
-
-        //static ICommand mirrorXSelectedItemsCommand;
-
-        //public static ICommand MirrorXSelectedItemsCommand
-        //{
-        //    get
-        //    {
-        //        if (mirrorXSelectedItemsCommand == null)
-        //        {
-        //            mirrorXSelectedItemsCommand = CreateUICommand("MirrorX", "mirrorX", typeof(AppCommand), XKey.X);
-        //        }
-
-        //        return mirrorXSelectedItemsCommand;
-        //    }
-        //}
-
-        //static ICommand mirrorYSelectedItemsCommand;
-
-        //public static ICommand MirrorYSelectedItemsCommand
-        //{
-        //    get
-        //    {
-        //        if (mirrorYSelectedItemsCommand == null)
-        //        {
-        //            mirrorYSelectedItemsCommand = CreateUICommand("MirrorY", "mirrorY", typeof(AppCommand), XKey.Y, XModifierKeys.Alt);
-        //        }
-
-        //        return mirrorYSelectedItemsCommand;
-        //    }
-        //}
-
-        //static ICommand changeFootprintPlacementCommand;
-        //public static ICommand ChangeFootprintPlacementCommand
-        //{
-        //    get
-        //    {
-        //        if (changeFootprintPlacementCommand == null)
-        //        {
-        //            changeFootprintPlacementCommand = CreateUICommand("changeFootprintPlacement", "changeFootprintPlacement", typeof(AppCommand), XKey.L, XModifierKeys.Alt);
-        //        }
-
-        //        return changeFootprintPlacementCommand;
-        //    }
-        //}
-
 
         static ICommand copySelectedItemsCommand;
         public static ICommand CopySelectedItemsCommand

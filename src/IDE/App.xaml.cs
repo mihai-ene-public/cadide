@@ -28,8 +28,8 @@ namespace IDE
             DispatcherUnhandledException += MainApp_DispatcherUnhandledException;
         }
 
-        
 
+        //called when OS logs-out or shuts-down
         void App_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             AppIsShuttingDown = true;
@@ -51,19 +51,15 @@ namespace IDE
 
             try
             {
-                var mainWin = GetMainWindow();
                 var appVM = GetWorkSpace();
 
-                if (mainWin != null && appVM != null)
+                if (appVM != null && appVM.Files != null)
                 {
-                    if (mainWin.DataContext != null && appVM.Files != null)
-                    {
-                        // Close all open files and check whether application is ready to close
-                        if (appVM.CanCloseAndSaved() == true)
-                            e.Cancel = false;
-                        else
-                            e.Cancel = appVM.ShutDownInProgress_Cancel = true;
-                    }
+                    // Close all open files and check whether application is ready to close
+                    if (appVM.CanCloseAndSaved() == true)
+                        e.Cancel = false;
+                    else
+                        e.Cancel = appVM.ShutDownInProgress_Cancel = true;
                 }
             }
             catch
@@ -101,7 +97,7 @@ namespace IDE
             }
             catch (Exception exp)
             {
-               // Logger.Error(exp);
+                // Logger.Error(exp);
 
                 // Cannot set shutdown mode when application is already shuttong down
                 if (AppIsShuttingDown == false)
@@ -145,20 +141,9 @@ namespace IDE
             }
         }
 
-        private MainWindow GetMainWindow()
-        {
-            return MainWindow as MainWindow;
-        }
-
         private IApplicationViewModel GetWorkSpace()
         {
-            //var mainWindow = Application.Current.MainWindow as MainWindow;
-            var mainWindow = MainWindow as MainWindow;
-
-            if (mainWindow != null)
-                return mainWindow.DataContext as IApplicationViewModel;
-
-            return null;
+            return MainWindow.DataContext as IApplicationViewModel;
         }
         #endregion methods
     }

@@ -97,10 +97,6 @@
                           Command="cmd:AppCommand.About"
                           ToolTip="{x:Static resources:Strings.MenuAboutTooltip}" />
 
-                <MenuItem Header="{x:Static resources:Strings.MenuActivateLicenseHeader}"
-                          Command="cmd:AppCommand.ShowLicenseActivation"
-                          ToolTip="{x:Static resources:Strings.MenuActivateLicenseTooltip}"
-                          Visibility="{Binding IsEnabled,RelativeSource={RelativeSource Self}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"/>
             </MenuItem>
         </Menu>
     </Grid>

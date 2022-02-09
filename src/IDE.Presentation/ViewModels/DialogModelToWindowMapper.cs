@@ -27,7 +27,6 @@ namespace IDE.Core.ViewModels
         protected override void CreateMappings()
         {
             AddMapping(typeof(AboutViewModel), typeof(AboutDlg));
-            AddMapping(typeof(LicenseActivationDialogViewModel), typeof(LicenseActivationDialog));
 
             AddMapping(typeof(EagleImporterViewModel), typeof(EagleImporterView));
             AddMapping(typeof(DxfImporterViewModel), typeof(DxfImporterView));

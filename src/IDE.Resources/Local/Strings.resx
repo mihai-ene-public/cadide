@@ -273,12 +273,6 @@
   <data name="MenuAboutTooltip" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="MenuActivateLicenseHeader" xml:space="preserve">
-    <value>Activate license...</value>
-  </data>
-  <data name="MenuActivateLicenseTooltip" xml:space="preserve">
-    <value>Activate or deactivate license for the application</value>
-  </data>
   <data name="MenuAddHeader" xml:space="preserve">
     <value>Add</value>
   </data>

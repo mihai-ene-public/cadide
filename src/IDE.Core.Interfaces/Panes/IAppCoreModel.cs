@@ -6,10 +6,6 @@
 	/// </summary>
 	public interface IAppCoreModel
 	{
-
-		#region properties
-		//string IssueTrackerLink { get; }
-
 		string LayoutFileName { get; }
 
 		/// <summary>
@@ -41,7 +37,6 @@
 		//     method overload, the value returned is an empty string ("").
 		string AssemblyEntryLocation { get; }
 
-		string Company { get; }
 
 		/// <summary>
 		/// Get path and file name to application specific session file
@@ -52,21 +47,12 @@
 		/// Get path and file name to application specific settings file
 		/// </summary>
 		string DirFileAppSettingsData { get; }
-		#endregion properties
 
-		#region methods
 		/// <summary>
 		/// Create a dedicated directory to store program settings and session data
 		/// </summary>
 		/// <returns></returns>
 		bool CreateAppDataFolder();
 
-		///// <summary>
-		///// Restore the applications window from minimized state
-		///// into non-minimzed state and send it to the top to make
-		///// sure its visible for the user.
-		///// </summary>
-		//void RestoreCurrentMainWindow();
-		#endregion methods
 	}
 }

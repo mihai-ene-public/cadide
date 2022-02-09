@@ -12,18 +12,6 @@ namespace IDE.Core.Settings
 
         public List<string> Folders { get; set; } = new List<string>();
 
-        //public IReadOnlyList<string> LibraryFolders
-        //{
-        //    get
-        //    {
-        //        var list = new List<string>();
-        //        list.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Modern PCB Studio\Libraries");
-        //        list.Add("Libraries");//start up folder of IDE.exe
-        //        list.AddRange(Folders.Distinct());
-
-        //        return list.AsReadOnly();
-        //    }
-        //}
 
     }
 }

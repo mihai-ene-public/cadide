@@ -19,12 +19,10 @@ namespace IDE.Dialogs.About
         public AboutViewModel()
             : base()
         {
-            licenseStatus = new LicenseStatus();
         }
 
         #endregion constructor
 
-        LicenseStatus licenseStatus;
 
         /// <summary>
         /// Get the title string of the view - to be displayed in the associated view
@@ -114,20 +112,6 @@ namespace IDE.Dialogs.About
                 return AppHelpers.ApplicationRuntimeVersion;
             }
         }
-
-        public string LicenseStatus
-        {
-            get
-            {
-                try
-                {
-                    return licenseStatus.GetLicenseStatusString();
-                }
-                catch (Exception ex)
-                {
-                    return ex.Message;
-                }
-            }
-        }
+        
     }
 }

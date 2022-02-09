@@ -1414,19 +1414,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public void ShowLicenseActivationDialog()
-        {
-            try
-            {
-                var vm = new LicenseActivationDialogViewModel();
-
-                vm.ShowDialog();
-            }
-            catch (Exception exp)
-            {
-                MessageDialog.Show(exp.Message);
-            }
-        }
         #endregion Application_About_Command
 
 

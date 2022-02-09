@@ -123,9 +123,6 @@
   <data name="Copyright" xml:space="preserve">
     <value>Copyright:</value>
   </data>
-  <data name="License" xml:space="preserve">
-    <value>License:</value>
-  </data>
   <data name="SubTitle" xml:space="preserve">
     <value>An integrated environment for PCBs.</value>
   </data>
@@ -133,6 +130,6 @@
     <value>Version:</value>
   </data>
   <data name="WindowTitle" xml:space="preserve">
-    <value>About Modern PCB Designer</value>
+    <value>About this software</value>
   </data>
 </root>

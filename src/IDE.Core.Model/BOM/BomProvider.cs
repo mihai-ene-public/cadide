@@ -20,14 +20,8 @@ namespace IDE.Core.BOM
     {
         public BomProvider()
         {
-//#if DEBUG
-//            ApiKey = API_Key;
-//#endif
         }
 
-        //octopart key
-        //const string API_Key = "39e9c5b8";//my personal
-        //const string API_Key = "e273fa8a37db721fb6a6";
         const int BATCH_Limit = 20;
         const string octopartUrlBase = "http://octopart.com/api/v3";  // Octopart API url
         const string octopartMatchUrlEndpoint = "parts/match";             // Octopart search type
@@ -173,8 +167,6 @@ namespace IDE.Core.BOM
                 var item = result.item;
                 foreach (var offer in item.offers)
                 {
-                    // skip offers that are not from digikey and have less than qty 1000 in stock
-                    //if (((int)offer.in_stock_quantity < 1000)) continue;
                     var rr = new Result();
                     var b = BuildBomItem(result, item, offer, rr);
                     if (!b)

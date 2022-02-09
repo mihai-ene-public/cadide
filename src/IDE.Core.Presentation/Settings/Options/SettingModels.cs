@@ -1,5 +1,4 @@
 ﻿using IDE.Core.Interfaces;
-using IDE.Core.Presentation.Licensing;
 using IDE.Core.Storage;
 using IDE.Core.Themes;
 using IDE.Core.Types.Media;
@@ -117,7 +116,8 @@ namespace IDE.Core.Settings.Options
         public override void ResetSetting()
         {
             var list = new List<string>();
-            list.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Modern PCB Studio\Libraries");
+            //list.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Modern PCB Studio\Libraries");
+            list.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\CadIde\Libraries");
             list.Add("Libraries");//start up folder of IDE.exe
 
             Folders = new ObservableCollection<FolderName>(list.Select(f => new FolderName { Name = f }));

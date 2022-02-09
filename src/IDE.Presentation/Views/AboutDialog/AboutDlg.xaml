@@ -83,16 +83,6 @@
                        Grid.Row="1"
                        Content="{Binding AssemblyCopyright, Mode=OneTime}"
                        Margin="3" />
-
-                <Label Grid.Row="2"
-                       HorizontalAlignment="Left"
-                       Content="{x:Static strings:AboutDialogStrings.License}"
-                       Margin="3" />
-                <TextBlock Grid.Column="1"
-                           Grid.Row="2"
-                           Text="{Binding LicenseStatus, Mode=OneWay}"
-                           TextWrapping="Wrap"
-                           Margin="3" />
             </Grid>
         </Grid>
 
