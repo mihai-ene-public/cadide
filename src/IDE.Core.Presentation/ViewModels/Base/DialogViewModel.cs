@@ -24,10 +24,6 @@ namespace IDE.Core
         ICommand cancelCommand;
         ICommand oKCommand;
 
-        // ObservableCollection<Msg> problems;
-
-        //bool foundErrorsInLastRun = true;
-
         #endregion fields
 
         #region constructor
@@ -39,27 +35,6 @@ namespace IDE.Core
             InitializeDialogState();
         }
 
-        ///// <summary>
-        ///// Copy constructor
-        ///// </summary>
-        ///// <param name="copyThis"></param>
-        //public DialogViewModel(DialogViewModel copyThis)
-        //{
-        //    if (copyThis == null) return;
-
-        //    dialogCloseResult = copyThis.dialogCloseResult;
-
-        //    shutDownInProgress = copyThis.shutDownInProgress;
-        //    isReadyToClose = copyThis.isReadyToClose;
-
-        //    // Commands cannot be copied (but must be initialized again) because
-        //    // we otherwise end up calling the the source of the copy instead of a method in this.
-        //    oKCommand = cancelCommand = null;
-
-        //    //problems = new ObservableCollection<Msg>(copyThis.problems);
-
-        //    //foundErrorsInLastRun = copyThis.foundErrorsInLastRun;
-        //}
         #endregion constructor
 
         #region delegates
@@ -71,8 +46,6 @@ namespace IDE.Core
         /// Therefore, the <seealso cref="DialogViewModel"/> class calls a delegate method to retrieve whether input
         /// is OK or not plus a list messages describing problem details.
         /// </summary>
-        /// <param name="outMsg"></param>
-        /// <returns></returns>
         public delegate bool EvaluateInput(out List<Msg> outMsg);
 
         #endregion delegates
@@ -184,25 +157,6 @@ namespace IDE.Core
             }
         }
 
-        ///// <summary>
-        ///// This string can be displayed when the list of problems <seealso cref="ListMessages"/> is displayed.
-        ///// </summary>
-        //public string ProblemCaption
-        //{
-        //    get;
-        //    set;
-        //}
-
-        //public ObservableCollection<Msg> ListMessages
-        //{
-        //    get
-        //    {
-        //        if (problems == null)
-        //            problems = new ObservableCollection<Msg>();
-
-        //        return problems;
-        //    }
-        //}
         #endregion properties
 
         #region methods
@@ -211,7 +165,6 @@ namespace IDE.Core
         /// </summary>
         public void InitializeDialogState()
         {
-            //  ProblemCaption = Strings.STR_DIALOG_INPUT_PROBLEM_CAPTION;
 
             EvaluateInputData = null;
 
@@ -221,7 +174,6 @@ namespace IDE.Core
 
             RequestClose = null;
 
-            // problems = new ObservableCollection<Msg>();
         }
 
         /// <summary>
@@ -248,33 +200,11 @@ namespace IDE.Core
             }
         }
 
-        //public void ClearMessages()
-        //{
-        //    if (problems == null)
-        //        problems = new ObservableCollection<Msg>();
-
-        //    problems.Clear();
-        //}
-
-        //public void AddMessage(string strMessage, Msg.MsgCategory categoryOfMsg = Msg.MsgCategory.Error)
-        //{
-        //    AddMessage(new Msg(strMessage, categoryOfMsg));
-        //}
-
-        //public void AddMessage(Msg inputMsg)
-        //{
-        //    if (problems == null)
-        //        problems = new ObservableCollection<Msg>();
-
-        //    problems.Add(new Msg(inputMsg));
-        //}
 
         /// <summary>
         /// Determine whether Dialog is ready to close down or
         /// whether close down should be cancelled - and cancel it.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (WindowCloseResult == null) // Process window close button as Cancel (IsReadyToClose is not evaluated)
@@ -298,39 +228,7 @@ namespace IDE.Core
             {
                 List<Msg> msgs;
                 var bResult = EvaluateInputData(out msgs);
-                //var bFoundErrors = false;
-
-                // Copy messages from delegate method (if any)
-                // ClearMessages();
-
-                //if (msgs != null)
-                //{
-                //    foreach (var m in msgs)
-                //    {
-                //        if (m.CategoryOfMsg != Msg.MsgCategory.Information && m.CategoryOfMsg != Msg.MsgCategory.Warning)
-                //            bFoundErrors = true;
-
-                //        AddMessage(m);
-                //    }
-                //}
-
-                //if (bFoundErrors == false)
-                //{
-                //    if (foundErrorsInLastRun == false)
-                //    {
-                //        // Found only Information or Warnings for the second time -> lets get over it!
-                //        IsReadyToClose = true;
-                //        return;
-                //    }
-                //    else
-                //    {
-                //        foundErrorsInLastRun = false;
-                //        IsReadyToClose = bResult;
-                //        return;
-                //    }
-                //}
-
-                //foundErrorsInLastRun = true;
+                
                 IsReadyToClose = bResult;
             }
         }
@@ -339,7 +237,7 @@ namespace IDE.Core
 
         public bool? ShowDialog()
         {
-            var mapper = ServiceProvider.GetService<IDialogModelToWindowMapper>();
+            var mapper = ServiceProvider.Resolve<IDialogModelToWindowMapper>();
             if (mapper == null)
                 throw new Exception($"Mapper service {nameof(IDialogModelToWindowMapper)} was not defined");
 

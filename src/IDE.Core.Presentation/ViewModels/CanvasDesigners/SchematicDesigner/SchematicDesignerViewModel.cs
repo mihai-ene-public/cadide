@@ -20,6 +20,7 @@ using IDE.Core.Types.Media;
 using Newtonsoft.Json.Serialization;
 using IDE.Core.Presentation.Utilities;
 using System.Collections;
+using IDE.Core.Compilation;
 
 namespace IDE.Core.ViewModels
 {
@@ -58,7 +59,13 @@ namespace IDE.Core.ViewModels
             applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
 
             canvasGrid.GridSizeModel.SelectedItem = new Units.MilUnit(50);
+
+            _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
+            _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
         }
+
+        private readonly ISettingsManager _settingsManager;
+        private readonly IActiveCompiler _activeCompiler;
 
         CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
 
@@ -515,7 +522,7 @@ namespace IDE.Core.ViewModels
         }
         async Task RunActiveCompiler()
         {
-            await ApplicationServices.ActiveCompiler.Compile(this);
+            await _activeCompiler.Compile(this);
         }
 
         SchematicViewMode schematicViewMode;
@@ -1193,7 +1200,7 @@ namespace IDE.Core.ViewModels
 
         public override void ApplySettings()
         {
-            var settingsManager = ApplicationServices.SettingsManager;
+            var settingsManager = _settingsManager;
             if (settingsManager != null)
             {
                 var schColorsSettings = settingsManager.GetSetting<SchematicEditorColorsSetting>();

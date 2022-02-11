@@ -54,18 +54,26 @@ namespace IDE.Core.ViewModels
 
         #region constructor
 
-        public ApplicationViewModel(IThemesManager _themesManager, ISettingsManager _settingsManager, IRecentFilesViewModel recentFilesViewModel)
+        public ApplicationViewModel(
+            IThemesManager themesManager,
+            ISettingsManager settingsManager,
+            IRecentFilesViewModel recentFilesViewModel,
+            IToolWindowRegistry toolWindowRegistry,
+            IDocumentTypeManager documentTypeManager,
+            IAppCoreModel appCoreModel
+            )
         {
-            settingsManager = _settingsManager;
-            themesManager = _themesManager;
-            recentFiles = recentFilesViewModel;
-
+            _settingsManager = settingsManager;
+            _themesManager = themesManager;
+            _recentFiles = recentFilesViewModel;
+            _toolWindowRegistry = toolWindowRegistry;
+            _documentTypeManager = documentTypeManager;
+            _appCoreModel = appCoreModel;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
         }
 
         #endregion constructor
 
-        #region fields
 
         bool? dialogCloseResult = null;
         bool? isNotMaximized = null;
@@ -80,21 +88,18 @@ namespace IDE.Core.ViewModels
         ICommand mainWindowActivated = null;
 
         IDispatcherHelper dispatcher;
-        #endregion fields
 
-        ToolWindowRegistry toolRegistry => (ToolWindowRegistry)ApplicationServices.ToolRegistry;
 
-        IDocumentTypeManager documentTypeManager => ApplicationServices.DocumentTypeManager;
 
-        ISettingsManager settingsManager;//=> (SettingsManager)ApplicationServices.SettingsManager;
+        private readonly ISettingsManager _settingsManager;
 
-        IRecentFilesViewModel recentFiles;
+        private readonly IRecentFilesViewModel _recentFiles;
+        private readonly IToolWindowRegistry _toolWindowRegistry;
+        private readonly IDocumentTypeManager _documentTypeManager;
+        private readonly IAppCoreModel _appCoreModel;
 
-        Profile profile => settingsManager.SessionData as Profile;
-
-        IAppCoreModel appCoreModel => ApplicationServices.AppCoreModel;
-
-        IThemesManager themesManager;//=> ApplicationServices.ThemesManager;
+        private readonly IThemesManager _themesManager;
+        Profile profile => _settingsManager.SessionData as Profile;
 
         #region events
 
@@ -117,22 +122,6 @@ namespace IDE.Core.ViewModels
         #endregion events
 
         #region Properties
-
-
-        public ISettingsManager SettingsManager => settingsManager;
-
-        public IThemesManager ThemesManager => themesManager;
-
-        /// <summary>
-        /// Gets an instance of the current application theme manager.
-        /// </summary>
-        public IThemesManager ApplicationThemes
-        {
-            get
-            {
-                return themesManager;
-            }
-        }
 
 
         #region ActiveDocument
@@ -176,8 +165,7 @@ namespace IDE.Core.ViewModels
             if (activeDocument == null)
                 return;
 
-            var toolRegistry = ApplicationServices.ToolRegistry;
-            var tools = toolRegistry.Tools.OfType<IDocumentToolWindow>().ToList();
+            var tools = _toolWindowRegistry.Tools.OfType<IDocumentToolWindow>().ToList();
             var visTools = activeDocument.GetToolWindowsWhenActive();
 
             //hide tools that are not needed (not all tools need to be hidden)
@@ -228,16 +216,8 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public IList<IDocumentType> DocumentTypes
-        {
-            get
-            {
-                return documentTypeManager.DocumentTypes;
-            }
-        }
-
         /// <summary>
-        /// Principable data source for collection of documents managed in the the document manager (of AvalonDock).
+        /// data source for collection of documents managed in the the document manager (of AvalonDock).
         /// </summary>
         public IList<IFileBaseViewModel> Files
         {
@@ -258,20 +238,9 @@ namespace IDE.Core.ViewModels
         {
             get
             {
-                return toolRegistry.Tools;
+                return _toolWindowRegistry.Tools;
             }
         }
-
-        ///// <summary>
-        ///// Expose command to load/save AvalonDock layout on application startup and shut-down.
-        ///// </summary>
-        //public IDockLayoutViewModel ADLayout
-        //{
-        //    get
-        //    {
-        //        return ApplicationServices.AvalonDockLayout;
-        //    }
-        //}
 
         public bool ShutDownInProgress_Cancel
         {
@@ -298,7 +267,7 @@ namespace IDE.Core.ViewModels
             {
                 var slnPath = SolutionManager.SolutionFilePath;
 
-                var title = appCoreModel.ApplicationTitle;
+                var title = _appCoreModel.ApplicationTitle;
 
                 if (!string.IsNullOrEmpty(slnPath))
                 {
@@ -351,7 +320,7 @@ namespace IDE.Core.ViewModels
             dm.SetFileNamePath(filePath, true);
 
             // 1st try to find a document type handler based on the supplied extension
-            var docType = documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
+            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
 
             // 2nd try to find a document type handler based on the name of the prefered viewer
             // (Defaults to EdiTextEditor if no name is given)
@@ -360,7 +329,7 @@ namespace IDE.Core.ViewModels
                 if (docType.Key == SolutionExplorerViewModel.DocumentKey)
                 {
                     CheckSolutionIsOpen();
-                    docFile = toolRegistry.SolutionToolWindow;
+                    docFile = _toolWindowRegistry.GetTool<SolutionExplorerViewModel>();
                 }
                 else
                     docFile = Activator.CreateInstance(docType.ClassType);
@@ -409,7 +378,7 @@ namespace IDE.Core.ViewModels
                 if (tool is SolutionExplorerViewModel)
                 {
                     //show properties
-                    var propertiesTool = toolRegistry.PropertiesToolWindow; //new PropertiesToolWindowViewModel();
+                    var propertiesTool = _toolWindowRegistry.GetTool<PropertiesToolWindowViewModel>(); //new PropertiesToolWindowViewModel();
                     propertiesTool.CanHide = true;
                     propertiesTool.IsVisible = true;
                 }
@@ -417,7 +386,7 @@ namespace IDE.Core.ViewModels
                 //we only add solution files to the MRU list
                 if (docFile is SolutionExplorerViewModel)
                 {
-                    recentFiles.AddNewEntryIntoMRU(filePath);
+                    _recentFiles.AddNewEntryIntoMRU(filePath);
                 }
             }
             else if (docFile is IFileBaseViewModel)
@@ -443,7 +412,7 @@ namespace IDE.Core.ViewModels
             dm.SetFileNamePath(filePath, true);
 
             // 1st try to find a document type handler based on the supplied extension
-            var docType = documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
+            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
             // 2nd try to find a document type handler based on the name of the prefered viewer
             // (Defaults to EdiTextEditor if no name is given)
             //if (docType == null)
@@ -472,7 +441,7 @@ namespace IDE.Core.ViewModels
             dm.SetFileNamePath(filePath, true);
 
             // 1st try to find a document type handler based on the supplied extension
-            var docType = documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
+            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
             // 2nd try to find a document type handler based on the name of the prefered viewer
             // (Defaults to EdiTextEditor if no name is given)
             //if (docType == null)
@@ -499,12 +468,12 @@ namespace IDE.Core.ViewModels
         {
             if (fileViewModel == null)
             {
-                if (recentFiles.ContainsEntry(filePath))
+                if (_recentFiles.ContainsEntry(filePath))
                 {
                     if (MessageDialog.Show(string.Format(Strings.STR_ERROR_LOADING_FILE_MSG, filePath),
                                                Strings.STR_ERROR_LOADING_FILE_CAPTION, XMessageBoxButton.YesNo) == XMessageBoxResult.Yes)
                     {
-                        recentFiles.RemoveEntry(filePath);
+                        _recentFiles.RemoveEntry(filePath);
                     }
                 }
 
@@ -539,7 +508,7 @@ namespace IDE.Core.ViewModels
             //we only add solution files to the MRU list
             if (fileViewModel is SolutionExplorerViewModel)
             {
-                recentFiles.AddNewEntryIntoMRU(filePath);
+                _recentFiles.AddNewEntryIntoMRU(filePath);
             }
             return fileViewModel;
         }
@@ -629,7 +598,7 @@ namespace IDE.Core.ViewModels
 
                 // Get filter strings for document specific filters or all filters
                 // depending on whether type of document is set to a key or not.
-                fileEntries = documentTypeManager.GetFileFilterEntries(typeOfDocument);
+                fileEntries = _documentTypeManager.GetFileFilterEntries(typeOfDocument);
                 dlg.Filter = fileEntries.GetFilterString();
 
                 dlg.Multiselect = false;
@@ -680,15 +649,15 @@ namespace IDE.Core.ViewModels
             {
                 // Initialize view model for editing settings
                 var dlgVM = new SettingsDialogViewModel();
-                dlgVM.LoadOptionsFromData(settingsManager.SettingData);
+                dlgVM.LoadOptionsFromData(_settingsManager.SettingData);
 
                 dlgVM.ShowDialog();
 
                 if (dlgVM.WindowCloseResult == true)
                 {
-                    dlgVM.SaveOptionsToData(settingsManager.SettingData);
+                    dlgVM.SaveOptionsToData(_settingsManager.SettingData);
 
-                    settingsManager.SaveOptions(appCoreModel.DirFileAppSettingsData);
+                    _settingsManager.SaveOptions(_appCoreModel.DirFileAppSettingsData);
 
                     ApplySettings();
                 }
@@ -720,7 +689,7 @@ namespace IDE.Core.ViewModels
         {
             try
             {
-                var slnToolWindow = toolRegistry.SolutionToolWindow;
+                var slnToolWindow = _toolWindowRegistry.GetTool<SolutionExplorerViewModel>();
                 if (slnToolWindow != null)
                 {
                     slnToolWindow.CloseSolution();
@@ -886,7 +855,7 @@ namespace IDE.Core.ViewModels
                         err?.Clear();
 
                         //show output during build
-                        var output = ApplicationServices.ToolRegistry.Output;
+                        var output = _toolWindowRegistry.GetTool<IOutput>();
                         var outputTW = output as ToolViewModel;
                         output.Clear();
                         outputTW.IsVisible = true;
@@ -929,7 +898,7 @@ namespace IDE.Core.ViewModels
                         err?.Clear();
 
                         //show output during build
-                        var output = ApplicationServices.ToolRegistry.Output;
+                        var output = _toolWindowRegistry.GetTool<IOutput>();
                         var outputTW = output as ToolViewModel;
                         output.Clear();
                         outputTW.IsVisible = true;
@@ -1200,7 +1169,7 @@ namespace IDE.Core.ViewModels
                 var dlg = ServiceProvider.Resolve<IOpenFileDialog>();//new OpenFileDialog();
 
                 //filter from all our supported files
-                var fileEntries = documentTypeManager.GetFileFilterEntries();
+                var fileEntries = _documentTypeManager.GetFileFilterEntries();
                 dlg.Filter = fileEntries.GetFilterString();
 
                 dlg.Multiselect = true;
@@ -1426,7 +1395,7 @@ namespace IDE.Core.ViewModels
                 if (mruEntry == null)
                     return;
 
-                recentFiles.PinUnpinEntry(!mruEntry.IsPinned, mruEntry.PathFileName);
+                _recentFiles.PinUnpinEntry(!mruEntry.IsPinned, mruEntry.PathFileName);
             }
             catch (Exception exp)
             {
@@ -1441,7 +1410,7 @@ namespace IDE.Core.ViewModels
                 if (mruEntry == null)
                     return;
 
-                recentFiles.RemoveEntry(mruEntry.PathFileName);
+                _recentFiles.RemoveEntry(mruEntry.PathFileName);
             }
             catch (Exception exp)
             {
@@ -1518,17 +1487,17 @@ namespace IDE.Core.ViewModels
                     sPath = ActiveDocument.GetFilePath();
 
                 if (sPath == string.Empty)
-                    sPath = appCoreModel.MyDocumentsUserDir;
+                    sPath = _appCoreModel.MyDocumentsUserDir;
                 else
                 {
                     try
                     {
                         if (Directory.Exists(sPath) == false)
-                            sPath = appCoreModel.MyDocumentsUserDir;
+                            sPath = _appCoreModel.MyDocumentsUserDir;
                     }
                     catch
                     {
-                        sPath = appCoreModel.MyDocumentsUserDir;
+                        sPath = _appCoreModel.MyDocumentsUserDir;
                     }
                 }
             }
@@ -1556,7 +1525,7 @@ namespace IDE.Core.ViewModels
 
             if (doc.CanSaveData == true)
             {
-                var defaultFilter = GetDefaultFileFilter(doc, documentTypeManager);
+                var defaultFilter = GetDefaultFileFilter(doc, _documentTypeManager);
 
                 return OnSaveDocumentFile(doc, saveAsFlag, defaultFilter);
             }
@@ -1803,7 +1772,7 @@ namespace IDE.Core.ViewModels
 
             if (startPage == null)
             {
-                startPage = new StartPageViewModel(recentFiles);
+                startPage = new StartPageViewModel(_recentFiles);
                 files.Add(startPage);
             }
 

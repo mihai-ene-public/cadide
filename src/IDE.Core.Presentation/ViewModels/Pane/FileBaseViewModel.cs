@@ -19,7 +19,7 @@ namespace IDE.Core.ViewModels
 
     /// <summary>
     /// Base class that shares common properties, methods, and intefaces
-    /// among viewmodels that represent documents in Edi
+    /// among viewmodels that represent documents
     /// (text file edits, Start Page, Program Settings).
     /// </summary>
     public abstract class FileBaseViewModel : PaneViewModel, IFileBaseViewModel
@@ -43,11 +43,14 @@ namespace IDE.Core.ViewModels
         protected FileBaseViewModel()
         {
             clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
+            _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
 
             documentModel = new DocumentModel();
             PropertyChanged += FileBaseViewModel_PropertyChanged;
         }
         protected IClipboardAdapter clipBoard;
+
+        protected readonly IApplicationViewModel _applicationViewModel;
 
         async void FileBaseViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -366,12 +369,11 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public IApplicationViewModel Workspace => ApplicationServices.ApplicationViewModel;
+        public IApplicationViewModel Workspace => _applicationViewModel;
 
         void OnCloseCommand()
         {
-            var workspace = ApplicationServices.ApplicationViewModel;
-            workspace?.Close(this);
+            _applicationViewModel.Close(this);
         }
 
         /// <summary>

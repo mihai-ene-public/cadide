@@ -29,6 +29,7 @@ using IDE.Core.Build;
 using IDE.Core.Types.Media;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Presentation.Importers.DXF;
+using IDE.Core.Compilation;
 
 namespace IDE.Documents.Views
 {
@@ -65,9 +66,13 @@ namespace IDE.Documents.Views
             applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
 
             dirtyPropertiesProvider = ServiceProvider.Resolve<IDirtyMarkerTypePropertiesMapper>();
+            _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
+            _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
         }
 
-        IDirtyMarkerTypePropertiesMapper dirtyPropertiesProvider;
+        private readonly IDirtyMarkerTypePropertiesMapper dirtyPropertiesProvider;
+        private readonly ISettingsManager _settingsManager;
+        private readonly IActiveCompiler _activeCompiler;
 
         protected override async Task AfterLoadDocumentInternal()
         {
@@ -415,7 +420,7 @@ namespace IDE.Documents.Views
 
         bool GetShowUnconnectedLinesSetting()
         {
-            var sm = ApplicationServices.SettingsManager;
+            var sm = _settingsManager;
             if (sm != null)
             {
                 var brdSetting = sm.GetSetting<BoardEditorGeneralSetting>();
@@ -442,7 +447,7 @@ namespace IDE.Documents.Views
                 var refreshConnections = true;
                 var runAutoCompiler = true;
 
-                var sm = ApplicationServices.SettingsManager;
+                var sm = _settingsManager;
                 if (sm != null)
                 {
                     var brdSetting = sm.GetSetting<BoardEditorGeneralSetting>();
@@ -472,7 +477,7 @@ namespace IDE.Documents.Views
 
         async Task RunActiveCompiler()
         {
-            await ApplicationServices.ActiveCompiler.Compile(this);
+            await _activeCompiler.Compile(this);
         }
 
         void HandleLayers()
@@ -1478,7 +1483,7 @@ namespace IDE.Documents.Views
 
         public override void ApplySettings()
         {
-            var settingsManager = ApplicationServices.SettingsManager;
+            var settingsManager = _settingsManager;
             if (settingsManager != null)
             {
                 var brdColorsSettings = settingsManager.GetSetting<BoardEditorColorsSetting>();

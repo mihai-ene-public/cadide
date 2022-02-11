@@ -14,13 +14,15 @@ namespace IDE.Core.ViewModels
         {
             var libFolders = new List<string>();
 
+            var settingsManager = ServiceProvider.Resolve<ISettingsManager>();
+
             //project folder
             var projectFolder = projectNode?.GetItemFolderFullPath();
             if (!string.IsNullOrEmpty(projectFolder))
                 libFolders.Add(projectFolder);
 
             //all folders specified in settings
-            var s = ApplicationServices.SettingsManager.GetSetting<EnvironmentFolderLibsSettingData>();
+            var s = settingsManager.GetSetting<EnvironmentFolderLibsSettingData>();
             if (s != null)
             {
                 libFolders.AddRange(s.Folders);

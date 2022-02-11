@@ -16,26 +16,17 @@ using IDE.Documents.Views;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using IDE.Core.Documents;
+using IDE.Core.Compilation;
 
 namespace IDE
 {
-    class Startup
+    internal static class Startup
     {
 
-        /* usage: in app startup:
-         *      var start = new Startup();
-         *      start.Run();
-         * 
-         */
+        private static IServiceProvider serviceProvider;
 
-        public Startup()
-        {
-            ConfigureContainer();
-        }
-
-        private IServiceProvider serviceProvider;
-
-        private void ConfigureContainer()
+        private static void ConfigureContainer()
         {
             var services = new ServiceCollection();
 
@@ -43,6 +34,10 @@ namespace IDE
             services.AddSingleton<IApplicationViewModel, ApplicationViewModel>();
             services.AddSingleton<ISettingsManager, SettingsManager>();
             services.AddSingleton<IThemesManager, ThemesManager>();
+            services.AddSingleton<IToolWindowRegistry, ToolWindowRegistry>();
+            services.AddSingleton<IDocumentTypeManager, DocumentTypeManager>();
+            services.AddSingleton<IAppCoreModel, AppCoreModel>();
+
             services.AddSingleton<IRecentFilesViewModel, RecentFilesModel>();
 
             services.AddTransient<IDebounceDispatcher, DebounceDispatcher>();
@@ -74,12 +69,23 @@ namespace IDE
             services.AddSingleton<IResourceLocator, ResourceLocator>();
 
             services.AddSingleton<IDirtyMarkerTypePropertiesMapper, DirtyMarkerTypePropertiesMapper>();
+            services.AddSingleton<IPrimitiveToCanvasItemMapper, PrimitiveToCanvasItemMapper>();
+            services.AddSingleton<ISolutionExplorerNodeMapper, SolutionExplorerNodeMapper>();
+            services.AddSingleton<ISettingsDataToModelMapper, SettingsDataToModelMapper>();
+            services.AddSingleton<IBoardRulesDataToModelMapper, BoardRulesDataToModelMapper>();
+            services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
+            services.AddSingleton<IFileExtensionToSolutionExplorerNodeMapper, FileExtensionToSolutionExplorerNodeMapper>();
+            services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
+            services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
+            
+            services.AddSingleton<IActiveCompiler, ActiveCompiler>();
 
             serviceProvider = services.BuildServiceProvider();
         }
 
-        public void Run(StartupEventArgs _eventArgs)
+        public static void Run(StartupEventArgs _eventArgs)
         {
+            ConfigureContainer();
             Core.ServiceProvider.RegisterResolver((t) => serviceProvider.GetService(t));
 
             var app = serviceProvider.GetService<Bootstrapper>();

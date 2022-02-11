@@ -8,7 +8,6 @@ namespace IDE.Core.ViewModels
     {
         public FileExtensionToSolutionExplorerNodeMapper()
         {
-            ServiceProvider.RegisterService<IFileExtensionToSolutionExplorerNodeMapper>(this);
             CreateMappings();
         }
 

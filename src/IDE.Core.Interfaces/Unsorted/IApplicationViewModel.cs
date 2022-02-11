@@ -55,9 +55,9 @@ namespace IDE.Core.Interfaces
 
         bool ShutDownInProgress { get; }
 
-        ISettingsManager SettingsManager { get; }
+        //ISettingsManager SettingsManager { get; }
 
-        IThemesManager ThemesManager { get; }
+        //IThemesManager ThemesManager { get; }
 
         IFileBaseViewModel ActiveDocument { get; }
 

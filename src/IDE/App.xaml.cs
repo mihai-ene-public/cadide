@@ -92,8 +92,7 @@ namespace IDE
 
             try
             {
-                var s = new Startup();
-                s.Run(e);
+                IDE.Startup.Run(e);
             }
             catch (Exception exp)
             {

@@ -12,7 +12,7 @@ namespace IDE.Core.Common
     {
         public static ISelectableItem CreateDesignerItem(this IPrimitive primitive)
         {
-            var mapper = ServiceProvider.GetService<IPrimitiveToCanvasItemMapper>();
+            var mapper = ServiceProvider.Resolve<IPrimitiveToCanvasItemMapper>();
             var canvasItem = mapper.CreateDesignerItem(primitive);
 
             return canvasItem;
@@ -50,7 +50,7 @@ namespace IDE.Core.Common
 
         public static ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(this IProjectFileRef fileItem)
         {
-            var mapper = ServiceProvider.GetService<ISolutionExplorerNodeMapper>();
+            var mapper = ServiceProvider.Resolve<ISolutionExplorerNodeMapper>();
             var item = mapper.CreateSolutionExplorerNodeModel(fileItem);
 
             return item;
@@ -58,7 +58,7 @@ namespace IDE.Core.Common
 
         public static ISettingModel CreateModelItem(this ISettingData setting)
         {
-            var mapper = ServiceProvider.GetService<ISettingsDataToModelMapper>();
+            var mapper = ServiceProvider.Resolve<ISettingsDataToModelMapper>();
             var item = mapper.CreateModelItem(setting);
 
             return item;
@@ -66,7 +66,7 @@ namespace IDE.Core.Common
 
         public static IBoardRuleModel CreateRuleItem(this IBoardRuleData rule)
         {
-            var mapper = ServiceProvider.GetService<IBoardRulesDataToModelMapper>();
+            var mapper = ServiceProvider.Resolve<IBoardRulesDataToModelMapper>();
             var item = mapper.CreateRuleItem(rule);
 
             return item;
@@ -74,7 +74,7 @@ namespace IDE.Core.Common
 
         public static ISchematicRuleModel CreateRuleItem(this ISchematicRuleData rule)
         {
-            var mapper = ServiceProvider.GetService<ISchematicRulesToModelMapper>();
+            var mapper = ServiceProvider.Resolve<ISchematicRulesToModelMapper>();
             var item = mapper.CreateRuleItem(rule);
 
             return item;

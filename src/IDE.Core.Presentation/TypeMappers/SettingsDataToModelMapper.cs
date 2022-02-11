@@ -11,7 +11,6 @@ namespace IDE.Core.ViewModels
 
         public SettingsDataToModelMapper() : base()
         {
-            ServiceProvider.RegisterService<ISettingsDataToModelMapper>(this);
         }
 
         protected override void CreateMappings()

@@ -18,30 +18,30 @@ namespace IDE.Core
     {
         static List<IService> services = new List<IService>();
 
-        public static void RegisterService<T>(IService service, bool replace = true) where T : IService
-        {
-            //if the service already exists, it is replaced with the new
-            var existing = services.FirstOrDefault(s => s is T);
-            if (existing != null)
-            {
-                if (replace == false)
-                    return;
+        //public static void RegisterService<T>(IService service, bool replace = true) where T : IService
+        //{
+        //    //if the service already exists, it is replaced with the new
+        //    var existing = services.FirstOrDefault(s => s is T);
+        //    if (existing != null)
+        //    {
+        //        if (replace == false)
+        //            return;
 
-                services.Remove(existing);
-            }
+        //        services.Remove(existing);
+        //    }
 
-            services.Add(service);
-        }
+        //    services.Add(service);
+        //}
 
-        public static T GetService<T>() where T : IService
-        {
-            var service = services.FirstOrDefault(s => s is T);
-            return (T)service;
-        }
+        //public static T GetService<T>() where T : IService
+        //{
+        //    var service = services.FirstOrDefault(s => s is T);
+        //    return (T)service;
+        //}
 
         public static T GetToolWindow<T>(bool throwException = true) where T : IToolWindow
         {
-            var toolRegistry = GetService<IToolWindowRegistry>();
+            var toolRegistry = Resolve<IToolWindowRegistry>();
             if (toolRegistry != null)
                 return (T)toolRegistry.Tools.FirstOrDefault(t => t is T);
 

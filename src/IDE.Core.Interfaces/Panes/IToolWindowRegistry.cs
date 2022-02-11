@@ -12,15 +12,14 @@
     {
         IList<IToolWindow> Tools { get; }
 
-        //SolutionExplorerViewModel SolutionToolWindow { get; }
-
-        //PropertiesToolWindowViewModel PropertiesToolWindow { get; }
-
         IOutput Output { get; }
 
         IErrorsToolWindowViewModel Errors { get; }
 
-        void RegisterTool(/*ToolViewModel*/IToolWindow newTool);
+        void RegisterTool(IToolWindow newTool);
+
         void PublishTools();
+
+        T GetTool<T>() where T : IToolWindow;
     }
 }

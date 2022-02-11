@@ -6,42 +6,21 @@ namespace IDE.Dialogs.About
     using IDE.Core.Presentation.Resources;
     using IDE.Core.ViewModels;
 
-    /// <summary>
-    /// Organize the viewmodel for an about program information presentation
-    /// (e.g. About dialog)
-    /// </summary>
     public class AboutViewModel : DialogViewModel
     {
-        #region constructor
-        /// <summary>
-        /// Class constructor
-        /// </summary>
         public AboutViewModel()
             : base()
         {
         }
 
-        #endregion constructor
-
-
-        /// <summary>
-        /// Get the title string of the view - to be displayed in the associated view
-        /// (e.g. as dialog title)
-        /// </summary>
         public string WindowTitle
         {
             get
             {
-                //return $"About {AppHelpers.ApplicationTitle}";
                 return AboutDialogStrings.WindowTitle;
             }
         }
 
-
-
-        /// <summary>
-        /// Get title of application for display in About view.
-        /// </summary>
         public string AppTitle
         {
             get
@@ -58,10 +37,6 @@ namespace IDE.Dialogs.About
             }
         }
 
-        /// <summary>
-        /// Gets the assembly copyright.
-        /// </summary>
-        /// <value>The assembly copyright.</value>
         public string AssemblyCopyright
         {
             get
@@ -78,9 +53,6 @@ namespace IDE.Dialogs.About
             }
         }
 
-        /// <summary>
-        /// Get URL of application for reference of source and display in About view.
-        /// </summary>
         public string AppUrl
         {
             get
@@ -89,11 +61,6 @@ namespace IDE.Dialogs.About
             }
         }
 
-       
-
-        /// <summary>
-        /// Get application version for display in About view.
-        /// </summary>
         public string AppVersion
         {
             get
@@ -102,9 +69,6 @@ namespace IDE.Dialogs.About
             }
         }
 
-        /// <summary>
-        /// Get version of runtime for display in About view.
-        /// </summary>
         public string RunTimeVersion
         {
             get

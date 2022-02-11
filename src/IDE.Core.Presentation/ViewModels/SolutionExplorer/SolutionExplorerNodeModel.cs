@@ -526,7 +526,7 @@ namespace IDE.Core.ViewModels
 
         public ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(string fileExtension)
         {
-            var mapper = ServiceProvider.GetService<IFileExtensionToSolutionExplorerNodeMapper>();
+            var mapper = ServiceProvider.Resolve<IFileExtensionToSolutionExplorerNodeMapper>();
             var item = mapper.CreateSolutionExplorerNodeModel(fileExtension);
 
             return item;

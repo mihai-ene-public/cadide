@@ -17,18 +17,18 @@
         {
             try
             {
-                appCoreModel.CreateAppDataFolder();
+                _appCoreModel.CreateAppDataFolder();
 
                 //we want to ensure we have the options saved on close for now; consider removing this call in the future
-                settingsManager.SaveOptions(appCoreModel.DirFileAppSettingsData);
+                _settingsManager.SaveOptions(_appCoreModel.DirFileAppSettingsData);
 
                 //save to profile settings from recent files model
-                var profile = (Profile)settingsManager.SessionData;
-                var mruModel = (RecentFilesModel)recentFiles;
+                var profile = (Profile)_settingsManager.SessionData;
+                var mruModel = (RecentFilesModel)_recentFiles;
 
                 profile.MruList = mruModel.MruList.Select(m => new MruItem { IsPinned = m.IsPinned, FilePath = m.PathFileName }).ToList();
 
-                settingsManager.SaveProfileData(appCoreModel.DirFileAppSessionData);
+                _settingsManager.SaveProfileData(_appCoreModel.DirFileAppSessionData);
             }
             catch (Exception exp)
             {
@@ -90,13 +90,13 @@
         public void LoadConfig()
         {
             // Re/Load program options and user profile session data to control global behaviour of program
-            settingsManager.LoadOptions(appCoreModel.DirFileAppSettingsData);
-            settingsManager.LoadProfileData(appCoreModel.DirFileAppSessionData);
+            _settingsManager.LoadOptions(_appCoreModel.DirFileAppSettingsData);
+            _settingsManager.LoadProfileData(_appCoreModel.DirFileAppSessionData);
 
             // Initialize skinning engine with this current skin
             // standard skins defined in class enum
             // plus configured skins with highlighting
-            themesManager.SetSelectedTheme(Settings.SettingsManager.DefaultTheme);
+            _themesManager.SetSelectedTheme(Settings.SettingsManager.DefaultTheme);
             ResetTheme();                       // Initialize theme in process
         }
 

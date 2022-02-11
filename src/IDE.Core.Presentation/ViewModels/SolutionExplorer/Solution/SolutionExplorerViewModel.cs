@@ -319,7 +319,7 @@ namespace IDE.Core.ViewModels
                                     node.DeleteItem();
                                 }
 
-                                var workspace = ApplicationServices.ApplicationViewModel;
+                                var workspace = ServiceProvider.Resolve<IApplicationViewModel>();//ApplicationServices.ApplicationViewModel;
                                 //close open items
                                 foreach (var node in nodesList)
                                 {
@@ -562,7 +562,7 @@ namespace IDE.Core.ViewModels
 
         async Task LoadFileAsync2(string path)
         {
-            var output = ApplicationServices.ToolRegistry.Output;
+            var output = ServiceProvider.Resolve<IToolWindowRegistry>().GetTool<IOutput>();//ApplicationServices.ToolRegistry.Output;
             output.AppendLine($"Loading {Path.GetFileName(path)}");
 
             try

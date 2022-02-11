@@ -11,7 +11,6 @@ namespace IDE.Core.ViewModels
 
         public BoardRulesDataToModelMapper() : base()
         {
-            ServiceProvider.RegisterService<IBoardRulesDataToModelMapper>(this);
         }
 
         protected override void CreateMappings()

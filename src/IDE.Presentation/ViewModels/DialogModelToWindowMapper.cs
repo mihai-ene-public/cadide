@@ -20,7 +20,6 @@ namespace IDE.Core.ViewModels
     {
         public DialogModelToWindowMapper()
         {
-            ServiceProvider.RegisterService<IDialogModelToWindowMapper>(this);
         }
 
 

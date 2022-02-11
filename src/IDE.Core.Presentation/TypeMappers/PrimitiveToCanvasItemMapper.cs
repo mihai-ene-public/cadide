@@ -10,7 +10,7 @@ namespace IDE.Core.ViewModels
     {
         public PrimitiveToCanvasItemMapper() : base()
         {
-            ServiceProvider.RegisterService<IPrimitiveToCanvasItemMapper>(this);
+
         }
 
         protected override void CreateMappings()

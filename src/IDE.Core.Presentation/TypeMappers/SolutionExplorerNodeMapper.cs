@@ -10,7 +10,6 @@ namespace IDE.Core.ViewModels
     {
         public SolutionExplorerNodeMapper() : base()
         {
-            ServiceProvider.RegisterService<ISolutionExplorerNodeMapper>(this);
         }
 
         protected override void CreateMappings()

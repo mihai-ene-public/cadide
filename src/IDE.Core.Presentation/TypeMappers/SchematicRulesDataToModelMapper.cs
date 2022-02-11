@@ -11,7 +11,6 @@ namespace IDE.Core.ViewModels
 
         public SchematicRulesDataToModelMapper() : base()
         {
-            ServiceProvider.RegisterService<ISchematicRulesToModelMapper>(this);
         }
 
         protected override void CreateMappings()

@@ -11,7 +11,6 @@ namespace IDE.Core.Common.Utilities
     {
         public GenericMapper()
         {
-
             CreateMappings();
         }
 

@@ -52,7 +52,7 @@
 		/// Create a dedicated directory to store program settings and session data
 		/// </summary>
 		/// <returns></returns>
-		bool CreateAppDataFolder();
+		void CreateAppDataFolder();
 
 	}
 }

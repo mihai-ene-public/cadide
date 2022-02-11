@@ -12,7 +12,7 @@ namespace IDE.Core.Compilation
 {
     //should be able to remove errors
     //should compile only if something was changed in the open file
-    public class ActiveCompiler
+    public class ActiveCompiler : IActiveCompiler
     {
         public ActiveCompiler()
         {
@@ -24,15 +24,15 @@ namespace IDE.Core.Compilation
 
             // timer.Start();
 
-            dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
+            _dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
         }
 
-      //  IApplicationViewModel application;
-       // DispatcherTimer timer;
+        //  IApplicationViewModel application;
+        // DispatcherTimer timer;
 
         IErrorsToolWindowViewModel errors;
 
-        IDispatcherHelper dispatcher;
+        IDispatcherHelper _dispatcher;
         //public bool IsEnabled
         //{
         //    get { return timer.IsEnabled; }
@@ -207,7 +207,7 @@ namespace IDE.Core.Compilation
                             listErrors.AddRange(file.CompileErrors);
                         }
 
-                        dispatcher.RunOnDispatcher(() =>
+                        _dispatcher.RunOnDispatcher(() =>
                         {
                             errors?.Clear();
                             foreach (var err in listErrors)

@@ -3,7 +3,6 @@ using IDE.Core.Interfaces;
 using IDE.Core.Settings;
 using IDE.Core.Utilities;
 using IDE.Core.ViewModels;
-using IDE.Documents.Module;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,35 +14,43 @@ namespace IDE
 {
     class Bootstrapper
     {
-        public Bootstrapper(IApplicationViewModel app)
+        public Bootstrapper(
+            IApplicationViewModel application,
+            ISettingsManager settingsManager,
+            IToolWindowRegistry toolWindowRegistry,
+            IAppCoreModel appCore,
+            IDocumentTypeManager documentTypeManager
+            )
         {
-            application = app;
+            _application = application;
+            _settingsManager = settingsManager;
+            _toolWindowRegistry = toolWindowRegistry;
+            _appCore = appCore;
+            _documentTypeManager = documentTypeManager;
         }
 
-        IApplicationViewModel application;
+        private readonly IApplicationViewModel _application;
+        private readonly ISettingsManager _settingsManager;
+        private readonly IToolWindowRegistry _toolWindowRegistry;
+        private readonly IAppCoreModel _appCore;
+        private readonly IDocumentTypeManager _documentTypeManager;
 
         public void Run(StartupEventArgs eventArgs)
         {
+            _settingsManager.LoadOptions(AppHelpers.DirFileAppSettingsData);
+            //var options = _settingsManager.SettingData;
 
-
-
-            var settings = application.SettingsManager;
-
-            settings.LoadOptions(AppHelpers.DirFileAppSettingsData);
-            var options = settings.SettingData;
-
-            var envSetting = settings.GetSetting<EnvironmentGeneralSetting>();
+            var envSetting = _settingsManager.GetSetting<EnvironmentGeneralSetting>();
 
             Thread.CurrentThread.CurrentCulture = new CultureInfo(envSetting.LanguageSelected);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(envSetting.LanguageSelected);
 
-            ApplicationInitializer.Initialize();
+            Initialize();
 
             CreateShell();
 
             // Show the startpage if application starts for the very first time
             // (This requires that command binding was succesfully done before this line)
-            //if (application.ADLayout.LayoutSoure == LayoutLoaded.FromDefault)
             Core.Commands.AppCommand.ShowStartPage.Execute(null);
 
             if (eventArgs != null)
@@ -52,54 +59,9 @@ namespace IDE
 
         void CreateShell()
         {
-            var mainApp = Application.Current as MainApp;
-            try
-            {
+            ConstructMainWindowSession();
 
-                ConstructMainWindowSession();
-
-
-
-
-                // Register imported tool window definitions with Avalondock
-                var toolWindowRegistry = ApplicationServices.ToolRegistry;
-                toolWindowRegistry.PublishTools();
-            }
-            catch (Exception exp)
-            {
-                try
-                {
-                    // Cannot set shutdown mode when application is already shuttong down
-                    if (mainApp.AppIsShuttingDown == false)
-                        mainApp.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                }
-                catch// (Exception exp1)
-                {
-                    // logger.Error(exp1);
-                }
-
-                try
-                {
-                    // 1) Application hangs when this is set to null while MainWindow is visible
-                    // 2) Application throws exception when this is set as owner of window when it
-                    //    was never visible.
-                    //
-                    if (Application.Current.MainWindow != null)
-                    {
-                        if (Application.Current.MainWindow.IsVisible == false)
-                            Application.Current.MainWindow = null;
-                    }
-                }
-                catch// (Exception exp2)
-                {
-                    // logger.Error(exp2);
-                }
-
-                MessageDialog.Show(exp.Message, "Error finding requested resource");
-
-                if (mainApp.AppIsShuttingDown == false)
-                    mainApp.Shutdown();
-            }
+            _toolWindowRegistry.PublishTools();
         }
 
         void ConstructMainWindowSession()
@@ -109,31 +71,18 @@ namespace IDE
             Application.Current.MainWindow = mainWindow;
 
             var win = Application.Current.MainWindow;
-            var settings = application.SettingsManager;
 
-            win.DataContext = application;
+            win.DataContext = _application;
 
             // Establish command binding to accept user input via commanding framework
-            application.InitCommandBinding(win as ILayoutableWindow);
-
-            //var mainWindowPos = (settings.SessionData as Profile).MainWindowPosSz;
-            //win.Left = mainWindowPos.X;
-            //win.Top = mainWindowPos.Y;
-            //win.Width = mainWindowPos.Width;
-            //win.Height = mainWindowPos.Height;
-            //win.WindowState = mainWindowPos.IsMaximized == true ? WindowState.Maximized : WindowState.Normal;
+            _application.InitCommandBinding(win as ILayoutableWindow);
 
             // Initialize Window State in viewmodel to show resize grip when window is not maximized
-            if (win.WindowState == WindowState.Maximized)
-                application.IsNotMaximized = false;
-            else
-                application.IsNotMaximized = true;
-
+            _application.IsNotMaximized = win.WindowState == WindowState.Maximized;
 
             var mainApp = Application.Current as MainApp;
             if (mainApp.AppIsShuttingDown == false)
                 mainApp.ShutdownMode = ShutdownMode.OnLastWindowClose;
-
 
             Application.Current.MainWindow.Show();
         }
@@ -142,17 +91,80 @@ namespace IDE
         /// Interpret command line parameters and process their content
         /// </summary>
         /// <param name="args"></param>
-        void ProcessCmdLine(IEnumerable<string> args)
+        void ProcessCmdLine(string[] args)
         {
-            if (args != null && args.Count() > 0)
+            if (args != null && args.Length > 0)
             {
-                foreach (string sPath in args)
-                {
-                    // Command may not be bound yet so we do this via direct call
-                    application.OpenSolution(sPath);
+                // Command may not be bound yet so we do this via direct call
+                _application.OpenSolution(args[0]);
+            }
+        }
 
-                    break;//one solution only
+        void Initialize()
+        {
+            RegisterEditorModels();
+
+            RegisterServices();
+
+            _application.LoadConfig();
+
+            _appCore.CreateAppDataFolder();
+        }
+
+        void RegisterEditorModels()
+        {
+            //there is the possibility to load all these using MEF, but for now we can use this
+
+
+            var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from t in assembly.GetTypes()
+                                 where t.GetInterfaces().Contains(typeof(IRegisterable))
+                                       && t.GetConstructor(Type.EmptyTypes) != null
+                                 select t).ToList();
+            foreach (var r in registerables)
+            {
+                try
+                {
+                    var instance = (IRegisterable)Activator.CreateInstance(r);
+
+                    instance.RegisterDocumentType(_documentTypeManager);
+
+                    if (instance is ToolViewModel)
+                    {
+                        var t = instance as ToolViewModel;
+                        t.IsVisible = false;
+                        _toolWindowRegistry.RegisterTool(t);
+                    }
+
                 }
+                catch //(Exception ex)
+                {
+                    //log these in Output window or with log4net
+                }
+
+            }
+        }
+
+
+        void RegisterServices()
+        {
+            var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                                 from t in assembly.GetTypes()
+                                 where t.GetInterfaces().Contains(typeof(IService))
+                                       && t.GetConstructor(Type.EmptyTypes) != null
+                                 select t).ToList();
+            foreach (var r in registerables)
+            {
+                try
+                {
+                    //it is enough to create the service; it will register by itself
+                    var instance = (IService)Activator.CreateInstance(r);
+                }
+                catch //(Exception ex)
+                {
+                    //log these in Output window or with log4net
+                }
+
             }
         }
     }

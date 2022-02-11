@@ -62,7 +62,7 @@ namespace IDE.App.Views.Shell
 
         void Init()
         {
-            var appVM = ApplicationServices.ApplicationViewModel;
+            var appVM = ServiceProvider.Resolve<IApplicationViewModel>();
 
             appVM.LoadLayoutRequested +=
              (s, e) =>

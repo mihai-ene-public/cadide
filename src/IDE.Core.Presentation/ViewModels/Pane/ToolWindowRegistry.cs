@@ -14,23 +14,14 @@
     //[Export(typeof(IToolWindowRegistry))]
     public class ToolWindowRegistry : IToolWindowRegistry
     {
-        #region fields
+        private readonly static IList<IToolWindow> tools = new ObservableCollection<IToolWindow>();
 
-        readonly static IList<IToolWindow> tools = new ObservableCollection<IToolWindow>();
+        private readonly List<IToolWindow> todoTools = new List<IToolWindow>();
 
-        readonly List<IToolWindow> todoTools = new List<IToolWindow>();
-        #endregion fields
-
-        #region contructors
         public ToolWindowRegistry()
         {
-            //tools = new ObservableCollection<ToolViewModel>();
-            //todoTools = new List<ToolViewModel>();
-            ServiceProvider.RegisterService<IToolWindowRegistry>(this);
         }
-        #endregion contructors
 
-        #region properties
         public IList<IToolWindow> Tools
         {
             get
@@ -88,9 +79,7 @@
             get { return tools.OfType<SchematicSheetsViewModel>().FirstOrDefault(); }
         }
 
-        #endregion properties
 
-        #region methods
         /// <summary>
         /// Publishs all registered tool window definitions into an observable collection.
         /// (Which in turn will execute the LayoutInitializer that takes care of default positions etc).
@@ -115,15 +104,16 @@
                     return;
 
                 todoTools.Add(newTool);
-
-                //// Publish the fact that we have registered a new tool window instance
-                //RegisterToolWindowEvent.Instance.Publish(new RegisterToolWindowEventArgs(newTool));
             }
             catch (Exception exp)
             {
                 throw new Exception("Tool window registration failed in ToolWindowRegistry.", exp);
             }
         }
-        #endregion methods
+
+        public T GetTool<T>() where T : IToolWindow
+        {
+            return tools.OfType<T>().FirstOrDefault();
+        }
     }
 }
