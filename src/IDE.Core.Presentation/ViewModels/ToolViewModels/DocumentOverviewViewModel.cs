@@ -8,7 +8,7 @@ using IDE.Core.Commands;
 
 namespace IDE.Core.ViewModels
 {
-    public class DocumentOverviewViewModel : ToolViewModel, IRegisterable, IDocumentToolWindow
+    public class DocumentOverviewViewModel : ToolViewModel, IDocumentOverviewToolWindow
     {
         public DocumentOverviewViewModel()
             : base("Overview")
@@ -259,6 +259,4 @@ namespace IDE.Core.ViewModels
     {
 
     }
-
-
 }

@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public class SchematicSheetsViewModel : ToolViewModel, IRegisterable, IDocumentToolWindow
+    public class SchematicSheetsViewModel : ToolViewModel, ISchematicSheetsToolWindow
     {
 
         public SchematicSheetsViewModel()
@@ -37,7 +37,7 @@ namespace IDE.Core.ViewModels
 
         }
 
-       public void SetDocument(IFileBaseViewModel document)
+        public void SetDocument(IFileBaseViewModel document)
         {
             Schematic = document;
         }

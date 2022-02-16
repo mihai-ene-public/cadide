@@ -1,6 +1,6 @@
 ﻿namespace IDE.Core.Interfaces
 {
-    public interface ISchematicRulesToModelMapper : IService
+    public interface ISchematicRulesToModelMapper
     {
         ISchematicRuleModel CreateRuleItem(ISchematicRuleData rule);
 

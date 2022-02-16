@@ -104,8 +104,6 @@ namespace IDE
         {
             RegisterEditorModels();
 
-            RegisterServices();
-
             _application.LoadConfig();
 
             _appCore.CreateAppDataFolder();
@@ -129,12 +127,12 @@ namespace IDE
 
                     instance.RegisterDocumentType(_documentTypeManager);
 
-                    if (instance is ToolViewModel)
-                    {
-                        var t = instance as ToolViewModel;
-                        t.IsVisible = false;
-                        _toolWindowRegistry.RegisterTool(t);
-                    }
+                    //if (instance is ToolViewModel)
+                    //{
+                    //    var t = instance as ToolViewModel;
+                    //    t.IsVisible = false;
+                    //    _toolWindowRegistry.RegisterTool(t);
+                    //}
 
                 }
                 catch //(Exception ex)
@@ -146,26 +144,5 @@ namespace IDE
         }
 
 
-        void RegisterServices()
-        {
-            var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                 from t in assembly.GetTypes()
-                                 where t.GetInterfaces().Contains(typeof(IService))
-                                       && t.GetConstructor(Type.EmptyTypes) != null
-                                 select t).ToList();
-            foreach (var r in registerables)
-            {
-                try
-                {
-                    //it is enough to create the service; it will register by itself
-                    var instance = (IService)Activator.CreateInstance(r);
-                }
-                catch //(Exception ex)
-                {
-                    //log these in Output window or with log4net
-                }
-
-            }
-        }
     }
 }

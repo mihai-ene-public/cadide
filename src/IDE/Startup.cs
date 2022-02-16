@@ -18,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using IDE.Core.Documents;
 using IDE.Core.Compilation;
+using IDE.Core.Errors;
+using IDE.Core.Presentation.Infrastructure;
 
 namespace IDE
 {
@@ -49,14 +51,14 @@ namespace IDE
 
             services.AddTransient<IPolygonGeometryOutlinePourProcessor, PolygonGeometryOutlinePourProcessor>();
 
-            services.AddSingleton<IMeshHelper,MeshHelper>();
+            services.AddSingleton<IMeshHelper, MeshHelper>();
             services.AddTransient<IModelImporter, GenericModelImporter>();
 
 
-            services.AddTransient<IDispatcherHelper,DispatcherHelper>();
-            services.AddTransient<IClipboardAdapter,ClipboardAdapter>();
+            services.AddTransient<IDispatcherHelper, DispatcherHelper>();
+            services.AddTransient<IClipboardAdapter, ClipboardAdapter>();
 
-            services.AddTransient<IBitmapImageHelper,BitmapImageHelper>();
+            services.AddTransient<IBitmapImageHelper, BitmapImageHelper>();
 
             services.AddTransient<ICommandFactory, CommandFactory>();
             services.AddTransient<IMessageBoxDialogHelper, MessageBoxDialogHelper>();
@@ -77,10 +79,34 @@ namespace IDE
             services.AddSingleton<IFileExtensionToSolutionExplorerNodeMapper, FileExtensionToSolutionExplorerNodeMapper>();
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
-            
+
             services.AddSingleton<IActiveCompiler, ActiveCompiler>();
 
+            services.AddSingleton<IServiceCollection>(services);
+            services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();
+
+            AddDocumentEditors(services);
+            AddToolWindows(services);
+
             serviceProvider = services.BuildServiceProvider();
+        }
+
+        private static void AddDocumentEditors(IServiceCollection services)
+        {
+
+        }
+
+        private static void AddToolWindows(IServiceCollection services)
+        {
+            services.AddSingleton<IPropertiesToolWindow, PropertiesToolWindowViewModel>();
+            services.AddSingleton<IPreview3DToolWindow, Preview3DWindowViewModel>();
+            services.AddSingleton<ISchematicSheetsToolWindow, SchematicSheetsViewModel>();
+            services.AddSingleton<ISelectionFilterToolWindow, SelectionFilterToolViewModel>();
+            services.AddSingleton<ILayersToolWindow, LayersToolWindowViewModel>();
+            services.AddSingleton<IDocumentOverviewToolWindow, DocumentOverviewViewModel>();
+            services.AddSingleton<IErrorsToolWindow, ErrorsToolWindowViewModel>();
+            services.AddSingleton<IOutputToolWindow, OutputViewModel>();
+            services.AddSingleton<ISolutionExplorerToolWindow, SolutionExplorerViewModel>();
         }
 
         public static void Run(StartupEventArgs _eventArgs)

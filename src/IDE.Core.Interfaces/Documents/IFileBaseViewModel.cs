@@ -171,8 +171,4 @@
 
     }
 
-    public interface IService
-    {
-
-    }
 }

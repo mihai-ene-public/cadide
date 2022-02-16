@@ -12,7 +12,7 @@
     /// https://github.com/tgjones/gemini
     /// </summary>
     //[Export(typeof(IOutput))]
-    public class OutputViewModel : ToolViewModel, IOutput, IRegisterable
+    public class OutputViewModel : ToolViewModel, IOutputToolWindow
     {
         #region fields
       //  private readonly OutputWriter outputWriter;
@@ -60,9 +60,7 @@
         #endregion properties
 
         #region methods
-        /// <summary>
-        /// Implements the <seealso cref="IOutput"/> interface.
-        /// </summary>
+
         public void Clear()
         {
             textModel.Clear();
@@ -74,18 +72,12 @@
             OnPropertyChanged(nameof(Text));
         }
 
-        /// <summary>
-        /// Implements the <seealso cref="IOutput"/> interface.
-        /// </summary>
         public void AppendLine(string text)
         {
             textModel.AppendLine(text);
             OnTextChanged();
         }
 
-        /// <summary>
-        /// Implements the <seealso cref="IOutput"/> interface.
-        /// </summary>
         public void Append(string text)
         {
             textModel.Append(text);

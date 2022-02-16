@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface IPrimitiveToCanvasItemMapper : IService
+    public interface IPrimitiveToCanvasItemMapper
     {
         ISelectableItem CreateDesignerItem(IPrimitive primitive);
     }

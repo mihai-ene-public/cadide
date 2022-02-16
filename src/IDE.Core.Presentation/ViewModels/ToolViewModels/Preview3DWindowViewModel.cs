@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public class Preview3DWindowViewModel : ToolViewModel, IRegisterable, IDocumentToolWindow
+    public class Preview3DWindowViewModel : ToolViewModel, IPreview3DToolWindow
     {
         public Preview3DWindowViewModel()
           : base("Preview options")

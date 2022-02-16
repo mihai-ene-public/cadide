@@ -39,8 +39,6 @@ namespace IDE.Core.Themes
 
         public const string DefaultThemeName = MetroDarkThemeName;
 
-      //  protected static readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private SortedDictionary<string, ThemeBase> textEditorThemes = null;
         private IList<ITheme> listOfAllThemes = null;
        
@@ -160,9 +158,6 @@ namespace IDE.Core.Themes
 
             try
             {
-                var appLocation = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
-                // ExpressionDark Theme
                 themeName = MetroDarkThemeName;
                 wpfTheme = new List<string>(MetroDarkResources);
 
@@ -171,13 +166,6 @@ namespace IDE.Core.Themes
             }
             catch (System.Exception exp)
             {
-                //var msg = string.Format("Error registering application theme '{0}' -> '{1}'",
-                //                                                        themeName == null ? "(null)" : themeName,
-                //                                                        t == null ? "(null)" : t.HlThemeName);
-
-                //// Log an error message and let the system boot up with default theme instead of re-throwing this
-                //logger.Fatal(new System.Exception(msg, exp));
-
                 MessageDialog.Show(exp.Message);
             }
 

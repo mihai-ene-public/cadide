@@ -4,9 +4,9 @@ using System.Windows.Input;
 
 namespace IDE.Core.ViewModels
 {
-    public class SelectionFilterToolViewModel : ToolViewModel, IRegisterable, IDocumentToolWindow
+    public class SelectionFilterToolViewModel : ToolViewModel, ISelectionFilterToolWindow
     {
-        public SelectionFilterToolViewModel() 
+        public SelectionFilterToolViewModel()
             : base("Selection")
         {
             CanHide = true;
@@ -31,11 +31,11 @@ namespace IDE.Core.ViewModels
             get
             {
                 if (selectAllCommand == null)
-                    selectAllCommand = CreateCommand( p =>
-                    {
-                        foreach (SelectionFilterItemViewModel item in Document.CanSelectList)
-                            item.CanSelect = true;
-                    });
+                    selectAllCommand = CreateCommand(p =>
+                   {
+                       foreach (SelectionFilterItemViewModel item in Document.CanSelectList)
+                           item.CanSelect = true;
+                   });
 
                 return selectAllCommand;
             }

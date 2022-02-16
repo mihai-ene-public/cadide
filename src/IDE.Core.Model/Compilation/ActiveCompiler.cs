@@ -30,7 +30,7 @@ namespace IDE.Core.Compilation
         //  IApplicationViewModel application;
         // DispatcherTimer timer;
 
-        IErrorsToolWindowViewModel errors;
+        IErrorsToolWindow errors;
 
         IDispatcherHelper _dispatcher;
         //public bool IsEnabled
@@ -48,7 +48,7 @@ namespace IDE.Core.Compilation
             //    application = ServiceProvider.Resolve<IApplicationViewModel>();//ServiceProvider.GetService<IApplicationViewModel>();
 
             if (errors == null)
-                errors = ServiceProvider.GetToolWindow<IErrorsToolWindowViewModel>();
+                errors = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
         }
 
         //async void Timer_Tick(object sender, EventArgs e)

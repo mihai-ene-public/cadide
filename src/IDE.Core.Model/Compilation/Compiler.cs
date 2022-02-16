@@ -18,16 +18,16 @@ namespace IDE.Core.Compilation
     {
         public Compiler()
         {
-            output = ServiceProvider.GetToolWindow<IOutput>();
+            output = ServiceProvider.GetToolWindow<IOutputToolWindow>();
             application = ServiceProvider.Resolve<IApplicationViewModel>();//ServiceProvider.GetService<IApplicationViewModel>();
-            errors = ServiceProvider.GetToolWindow<IErrorsToolWindowViewModel>();
+            errors = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
 
             //output.Clear();
             //errors.Clear();
         }
 
-        IOutput output;
-        IErrorsToolWindowViewModel errors;
+        IOutputToolWindow output;
+        IErrorsToolWindow errors;
 
         List<ISolutionProjectNodeModel> solutionProjects = new List<ISolutionProjectNodeModel>();
 

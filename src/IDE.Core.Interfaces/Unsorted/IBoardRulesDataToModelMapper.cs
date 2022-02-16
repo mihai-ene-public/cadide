@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface IBoardRulesDataToModelMapper : IService
+    public interface IBoardRulesDataToModelMapper
     {
         IBoardRuleModel CreateRuleItem(IBoardRuleData rule);
     }

@@ -9,12 +9,11 @@ using System.Windows.Input;
 
 namespace IDE.Core.Errors
 {
-    public class ErrorsToolWindowViewModel : ToolViewModel, IRegisterable, IErrorsToolWindowViewModel
+    public class ErrorsToolWindowViewModel : ToolViewModel, IErrorsToolWindow
     {
         public ErrorsToolWindowViewModel()
             : base("Errors")
         {
-            // ServiceProvider.RegisterService<IErrorsToolWindowViewModel>(this);
         }
 
         ObservableCollection<IErrorMessage> errors = new ObservableCollection<IErrorMessage>();

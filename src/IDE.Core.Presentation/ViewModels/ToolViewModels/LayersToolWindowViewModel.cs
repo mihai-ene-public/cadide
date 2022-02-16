@@ -5,7 +5,7 @@ using IDE.Core.Interfaces;
 
 namespace IDE.Core.ViewModels
 {
-    public class LayersToolWindowViewModel : ToolViewModel, IRegisterable, IDocumentToolWindow
+    public class LayersToolWindowViewModel : ToolViewModel, ILayersToolWindow
     {
         public LayersToolWindowViewModel()
             : base("Layers")

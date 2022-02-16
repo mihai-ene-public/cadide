@@ -7,10 +7,8 @@
     /// </summary>
     public abstract class ToolViewModel : PaneViewModel, IToolWindow
     {
-        #region fields
-        private bool isVisible = true;
+        private bool isVisible = false;
         private bool canHide = false;
-        #endregion fields
 
         #region constructors
         /// <summary>

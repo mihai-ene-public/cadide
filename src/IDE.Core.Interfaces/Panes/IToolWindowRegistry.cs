@@ -8,15 +8,9 @@
     /// Defines an interface for a class that can register
     /// and manage tool window viemodels.
     /// </summary>
-    public interface IToolWindowRegistry : IService
+    public interface IToolWindowRegistry
     {
         IList<IToolWindow> Tools { get; }
-
-        IOutput Output { get; }
-
-        IErrorsToolWindowViewModel Errors { get; }
-
-        void RegisterTool(IToolWindow newTool);
 
         void PublishTools();
 

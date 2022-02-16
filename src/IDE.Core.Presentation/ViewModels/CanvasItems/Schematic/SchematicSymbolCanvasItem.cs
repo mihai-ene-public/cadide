@@ -432,7 +432,7 @@ namespace IDE.Core.Designers
             }
             catch (Exception ex)
             {
-                ServiceProvider.GetToolWindow<IOutput>().AppendLine(ex.Message);
+                ServiceProvider.GetToolWindow<IOutputToolWindow>().AppendLine(ex.Message);
             }
 
         }

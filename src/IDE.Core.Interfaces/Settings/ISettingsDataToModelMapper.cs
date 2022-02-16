@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface ISettingsDataToModelMapper : IService
+    public interface ISettingsDataToModelMapper
     {
         ISettingModel CreateModelItem(ISettingData setting);
     }

@@ -848,14 +848,14 @@ namespace IDE.Core.ViewModels
             {
                 if (node != null)
                 {
-                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindowViewModel>();
+                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
 
                     dispatcher.RunOnDispatcher(() =>
                     {
                         err?.Clear();
 
                         //show output during build
-                        var output = _toolWindowRegistry.GetTool<IOutput>();
+                        var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
                         var outputTW = output as ToolViewModel;
                         output.Clear();
                         outputTW.IsVisible = true;
@@ -891,14 +891,14 @@ namespace IDE.Core.ViewModels
             {
                 if (node != null)
                 {
-                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindowViewModel>();
+                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
 
                     dispatcher.RunOnDispatcher(() =>
                     {
                         err?.Clear();
 
                         //show output during build
-                        var output = _toolWindowRegistry.GetTool<IOutput>();
+                        var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
                         var outputTW = output as ToolViewModel;
                         output.Clear();
                         outputTW.IsVisible = true;

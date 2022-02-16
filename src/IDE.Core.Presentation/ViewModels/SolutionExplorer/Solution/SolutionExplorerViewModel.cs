@@ -18,13 +18,8 @@ using IDE.Core.Common;
 namespace IDE.Core.ViewModels
 {
     //this class should have the most of implementation of FileBaseViewModelClass
-    public class SolutionExplorerViewModel : ToolViewModel
-                                           , IRegisterable
-    // ,IFileBaseViewModel
+    public class SolutionExplorerViewModel : ToolViewModel, ISolutionExplorerToolWindow
     {
-        //public event EventHandler<FileBaseEvent> DocumentEvent;
-        //  public event EventHandler<ProcessResultEvent> ProcessingResultEvent;
-
         public SolutionExplorerViewModel()
             : base("Solution")
         {
@@ -48,21 +43,8 @@ namespace IDE.Core.ViewModels
         bool isDirty = false;
         string defaultFileType = SolutionDocument.SolutionExtension;
         protected IDocumentModel documentModel;
-        //ICommand closeCommand;
-        // FileLoader mAsyncProcessor;
 
-        public override PaneLocation PreferredLocation
-        {
-            get
-            {
-                return PaneLocation.Right;
-            }
-        }
-
-
-        // SolutionRootNodeModel DocumentModel { get; set; }
-
-        // public object Document { get { return null; } }
+        public override PaneLocation PreferredLocation => PaneLocation.Right;
 
         /// <summary>
         /// just one solution, but used as a list for binding in tree;
@@ -74,14 +56,6 @@ namespace IDE.Core.ViewModels
         }
 
         public ObservableCollection<SolutionExplorerNodeModel> SelectedNodes { get; set; } = new ObservableCollection<SolutionExplorerNodeModel>();
-
-        //public string DocumentTypeKey
-        //{
-        //    get
-        //    {
-        //        return ToolContentId;
-        //    }
-        //}
 
         public DocumentState State
         {
@@ -106,8 +80,6 @@ namespace IDE.Core.ViewModels
                 }
             }
         }
-
-        // public BaseViewModel Item { get; set; }
 
         public string FilePath
         {
@@ -562,7 +534,7 @@ namespace IDE.Core.ViewModels
 
         async Task LoadFileAsync2(string path)
         {
-            var output = ServiceProvider.Resolve<IToolWindowRegistry>().GetTool<IOutput>();//ApplicationServices.ToolRegistry.Output;
+            var output = ServiceProvider.Resolve<IToolWindowRegistry>().GetTool<IOutputToolWindow>();//ApplicationServices.ToolRegistry.Output;
             output.AppendLine($"Loading {Path.GetFileName(path)}");
 
             try

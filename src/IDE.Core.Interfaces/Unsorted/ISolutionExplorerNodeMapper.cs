@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface ISolutionExplorerNodeMapper : IService
+    public interface ISolutionExplorerNodeMapper
     {
         ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(IProjectFileRef fileItem);
-    }
-
-    public interface IFileExtensionToSolutionExplorerNodeMapper : IService
-    {
-        ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(string extension);
     }
 }
