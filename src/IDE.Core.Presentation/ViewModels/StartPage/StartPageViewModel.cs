@@ -10,7 +10,7 @@ namespace IDE.Documents.Views
     using IDE.Core.Interfaces;
     using System.Collections.Generic;
 
-    public class StartPageViewModel : FileBaseViewModel
+    public class StartPageViewModel : FileBaseViewModel, IStartPage
     {
         #region fields
         public const string StartPageContentId = ">StartPage<";
@@ -22,7 +22,7 @@ namespace IDE.Documents.Views
         /// <summary>
         /// Default constructor
         /// </summary>
-        public StartPageViewModel():base()
+        public StartPageViewModel() : base()
         {
             this.Title = "Home";
             this.StartPageTip = null;// Strings.STR_STARTPAGE_WELCOME_TT;
@@ -32,7 +32,7 @@ namespace IDE.Documents.Views
 
         }
 
-      
+
 
         /// <summary>
         /// Parameterized constructor
@@ -163,9 +163,5 @@ namespace IDE.Documents.Views
             return Assembly.GetEntryAssembly().Location;
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            //throw new NotImplementedException();
-        }
     }
 }

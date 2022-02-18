@@ -5,39 +5,24 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// This class manages document specific data items. Such as, filter for file open dialog,
-    /// a FileOpenMethod that returns the correct viewmodel etc.
-    /// 
-    /// Moduls can use this class to register new document types via the <seealso cref="IDocumentType"/>
-    /// interface using the <seealso cref="IDocumentTypeManager"/> service.
+    /// This class manages document specific data items. Such as, filter for file open dialog
     /// </summary>
     internal class DocumentType : IDocumentType
     {
         #region constructors
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="description"></param>
-        /// <param name="fileFilterName"></param>
-        /// <param name="defaultFilter"></param>
-        /// <param name="fileOpenMethod"></param>
-        /// <param name="classType"></param>
-        /// <param name="sortPriority"></param>
         public DocumentType(string key,
                             string description,
                             string fileFilterName,
-                            string defaultFilter,
+                            string fileExtension,
                             Type classType
                             )
         {
             Key = key;
             Description = description;
             FileFilterName = fileFilterName;
-            DefaultFilter = defaultFilter;
+            FileExtension = fileExtension;
             ClassType = classType;
             FileTypeExtensions = null;
-            //TypeOfProjectBaseFileRef = typeOfProjectBaseFileRef;
         }
         #endregion constructors
 
@@ -50,7 +35,7 @@
         /// <summary>
         /// Gets the default file filter that should be used to save/load a document.
         /// </summary>
-        public string DefaultFilter { get; private set; }
+        public string FileExtension { get; private set; }
 
         /// <summary>
         /// Gets a string that can be displayed with the DefaultFilter
@@ -58,17 +43,6 @@
         /// </summary>
         public string FileFilterName { get; private set; }
 
-        ///// <summary>
-        ///// Gets the file open method that can be used to read a document of this type from disk.
-        ///// </summary>
-        //public FileOpenDelegate FileOpenMethod { get; private set; }
-
-        ///// <summary>
-        ///// Gets the file new method that can be used to read a document of this type from disk.
-        ///// This property can be null indicating that this type of document cannot be created
-        ///// with this module (this document type can only be read and viewed from disk).
-        ///// </summary>
-        //public CreateNewDocumentDelegate CreateDocumentMethod { get; private set; }
 
         /// <summary>
         /// Gets the key of this document type.
@@ -80,18 +54,11 @@
         /// </summary>
         public string Description { get; private set; }
 
-        ///// <summary>
-        ///// Gets the sort priority to determine a sort criteria when sorting this
-        ///// document type against other types in a list of supported document types.
-        ///// </summary>
-        //public int SortPriority { get; private set; }
-
         /// <summary>
         /// Gets the actual type of the viewmodel class that implements this document type.
         /// </summary>
         public Type ClassType { get; private set; }
 
-        //public Type TypeOfProjectBaseFileRef { get; private set; }
 
         #endregion properties
 
@@ -100,10 +67,7 @@
         /// Convinience methode to create an item for the collection of
         /// <seealso cref="IDocumentTypeItem"/> items managed in this class.
         /// </summary>
-        /// <param name="description"></param>
-        /// <param name="extensions"></param>
-        /// <returns></returns>
-        public IDocumentTypeItem CreateItem(string description, IList<string> extensions)//, int sortPriority = 0)
+        public IDocumentTypeItem CreateItem(string description, IList<string> extensions)
         {
             return new DocumentTypeItem(description, extensions);
         }
@@ -114,41 +78,6 @@
                 FileTypeExtensions = new List<IDocumentTypeItem>();
 
             FileTypeExtensions.Add(fileType);
-        }
-
-        public string GetFileOpenFilter()
-        {
-            string ret = string.Empty;
-
-            if (this.FileTypeExtensions == null)
-                return ret;
-
-            foreach (var item in this.FileTypeExtensions)
-            {
-                string ext = string.Empty, ext1 = string.Empty;
-
-                if (item.DocFileTypeExtensions.Count <= 0)
-                    continue;
-
-                ext = ext1 = string.Format("*.{0}", item.DocFileTypeExtensions[0]);
-
-                for (int i = 1; i < item.DocFileTypeExtensions.Count; i++)
-                {
-                    ext = string.Format("{0},*.{1}", ext, item.DocFileTypeExtensions[i]);
-                    ext1 = string.Format("{0};*.{1}", ext1, item.DocFileTypeExtensions[i]);
-                }
-
-                // log4net XML output (*.log4j,*.log,*.txt,*.xml)|*.log4j;*.log;*.txt;*.xml
-                var s = string.Format("{0} ({1}) |{2}", item.Description, ext, ext1);
-
-                if (ret == string.Empty)
-                    ret = s;
-                else
-                    ret = ret + "|" + s;
-
-            }
-
-            return ret;
         }
 
         public void GetFileFilterEntries(IList<IFileFilterEntry> entries)
@@ -175,7 +104,6 @@
                 var filterString = new FileFilterEntry(string.Format("{0} ({1}) |{2}",
                                                        item.Description, ext, ext1));
 
-                // ret.Add(item.SortPriority, filterString);
                 entries.Add(filterString);
             }
         }

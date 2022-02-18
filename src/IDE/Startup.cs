@@ -93,7 +93,15 @@ namespace IDE
 
         private static void AddDocumentEditors(IServiceCollection services)
         {
-
+            services.AddTransient<ISimpleTextDocument, SimpleTextDocumentViewModel>();
+            services.AddTransient<ISolutionProjectPropertiesDocument, SolutionProjectPropertiesViewModel>();
+            services.AddTransient<IStartPage, StartPageViewModel>();
+            services.AddTransient<IMeshDesigner, MeshDesignerViewModel>();
+            services.AddTransient<ISymbolDesignerViewModel, SymbolDesignerViewModel>();
+            services.AddTransient<IComponentDesigner, ComponentDesignerFileViewModel>();
+            services.AddTransient<IFootprintDesigner, FootprintDesignerFileViewModel>();
+            services.AddTransient<ISchematicDesigner, SchematicDesignerViewModel>();
+            services.AddTransient<IBoardDesigner, BoardDesignerFileViewModel>();
         }
 
         private static void AddToolWindows(IServiceCollection services)

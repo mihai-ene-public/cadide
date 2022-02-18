@@ -63,6 +63,7 @@ namespace IDE.Core.Interfaces
 
         IList<IFileBaseViewModel> Files { get; }
 
+        IList<IToolWindow> Tools { get; }
 
         /// <summary>
         /// Method to be executed when user (or program) tries to close the application

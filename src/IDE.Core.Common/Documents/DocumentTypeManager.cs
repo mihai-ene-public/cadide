@@ -27,13 +27,13 @@
         /// arrival of the new document type.
         /// </summary>
         public IDocumentType RegisterDocumentType(string Key,
-                                                  string Description,
-                                                  string FileFilterName,
-                                                  string DefaultFilter,
-                                                  Type typeOfDocument
+                                                   string description,
+                                                   string fileFilterName,
+                                                   string fileExtension,
+                                                   Type typeOfDocument
                                                  )
         {
-            var newFileType = new DocumentType(Key, Description, FileFilterName, DefaultFilter, typeOfDocument);
+            var newFileType = new DocumentType(Key, description, fileFilterName, fileExtension, typeOfDocument);
 
             documentTypes.Add(newFileType);
             documentTypes.Sort(i => i.FileFilterName, System.ComponentModel.ListSortDirection.Ascending);
@@ -62,7 +62,7 @@
                     fileExtension = fileExtension.Substring(idx + 1);
             }
 
-            var ret = documentTypes.FirstOrDefault(d => d.DefaultFilter == fileExtension);
+            var ret = documentTypes.FirstOrDefault(d => d.FileExtension == fileExtension);
 
             return ret;
         }
@@ -89,7 +89,7 @@
                 {
                     if (key == string.Empty || key == item.Key)
                     {
-                        var filter = item.DefaultFilter.Replace(".", "");
+                        var filter = item.FileExtension.Replace(".", "");
 
                         // format filter entry like "Structured Query Language (*.sql) |*.sql"
                         var s = new FileFilterEntry(string.Format("{0} (*.{1}) |*.{2}",

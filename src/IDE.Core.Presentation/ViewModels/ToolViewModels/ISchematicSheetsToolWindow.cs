@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public interface ISchematicSheetsToolWindow : IRegisterable, IDocumentToolWindow, IToolWindow
+    public interface ISchematicSheetsToolWindow : IDocumentToolWindow, IToolWindow
     {
 
     }

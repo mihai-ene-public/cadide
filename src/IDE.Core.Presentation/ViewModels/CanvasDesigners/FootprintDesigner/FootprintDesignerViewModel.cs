@@ -24,9 +24,7 @@ namespace IDE.Documents.Views
     //get dirty when
     //  - item is moved, resized (changed)
     //  - item placed or removed
-    public class FootprintDesignerFileViewModel : CanvasDesignerFileViewModel
-                                                , ILayeredViewModel
-                                                , IDocumentOverview
+    public class FootprintDesignerFileViewModel : CanvasDesignerFileViewModel, IFootprintDesigner
     {
 
         public FootprintDesignerFileViewModel()
@@ -1038,22 +1036,6 @@ namespace IDE.Documents.Views
                     catch { }
 
                 }
-            }
-        }
-
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                                    Description,
-                                                                    FileFilterName,
-                                                                    DefaultFilter,
-                                                                    GetType()
-                                                                    );
-
-            if (docType != null) // Lets register some sub-types for editing with Edi's text editor
-            {
-                var t = docType.CreateItem("Footprint Files", new List<string>() { "footprint", "fpt" });
-                docType.RegisterFileTypeItem(t);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public interface ISelectionFilterToolWindow : IRegisterable, IDocumentToolWindow, IToolWindow
+    public interface ISelectionFilterToolWindow : IDocumentToolWindow, IToolWindow
     {
 
     }

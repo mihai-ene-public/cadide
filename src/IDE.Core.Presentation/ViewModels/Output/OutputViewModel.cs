@@ -84,11 +84,6 @@
             OnTextChanged();
         }
 
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-
-        }
-
         #endregion methods
     }
 }

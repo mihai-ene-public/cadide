@@ -1213,23 +1213,6 @@ namespace IDE.Core.ViewModels
 
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            //Schema file (*.sch)
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                              Description,
-                                                              FileFilterName,
-                                                              DefaultFilter,
-                                                              GetType()
-                                                             );
-
-            if (docType != null) // Lets register some sub-types for editing with Edi's text editor
-            {
-                var t = docType.CreateItem("Schematic Files", new List<string>() { "sch" });
-                docType.RegisterFileTypeItem(t);
-            }
-        }
-
         public async Task Build()
         {
             var pdfOutput = new PdfSchematicOutput()

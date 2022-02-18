@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 namespace IDE.Documents.Views
 {
-    public class SolutionProjectPropertiesViewModel : FileBaseViewModel
+    public class SolutionProjectPropertiesViewModel : FileBaseViewModel, ISolutionProjectPropertiesDocument
     {
-        public SolutionProjectPropertiesViewModel() 
+        public SolutionProjectPropertiesViewModel()
             : base(null)
         {
             //Project = project;
@@ -75,9 +75,5 @@ namespace IDE.Documents.Views
             Project.Save();
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-
-        }
     }
 }

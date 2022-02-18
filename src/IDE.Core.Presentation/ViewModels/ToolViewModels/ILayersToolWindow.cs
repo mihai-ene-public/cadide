@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public interface ILayersToolWindow : IRegisterable, IDocumentToolWindow, IToolWindow
+    public interface ILayersToolWindow : IDocumentToolWindow, IToolWindow
     {
 
     }

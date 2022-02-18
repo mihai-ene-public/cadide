@@ -20,7 +20,7 @@ namespace IDE.Documents.Views
 {
     // in the future we add BOM data: Suplier, Manuf, Descr, Price, ...
     // datasheet linking
-    public class ComponentDesignerFileViewModel : FileBaseViewModel
+    public class ComponentDesignerFileViewModel : FileBaseViewModel, IComponentDesigner
     {
 
         public ComponentDesignerFileViewModel()
@@ -1127,24 +1127,6 @@ namespace IDE.Documents.Views
             }
         }
 
-
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                                    Description,
-                                                                    FileFilterName,
-                                                                    DefaultFilter,
-                                                                    GetType()
-                                                                    );
-
-            if (docType != null) // Lets register some sub-types for editing with Edi's text editor
-            {
-                var t = docType.CreateItem("Component Files", new List<string>() { "component", "cmp" });
-                docType.RegisterFileTypeItem(t);
-            }
-        }
-
-
         public override Task<bool> Compile()
         {
             CompileErrors.Clear();
@@ -1222,5 +1204,4 @@ namespace IDE.Documents.Views
             return new List<IDocumentToolWindow>();
         }
     }
-
 }

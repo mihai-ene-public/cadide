@@ -17,6 +17,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.ViewModels
 {
+    //subject to be removed (keep it until we implement the new font source implementation)
     public class FontDesignerViewModel : CanvasDesignerFileViewModel
                                        , ILayeredViewModel
     {
@@ -340,17 +341,6 @@ namespace IDE.Core.ViewModels
                 canvasModel.AddItem(placeObjects);
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            //Font file (*.font)
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                              Description,
-                                                              FileFilterName,
-                                                              DefaultFilter,
-                                                              GetType()
-                                                             );
-
-        }
     }
 
     public class FontCharViewModel : EditBoxModel

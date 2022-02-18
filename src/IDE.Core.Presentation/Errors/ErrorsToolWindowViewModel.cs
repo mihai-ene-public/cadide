@@ -111,9 +111,5 @@ namespace IDE.Core.Errors
             }
         }
 
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-        }
-
     }
 }

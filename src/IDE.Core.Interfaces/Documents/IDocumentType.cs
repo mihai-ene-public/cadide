@@ -14,7 +14,7 @@
 		/// <summary>
 		/// Gets the default file filter that should be used to save/load a document.
 		/// </summary>
-		string DefaultFilter { get; }
+		string FileExtension { get; }
 
 		/// <summary>
 		/// Gets a string that can be displayed with the DefaultFilter
@@ -71,8 +71,6 @@
 		/// <param name="extensions"></param>
 		/// <returns></returns>
 		IDocumentTypeItem CreateItem(string description, IList<string> extensions);
-
-		string GetFileOpenFilter();
 
 		void GetFileFilterEntries(IList<IFileFilterEntry> entries);
 

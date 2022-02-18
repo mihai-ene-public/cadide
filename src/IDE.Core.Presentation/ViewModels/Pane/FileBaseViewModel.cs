@@ -26,20 +26,12 @@ namespace IDE.Core.ViewModels
     {
 
 
-        #region Constructors
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        /// <param name="documentTypeKey"></param>
         public FileBaseViewModel(string docTypeKey)
             : this()
         {
             documentTypeKey = docTypeKey;
         }
 
-        /// <summary>
-        /// Standard class constructor.
-        /// </summary>
         protected FileBaseViewModel()
         {
             clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
@@ -69,11 +61,6 @@ namespace IDE.Core.ViewModels
 
         protected virtual void RefreshFromCache()
         { }
-
-
-
-
-        #endregion Constructors
 
         #region Fields
 
@@ -824,8 +811,6 @@ namespace IDE.Core.ViewModels
 
             base.Dispose();
         }
-
-        public abstract void RegisterDocumentType(IDocumentTypeManager docTypeManager);
 
         public IList<IErrorMessage> CompileErrors { get; set; } = new List<IErrorMessage>();
 

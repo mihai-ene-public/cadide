@@ -15,11 +15,9 @@ namespace IDE.Core.ViewModels;
 public class ToolWindowRegistry : IToolWindowRegistry
 {
     private readonly static IList<IToolWindow> tools = new ObservableCollection<IToolWindow>();
-    private readonly IServiceProviderHelper _serviceProviderHelper;
 
-    public ToolWindowRegistry(IServiceProviderHelper serviceProviderHelper)
+    public ToolWindowRegistry()
     {
-        _serviceProviderHelper = serviceProviderHelper;
     }
 
     public IList<IToolWindow> Tools
@@ -29,13 +27,13 @@ public class ToolWindowRegistry : IToolWindowRegistry
             return tools;
         }
     }
-
-    public void PublishTools()
+    public void RegisterTool(IToolWindow newTool)
     {
-        var toolWindows = _serviceProviderHelper.GetServices<IToolWindow>();
+        var exists = tools.Any(t => t.GetType() == newTool.GetType());
+        if (exists)
+            return;
 
-        tools.AddRange(toolWindows);
-
+        tools.Add(newTool);
     }
 
     public T GetTool<T>() where T : IToolWindow

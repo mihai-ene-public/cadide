@@ -502,10 +502,6 @@ namespace IDE.Documents.Views
             }
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            throw new NotImplementedException();
-        }
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
         {

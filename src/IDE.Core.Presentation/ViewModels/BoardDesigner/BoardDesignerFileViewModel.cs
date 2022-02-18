@@ -1496,22 +1496,6 @@ namespace IDE.Documents.Views
 
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                              Description,
-                                                              FileFilterName,
-                                                              DefaultFilter,
-                                                              GetType()
-                                                              );
-
-            if (docType != null) // Lets register some sub-types for editing with Edi's text editor
-            {
-                var t = docType.CreateItem("Board Files", new List<string>() { "board", "brd" });
-                docType.RegisterFileTypeItem(t);
-            }
-        }
-
         public async override Task<bool> Compile()
         {
             CompileErrors.Clear();

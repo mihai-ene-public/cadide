@@ -13,7 +13,7 @@ using IDE.Core.Common;
 
 namespace IDE.Documents.Views
 {
-    public class MeshDesignerViewModel : CanvasDesignerFileViewModel, IDocumentOverview
+    public class MeshDesignerViewModel : CanvasDesignerFileViewModel, IMeshDesigner
     {
         public MeshDesignerViewModel() : base()
         {
@@ -541,20 +541,5 @@ namespace IDE.Documents.Views
             await RefreshOverview();
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                              Description,
-                                                              FileFilterName,
-                                                              DefaultFilter,
-                                                              GetType()
-                                                              );
-
-            if (docType != null) // Lets register some sub-types for editing with Edi's text editor
-            {
-                var t = docType.CreateItem("Model Files", new List<string>() { "model" });
-                docType.RegisterFileTypeItem(t);
-            }
-        }
     }
 }

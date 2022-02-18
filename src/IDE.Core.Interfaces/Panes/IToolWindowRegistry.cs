@@ -12,7 +12,7 @@
     {
         IList<IToolWindow> Tools { get; }
 
-        void PublishTools();
+        void RegisterTool(IToolWindow newTool);
 
         T GetTool<T>() where T : IToolWindow;
     }

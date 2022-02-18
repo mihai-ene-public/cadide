@@ -12,8 +12,7 @@
     /// Inteface that is supported by document related viewmodels.
     /// </summary>
     public interface IFileBaseViewModel : ILayoutItem,
-                                          IDisposable,
-                                          IRegisterable
+                                          IDisposable
     {
         #region events
         ///// <summary>
@@ -165,10 +164,5 @@
         #endregion methods
     }
 
-    public interface IRegisterable
-    {
-        void RegisterDocumentType(IDocumentTypeManager docTypeManager);
-
-    }
 
 }

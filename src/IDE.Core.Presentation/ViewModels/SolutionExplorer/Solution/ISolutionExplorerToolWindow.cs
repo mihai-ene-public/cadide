@@ -2,7 +2,7 @@
 
 namespace IDE.Core.ViewModels
 {
-    public interface ISolutionExplorerToolWindow : IToolWindow, IRegisterable
+    public interface ISolutionExplorerToolWindow : IToolWindow
     {
 
     }

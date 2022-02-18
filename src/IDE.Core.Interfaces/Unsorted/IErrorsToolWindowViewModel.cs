@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface IErrorsToolWindow : IToolWindow, IRegisterable
+    public interface IErrorsToolWindow : IToolWindow
     {
 
         ObservableCollection<IErrorMessage> Errors { get; }

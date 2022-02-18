@@ -1,8 +1,11 @@
 ﻿using IDE.App.Views.Shell;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Infrastructure;
 using IDE.Core.Settings;
+using IDE.Core.Storage;
 using IDE.Core.Utilities;
 using IDE.Core.ViewModels;
+using IDE.Documents.Views;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,7 +22,8 @@ namespace IDE
             ISettingsManager settingsManager,
             IToolWindowRegistry toolWindowRegistry,
             IAppCoreModel appCore,
-            IDocumentTypeManager documentTypeManager
+            IDocumentTypeManager documentTypeManager,
+            IServiceProviderHelper serviceProviderHelper
             )
         {
             _application = application;
@@ -27,6 +31,7 @@ namespace IDE
             _toolWindowRegistry = toolWindowRegistry;
             _appCore = appCore;
             _documentTypeManager = documentTypeManager;
+            _serviceProviderHelper = serviceProviderHelper;
         }
 
         private readonly IApplicationViewModel _application;
@@ -34,6 +39,7 @@ namespace IDE
         private readonly IToolWindowRegistry _toolWindowRegistry;
         private readonly IAppCoreModel _appCore;
         private readonly IDocumentTypeManager _documentTypeManager;
+        private readonly IServiceProviderHelper _serviceProviderHelper;
 
         public void Run(StartupEventArgs eventArgs)
         {
@@ -61,7 +67,7 @@ namespace IDE
         {
             ConstructMainWindowSession();
 
-            _toolWindowRegistry.PublishTools();
+           // _toolWindowRegistry.PublishTools();
         }
 
         void ConstructMainWindowSession()
@@ -102,6 +108,7 @@ namespace IDE
 
         void Initialize()
         {
+            RegisterToolWindows();
             RegisterEditorModels();
 
             _application.LoadConfig();
@@ -109,38 +116,43 @@ namespace IDE
             _appCore.CreateAppDataFolder();
         }
 
+        void RegisterToolWindows()
+        {
+            var toolWindows = _serviceProviderHelper.GetServices<IToolWindow>();
+            foreach(var tool in toolWindows)
+            {
+                _toolWindowRegistry.RegisterTool(tool);
+            }
+        }
+
         void RegisterEditorModels()
         {
-            //there is the possibility to load all these using MEF, but for now we can use this
+            //var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            //                     from t in assembly.GetTypes()
+            //                     where t.GetInterfaces().Contains(typeof(IRegisterable))
+            //                           && t.GetConstructor(Type.EmptyTypes) != null
+            //                     select t).ToList();
+            //foreach (var r in registerables)
+            //{
+            //    try
+            //    {
+            //        var instance = (IRegisterable)Activator.CreateInstance(r);
 
+            //        instance.RegisterDocumentType(_documentTypeManager);
+            //    }
+            //    catch 
+            //    {
+            //    }
 
-            var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                 from t in assembly.GetTypes()
-                                 where t.GetInterfaces().Contains(typeof(IRegisterable))
-                                       && t.GetConstructor(Type.EmptyTypes) != null
-                                 select t).ToList();
-            foreach (var r in registerables)
-            {
-                try
-                {
-                    var instance = (IRegisterable)Activator.CreateInstance(r);
+            //}
 
-                    instance.RegisterDocumentType(_documentTypeManager);
-
-                    //if (instance is ToolViewModel)
-                    //{
-                    //    var t = instance as ToolViewModel;
-                    //    t.IsVisible = false;
-                    //    _toolWindowRegistry.RegisterTool(t);
-                    //}
-
-                }
-                catch //(Exception ex)
-                {
-                    //log these in Output window or with log4net
-                }
-
-            }
+            _documentTypeManager.RegisterDocumentType("Symbol Editor", "Symbol files", "Symbol file", "symbol", typeof(ISymbolDesignerViewModel));
+            _documentTypeManager.RegisterDocumentType("Model Editor", "Model files", "Model file", "model", typeof(IMeshDesigner));
+            _documentTypeManager.RegisterDocumentType("Component Editor", "Component files", "Component file", "component", typeof(IComponentDesigner));
+            _documentTypeManager.RegisterDocumentType("Footprint Editor", "Footprint files", "Footprint file", "footprint", typeof(IFootprintDesigner));
+            _documentTypeManager.RegisterDocumentType("Schematic Editor", "Schematic files", "Schematic file", "schematic", typeof(ISchematicDesigner));
+            _documentTypeManager.RegisterDocumentType("Board Editor", "Board files", "Board file", "board", typeof(IBoardDesigner));
+            _documentTypeManager.RegisterDocumentType("Solution", "Solution files", "Solution file", "solution", typeof(ISolutionExplorerToolWindow));
         }
 
 

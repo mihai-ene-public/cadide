@@ -15,9 +15,9 @@
 
 		
 		IDocumentType RegisterDocumentType(string Key,
-										   string Name,
-										   string FileFilterName,
-										   string DefaultFilter, 
+										   string description,
+										   string fileFilterName,
+										   string fileExtension, 
 										   Type typeOfDocument
 										   );
 

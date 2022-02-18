@@ -43,8 +43,5 @@ namespace IDE.Documents.Views
             return new List<IDocumentToolWindow>();
         }
 
-        public override void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-        }
     }
 }

@@ -31,11 +31,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-
-        }
-
         public void SetDocument(IFileBaseViewModel document)
         {
             Document = document as ILayeredViewModel;

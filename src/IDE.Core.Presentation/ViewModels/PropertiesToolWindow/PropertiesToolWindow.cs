@@ -30,10 +30,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-        }
-
     }
 
 }

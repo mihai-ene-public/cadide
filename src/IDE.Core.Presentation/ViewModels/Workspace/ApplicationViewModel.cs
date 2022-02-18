@@ -31,8 +31,7 @@ namespace IDE.Core.ViewModels
     public partial class ApplicationViewModel : BaseViewModel,
                                                 IViewModelResolver,
                                                 IApplicationViewModel,
-                                                IDocumentParent,
-                                                IRegisterable
+                                                IDocumentParent
     {
         /// <summary>
         /// Raised when this workspace should be removed from the UI.
@@ -60,7 +59,8 @@ namespace IDE.Core.ViewModels
             IRecentFilesViewModel recentFilesViewModel,
             IToolWindowRegistry toolWindowRegistry,
             IDocumentTypeManager documentTypeManager,
-            IAppCoreModel appCoreModel
+            IAppCoreModel appCoreModel,
+            IServiceProvider serviceProvider
             )
         {
             _settingsManager = settingsManager;
@@ -69,6 +69,7 @@ namespace IDE.Core.ViewModels
             _toolWindowRegistry = toolWindowRegistry;
             _documentTypeManager = documentTypeManager;
             _appCoreModel = appCoreModel;
+            _serviceProvider = serviceProvider;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
         }
 
@@ -97,7 +98,7 @@ namespace IDE.Core.ViewModels
         private readonly IToolWindowRegistry _toolWindowRegistry;
         private readonly IDocumentTypeManager _documentTypeManager;
         private readonly IAppCoreModel _appCoreModel;
-
+        private readonly IServiceProvider _serviceProvider;
         private readonly IThemesManager _themesManager;
         Profile profile => _settingsManager.SessionData as Profile;
 
@@ -326,13 +327,18 @@ namespace IDE.Core.ViewModels
             // (Defaults to EdiTextEditor if no name is given)
             if (docType != null)
             {
-                if (docType.Key == SolutionExplorerViewModel.DocumentKey)
+                //if (docType.Key == SolutionExplorerViewModel.DocumentKey)
+                //{
+                //    CheckSolutionIsOpen();
+                //    docFile = _toolWindowRegistry.GetTool<SolutionExplorerViewModel>();
+                //}
+                //else
+                //    docFile = Activator.CreateInstance(docType.ClassType);
+                docFile = _serviceProvider.GetService(docType.ClassType);
+                if (docFile is ISolutionExplorerToolWindow)
                 {
                     CheckSolutionIsOpen();
-                    docFile = _toolWindowRegistry.GetTool<SolutionExplorerViewModel>();
                 }
-                else
-                    docFile = Activator.CreateInstance(docType.ClassType);
             }
             else
             {
@@ -420,7 +426,8 @@ namespace IDE.Core.ViewModels
 
             if (docType != null)
             {
-                fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
+                //fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
+                fileViewModel = (IFileBaseViewModel)_serviceProvider.GetService(docType.ClassType);
             }
             else
             {
@@ -449,7 +456,8 @@ namespace IDE.Core.ViewModels
 
             if (docType != null)
             {
-                fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
+                //fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
+                fileViewModel = (IFileBaseViewModel)_serviceProvider.GetService(docType.ClassType);
             }
             else
             {
@@ -1515,9 +1523,6 @@ namespace IDE.Core.ViewModels
         /// File>Save As... or File>Save command
         /// is executed.
         /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="saveAsFlag"></param>
-        /// <returns></returns>
         internal bool OnSaveCommandExecute(IFileBaseViewModel doc, bool saveAsFlag = false)
         {
             if (doc == null)
@@ -1539,8 +1544,6 @@ namespace IDE.Core.ViewModels
         /// type (viewmodel), or an empty string if no document
         /// type (viewmodel) was matched.
         /// </summary>
-        /// <param name="f"></param>
-        /// <returns></returns>
         internal static string GetDefaultFileFilter(IFileBaseViewModel f, IDocumentTypeManager docManager)
         {
             if (f == null)
@@ -1624,8 +1627,6 @@ namespace IDE.Core.ViewModels
         /// <summary>
         /// Close the currently active file and set the file with the lowest index as active document.
         /// </summary>
-        /// <param name="fileToClose"></param>
-        /// <returns></returns>
         public bool Close(IFileBaseViewModel doc)
         {
             try
@@ -1808,10 +1809,6 @@ namespace IDE.Core.ViewModels
             }
 
             return Task.FromResult<IFileBaseViewModel>(null);
-        }
-
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
         }
 
         #endregion methods

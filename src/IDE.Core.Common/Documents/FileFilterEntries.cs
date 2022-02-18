@@ -5,24 +5,13 @@
 
 	internal class FileFilterEntries : IFileFilterEntries
 	{
-		#region fields
 		private readonly List<IFileFilterEntry> filterEntries;
-		#endregion fields
 
-		#region contructors
-		/// <summary>
-		/// Class constructor
-		/// </summary>
 		public FileFilterEntries(List<IFileFilterEntry> entries)
 		{
 			filterEntries = entries;
 		}
-		#endregion contructors
 
-		#region properties
-		#endregion properties
-
-		#region methods
 		/// <summary>
 		/// Gets a string that can be used as filter selection in a file open dialog.
 		/// </summary>
@@ -46,6 +35,5 @@
             return filterEntries[index].DocumentType;
         }
 
-		#endregion methods
 	}
 }

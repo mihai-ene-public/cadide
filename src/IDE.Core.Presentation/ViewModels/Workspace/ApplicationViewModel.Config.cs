@@ -84,20 +84,14 @@
         /// <summary>
         /// Load configuration from persistence on startup of application
         /// </summary>
-        /// <param name="programSettings"></param>
-        /// <param name="settings"></param>
-        /// <param name="themes"></param>
         public void LoadConfig()
         {
             // Re/Load program options and user profile session data to control global behaviour of program
             _settingsManager.LoadOptions(_appCoreModel.DirFileAppSettingsData);
             _settingsManager.LoadProfileData(_appCoreModel.DirFileAppSessionData);
 
-            // Initialize skinning engine with this current skin
-            // standard skins defined in class enum
-            // plus configured skins with highlighting
-            _themesManager.SetSelectedTheme(Settings.SettingsManager.DefaultTheme);
-            ResetTheme();                       // Initialize theme in process
+            _themesManager.SetSelectedTheme(SettingsManager.DefaultTheme);
+            ResetTheme();
         }
 
         /// <summary>

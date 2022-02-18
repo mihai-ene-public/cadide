@@ -751,16 +751,16 @@ namespace IDE.Core.ViewModels
             base.Dispose();
         }
 
-        public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        {
-            var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-                                                              Description,
-                                                              FileFilterName,
-                                                              SolutionDocument.SolutionExtension,
-                                                              typeof(SolutionExplorerViewModel)
-                                                              );
+        //public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
+        //{
+        //    var docType = docTypeManager.RegisterDocumentType(DocumentKey,
+        //                                                      Description,
+        //                                                      FileFilterName,
+        //                                                      SolutionDocument.SolutionExtension,
+        //                                                      typeof(SolutionExplorerViewModel)
+        //                                                      );
 
-        }
+        //}
 
         public async Task OpenFile(string filePath)
         {
