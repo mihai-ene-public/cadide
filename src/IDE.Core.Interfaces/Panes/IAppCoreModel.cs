@@ -47,12 +47,5 @@
 		/// Get path and file name to application specific settings file
 		/// </summary>
 		string DirFileAppSettingsData { get; }
-
-		/// <summary>
-		/// Create a dedicated directory to store program settings and session data
-		/// </summary>
-		/// <returns></returns>
-		void CreateAppDataFolder();
-
 	}
 }

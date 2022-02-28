@@ -19,7 +19,7 @@ namespace IDE.Core.Compilation
         public Compiler()
         {
             output = ServiceProvider.GetToolWindow<IOutputToolWindow>();
-            application = ServiceProvider.Resolve<IApplicationViewModel>();//ServiceProvider.GetService<IApplicationViewModel>();
+            application = ServiceProvider.Resolve<IApplicationViewModel>();
             errors = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
 
             //output.Clear();
@@ -122,29 +122,16 @@ namespace IDE.Core.Compilation
             }
         }
 
-        //ISolutionProjectNodeModel CreateSolutionExplorerNodeModel(SolutionProjectItem project)
-        //{
-        //    var mapper = ServiceProvider.GetService<ISettingsDataToModelMapper>();
-        //    if (mapper == null)
-        //    {
-        //        output.AppendLine("Mapper service 'ISolutionExplorerNodeMapper' was not found");
-        //        return null;
-        //    }
-
-        //    var projectModel = mapper.CreateSolutionExplorerNodeModel(project);
-        //    return projectModel as ISolutionProjectNodeModel;
-        //}
-
         void LoadProjectListLinear(IList<ProjectBaseFileRef> children, List<SolutionProjectItem> projects)
         {
             if (children != null)
             {
                 foreach (var child in children)
                 {
-                    if (child is SolutionProjectItem)
-                        projects.Add(child as SolutionProjectItem);
-                    else if (child is GroupFolderItem)
-                        LoadProjectListLinear((child as GroupFolderItem).Children, projects);
+                    if (child is SolutionProjectItem project)
+                        projects.Add(project);
+                    else if (child is GroupFolderItem folder)
+                        LoadProjectListLinear(folder.Children, projects);
                 }
             }
         }

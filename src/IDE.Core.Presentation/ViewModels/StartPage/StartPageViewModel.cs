@@ -12,16 +12,10 @@ namespace IDE.Documents.Views
 
     public class StartPageViewModel : FileBaseViewModel, IStartPage
     {
-        #region fields
         public const string StartPageContentId = ">StartPage<";
 
-        private IRecentFilesViewModel mRecent;
-        #endregion fields
+        private readonly IRecentFilesViewModel _recentFilesViewModel;
 
-        #region constructor
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public StartPageViewModel() : base()
         {
             this.Title = "Home";
@@ -29,20 +23,13 @@ namespace IDE.Documents.Views
             this.ContentId = StartPageContentId;
 
             filePath = ContentId;
-
         }
 
-
-
-        /// <summary>
-        /// Parameterized constructor
-        /// </summary>
-        public StartPageViewModel(IRecentFilesViewModel recent)
+        public StartPageViewModel(IRecentFilesViewModel recentFilesViewModel)
             : this()
         {
-            mRecent = recent;
+            _recentFilesViewModel = recentFilesViewModel;
         }
-        #endregion constructor
 
         #region properties
 
@@ -93,10 +80,6 @@ namespace IDE.Documents.Views
         #region CopyFullPathtoClipboard
         ICommand _copyFullPathtoClipboard = null;
 
-        /// <summary>
-        /// Get CopyFullPathtoClipboard command which will copy
-        /// the path of the executable into the windows clipboard.
-        /// </summary>
         public new ICommand CopyFullPathtoClipboard
         {
             get
@@ -120,13 +103,7 @@ namespace IDE.Documents.Views
         }
         #endregion CopyFullPathtoClipboard
 
-        public IRecentFilesViewModel MruList
-        {
-            get
-            {
-                return mRecent;
-            }
-        }
+        public IRecentFilesViewModel RecentFilesViewModel => _recentFilesViewModel;
 
         public string StartPageTip { get; set; }
 
@@ -135,21 +112,9 @@ namespace IDE.Documents.Views
 
         public override bool CanSaveAs() { return false; }
 
-        override public bool CanSaveData
-        {
-            get
-            {
-                return false;
-            }
-        }
+        override public bool CanSaveData => false;
 
-        public override string Title
-        {
-            get
-            {
-                return Strings.STR_STARTPAGE_TITLE;
-            }
-        }
+        public override string Title => Strings.STR_STARTPAGE_TITLE;
 
         #endregion properties
 

@@ -44,7 +44,6 @@ namespace IDE
         public void Run(StartupEventArgs eventArgs)
         {
             _settingsManager.LoadOptions(AppHelpers.DirFileAppSettingsData);
-            //var options = _settingsManager.SettingData;
 
             var envSetting = _settingsManager.GetSetting<EnvironmentGeneralSetting>();
 
@@ -55,19 +54,12 @@ namespace IDE
 
             CreateShell();
 
-            // Show the startpage if application starts for the very first time
-            // (This requires that command binding was succesfully done before this line)
-            Core.Commands.AppCommand.ShowStartPage.Execute(null);
-
-            if (eventArgs != null)
-                ProcessCmdLine(eventArgs.Args);
+            _application.ShowStartPage();
         }
 
         void CreateShell()
         {
             ConstructMainWindowSession();
-
-           // _toolWindowRegistry.PublishTools();
         }
 
         void ConstructMainWindowSession()
@@ -93,19 +85,6 @@ namespace IDE
             Application.Current.MainWindow.Show();
         }
 
-        /// <summary>
-        /// Interpret command line parameters and process their content
-        /// </summary>
-        /// <param name="args"></param>
-        void ProcessCmdLine(string[] args)
-        {
-            if (args != null && args.Length > 0)
-            {
-                // Command may not be bound yet so we do this via direct call
-                _application.OpenSolution(args[0]);
-            }
-        }
-
         void Initialize()
         {
             RegisterToolWindows();
@@ -127,25 +106,6 @@ namespace IDE
 
         void RegisterEditorModels()
         {
-            //var registerables = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-            //                     from t in assembly.GetTypes()
-            //                     where t.GetInterfaces().Contains(typeof(IRegisterable))
-            //                           && t.GetConstructor(Type.EmptyTypes) != null
-            //                     select t).ToList();
-            //foreach (var r in registerables)
-            //{
-            //    try
-            //    {
-            //        var instance = (IRegisterable)Activator.CreateInstance(r);
-
-            //        instance.RegisterDocumentType(_documentTypeManager);
-            //    }
-            //    catch 
-            //    {
-            //    }
-
-            //}
-
             _documentTypeManager.RegisterDocumentType("Symbol Editor", "Symbol files", "Symbol file", "symbol", typeof(ISymbolDesignerViewModel));
             _documentTypeManager.RegisterDocumentType("Model Editor", "Model files", "Model file", "model", typeof(IMeshDesigner));
             _documentTypeManager.RegisterDocumentType("Component Editor", "Component files", "Component file", "component", typeof(IComponentDesigner));

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace IDE.Core.MRU
 {
@@ -47,6 +48,42 @@ namespace IDE.Core.MRU
 
                     OnPropertyChanged(nameof(MruList));
                 }
+            }
+        }
+
+        ICommand togglePinnedForEntryCommand;
+        public ICommand TogglePinnedForEntryCommand
+        {
+            get
+            {
+                if (togglePinnedForEntryCommand == null)
+                    togglePinnedForEntryCommand = CreateCommand(
+                    (p) =>
+                    {
+                        var mru = p as MruItemViewModel;
+                        TogglePinnedForEntry(mru.PathFileName);
+                    }
+                    );
+
+                return togglePinnedForEntryCommand;
+            }
+        }
+
+        ICommand removeEntryCommand;
+        public ICommand RemoveEntryCommand
+        {
+            get
+            {
+                if (removeEntryCommand == null)
+                    removeEntryCommand = CreateCommand(
+                    (p) =>
+                    {
+                        var mru = p as MruItemViewModel;
+                        RemoveEntry(mru.PathFileName);
+                    }
+                    );
+
+                return removeEntryCommand;
             }
         }
 
@@ -105,38 +142,51 @@ namespace IDE.Core.MRU
             return mruList.Any(mru => mru.PathFileName == filePath);
         }
 
-        public void PinUnpinEntry(bool bPinOrUnPinMruEntry, string pathFilename)
+        public void TogglePinnedForEntry(string pathFilename)
         {
-            var pinnedMruEntryCount = CountPinnedEntries();
+            var pinnedEntryCount = CountPinnedEntries();
+            var entry = mruList.FirstOrDefault(mru => mru.PathFileName == pathFilename);
+            if (entry == null)
+                return;
 
-            // pin an MRU entry into the next available pinned mode spot
-            if (bPinOrUnPinMruEntry)
+            entry.IsPinned = !entry.IsPinned;
+            mruList.Remove(entry);
+            var insertPosition = pinnedEntryCount;
+
+            if (!entry.IsPinned)
             {
-                var e = mruList.Single(mru => mru.IsPinned == false && mru.PathFileName == pathFilename);
-
-                mruList.Remove(e);
-
-                e.IsPinned = true;
-
-                mruList.Insert(pinnedMruEntryCount, e);
-
-                pinnedMruEntryCount += 1;
+                insertPosition--;
             }
-            else
-            {
-                // unpin an MRU entry into the next available unpinned spot
-                var e = mruList.Single(mru => mru.IsPinned == true && mru.PathFileName == pathFilename);
+            mruList.Insert(insertPosition, entry);
 
-                mruList.Remove(e);
+            //// pin an MRU entry into the next available pinned mode spot
+            //if (bPinOrUnPinMruEntry)
+            //{
+            //    var e = mruList.Single(mru => mru.IsPinned == false && mru.PathFileName == pathFilename);
 
-                e.IsPinned = false;
-                pinnedMruEntryCount -= 1;
+            //    mruList.Remove(e);
 
-                mruList.Insert(pinnedMruEntryCount, e);
-            }
+            //    e.IsPinned = true;
+
+            //    mruList.Insert(pinnedEntryCount, e);
+
+            //    pinnedEntryCount += 1;
+            //}
+            //else
+            //{
+            //    // unpin an MRU entry into the next available unpinned spot
+            //    var e = mruList.Single(mru => mru.IsPinned == true && mru.PathFileName == pathFilename);
+
+            //    mruList.Remove(e);
+
+            //    e.IsPinned = false;
+            //    pinnedEntryCount -= 1;
+
+            //    mruList.Insert(pinnedEntryCount, e);
+            //}
         }
 
-       
+
 
         public bool RemoveEntry(string fileName)
         {

@@ -16,8 +16,6 @@
         /// </summary>
         public void InitCommandBinding(ILayoutableWindow window)
         {
-            //todo: order these by functionality
-
             var bindings = new List<CommandBindingData>();
 
             bindings.Add(new CommandBindingData(AppCommand.Exit,
@@ -40,13 +38,13 @@
             bindings.Add(new CommandBindingData(AppCommand.New,
                                              async p =>
                                                {
-                                                   await CreateNewSolution(p);
+                                                   await CreateNewSolution();
                                                }));
 
             bindings.Add(new CommandBindingData(AppCommand.Open,
                                              async p =>
                                              {
-                                                 await OpenSolution();
+                                                 await OpenSolutionFromDialog();
                                              }));
 
             bindings.Add(new CommandBindingData(AppCommand.CloseFile,
@@ -90,18 +88,6 @@
                                            p =>
                                            {
                                                SaveAll();
-                                           }));
-
-            bindings.Add(new CommandBindingData(AppCommand.PinUnpin,
-                                           p =>
-                                           {
-                                               PinMruEntryToggle(p as MruItemViewModel);
-                                           }));
-
-            bindings.Add(new CommandBindingData(AppCommand.RemoveMruEntry,
-                                           p =>
-                                           {
-                                               RemoveMRUEntry(p as MruItemViewModel);
                                            }));
 
             bindings.Add(new CommandBindingData(AppCommand.BuildCommand,
@@ -149,30 +135,8 @@
 
             #endregion Add Project Command
 
-            #region Add Existing Project Command
-
-            bindings.Add(new CommandBindingData(AppCommand.AddExistingProjectCommand,
-                                        p =>
-                                        {
-                                            AddExistingProject(p as SolutionExplorerNodeModel);
-                                        },
-                                        p => p is SolutionVirtualFolderNodeModel || p is SolutionRootNodeModel));
-
-            #endregion Add Existing Project
-
             #region Add Folder Command
 
-            //  win.CommandBindings.Add(new CommandBinding(AppCommand.AddFolderCommand,
-            //   async (s, e) =>
-            //    {
-            //        var container = e.Parameter as FilesContainerNodeModel;
-            //        await AddNewFolder(container);
-            //    },
-            //    (s, e) =>//execute when current selected item in Sol Explorer is Project or Folder
-            //    {
-            //        e.CanExecute = e.Parameter is FilesContainerNodeModel;
-            //    }
-            //));
             bindings.Add(new CommandBindingData(AppCommand.AddFolderCommand,
                                          async p =>
                                          {
@@ -184,17 +148,6 @@
 
             #region Add Symbol Command
 
-            //  win.CommandBindings.Add(new CommandBinding(AppCommand.AddNewSymbolCommand,
-            //   async (s, e) =>
-            //    {
-            //        var container = e.Parameter as FilesContainerNodeModel;
-            //        await AddNewSymbolItem(container);
-            //    },
-            //    (s, e) =>//execute when current selected item in Sol Explorer is Project or Folder
-            //     {
-            //         e.CanExecute = e.Parameter is FilesContainerNodeModel;
-            //     }
-            //));
             bindings.Add(new CommandBindingData(AppCommand.AddNewSymbolCommand,
                                          async p =>
                                          {
@@ -310,8 +263,6 @@
 
             #endregion Open Item Command
 
-            #region Show Properties Command (Solution and Project in Solution Explorer)
-
             bindings.Add(new CommandBindingData(AppCommand.ShowPropertiesCommand,
                                            async p =>
                                            {
@@ -319,16 +270,10 @@
                                            },
                                            p => p is SolutionProjectNodeModel));
 
-            #endregion
-
-            #region Import EAGLE Command
-
 
             bindings.Add(new CommandBindingData(AppCommand.ImportEagleCommand,
                p => ImportFromEagle(),
                p => true));
-
-            #region Change Mode Command (<TAB>)
 
             bindings.Add(new CommandBindingData(AppCommand.ChangeModeCommand,
                                           p =>
@@ -336,9 +281,6 @@
                                               ChangeMode();
                                           }));
 
-            #endregion
-
-            #region Cycle Placement or rotate command (<SPACE>)
 
             bindings.Add(new CommandBindingData(AppCommand.CyclePlacementOrRotateCommand,
                                           p =>
@@ -347,36 +289,6 @@
                                           },
                                           canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
                                           handledAction: p => true));
-
-            #endregion
-
-            #region Mirror selected items
-
-            //bindings.Add(new CommandBindingData(AppCommand.MirrorXSelectedItemsCommand,
-            //                           p =>
-            //                           {
-            //                               MirrorXSelectedItems();
-            //                           },
-            //                           canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
-            //                           handledAction: p => true));
-
-            //bindings.Add(new CommandBindingData(AppCommand.MirrorYSelectedItemsCommand,
-            //                        p =>
-            //                        {
-            //                            MirrorYSelectedItems();
-            //                        },
-            //                        canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
-            //                        handledAction: p => true));
-
-            #endregion
-
-            //bindings.Add(new CommandBindingData(AppCommand.ChangeFootprintPlacementCommand,
-            //                       p =>
-            //                       {
-            //                           ChangeFootprintPlacement();
-            //                       },
-            //                       canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
-            //                       handledAction: p => true));
 
             bindings.Add(new CommandBindingData(AppCommand.DeleteSelectedItemsCommand,
                                    p =>
@@ -401,11 +313,6 @@
                                    },
                                    canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
                                    handledAction: p => true));
-
-
-            #endregion Import EAGLE Command
-
-
 
             window.AddCommanBindings(bindings);
         }

@@ -9,7 +9,7 @@
 
         bool IsActive { get; set; }
 
-        bool CanHide { get; }
+        bool CanHide { get; set; }
 
         PaneLocation PreferredLocation { get; }
         double PreferredWidth { get; }

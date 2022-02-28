@@ -22,6 +22,7 @@ namespace IDE.Core.ViewModels
     using IDE.Core.Common;
     using IDE.Core.Presentation;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// This class manages the complete application life cyle from start to end.
@@ -33,25 +34,15 @@ namespace IDE.Core.ViewModels
                                                 IApplicationViewModel,
                                                 IDocumentParent
     {
-        /// <summary>
-        /// Raised when this workspace should be removed from the UI.
-        /// </summary>
         public event EventHandler RequestClose;
 
         public event EventHandler RequestExit;
-
-        /// <summary>
-        /// The document with the current input focus has changed when this event fires.
-        /// </summary>
-        public event DocumentChangedEventHandler ActiveDocumentChanged;
 
         public event EventHandler SelectionChanged;
 
         public event EventHandler HighlightChanged;
 
         public event EventHandler<string> LoadLayoutRequested;
-
-        #region constructor
 
         public ApplicationViewModel(
             IThemesManager themesManager,
@@ -73,24 +64,18 @@ namespace IDE.Core.ViewModels
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
         }
 
-        #endregion constructor
-
-
         bool? dialogCloseResult = null;
         bool? isNotMaximized = null;
 
         bool shutDownInProgress = false;
-        bool shutDownInProgress_Cancel = false;
+        bool shuttingDownCancel = false;
 
         ObservableCollection<IFileBaseViewModel> files = new ObservableCollection<IFileBaseViewModel>();
         ReadOnlyObservableCollection<IFileBaseViewModel> readonyFiles = null;
 
         IFileBaseViewModel activeDocument = null;
-        ICommand mainWindowActivated = null;
 
         IDispatcherHelper dispatcher;
-
-
 
         private readonly ISettingsManager _settingsManager;
 
@@ -100,10 +85,6 @@ namespace IDE.Core.ViewModels
         private readonly IAppCoreModel _appCoreModel;
         private readonly IServiceProvider _serviceProvider;
         private readonly IThemesManager _themesManager;
-        Profile profile => _settingsManager.SessionData as Profile;
-
-        #region events
-
 
         public void OnSelectionChanged(object sender, EventArgs e)
         {
@@ -114,13 +95,6 @@ namespace IDE.Core.ViewModels
         {
             HighlightChanged?.Invoke(sender, e);
         }
-
-        //public void OnLayoutLoaded(object sender, LoadLayoutEventArgs e)
-        //{
-        //    LayoutLoaded?.Invoke(sender, e);
-        //}
-
-        #endregion events
 
         #region Properties
 
@@ -150,13 +124,6 @@ namespace IDE.Core.ViewModels
 
                     OnPropertyChanged(nameof(ActiveDocument));
 
-                    dispatcher.RunOnDispatcher(() =>
-                    {
-                        if (ActiveDocumentChanged != null)
-                        {
-                            ActiveDocumentChanged(this, new DocumentChangedEventArgs(activeDocument)); //this.ActiveDocument
-                        }
-                    });
                 }
             }
         }
@@ -199,24 +166,6 @@ namespace IDE.Core.ViewModels
 
         #endregion
 
-        private IDocumentType selectedOpenDocumentType;
-        public IDocumentType SelectedOpenDocumentType
-        {
-            get
-            {
-                return selectedOpenDocumentType;
-            }
-
-            private set
-            {
-                if (selectedOpenDocumentType != value)
-                {
-                    selectedOpenDocumentType = value;
-                    OnPropertyChanged(nameof(SelectedOpenDocumentType));
-                }
-            }
-        }
-
         /// <summary>
         /// data source for collection of documents managed in the the document manager (of AvalonDock).
         /// </summary>
@@ -231,10 +180,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        /// <summary>
-        /// Principable data source for collection of tool window viewmodels
-        /// whos view templating is managed in the the document manager of AvalonDock.
-        /// </summary>
         public IList<IToolWindow> Tools
         {
             get
@@ -243,25 +188,19 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public bool ShutDownInProgress_Cancel
+        public bool ShuttingDownCancel
         {
             get
             {
-                return shutDownInProgress_Cancel;
+                return shuttingDownCancel;
             }
 
             set
             {
-                shutDownInProgress_Cancel = value;
+                shuttingDownCancel = value;
             }
         }
 
-        public bool ShutDownInProgress => shutDownInProgress;
-
-        #region ApplicationName
-        /// <summary>
-        /// Get the name of this application in a human read-able fashion
-        /// </summary>
         public string ApplicationTitle
         {
             get
@@ -279,7 +218,6 @@ namespace IDE.Core.ViewModels
                 return title;
             }
         }
-        #endregion ApplicationName
 
 
         #endregion Properties
@@ -287,10 +225,130 @@ namespace IDE.Core.ViewModels
         #region methods
 
 
-        /// <summary>
-        /// Open a file supplied in <paramref name="filePath"/> (without displaying a file open dialog).
-        /// </summary>
-        /// <param name="filePath">file to open</param>
+
+
+        IFileBaseViewModel CreateDefaultDocViewModel()
+        {
+            return new SimpleTextDocumentViewModel();
+        }
+
+        void IntegrateDocument(object docFile)
+        {
+            if (docFile is IToolWindow tool)
+            {
+                tool.CanHide = true;
+                tool.IsVisible = true;
+            }
+            else if (docFile is IFileBaseViewModel fileViewModel)
+            {
+                files.Add(fileViewModel);
+
+                SetActiveFileBaseDocument(fileViewModel);
+            }
+        }
+
+        public object ContentViewModelFromID(string content_id)
+        {
+            //called on startup on layout loaded (we need this)
+
+            // Query for a tool window and return it
+            var toolWindow = Tools.FirstOrDefault(d => d.ContentId == content_id);
+
+            return toolWindow;
+        }
+
+        void CheckSolutionIsOpen()
+        {
+            if (SolutionManager.IsSolutionOpen())
+                throw new Exception("There is an already open solution. Please close current solution and try again");
+        }
+
+        async Task CreateNewSolution()
+        {
+            try
+            {
+                CheckSolutionIsOpen();
+
+                //show template dialog
+                var newSolutionDialog = new NewItemWindowViewModel();
+                newSolutionDialog.IsSolution = true;
+                newSolutionDialog.TemplateType = TemplateType.Solution;
+                newSolutionDialog.ItemName = "New project";
+                newSolutionDialog.SolutionName = "New project";
+                newSolutionDialog.Location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                if (newSolutionDialog.ShowDialog() == true)
+                {
+                    SolutionManager.CloseSolution();//because it was created
+                    var fileName = newSolutionDialog.SelectedItemFilePath;
+                    await OpenSolutionInternal(fileName);
+                }
+            }
+            catch (Exception exp)
+            {
+                MessageDialog.Show(exp.Message);
+            }
+        }
+
+        private async Task OpenSolutionFromDialog()
+        {
+            try
+            {
+                CheckSolutionIsOpen();
+
+                var typeOfDocument = nameof(TemplateType.Solution);
+                var dlg = ServiceProvider.Resolve<IOpenFileDialog>();
+
+                var fileEntries = _documentTypeManager.GetFileFilterEntries(typeOfDocument);
+                dlg.Filter = fileEntries.GetFilterString();
+
+                dlg.Multiselect = false;
+                dlg.InitialDirectory = GetDefaultPath();
+
+                if (dlg.ShowDialog() == true)
+                {
+                    var fileName = dlg.FileName;
+                    await OpenSolutionInternal(fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialog.Show(ex.Message);
+            }
+        }
+
+        public async Task OpenSolution(string filePath)
+        {
+            try
+            {
+                await OpenSolutionInternal(filePath);
+            }
+            catch (Exception exp)
+            {
+                MessageDialog.Show(exp.Message);
+            }
+        }
+
+        //it opens both a solution and a file item by path
+        async Task OpenSolutionInternal(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new Exception("Filepath is not specified");
+
+            CheckSolutionIsOpen();
+
+            var docFile = _serviceProvider.GetService<ISolutionExplorerToolWindow>();
+            await docFile.OpenFile(filePath);
+
+            //IntegrateDocument(docFile, filePath);
+            docFile.CanHide = true;
+            docFile.IsVisible = true;
+            _recentFiles.AddNewEntryIntoMRU(filePath);
+
+            OnPropertyChanged(nameof(ApplicationTitle));
+
+            LoadXmlLayout();
+        }
+
         public async Task<IFileBaseViewModel> Open(ISolutionExplorerNodeModel item, string filePath)
         {
             // Verify whether file is already open in editor, and if so, show it
@@ -302,140 +360,9 @@ namespace IDE.Core.ViewModels
                 return fileViewModel;
             }
 
-            fileViewModel = await OpenDocument(item, filePath);
+            fileViewModel = await OpenDocumentAsync(item);
 
-            IntegrateDocumentVM(fileViewModel, filePath);
-
-            return fileViewModel;
-        }
-
-        //it opens both a solution and a file item by path
-        async Task OpenSolutionInternal(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                throw new Exception("Filepath is not specified");
-
-            object docFile = null;
-            IFileBaseViewModel fileViewModel = null;
-            IDocumentModel dm = new DocumentModel();
-            dm.SetFileNamePath(filePath, true);
-
-            // 1st try to find a document type handler based on the supplied extension
-            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
-
-            // 2nd try to find a document type handler based on the name of the prefered viewer
-            // (Defaults to EdiTextEditor if no name is given)
-            if (docType != null)
-            {
-                //if (docType.Key == SolutionExplorerViewModel.DocumentKey)
-                //{
-                //    CheckSolutionIsOpen();
-                //    docFile = _toolWindowRegistry.GetTool<SolutionExplorerViewModel>();
-                //}
-                //else
-                //    docFile = Activator.CreateInstance(docType.ClassType);
-                docFile = _serviceProvider.GetService(docType.ClassType);
-                if (docFile is ISolutionExplorerToolWindow)
-                {
-                    CheckSolutionIsOpen();
-                }
-            }
-            else
-            {
-                // try to load a standard text file from the file system as a fallback method
-                docFile = CreateDefaultDocViewModel();
-            }
-
-            fileViewModel = docFile as IFileBaseViewModel;
-
-            if (fileViewModel != null)
-            {
-                await fileViewModel.OpenFileAsync(filePath);
-            }
-            else
-            {
-                if (docFile is SolutionExplorerViewModel)
-                    await (docFile as SolutionExplorerViewModel).OpenFile(filePath);
-            }
-
-            IntegrateDocument(docFile, filePath);
-
-            OnPropertyChanged(nameof(ApplicationTitle));
-
-            LoadXmlLayout();
-        }
-
-
-
-        IFileBaseViewModel CreateDefaultDocViewModel()
-        {
-            return new SimpleTextDocumentViewModel();
-        }
-
-        void IntegrateDocument(object docFile, string filePath)
-        {
-            if (docFile is ToolViewModel)
-            {
-                var tool = docFile as ToolViewModel;
-                tool.CanHide = true;
-                tool.IsVisible = true;
-
-                //if we are opening / creating a new solution, make output visible
-                if (tool is SolutionExplorerViewModel)
-                {
-                    //show properties
-                    var propertiesTool = _toolWindowRegistry.GetTool<PropertiesToolWindowViewModel>(); //new PropertiesToolWindowViewModel();
-                    propertiesTool.CanHide = true;
-                    propertiesTool.IsVisible = true;
-                }
-
-                //we only add solution files to the MRU list
-                if (docFile is SolutionExplorerViewModel)
-                {
-                    _recentFiles.AddNewEntryIntoMRU(filePath);
-                }
-            }
-            else if (docFile is IFileBaseViewModel)
-            {
-                var fileViewModel = docFile as IFileBaseViewModel;
-
-                //fileViewModel.DocumentEvent += ProcessDocumentEvent;
-                //fileViewModel.ProcessingResultEvent += vm_ProcessingResultEvent;
-
-                files.Add(fileViewModel);
-
-                SetActiveFileBaseDocument(fileViewModel);
-            }
-
-        }
-
-        public async Task<IFileBaseViewModel> OpenDocument(ISolutionExplorerNodeModel item, string filePath = null)
-        {
-            IFileBaseViewModel fileViewModel = null;
-            if (filePath == null)
-                filePath = item.GetItemFullPath();
-            IDocumentModel dm = new DocumentModel();
-            dm.SetFileNamePath(filePath, true);
-
-            // 1st try to find a document type handler based on the supplied extension
-            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
-            // 2nd try to find a document type handler based on the name of the prefered viewer
-            // (Defaults to EdiTextEditor if no name is given)
-            //if (docType == null)
-            //    docType = documentTypeManager.FindDocumentTypeByKey(EdiViewModel.DefaultDocumentKey);
-
-            if (docType != null)
-            {
-                //fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
-                fileViewModel = (IFileBaseViewModel)_serviceProvider.GetService(docType.ClassType);
-            }
-            else
-            {
-                // try to load a standard text file from the file system as a fallback method
-                fileViewModel = CreateDefaultDocViewModel();
-            }
-            fileViewModel.Item = item;
-            await fileViewModel.OpenFileAsync(filePath);
+            IntegrateDocument(fileViewModel);
 
             return fileViewModel;
         }
@@ -448,16 +375,11 @@ namespace IDE.Core.ViewModels
             dm.SetFileNamePath(filePath, true);
 
             // 1st try to find a document type handler based on the supplied extension
-            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension, true);
-            // 2nd try to find a document type handler based on the name of the prefered viewer
-            // (Defaults to EdiTextEditor if no name is given)
-            //if (docType == null)
-            //    docType = documentTypeManager.FindDocumentTypeByKey(EdiViewModel.DefaultDocumentKey);
+            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension);
 
             if (docType != null)
             {
-                //fileViewModel = (IFileBaseViewModel)Activator.CreateInstance(docType.ClassType);
-                fileViewModel = (IFileBaseViewModel)_serviceProvider.GetService(docType.ClassType);
+                fileViewModel = _serviceProvider.GetService(docType.ClassType) as IFileBaseViewModel;
             }
             else
             {
@@ -472,190 +394,22 @@ namespace IDE.Core.ViewModels
             return fileViewModel;
         }
 
-        IFileBaseViewModel IntegrateDocumentVM(IFileBaseViewModel fileViewModel, string filePath)
-        {
-            if (fileViewModel == null)
-            {
-                if (_recentFiles.ContainsEntry(filePath))
-                {
-                    if (MessageDialog.Show(string.Format(Strings.STR_ERROR_LOADING_FILE_MSG, filePath),
-                                               Strings.STR_ERROR_LOADING_FILE_CAPTION, XMessageBoxButton.YesNo) == XMessageBoxResult.Yes)
-                    {
-                        _recentFiles.RemoveEntry(filePath);
-                    }
-                }
-
-                return null;
-            }
-
-            //fileViewModel.DocumentEvent += ProcessDocumentEvent;
-            // fileViewModel.ProcessingResultEvent += vm_ProcessingResultEvent;
-
-
-            if (fileViewModel is ToolViewModel)
-            {
-                var tool = fileViewModel as ToolViewModel;
-                tool.CanHide = true;
-                tool.IsVisible = true;
-
-                //if we are opening / creating a new solution, make output visible
-                if (tool is SolutionExplorerViewModel)
-                {
-                    //show properties
-                    var propertiesTool = new PropertiesToolWindowViewModel();
-                    propertiesTool.CanHide = true;
-                    propertiesTool.IsVisible = true;
-                }
-
-            }
-            else
-                files.Add(fileViewModel);
-
-            SetActiveFileBaseDocument(fileViewModel);
-
-            //we only add solution files to the MRU list
-            if (fileViewModel is SolutionExplorerViewModel)
-            {
-                _recentFiles.AddNewEntryIntoMRU(filePath);
-            }
-            return fileViewModel;
-        }
-
-        /// <summary>
-        /// <seealso cref="IViewModelResolver"/> method for resolving
-        /// AvalonDock contentid's against a specific viewmodel.
-        /// </summary>
-        /// <param name="content_id"></param>
-        /// <returns></returns>
-        public object ContentViewModelFromID(string content_id)
-        {
-            //this mwthod was called on startup on layout loaded
-
-            // Query for a tool window and return it
-            var anchorable_vm = Tools.FirstOrDefault(d => d.ContentId == content_id);
-
-            if (anchorable_vm != null)
-                return anchorable_vm;
-
-            // Query for a matching document and return it
-            //if (settingsManager.SettingData.ReloadOpenFilesOnAppStart == true)
-            //always reload document
-            return ReloadDocument(content_id);
-
-        }
-
-        void CheckSolutionIsOpen()
-        {
-            if (SolutionManager.IsSolutionOpen())
-                throw new Exception("There is an already open solution. Please close current solution and try again");
-        }
-
-        #region NewCommand
-
-        async Task CreateNewSolution(object parameter)
-        {
-            try
-            {
-                CheckSolutionIsOpen();
-
-                var templateType = TemplateType.Solution;
-                if (parameter != null)
-                {
-                    TemplateType t = TemplateType.Solution;
-                    if (Enum.TryParse<TemplateType>(parameter.ToString(), out t))
-                        templateType = t;
-                }
-
-                //show template dialog
-                var newSolutionDialog = new NewItemWindowViewModel();
-                newSolutionDialog.IsSolution = true;
-                newSolutionDialog.TemplateType = templateType;
-                newSolutionDialog.ItemName = "New project";
-                newSolutionDialog.SolutionName = "New project";
-                newSolutionDialog.Location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                if (newSolutionDialog.ShowDialog() == true)
-                {
-                    SolutionManager.CloseSolution();//because it was created
-                    var fileName = newSolutionDialog.SelectedItemFilePath;
-                    await OpenSolutionInternal(fileName);
-
-                }
-            }
-            catch (Exception exp)
-            {
-                //logger.Error(exp.Message, exp);
-                MessageDialog.Show(exp.Message);
-            }
-        }
-
-        #endregion NewCommand
-
-        #region OpenCommand
-        /// <summary>
-        /// Opens a solution chosen from the dialog
-        /// </summary>
-        async Task OpenSolution()
-        {
-            try
-            {
-                CheckSolutionIsOpen();
-
-                var typeOfDocument = nameof(TemplateType.Solution);
-                var dlg = ServiceProvider.Resolve<IOpenFileDialog>();//new OpenFileDialog();
-                IFileFilterEntries fileEntries = null;
-
-                // Get filter strings for document specific filters or all filters
-                // depending on whether type of document is set to a key or not.
-                fileEntries = _documentTypeManager.GetFileFilterEntries(typeOfDocument);
-                dlg.Filter = fileEntries.GetFilterString();
-
-                dlg.Multiselect = false;
-                dlg.InitialDirectory = GetDefaultPath();
-
-                if (dlg.ShowDialog() == true)
-                {
-                    // Smallest value in filterindex is 1
-                    var docType = fileEntries.GetFileDocumentType(dlg.FilterIndex - 1);
-
-                    var fileName = dlg.FileName;
-                    await OpenSolutionInternal(fileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                //logger.Error(ex.Message, ex);
-                MessageDialog.Show(ex.Message);
-            }
-        }
-
-        #endregion OnOpen
-
-        #region Application_Exit_Command
         private void ExitApplication()
         {
             try
             {
-                //if (shutDownInProgress)
-                //    return;
-
-                //shutDownInProgress_Cancel = false;
-                //OnRequestClose();
-
                 OnRequestExit();
             }
             catch (Exception ex)
             {
-                //logger.Error(ex.Message, ex);
                 MessageDialog.Show(ex.Message);
             }
         }
-        #endregion Application_Exit_Command
 
         private void ShowSettingsDialog()
         {
             try
             {
-                // Initialize view model for editing settings
                 var dlgVM = new SettingsDialogViewModel();
                 dlgVM.LoadOptionsFromData(_settingsManager.SettingData);
 
@@ -672,7 +426,6 @@ namespace IDE.Core.ViewModels
             }
             catch (Exception exp)
             {
-                //logger.Error(exp.Message, exp);
                 MessageDialog.Show(exp.Message);
             }
         }
@@ -769,7 +522,7 @@ namespace IDE.Core.ViewModels
             return Files.Where(f => f != activeDocument && f.CanClose()).Count() > 0;
         }
 
-        void ShowStartPage()
+        public void ShowStartPage()
         {
             var sp = GetStartPage();
             if (sp != null)
@@ -777,17 +530,14 @@ namespace IDE.Core.ViewModels
                 ActiveDocument = sp;
             }
         }
-
-        public async Task OpenSolution(string filePath)
+        public void CreateAppDataFolder()
         {
             try
             {
-                await OpenSolutionInternal(filePath);
+                System.IO.Directory.CreateDirectory(_appCoreModel.DirAppData);
             }
-            catch (Exception exp)
+            catch
             {
-                //logger.Error(exp.Message, exp);
-                MessageDialog.Show(exp.Message);
             }
         }
 
@@ -796,11 +546,10 @@ namespace IDE.Core.ViewModels
             try
             {
                 if (ActiveDocument != null)
-                    OnSaveCommandExecute(ActiveDocument, false);
+                    OnSaveCommandExecute(ActiveDocument);
             }
             catch (Exception exp)
             {
-                //logger.Error(exp.Message, exp);
                 MessageDialog.Show(exp.Message);
             }
         }
@@ -810,16 +559,12 @@ namespace IDE.Core.ViewModels
             return ActiveDocument != null && ActiveDocument.CanSave();
         }
 
-        /// <summary>
-        /// Save all open files and current program settings
-        /// </summary>
         void SaveAll()
         {
             try
             {
-                // Save all edited documents
-                if (files != null)               // Close all open files and make sure there are no unsaved edits
-                {                                     // If there are any: Ask user if edits should be saved
+                if (files != null)
+                {
                     var activeDoc = ActiveDocument;
 
                     try
@@ -850,42 +595,42 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        async Task RunBuild(SolutionExplorerNodeModel node)
+        private void ActivateToolWindow(IToolWindow toolWindow)
+        {
+            toolWindow.IsVisible = true;
+            toolWindow.IsActive = true;
+        }
+
+        private async Task RunBuild(SolutionExplorerNodeModel node)
         {
             try
             {
-                if (node != null)
+                if (node == null)
+                    return;
+
+                var err = _toolWindowRegistry.GetTool<IErrorsToolWindow>();
+                var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
+
+                dispatcher.RunOnDispatcher(() =>
                 {
-                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
+                    err.Clear();
 
-                    dispatcher.RunOnDispatcher(() =>
+                    output.Clear();
+                    ActivateToolWindow(output);
+                });
+
+                await node.Build();
+
+                dispatcher.RunOnDispatcher(() =>
+                {
+                    if (err != null)
                     {
-                        err?.Clear();
-
-                        //show output during build
-                        var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
-                        var outputTW = output as ToolViewModel;
-                        output.Clear();
-                        outputTW.IsVisible = true;
-                        outputTW.IsActive = true;
-                    });
-
-                    await node.Build();
-
-
-                    dispatcher.RunOnDispatcher(() =>
-                    {
-                        if (err != null)
+                        if (err.Errors.Count > 0)
                         {
-                            if (err.Errors.Count > 0)
-                            {
-                                err.IsVisible = true;
-                                err.IsActive = true;
-                            }
-
+                            ActivateToolWindow(err);
                         }
-                    });
-                }
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -899,18 +644,15 @@ namespace IDE.Core.ViewModels
             {
                 if (node != null)
                 {
-                    var err = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
+                    var err = _toolWindowRegistry.GetTool<IErrorsToolWindow>();
+                    var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
 
                     dispatcher.RunOnDispatcher(() =>
                     {
-                        err?.Clear();
+                        err.Clear();
 
-                        //show output during build
-                        var output = _toolWindowRegistry.GetTool<IOutputToolWindow>();
-                        var outputTW = output as ToolViewModel;
                         output.Clear();
-                        outputTW.IsVisible = true;
-                        outputTW.IsActive = true;
+                        ActivateToolWindow(output);
                     });
 
                     await node.Compile();
@@ -921,10 +663,8 @@ namespace IDE.Core.ViewModels
                         {
                             if (err.Errors.Count > 0)
                             {
-                                err.IsVisible = true;
-                                err.IsActive = true;
+                                ActivateToolWindow(err);
                             }
-
                         }
                     });
                 }
@@ -946,8 +686,7 @@ namespace IDE.Core.ViewModels
                     var projectReferencesNode = project.Children.OfType<ProjectReferencesNodeModel>().FirstOrDefault();
 
                     var addRefDlg = new AddReferencesDialogViewModel(project);
-                    //addRefDlg.ShowDialog();
-                    //var addRefVM = addRefDlg.ViewModel;
+
                     if (addRefDlg.ShowDialog() == true)
                     {
                         //remove references that are not in our list anymore
@@ -972,7 +711,6 @@ namespace IDE.Core.ViewModels
                         {
                             var refFile = Path.Combine(referencesFolder.FullName, libRef.LibraryName + ".libref");
 
-                            //File.Copy(libRef.HintPath, refFile, true);
                             var souceLibPath = ProjectReferencesHelper.FindLibraryFullPath(project, libRef.HintPath);
                             if (!string.IsNullOrEmpty(souceLibPath) && File.Exists(souceLibPath))
                             {
@@ -990,38 +728,6 @@ namespace IDE.Core.ViewModels
                 }
             }
         }
-
-        //ProjectBaseFileRef GetSolutionFileItem(TemplateType templateType)
-        //{
-        //    switch (templateType)
-        //    {
-        //        case TemplateType.Symbol:
-        //            return new ProjectSymbolFile();
-
-        //        case TemplateType.Footprint:
-        //            return new ProjectFootprintFile();
-
-        //        case TemplateType.Model:
-        //            return new ProjectModelFile();
-
-        //        case TemplateType.Component:
-        //            return new ProjectComponentFile();
-
-        //        case TemplateType.Schematic:
-        //            return new ProjectSchematicFile();
-
-        //        case TemplateType.Board:
-        //            return new ProjectBoardFile();
-
-        //        case TemplateType.Font:
-        //            return new ProjectFontFile();
-
-        //        case TemplateType.Misc:
-        //            return new ProjectGenericFile();
-        //    }
-
-        //    throw new NotSupportedException($"{templateType} is not suported");
-        //}
 
         string GetNewItemName(TemplateType templateType)
         {
@@ -1216,17 +922,10 @@ namespace IDE.Core.ViewModels
             });
         }
 
-        void AddExistingProject(SolutionExplorerNodeModel node)
-        {
-            MessageDialog.Show("TODO");
-        }
-
         void AddNewProject(SolutionExplorerNodeModel node)
         {
             if (node == null)
                 return;
-
-            //we could use AddNewItem(templateType) but we will break some other things...
 
             var slnPath = SolutionManager.SolutionFilePath;
 
@@ -1235,6 +934,7 @@ namespace IDE.Core.ViewModels
             newSolutionDialog.TemplateType = TemplateType.Project;
             newSolutionDialog.ItemName = "New project";
             newSolutionDialog.Location = Path.GetDirectoryName(slnPath);
+
             if (newSolutionDialog.ShowDialog() == true)
             {
                 var fileName = newSolutionDialog.SelectedItemFilePath;
@@ -1256,10 +956,8 @@ namespace IDE.Core.ViewModels
                 var projectModel = projItem.CreateSolutionExplorerNodeModel();
 
                 node.AddChild(projectModel);
-
             }
         }
-
 
         async Task ShowProjectProperties(SolutionProjectNodeModel project)
         {
@@ -1276,10 +974,10 @@ namespace IDE.Core.ViewModels
                 return;
             }
 
-            var p = new SolutionProjectPropertiesViewModel();
-            p.Project = (ProjectDocument)project.ProjectNode.Project;
-            await p.OpenFileAsync(filePath);
-            IntegrateDocumentVM(p, string.Empty);
+            var projectPropertiesDocument = new SolutionProjectPropertiesViewModel();
+            projectPropertiesDocument.Project = (ProjectDocument)project.ProjectNode.Project;
+            await projectPropertiesDocument.OpenFileAsync(filePath);
+            IntegrateDocument(projectPropertiesDocument);
         }
 
         async Task ShowProperties(SolutionExplorerNodeModel node)
@@ -1325,20 +1023,6 @@ namespace IDE.Core.ViewModels
                 canvasFileModel.CyclePlacementOrRotate();
         }
 
-        void MirrorXSelectedItems()
-        {
-            var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
-            if (canvasFileModel != null)
-                canvasFileModel.MirrorXSelectedItems();
-        }
-
-        void MirrorYSelectedItems()
-        {
-            var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
-            if (canvasFileModel != null)
-                canvasFileModel.MirrorYSelectedItems();
-        }
-
         void DeleteSelectedItems()
         {
             var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
@@ -1359,15 +1043,6 @@ namespace IDE.Core.ViewModels
             if (canvasFileModel != null)
                 canvasFileModel.PasteSelectedItems();
         }
-
-        void ChangeFootprintPlacement()
-        {
-            var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
-            if (canvasFileModel != null)
-                canvasFileModel.ChangeFootprintPlacement();
-        }
-
-        #region Application_About_Command
 
         private void ShowToolWindow(IToolWindow toolWindow)
         {
@@ -1391,47 +1066,7 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        #endregion Application_About_Command
-
-
-        #region Recent File List Pin Unpin Commands
-
-        private void PinMruEntryToggle(MruItemViewModel mruEntry)
-        {
-            try
-            {
-                if (mruEntry == null)
-                    return;
-
-                _recentFiles.PinUnpinEntry(!mruEntry.IsPinned, mruEntry.PathFileName);
-            }
-            catch (Exception exp)
-            {
-                MessageDialog.Show(exp.Message);
-            }
-        }
-
-        private void RemoveMRUEntry(MruItemViewModel mruEntry)
-        {
-            try
-            {
-                if (mruEntry == null)
-                    return;
-
-                _recentFiles.RemoveEntry(mruEntry.PathFileName);
-            }
-            catch (Exception exp)
-            {
-                MessageDialog.Show(exp.Message);
-            }
-        }
-
-        #endregion Recent File List Pin Unpin Commands
-
         #region RequestClose [event]
-        /// <summary>
-        /// Method to be executed when user (or program) tries to close the application
-        /// </summary>
         public void OnRequestClose()
         {
             try
@@ -1441,10 +1076,10 @@ namespace IDE.Core.ViewModels
                     if (DialogCloseResult == null)
                         DialogCloseResult = true;      // Execute Close event via attached property
 
-                    if (shutDownInProgress_Cancel == true)
+                    if (shuttingDownCancel == true)
                     {
                         shutDownInProgress = false;
-                        shutDownInProgress_Cancel = false;
+                        shuttingDownCancel = false;
                         DialogCloseResult = null;
                     }
                     else
@@ -1465,6 +1100,60 @@ namespace IDE.Core.ViewModels
         }
         #endregion // RequestClose [event]
 
+        public void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                // Close all open files and check whether application is ready to close
+                if (CanCloseAndSaved() == true)
+                {
+                    OnRequestClose();
+
+                    e.Cancel = false;
+                }
+                else
+                    e.Cancel = ShuttingDownCancel = true;
+            }
+            catch
+            {
+            }
+        }
+
+        public void OnClosed()
+        {
+            try
+            {
+                // Save/initialize program options that determine global program behaviour
+                SaveConfig();
+
+                DisposeResources();
+            }
+            catch (Exception exp)
+            {
+                MessageDialog.Show(exp.Message);
+            }
+        }
+
+        private void DisposeResources()
+        {
+            try
+            {
+                foreach (var item in Files)
+                {
+                    try
+                    {
+                        item.Dispose();
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
         void OnRequestExit()
         {
             var h = RequestExit;
@@ -1479,127 +1168,34 @@ namespace IDE.Core.ViewModels
             }
             catch (Exception exp)
             {
-                //logger.Error(exp.Message, exp);
                 MessageDialog.Show(exp.Message);
             }
         }
 
         private string GetDefaultPath()
         {
-            var sPath = string.Empty;
-
-            try
-            {
-                // Generate a default path from cuurently or last active document
-                if (ActiveDocument != null)
-                    sPath = ActiveDocument.GetFilePath();
-
-                if (sPath == string.Empty)
-                    sPath = _appCoreModel.MyDocumentsUserDir;
-                else
-                {
-                    try
-                    {
-                        if (Directory.Exists(sPath) == false)
-                            sPath = _appCoreModel.MyDocumentsUserDir;
-                    }
-                    catch
-                    {
-                        sPath = _appCoreModel.MyDocumentsUserDir;
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                //logger.Error(exp.Message, exp);
-                MessageDialog.Show(exp.Message);
-            }
-
-            return sPath;
+            return _appCoreModel.MyDocumentsUserDir;
         }
 
-        /// <summary>
-        /// Attempt to save data in file when
-        /// File>Save As... or File>Save command
-        /// is executed.
-        /// </summary>
-        internal bool OnSaveCommandExecute(IFileBaseViewModel doc, bool saveAsFlag = false)
+        internal bool OnSaveCommandExecute(IFileBaseViewModel doc)
         {
             if (doc == null)
                 return false;
 
-            if (doc.CanSaveData == true)
+            if (doc.CanSaveData)
             {
-                var defaultFilter = GetDefaultFileFilter(doc, _documentTypeManager);
-
-                return OnSaveDocumentFile(doc, saveAsFlag, defaultFilter);
+                return OnSaveDocumentFile(doc);
             }
 
-            throw new NotSupportedException((doc != null ? doc.ToString() : Strings.STR_MSG_UnknownDocumentType));
+            throw new NotSupportedException(( doc != null ? doc.ToString() : Strings.STR_MSG_UnknownDocumentType ));
         }
 
-        /// <summary>
-        /// Returns the default file extension filter strings
-        /// that can be used for each corresponding document
-        /// type (viewmodel), or an empty string if no document
-        /// type (viewmodel) was matched.
-        /// </summary>
-        internal static string GetDefaultFileFilter(IFileBaseViewModel f, IDocumentTypeManager docManager)
+        internal bool OnSaveDocumentFile(IFileBaseViewModel fileToSave)
         {
-            if (f == null)
-                return string.Empty;
+            var filePath = fileToSave.FilePath;
+            fileToSave.SaveFile(filePath);
 
-            var filefilter = docManager.GetFileFilterEntries(f.DocumentTypeKey);
-
-            if (filefilter != null)
-                return filefilter.GetFilterString();
-
-            return string.Empty;
-        }
-
-        internal bool OnSaveDocumentFile(IFileBaseViewModel fileToSave,
-                                         bool saveAsFlag = false,
-                                         string FileExtensionFilter = "")
-        {
-            var filePath = (fileToSave == null ? string.Empty : fileToSave.FilePath);
-
-            // Offer SaveAs file dialog if file has never been saved before (was created with new command)
-            if (fileToSave != null)
-                saveAsFlag = saveAsFlag | !fileToSave.IsFilePathReal;
-
-            try
-            {
-                if (filePath == string.Empty || saveAsFlag == true)   // Execute SaveAs function
-                {
-                    var dlg = ServiceProvider.Resolve<ISaveFileDialog>();//new SaveFileDialog();
-
-                    dlg.FileName = Path.GetFileName(filePath);
-
-                    dlg.InitialDirectory = GetDefaultPath();
-
-                    if (string.IsNullOrEmpty(FileExtensionFilter) == false)
-                        dlg.Filter = FileExtensionFilter;
-
-                    if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
-                    {
-                        filePath = dlg.FileName;
-
-                        fileToSave.SaveFile(filePath);
-                    }
-                    else
-                        return false;
-                }
-                else                                                  // Execute Save function
-                    fileToSave.SaveFile(filePath);
-
-                return true;
-            }
-            catch (Exception exp)
-            {
-                MessageDialog.Show(exp.Message);
-            }
-
-            return false;
+            return true;
         }
 
         internal bool OnCloseSaveDirtyFile(IFileBaseViewModel fileToClose)
@@ -1624,9 +1220,6 @@ namespace IDE.Core.ViewModels
             return true;
         }
 
-        /// <summary>
-        /// Close the currently active file and set the file with the lowest index as active document.
-        /// </summary>
         public bool Close(IFileBaseViewModel doc)
         {
             try
@@ -1695,10 +1288,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        /// <summary>
-        /// Get/set property to determine whether window is in maximized state or not.
-        /// (this can be handy to determine when a resize grip should be shown or not)
-        /// </summary>
         public bool? IsNotMaximized
         {
             get
@@ -1716,11 +1305,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        /// <summary>
-        /// Check if pre-requisites for closing application are available.
-        /// Save session data on closing and cancel closing process if necessary.
-        /// </summary>
-        /// <returns>true if application is OK to proceed closing with closed, otherwise false.</returns>
         public bool CanCloseAndSaved()
         {
             if (shutDownInProgress)
@@ -1780,37 +1364,89 @@ namespace IDE.Core.ViewModels
             return startPage;
         }
 
-        /// <summary>
-        /// Helper method for viewmodel resolution for avalondock contentids
-        /// and specific document viewmodels. Careful: the Start Page is also
-        /// a document but cannot be loaded, saved, or edit as other documents can.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private Task<IFileBaseViewModel> ReloadDocument(string path)
+        #endregion methods
+
+        public void SaveConfig()
         {
-            if (!string.IsNullOrWhiteSpace(path))
+            try
             {
-                switch (path)
-                {
-                    case StartPageViewModel.StartPageContentId: // Re-create start page content
-                        {
-                            return Task.Run(() => (IFileBaseViewModel)GetStartPage());
-                        }
+                CreateAppDataFolder();
 
-                    default:
-                        if (path.Contains("<") == true && path.Contains(">") == true)
-                        {
-                            return null;
-                        }
+                //we want to ensure we have the options saved on close for now; consider removing this call in the future
+                _settingsManager.SaveOptions(_appCoreModel.DirFileAppSettingsData);
 
-                        return Open(null, path);
-                }
+                //save to profile settings from recent files model
+                var profile = (Profile)_settingsManager.SessionData;
+                var mruModel = (RecentFilesModel)_recentFiles;
+
+                profile.MruList = mruModel.MruList.Select(m => new MruItem { IsPinned = m.IsPinned, FilePath = m.PathFileName }).ToList();
+
+                _settingsManager.SaveProfileData(_appCoreModel.DirFileAppSessionData);
             }
-
-            return Task.FromResult<IFileBaseViewModel>(null);
+            catch (Exception exp)
+            {
+                MessageDialog.Show(exp.Message);
+            }
         }
 
-        #endregion methods
+        public void SaveXmlLayout(string xmlLayout)
+        {
+            if (SolutionManager.IsSolutionOpen())
+            {
+                var slnFolder = Path.GetDirectoryName(SolutionManager.SolutionFilePath);
+                if (!Directory.Exists(slnFolder))
+                    return;
+
+                var ideFolder = Path.Combine(slnFolder, AppHelpers.SolutionConfigFolderName);
+
+                //ensure folder exists
+                Directory.CreateDirectory(ideFolder);
+
+                var layoutFilePath = Path.Combine(ideFolder, AppHelpers.LayoutFileName);
+
+                File.WriteAllText(layoutFilePath, xmlLayout);
+            }
+        }
+
+        private void LoadXmlLayout()
+        {
+            if (SolutionManager.IsSolutionOpen())
+            {
+                var slnFolder = Path.GetDirectoryName(SolutionManager.SolutionFilePath);
+                if (!Directory.Exists(slnFolder))
+                    return;
+
+                var ideFolder = Path.Combine(slnFolder, AppHelpers.SolutionConfigFolderName);
+
+                var layoutFilePath = Path.Combine(ideFolder, AppHelpers.LayoutFileName);
+
+                if (!File.Exists(layoutFilePath))
+                    return;
+
+                var xmlLayout = File.ReadAllText(layoutFilePath);
+
+                OnLoadLayoutRequested(xmlLayout);
+            }
+        }
+
+        private void OnLoadLayoutRequested(string xmlLayout)
+        {
+            LoadLayoutRequested?.Invoke(this, xmlLayout);
+        }
+
+        public void LoadConfig()
+        {
+            _settingsManager.LoadOptions(_appCoreModel.DirFileAppSettingsData);
+            _settingsManager.LoadProfileData(_appCoreModel.DirFileAppSessionData);
+
+            _themesManager.SetSelectedTheme(SettingsManager.DefaultTheme);
+            LoadSelectedTheme();
+        }
+
+        private void LoadSelectedTheme()
+        {
+            var resManager = ServiceProvider.Resolve<IResourceLocator>();
+            resManager.SwitchToSelectedTheme();
+        }
     }
 }

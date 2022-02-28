@@ -3,11 +3,6 @@
     using IDE.Core.Interfaces;
     using System;
 
-    /// <summary>
-    /// Class maintains and helps access to core facts of this application.
-    /// Core facts are installation directory, name of application etc.
-    /// </summary>
-    //[Export(typeof(IAppCoreModel))]
     public class AppCoreModel : IAppCoreModel
     {
         /// <summary>
@@ -94,16 +89,7 @@
             }
         }
 
-        public void CreateAppDataFolder()
-        {
-            try
-            {
-                System.IO.Directory.CreateDirectory(DirAppData);
-            }
-            catch
-            {
-            }
-        }
+        
 
     }
 }

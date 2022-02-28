@@ -48,19 +48,15 @@
         /// 
         /// Always returns the 1st document type handler that matches the extension.
         /// </summary>
-        public IDocumentType FindDocumentTypeByExtension(string fileExtension,
-                                                         bool trimPeriod = false)
+        public IDocumentType FindDocumentTypeByExtension(string fileExtension)
         {
             if (string.IsNullOrEmpty(fileExtension))
                 return null;
 
-            if (trimPeriod)
-            {
-                var idx = fileExtension.LastIndexOf(".");
+            var idx = fileExtension.LastIndexOf(".");
 
-                if (idx >= 0)
-                    fileExtension = fileExtension.Substring(idx + 1);
-            }
+            if (idx >= 0)
+                fileExtension = fileExtension.Substring(idx + 1);
 
             var ret = documentTypes.FirstOrDefault(d => d.FileExtension == fileExtension);
 

@@ -21,21 +21,8 @@
 										   Type typeOfDocument
 										   );
 
-		/// <summary>
-		/// Finds a document type that can handle a file
-		/// with the given file extension eg ".txt" or "txt"
-		/// when the original file name was "Readme.txt".
-		/// Always returns the 1st document type handler that matches the extension.
-		/// </summary>
-		IDocumentType FindDocumentTypeByExtension(string fileExtension, bool trimPeriod = false);
+		IDocumentType FindDocumentTypeByExtension(string fileExtension);
 
-		/// <summary>
-		/// Goes through all file/document type definitions and returns a filter string
-		/// object that can be used in conjunction with FileOpen and FileSave dialog filters.
-		/// </summary>
-		/// <param name="key">Get entries for this viewmodel only,
-		/// or all entries if key parameter is not set.</param>
-		/// <returns></returns>
 		IFileFilterEntries GetFileFilterEntries(string key = "");
 	}
 }

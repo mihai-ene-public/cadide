@@ -46,24 +46,19 @@ namespace IDE.Core.Interfaces
         /// </summary>
         bool? IsNotMaximized { get; set; }
 
-
         /// <summary>
         /// Gets/sets whether the current application shut down process
         /// is cancelled or not.
         /// </summary>
-        bool ShutDownInProgress_Cancel { get; set; }
-
-        bool ShutDownInProgress { get; }
-
-        //ISettingsManager SettingsManager { get; }
-
-        //IThemesManager ThemesManager { get; }
+        bool ShuttingDownCancel { get; set; }
 
         IFileBaseViewModel ActiveDocument { get; }
 
         IList<IFileBaseViewModel> Files { get; }
 
         IList<IToolWindow> Tools { get; }
+
+        void ShowStartPage();
 
         /// <summary>
         /// Method to be executed when user (or program) tries to close the application
@@ -73,23 +68,20 @@ namespace IDE.Core.Interfaces
         /// <summary>
         /// Save session data on closing
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         void OnClosing(object sender, CancelEventArgs e);
 
         /// <summary>
         /// Execute closing function and persist session data to be reloaded on next restart
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         void OnClosed();
 
         /// <summary>
         /// Check if pre-requisites for closing application are available.
         /// Save session data on closing and cancel closing process if necessary.
         /// </summary>
-        /// <returns>true if application is OK to proceed closing with closed, otherwise false.</returns>
         bool CanCloseAndSaved();
+
+        void CreateAppDataFolder();
 
         /// <summary>
         /// Load configuration from persistence on startup of application
@@ -112,9 +104,6 @@ namespace IDE.Core.Interfaces
         Task OpenSolution(string filePath);
 
         Task<IFileBaseViewModel> Open(ISolutionExplorerNodeModel item, string filePath);
-
-        ////todo: we don't need this; we can get filepath from item.GetItemFullPath()
-        Task<IFileBaseViewModel> OpenDocument(ISolutionExplorerNodeModel item, string filePath = null);
 
         Task<IFileBaseViewModel> OpenDocumentAsync(ISolutionExplorerNodeModel item, bool loadedForCompiler = false);
 

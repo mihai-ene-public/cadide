@@ -16,6 +16,6 @@ namespace IDE.Core.Interfaces
 
         bool RemoveEntry(string fileName);
 
-        void PinUnpinEntry(bool bPinOrUnPinMruEntry, string pathFilename);
+        void TogglePinnedForEntry(string pathFilename);
     }
 }

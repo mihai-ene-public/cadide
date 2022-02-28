@@ -20,9 +20,6 @@ namespace IDE.Core.Commands
         static ICommand exportUMLToImage;
         static ICommand exportTextToHTML;
 
-        static ICommand pinUnpin;
-        static ICommand addMruEntry;
-        static ICommand removeMruEntry;
         static ICommand closeFile;
         static ICommand viewTheme;
 
@@ -68,18 +65,6 @@ namespace IDE.Core.Commands
 
             exportTextToHTML = CreateUICommand(Strings.CMD_APP_ExportTextToHTML_Description, "ExportTextToHTML", typeof(AppCommand));
 
-            // Initialize pin command (to set or unset a pin in MRU and re-sort list accordingly)
-            pinUnpin = CreateUICommand(Strings.CMD_MRU_Pin_Description, "Pin", typeof(AppCommand));
-
-            // Execute add recent files list etnry pin command (to add another MRU entry into the list)
-            addMruEntry = CreateUICommand(Strings.CMD_MRU_AddEntry_Description, "AddEntry", typeof(AppCommand));
-
-            // Execute remove pin command (remove a pin from a recent files list entry)
-            removeMruEntry = CreateUICommand(Strings.CMD_MRU_RemoveEntry_Description, "RemoveEntry", typeof(AppCommand));
-
-            //inputs = new InputGestureCollection();
-            //inputs.Add(new KeyGesture(Key.F4, ModifierKeys.Control, "Ctrl+F4"));
-            //inputs.Add(new KeyGesture(Key.W, ModifierKeys.Control, "Ctrl+W"));
             closeFile = CreateUICommand(Strings.CMD_APP_CloseDoc_Description, "Close", typeof(AppCommand), XKey.F4, XModifierKeys.Control);
 
             // Initialize the viewTheme command
@@ -167,36 +152,10 @@ namespace IDE.Core.Commands
             get { return exportTextToHTML; }
         }
 
-        /// <summary>
-        /// Execute pin/unpin command (to set or unset a pin in MRU and re-sort list accordingly)
-        /// </summary>
-        public static ICommand PinUnpin
-        {
-            get { return pinUnpin; }
-        }
-
-        /// <summary>
-        /// Execute add recent files list etnry pin command (to add another MRU entry into the list)
-        /// </summary>
-        public static ICommand AddMruEntry
-        {
-            get { return addMruEntry; }
-        }
-
-        /// <summary>
-        /// Execute remove pin command (remove a pin from a recent files list entry)
-        /// </summary>
-        public static ICommand RemoveMruEntry
-        {
-            get { return removeMruEntry; }
-        }
-
         public static ICommand CloseFile
         {
             get { return closeFile; }
         }
-
-
 
         static ICommand closeSolution;
         public static ICommand CloseSolution
@@ -297,24 +256,6 @@ namespace IDE.Core.Commands
                 }
 
                 return manageReferencesCommand;
-            }
-        }
-
-        static ICommand addExistingProjectCommand;
-
-        /// <summary>
-        /// add an existing project to the current solution
-        /// </summary>
-        public static ICommand AddExistingProjectCommand
-        {
-            get
-            {
-                if (addExistingProjectCommand == null)
-                {
-                    addExistingProjectCommand = CreateUICommand("AddExistingProject", "AddExistingProject", typeof(AppCommand));
-                }
-
-                return addExistingProjectCommand;
             }
         }
 

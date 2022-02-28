@@ -6,10 +6,16 @@
              xmlns:conv="clr-namespace:IDE.Core.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
-
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <utils:BindingProxy x:Key="modelProxy"
+                                Data="{Binding RecentFilesViewModel}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid Background="{DynamicResource ToolViewBackground}">
             <Grid.Resources>
@@ -41,7 +47,7 @@
                                 <Separator />
 
                                 <MenuItem Header="Remove"
-                                          Command="cmd:AppCommand.RemoveMruEntry"
+                                          Command="{Binding Data.RemoveEntryCommand, Source={StaticResource modelProxy}}"
                                           CommandParameter="{Binding}"
                                           CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                           Margin="3" />
@@ -113,7 +119,7 @@
                                     SnapsToDevicePixels="True"
                                     HorizontalContentAlignment="Stretch"
                                     BorderThickness="0"
-                                    ItemsSource="{Binding MruList.MruList}"
+                                   ItemsSource="{Binding Data.MruList, Source={StaticResource modelProxy}}"
                                    ctrls:ListViewColumns.Stretch="true"
                                     Background="Transparent"
                                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -132,7 +138,7 @@
                                 <DataTemplate>
                                     <Grid>
                                         <!-- Pin/Unpin column -->
-                                        <ctrls:PinnableCheckbox Command="cmd:AppCommand.PinUnpin"
+                                        <ctrls:PinnableCheckbox Command="{Binding Data.TogglePinnedForEntryCommand, Source={StaticResource modelProxy}}"
                                                                  CommandParameter="{Binding}"
                                                                  IsChecked="{Binding IsPinned, Mode=OneWay}">
                                             <CheckBox.Visibility>
