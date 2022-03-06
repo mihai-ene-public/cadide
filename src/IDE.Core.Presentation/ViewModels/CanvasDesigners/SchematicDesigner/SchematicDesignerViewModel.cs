@@ -20,7 +20,7 @@ using IDE.Core.Types.Media;
 using Newtonsoft.Json.Serialization;
 using IDE.Core.Presentation.Utilities;
 using System.Collections;
-using IDE.Core.Compilation;
+using IDE.Core.Presentation.Compilers;
 
 namespace IDE.Core.ViewModels
 {
@@ -41,7 +41,7 @@ namespace IDE.Core.ViewModels
             defaultFileName = "Schematic";
 
             schematicDocument = new SchematicDocument();
-            Sheets = new ObservableCollection<SheetDesignerItem>();
+            Sheets = new ObservableCollection<ISheetDesignerItem>();
 
             SchematicViewMode = SchematicViewMode.Canvas;
 
@@ -355,10 +355,10 @@ namespace IDE.Core.ViewModels
         SchematicDocument schematicDocument;
         // List<NetDesignerItem> netsCache = new List<NetDesignerItem>();
 
-        public IList<SchematicNet> GetNets()
+        public IList<ISchematicNet> GetNets()
         {
             //we need a faster way for this
-            var nets = new List<SchematicNet>();
+            IList<ISchematicNet> nets = new List<ISchematicNet>();
 
             foreach (var sheet in Sheets)
             {
@@ -589,11 +589,11 @@ namespace IDE.Core.ViewModels
 
 
 
-        public ObservableCollection<SheetDesignerItem> Sheets { get; set; }
+        public IList<ISheetDesignerItem> Sheets { get; set; }
 
-        SheetDesignerItem currentSheet;
+        ISheetDesignerItem currentSheet;
 
-        public SheetDesignerItem CurrentSheet
+        public ISheetDesignerItem CurrentSheet
         {
             get { return currentSheet; }
             set
@@ -1225,47 +1225,5 @@ namespace IDE.Core.ViewModels
 
             OutputFiles.AddRange(pdfOutput.OutputFiles);
         }
-
-        public override Task<bool> Compile()
-        {
-            CompileErrors.Clear();
-
-            return Task.Run(() =>
-            {
-                var parts = from s in Sheets
-                            from p in s.Items.OfType<SchematicSymbolCanvasItem>()
-                            select p;
-                var hasErrors = false;
-                //we just search for components; 
-                //todo: we could also check the defined component for its symbols, footprints, etc
-                foreach (var part in parts)
-                {
-                    try
-                    {
-                        if (part.PartName != null)
-                        {
-                            //todo: changing the componentId doesn't report missing component
-                            var cmpSearch = ParentProject.FindObject(TemplateType.Component, part.Part.ComponentLibrary, part.Part.ComponentId);
-                            if (cmpSearch == null)
-                                throw new Exception($"Component {part.Part.ComponentName} was not found for part {part.PartName}");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        hasErrors = true;
-                        //output.AppendLine($"Error: {ex.Message}");
-                        AddCompileError(ex.Message, FileName, ParentProject.Name);
-                    }
-                }
-
-                var schChecker = new SchematicRulesManager(this, FileName, ParentProject.Name);
-                var res = schChecker.CheckRules();
-                if (!res)
-                    hasErrors = true;
-
-                return !hasErrors;
-            });
-        }
-
     }
 }

@@ -11,7 +11,7 @@ namespace IDE.Core.Interfaces
                                     , IDocumentOverview
                                     , IFileBaseViewModel
     {
-        IList<IBoardNetDesignerItem> NetList { get;  }
+        IList<IBoardNetDesignerItem> NetList { get; }
 
         IList<INetClassBaseItem> NetClasses { get; set; }
 
@@ -19,7 +19,7 @@ namespace IDE.Core.Interfaces
 
         IList<ILayerPairModel> LayerPairs { get; }
 
-
+        Task<IList<IBoardNetGraph>> GetUnroutedConnections();
         //RegionBoardCanvasItem BoardOutline { get; }
         IRegionCanvasItem BoardOutline { get; set; }
 
@@ -43,6 +43,13 @@ namespace IDE.Core.Interfaces
         void ChangeToCopperLayer(int layerNumber);
 
         void OnPropertyChanged(string propertyName);
+    }
+
+    public interface IBoardNetGraph : ISelectableItem
+    {
+        bool IsCompletelyRouted { get; }
+        IBoardNetDesignerItem Net { get; }
+        void Build(bool showUnConnectedLines);
     }
 
     public interface INetClassBaseItem

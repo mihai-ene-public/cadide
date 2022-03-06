@@ -1039,41 +1039,9 @@ namespace IDE.Documents.Views
             }
         }
 
-        public override Task<bool> Compile()
+        public IList<ModelDocument> GetModels()
         {
-            CompileErrors.Clear();
-
-            return Task.Run(() =>
-            {
-                // var fpt = doc as Footprint;
-                var hasErrors = false;
-                //check reference of the model
-                if (modelsDictionary != null)
-                {
-                    foreach (var kvp in modelsDictionary)
-                    {
-                        try
-                        {
-                            var model = kvp.Value;
-                            if (model.Name != null)
-                            {
-                                var modelSearch = ParentProject.FindObject(TemplateType.Model, model.Library, model.Id);
-                                if (modelSearch == null)
-                                    throw new Exception($"Model {model.Name} was not found");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            hasErrors = true;
-                            //output.AppendLine($"Error: {ex.Message}");
-                            AddCompileError(ex.Message, FileName, ParentProject.Name);
-                        }
-                    }
-                }
-
-                return !hasErrors;
-            });
+            return modelsDictionary.Values.ToList();
         }
-
     }
 }

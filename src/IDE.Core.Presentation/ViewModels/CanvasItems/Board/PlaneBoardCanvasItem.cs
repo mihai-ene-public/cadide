@@ -141,7 +141,7 @@ namespace IDE.Core.Designers
         {
             var thisBoard = LayerDocument as IBoardDesigner;
 
-            var isEditing = thisBoard != null && (thisBoard as IFileBaseViewModel).State == DocumentState.IsEditing;
+            var isEditing = thisBoard != null && ( thisBoard as IFileBaseViewModel ).State == DocumentState.IsEditing;
 
             if (isEditing)
             {
@@ -205,7 +205,7 @@ namespace IDE.Core.Designers
             var p = new PlaneBoard();
 
             p.IsFilled = IsFilled;
-            p.layerId = (Layer?.LayerId).GetValueOrDefault();
+            p.layerId = ( Layer?.LayerId ).GetValueOrDefault();
             p.GenerateThermals = GenerateThermals;
             p.ThermalWidth = ThermalWidth;
             p.IsLocked = IsLocked;
@@ -233,7 +233,7 @@ namespace IDE.Core.Designers
 
             var thisBoard = LayerDocument as IBoardDesigner;
 
-            var isEditing = thisBoard != null && (thisBoard as IFileBaseViewModel).State == DocumentState.IsEditing;
+            var isEditing = thisBoard != null && ( thisBoard as IFileBaseViewModel ).State == DocumentState.IsEditing;
 
             if (IsPlaced
                 && IsFilled
@@ -241,20 +241,20 @@ namespace IDE.Core.Designers
             {
                 if (thisBoard != null
                     && Layer != null
-                    && (Layer.LayerType == LayerType.Signal
-                        || Layer.LayerType == LayerType.Plane))
+                    && ( Layer.LayerType == LayerType.Signal
+                        || Layer.LayerType == LayerType.Plane ))
                 {
                     var defaultClearance = 0.254d;//mm
 
-                    var rulesManger = new BoardRulesManager(thisBoard);
+                    var rulesManger = new BoardRulesCompiler();
 
                     var canvasItems = (List<ISelectableItem>)thisBoard.CanvasModel.GetItems();
 
                     var footprints = thisBoard.CanvasModel.GetFootprints().ToList();
-                    var footprintItems = (from fp in footprints
-                                          from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<SingleLayerBoardCanvasItem>()
-                                          where p.ShouldBeOnLayer(Layer)//p.Layer == Layer
-                                          select p);
+                    var footprintItems = ( from fp in footprints
+                                           from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<SingleLayerBoardCanvasItem>()
+                                           where p.ShouldBeOnLayer(Layer)//p.Layer == Layer
+                                           select p );
 
                     //todo: that is on layer (we could store it on Layer.Items)
                     var vias = canvasItems.OfType<ViaCanvasItem>();
@@ -265,7 +265,7 @@ namespace IDE.Core.Designers
                                        .Union(vias);
 
                     var trackItems = items.OfType<ITrackBoardCanvasItem>();
-                    var allItemsExceptTracks = items.Where(p => !(p is ITrackBoardCanvasItem));
+                    var allItemsExceptTracks = items.Where(p => !( p is ITrackBoardCanvasItem ));
 
                     var thisPolyRect = GetBoundingRectangle();
 
@@ -278,7 +278,7 @@ namespace IDE.Core.Designers
                         var itemRect = track.GetBoundingRectangle();
                         if (thisPolyRect.Intersects(itemRect))
                         {
-                            var clearance = rulesManger.GetElectricalClearance(this, track, defaultClearance);
+                            var clearance = rulesManger.GetElectricalClearance(thisBoard, this, track, defaultClearance);
                             //var inflatedItem = track;
                             var inflatedItem = GetItemWithClearance(track, clearance);
 
@@ -319,7 +319,7 @@ namespace IDE.Core.Designers
                             //    continue;
                             //}
 
-                            var clearance = rulesManger.GetElectricalClearance(this, item, defaultClearance);
+                            var clearance = rulesManger.GetElectricalClearance(thisBoard, this, item, defaultClearance);
                             // var inflatedItem = item;
                             var inflatedItem = GetItemWithClearance(item, clearance);
 

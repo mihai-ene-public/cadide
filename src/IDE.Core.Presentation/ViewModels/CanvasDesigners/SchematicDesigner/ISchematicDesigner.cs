@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDE.Core.Designers;
 
 namespace IDE.Core.Interfaces
 {
@@ -11,7 +12,7 @@ namespace IDE.Core.Interfaces
                                         , IFileBaseViewModel
     {
         IDrawingViewModel CanvasModel { get; }
-
+        IList<ISheetDesignerItem> Sheets { get; }
         INetManager NetManager { get; }
         IBusManager BusManager { get; }
 
@@ -20,5 +21,9 @@ namespace IDE.Core.Interfaces
         IList<ISchematicRuleModel> Rules { get; }
 
         Task Build();
+
+        IList<ISchematicNet> GetNets();
     }
+
+
 }

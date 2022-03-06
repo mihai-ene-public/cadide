@@ -125,9 +125,6 @@
                             <MenuItem Header="{x:Static resources:Strings.CmdAddProjectHeader}"
                                       Command="{x:Static cmd:AppCommand.AddProjectCommand}"
                                       CommandParameter="{Binding}" />
-                            <MenuItem Header="{x:Static resources:Strings.CmdAddExistingProjectHeader}"
-                                      Command="{x:Static cmd:AppCommand.AddExistingProjectCommand}"
-                                      CommandParameter="{Binding}" />
                             <MenuItem Header="{x:Static resources:Strings.CmdAddGroupFolderHeader}"
                                       Command="{x:Static cmd:AppCommand.AddGroupFolderCommand}"
                                       CommandParameter="{Binding}" />

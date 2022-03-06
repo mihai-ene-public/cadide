@@ -754,21 +754,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-
-        //public bool OnFileProcessingResultEvent(ResultEvent e, TypeOfResult typeOfResult)
-        //{
-        //    // Continue processing in parent of this viewmodel if there is any such requested
-        //    if (ProcessingResultEvent != null)
-        //    {
-        //        ProcessingResultEvent(this, new ProcessResultEvent(e.Message, e.Error, e.Cancel, typeOfResult,
-        //                                                           e.ResultObjects, e.InnerException));
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
         protected string GetDefaultFileNewName(int iNewFileCounter,
                                                string newDefaultFileName = null,
                                                string newDefaultFileExtension = null
@@ -798,9 +783,6 @@ namespace IDE.Core.ViewModels
             return documentModel.EnableDocumentFileWatcher(true);
         }
 
-
-
-
         public override void Dispose()
         {
             if (documentModel != null)
@@ -812,42 +794,10 @@ namespace IDE.Core.ViewModels
             base.Dispose();
         }
 
-        public IList<IErrorMessage> CompileErrors { get; set; } = new List<IErrorMessage>();
-
         //a flag that is true when we load a document for compiling or building
         //when loading a board for build we don't need to update connections(rastnets) or auto compile
         //we might need to repour polygons, though
         public bool LoadedForCompiler { get; set; } = false;
-
-        public virtual Task<bool> Compile() { return Task.FromResult(true); }
-
-        private IErrorMessage CreateMessage(MessageSeverity severity, string message, string fileName, string projectName, XRect? location = null)
-        {
-            return new ErrorMessage
-            {
-                Severity = severity,
-                Description = message,
-                File = fileName,
-                Project = projectName,
-                Location = new CanvasLocation
-                {
-                    File = this,
-                    Location = location
-                }
-            };
-        }
-
-        public void AddCompileError(string message, string fileName, string projectName, XRect? location = null)
-        {
-            var em = CreateMessage(MessageSeverity.Error, message, fileName, projectName, location);
-            CompileErrors.Add(em);
-        }
-
-        public void AddCompileWarning(string message, string fileName, string projectName, XRect? location = null)
-        {
-            var em = CreateMessage(MessageSeverity.Warning, message, fileName, projectName, location);
-            CompileErrors.Add(em);
-        }
 
         public abstract IList<IDocumentToolWindow> GetToolWindowsWhenActive();
         public void ShowVisibleToolsFiltered(IList<IDocumentToolWindow> visibleTools)

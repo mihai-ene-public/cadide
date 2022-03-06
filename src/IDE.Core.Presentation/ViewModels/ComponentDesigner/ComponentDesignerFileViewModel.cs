@@ -626,7 +626,7 @@ namespace IDE.Documents.Views
 
         #endregion Commands
 
-        public ObservableCollection<GateDisplay> Gates { get; set; }
+        public IList<GateDisplay> Gates { get; set; }
 
         //public ObservableCollection<FootprintDisplay> Footprints { get; set; }
 
@@ -1125,78 +1125,6 @@ namespace IDE.Documents.Views
                 gate.Name = "G" + gateIndex;
                 gateIndex++;
             }
-        }
-
-        public override Task<bool> Compile()
-        {
-            CompileErrors.Clear();
-
-            var slnNodeName = FileName;
-            var projectName = ProjectNode.Name;
-            var hasErrors = false;
-
-            return Task.Run(() =>
-            {
-                //prefix not specified
-                if (string.IsNullOrEmpty(Prefix))
-                {
-                    var msg = $"Component prefix not specified for {slnNodeName})";
-                    // output.AppendLine(msg);
-                    AddCompileError(msg, slnNodeName, projectName);
-                    hasErrors = true;
-                }
-
-                //at least one gate
-                if (Gates == null || Gates.Count == 0)
-                {
-                    var msg = $"Component has no gates specified for {slnNodeName})";
-                    //output.AppendLine(msg);
-                    AddCompileError(msg, slnNodeName, projectName);
-                    hasErrors = true;
-                }
-
-                //gate references
-                foreach (var gate in Gates)
-                {
-                    try
-                    {
-                        if (gate.Name != null)
-                        {
-                            var symbolSearch = ProjectNode.FindObject(TemplateType.Symbol, gate.Gate.LibraryName, gate.Gate.symbolId);
-                            if (symbolSearch == null)
-                                throw new Exception($"Symbol {gate.Symbol.Name} was not found");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        hasErrors = true;
-                        //output.AppendLine($"Error: {ex.Message}");
-                        AddCompileError(ex.Message, slnNodeName, projectName);
-                    }
-                }
-
-                //footprint references
-                if (Footprint != null)
-                {
-                    try
-                    {
-                        if (Footprint.Name != null)
-                        {
-                            var fptSearch = ProjectNode.FindObject(TemplateType.Footprint, Footprint.Footprint.Library, Footprint.Footprint.Id);
-                            if (fptSearch == null)
-                                throw new Exception($"Footprint {Footprint.Name} was not found");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        hasErrors = true;
-                        //output.AppendLine($"Error: {ex.Message}");
-                        AddCompileError(ex.Message, slnNodeName, projectName);
-                    }
-                }
-
-                return !hasErrors;
-            });
         }
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()

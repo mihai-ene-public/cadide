@@ -17,9 +17,9 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using IDE.Core.Documents;
-using IDE.Core.Compilation;
 using IDE.Core.Errors;
 using IDE.Core.Presentation.Infrastructure;
+using IDE.Core.Presentation.Compilers;
 
 namespace IDE
 {
@@ -80,13 +80,15 @@ namespace IDE
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
 
-            services.AddSingleton<IActiveCompiler, ActiveCompiler>();
+            
 
             services.AddSingleton<IServiceCollection>(services);
             services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();
 
             AddDocumentEditors(services);
             AddToolWindows(services);
+            AddCompilers(services);
+
 
             serviceProvider = services.BuildServiceProvider();
         }
@@ -115,6 +117,24 @@ namespace IDE
             services.AddSingleton<IErrorsToolWindow, ErrorsToolWindowViewModel>();
             services.AddSingleton<IOutputToolWindow, OutputViewModel>();
             services.AddSingleton<ISolutionExplorerToolWindow, SolutionExplorerViewModel>();
+        }
+
+        private static void AddCompilers(IServiceCollection services)
+        {
+            services.AddSingleton<IActiveCompiler, ActiveCompiler>();
+            services.AddSingleton<IFileCompiler, FileCompiler>();
+            
+            services.AddTransient<ISolutionCompiler, Compiler>();
+            services.AddTransient<IFileCompiler, FileCompiler>();
+
+            services.AddTransient<ISchematicRulesCompiler, SchematicRulesCompiler>();
+            services.AddTransient<IBoardRulesCompiler, BoardRulesCompiler>();
+
+            services.AddTransient<IBoardCompiler, BoardCompiler>();
+            services.AddTransient<ISchematicCompiler, SchematicCompiler>();
+            services.AddTransient<IComponentCompiler, ComponentCompiler>();
+            services.AddTransient<ISymbolCompiler, SymbolCompiler>();
+            services.AddTransient<IFootprintCompiler, FootprintCompiler>();
         }
 
         public static void Run(StartupEventArgs _eventArgs)

@@ -2,17 +2,18 @@
 using System.Collections.ObjectModel;
 using IDE.Core.Storage;
 using IDE.Core;
+using System.Collections.Generic;
 
 namespace IDE.Documents.Views
 {
     public class ConnectDisplay : BaseViewModel
     {
-        public ConnectDisplay(ObservableCollection<GateDisplay> gates)
+        public ConnectDisplay(IList<GateDisplay> gates)
         {
             Gates = gates;
         }
 
-        public ObservableCollection<GateDisplay> Gates { get; set; }
+        public IList<GateDisplay> Gates { get; set; }
 
         public string Pad { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using IDE.Core.Common;
-using IDE.Core.Compilation;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Compilers;
 using IDE.Core.Storage;
 using System;
 using System.Collections.Generic;
@@ -52,16 +52,19 @@ namespace IDE.Core.ViewModels
             LoadFolder(projectDirectoryPath);
 
         }
-
+        private ISolutionCompiler GetSolutionCompiler()
+        {
+            return ServiceProvider.Resolve<ISolutionCompiler>();
+        }
         public async override Task Compile()
         {
-            var compiler = new Compiler();
+            var compiler = GetSolutionCompiler();
             await compiler.CompileProject(this);
         }
 
         public async override Task Build()
         {
-            var compiler = new Compiler();
+            var compiler = GetSolutionCompiler();
             await compiler.BuildProject(this);
         }
 

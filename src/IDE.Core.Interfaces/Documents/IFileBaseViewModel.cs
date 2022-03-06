@@ -14,18 +14,6 @@
     public interface IFileBaseViewModel : ILayoutItem,
                                           IDisposable
     {
-        #region events
-        ///// <summary>
-        ///// This event is fired when a document tells, for example, the framework that it wants to be closed.
-        ///// The framework can then close it and clean-up whatever is left to clean-up.
-        ///// </summary>
-        //event EventHandler<FileBaseEvent> DocumentEvent;
-
-        ///// <summary>
-        ///// Supports asynchrone processing by implementing a result event when processing is done.
-        ///// </summary>
-        //event EventHandler<ProcessResultEvent> ProcessingResultEvent;
-        #endregion events
 
         #region properties
         /// <summary>
@@ -95,8 +83,6 @@
         /// </summary>
         bool WasChangedExternally { get; }
 
-        IList<IErrorMessage> CompileErrors { get; set; }
-
         bool LoadedForCompiler { get; set; }
 
         #endregion properties
@@ -138,11 +124,6 @@
 
         string GetFilePath();
 
-        void AddCompileError(string message, string fileName, string projectName, XRect? location = null);
-
-        void AddCompileWarning(string message, string fileName, string projectName, XRect? location = null);
-
-        Task<bool> Compile();
         void ApplySettings();
 
         /// <summary>

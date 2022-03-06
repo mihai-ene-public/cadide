@@ -15,7 +15,7 @@ namespace IDE.Core.Designers
     /// <para>A net graph is formed by branches</para>
     /// <para>The purpose is to show unconnected lines, on the fly</para>
     /// </summary>
-    public partial class BoardNetGraph : BaseCanvasItem
+    public class BoardNetGraph : BaseCanvasItem, IBoardNetGraph
     {
         public BoardNetGraph(BoardNetDesignerItem pNet, IBoardDesigner pBoard)
         {
@@ -32,7 +32,7 @@ namespace IDE.Core.Designers
         IDrawingViewModel canvas;
 
         BoardNetDesignerItem net;
-        public BoardNetDesignerItem Net => net;
+        public IBoardNetDesignerItem Net => net;
 
         List<BoardNetBranch> Branches { get; set; } = new List<BoardNetBranch>();
         public ObservableCollection<BoardConnectionLine> Lines { get; } = new ObservableCollection<BoardConnectionLine>();

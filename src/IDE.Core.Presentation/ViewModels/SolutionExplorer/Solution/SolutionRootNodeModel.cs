@@ -1,10 +1,10 @@
-﻿using IDE.Core.Compilation;
-using IDE.Core.Storage;
+﻿using IDE.Core.Storage;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IDE.Core.Interfaces;
 using IDE.Core.Common;
+using IDE.Core.Presentation.Compilers;
 
 namespace IDE.Core.ViewModels
 {
@@ -41,15 +41,20 @@ namespace IDE.Core.ViewModels
             }
         }
 
+        private ISolutionCompiler GetSolutionCompiler()
+        {
+            return ServiceProvider.Resolve<ISolutionCompiler>();
+        }
+
         public async override Task Compile()
         {
-            var compiler = new Compiler();
+            var compiler = GetSolutionCompiler();
             await compiler.CompileSolution(this);
         }
 
         public async override Task Build()
         {
-            var compiler = new Compiler();
+            var compiler = GetSolutionCompiler();
             await compiler.BuildSolution(this);
         }
     }

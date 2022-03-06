@@ -343,24 +343,5 @@ namespace IDE.Documents.Views
             });
         }
 
-        public override Task<bool> Compile()
-        {
-            CompileErrors.Clear();
-            return Task.Run(() =>
-            {
-                //multiple pins in the same location
-                var gpins = canvasModel.Items.OfType<PinCanvasItem>().GroupBy(p => new { p.X, p.Y }).Where(g => g.Count() > 1);
-
-                foreach (var g in gpins)
-                {
-                    var msg = $"Error: There are {g.Count()} pins at the same location: ({g.Key.X}, {g.Key.Y})";
-                    //output.AppendLine(msg);
-                    AddCompileError(msg, FileName, ParentProject.Name);
-                }
-
-                return gpins.Count() == 0;
-            });
-        }
-
     }
 }

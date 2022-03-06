@@ -1,41 +1,29 @@
 ﻿using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Compilers;
 using IDE.Core.Storage;
 using IDE.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IDE.Core.Designers
 {
-    public class SchematicRulesManager
+    public class SchematicRulesCompiler : AbstractCompiler, ISchematicRulesCompiler
     {
-
-
-        public SchematicRulesManager(ISchematicDesigner schModel, string pFileName, string pProjectName)
-        {
-            _schModel = schModel;
-            _pFileName = pFileName;
-            _pProjectName = pProjectName;
-        }
-
-        private readonly ISchematicDesigner _schModel;
-        private readonly string _pFileName;
-        private readonly string _pProjectName;
-
-        IFileBaseViewModel innerFile { get { return _schModel as IFileBaseViewModel; } }
-
-        public bool CheckRules()
+        public async Task<CompilerResult> Compile(ISchematicDesigner schematic)
         {
             var isValid = true;
+            var errors = new List<IErrorMessage>();
+
+            await Task.CompletedTask;
 
             try
             {
-
-
                 var rules = new List<ISchematicRuleModel>();
-                LoadRulesLinear(_schModel.Rules, rules);
+                LoadRulesLinear(schematic.Rules, rules);
 
-                var nets = GetNets();
+                var nets = GetNets(schematic);
 
                 var items = new List<ISelectableItem>();
                 var pairedItems = new List<Tuple<ISelectableItem, ISelectableItem>>();
@@ -108,21 +96,21 @@ namespace IDE.Core.Designers
 
                         foreach (var violation in ruleViolations)
                         {
-                            RegisterViolation(violation);
+                            errors.Add(GetViolation(violation, schematic));
                         }
                     }
-
-
                 }
-
-
             }
             catch
             {
 
             }
 
-            return isValid;
+            return new CompilerResult
+            {
+                Success = isValid,
+                Errors = errors
+            };
         }
 
 
@@ -132,11 +120,9 @@ namespace IDE.Core.Designers
             outputRules.AddRange(sourceRules.Where(r => r.IsEnabled));
         }
 
-        private IList<SchematicNet> GetNets()
+        private IList<SchematicNet> GetNets(ISchematicDesigner schematic)
         {
             IList<SchematicNet> nets = new List<SchematicNet>();
-
-            var schematic = _schModel as SchematicDesignerViewModel;
 
             if (schematic == null)
                 return nets;
@@ -149,9 +135,9 @@ namespace IDE.Core.Designers
                 var newNet = new SchematicNet
                 {
                     Name = ng.Key,
-                    NetItems = (from net in ng
-                                from ni in net.NetItems
-                                select ni).ToList()
+                    NetItems = ( from net in ng.Cast<SchematicNet>()
+                                 from ni in net.NetItems
+                                 select ni ).ToList()
                 };
 
                 nets.Add(newNet);
@@ -160,19 +146,20 @@ namespace IDE.Core.Designers
             return nets;
         }
 
-        private void RegisterViolation(SchematicRuleCheckResult result)
+        private IErrorMessage GetViolation(SchematicRuleCheckResult result, ISchematicDesigner schematic)
         {
-            switch(result.CheckResponse)
+            var projectName = schematic.ProjectNode.Name;
+            switch (result.CheckResponse)
             {
                 case SchematicRuleResponse.Error:
-                    innerFile.AddCompileError(result.Message, _pFileName, _pProjectName, result.Location?.Location);
-                    break;
+                    return BuildErrorMessage(result.Message, projectName, schematic, result.Location?.Location);
 
                 case SchematicRuleResponse.Warning:
-                    innerFile.AddCompileWarning(result.Message, _pFileName, _pProjectName, result.Location?.Location);
-                    break;
+                    return BuildWarningMessage(result.Message, projectName, schematic, result.Location?.Location);
             }
-            
+
+            return null;
+
         }
     }
 }

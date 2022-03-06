@@ -29,7 +29,7 @@ using IDE.Core.Build;
 using IDE.Core.Types.Media;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Presentation.Importers.DXF;
-using IDE.Core.Compilation;
+using IDE.Core.Presentation.Compilers;
 
 namespace IDE.Documents.Views
 {
@@ -657,7 +657,7 @@ namespace IDE.Documents.Views
                 return NetList.Any(n => n.IsHighlighted);
             }
         }
-        public List<BoardNetGraph> Connections { get; set; } = new List<BoardNetGraph>();
+        public IList<IBoardNetGraph> Connections { get; set; } = new List<IBoardNetGraph>();
 
         DesignerViewMode designerViewMode;
         public DesignerViewMode DesignerViewMode
@@ -1106,6 +1106,13 @@ namespace IDE.Documents.Views
             );
         }
 
+        public async Task<IList<IBoardNetGraph>> GetUnroutedConnections()
+        {
+            await RefreshConnections();
+
+            return Connections.Where(c => !c.IsCompletelyRouted).ToList();
+        }
+
         async Task CheckConnections()
         {
             await Task.Run(() =>
@@ -1495,67 +1502,5 @@ namespace IDE.Documents.Views
             }
 
         }
-
-        public async override Task<bool> Compile()
-        {
-            CompileErrors.Clear();
-
-            var isValid = true;
-            var project = ParentProject;
-
-            //todo: check schematic if exists
-
-            //todo: items on layers that don't exist
-
-            //check components
-            //todo: we could also check the defined component for its symbols, footprints, etc
-            foreach (var part in canvasModel.GetFootprints())
-            {
-                try
-                {
-                    if (part.PartName != null)
-                    {
-                        //todo: changing the componentId and footprintId doesn't report missing component or footprint
-                        var cmpSearch = project.FindObject(TemplateType.Component, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
-                        if (cmpSearch == null)
-                            throw new Exception($"Part {part.PartName} was not found");
-
-                        var fptSearch = project.FindObject(TemplateType.Footprint, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
-                        if (fptSearch == null)
-                            throw new Exception($"Footprint for part '{part.PartName}' was not found");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    isValid = false;
-                    AddCompileError(ex.Message, FileName, project.Name);
-                }
-            }
-
-            //check connected nets
-            await RefreshConnections();
-            foreach (var c in Connections)
-            {
-                if (!c.IsCompletelyRouted)
-                {
-                    isValid = false;
-                    AddCompileError($"Net {c.Net} is not completely routed", FileName, project.Name);
-                }
-            }
-
-
-            var checkRules = true;//todo: a setting
-
-            if (checkRules)
-            {
-                var brdChecker = new BoardRulesManager(this, FileName, ParentProject.Name);
-                var res = brdChecker.CheckRules();
-                if (!res)
-                    isValid = false;
-            }
-
-            return isValid;
-        }
-
     }
 }

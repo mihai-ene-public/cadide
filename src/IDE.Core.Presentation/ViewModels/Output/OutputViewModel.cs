@@ -11,7 +11,6 @@
     /// Implementation is based on Output Tool Window from Gemini project:
     /// https://github.com/tgjones/gemini
     /// </summary>
-    //[Export(typeof(IOutput))]
     public class OutputViewModel : ToolViewModel, IOutputToolWindow
     {
         #region fields

@@ -1,4 +1,6 @@
-﻿using IDE.Core.Interfaces;
+﻿using System.Collections.Generic;
+using IDE.Core.Interfaces;
+using IDE.Core.Storage;
 
 namespace IDE.Documents.Views
 {
@@ -6,6 +8,6 @@ namespace IDE.Documents.Views
                                        , ILayeredViewModel
                                        , IDocumentOverview
     {
-
+        IList<ModelDocument> GetModels();
     }
 }

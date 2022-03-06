@@ -92,7 +92,7 @@ namespace IDE
 
             _application.LoadConfig();
 
-            _appCore.CreateAppDataFolder();
+            _application.CreateAppDataFolder();
         }
 
         void RegisterToolWindows()
