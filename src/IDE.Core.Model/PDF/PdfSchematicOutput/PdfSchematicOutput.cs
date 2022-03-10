@@ -20,15 +20,14 @@ namespace IDE.Core.PDF
 
         public async Task Build(IFileBaseViewModel schematic, IList<ISheetDesignerItem> sheets)
         {
-            var f = schematic as IFileBaseViewModel;
-            if (f == null)
+            if (schematic == null)
                 return;
-            var project = f.ProjectNode;
+            var project = schematic.ProjectNode;
             if (project == null)
                 return;
             var savePath = Path.Combine(project.GetItemFolderFullPath(), "!Output");//folder
             Directory.CreateDirectory(savePath);
-            var schName = Path.GetFileNameWithoutExtension(f.FilePath);
+            var schName = Path.GetFileNameWithoutExtension(schematic.FilePath);
             savePath = Path.Combine(savePath, $"{schName}{GetExtension("pdf")}");
 
             var pdf = new PdfDocument();

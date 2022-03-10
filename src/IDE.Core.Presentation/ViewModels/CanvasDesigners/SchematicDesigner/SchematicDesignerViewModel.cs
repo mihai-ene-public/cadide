@@ -195,8 +195,6 @@ namespace IDE.Core.ViewModels
             return tools;
         }
 
-        public IList<string> OutputFiles { get; private set; } = new List<string>();
-
         public IList<ISchematicRuleModel> Rules { get; } = new List<ISchematicRuleModel>();
 
         IList<IOverviewSelectNode> BuildCategories()
@@ -1211,19 +1209,6 @@ namespace IDE.Core.ViewModels
                 canvasModel.GridColor = XColor.FromHexString(schColorsSettings.GridColor);
             }
 
-        }
-
-        public async Task Build()
-        {
-            var pdfOutput = new PdfSchematicOutput()
-            {
-                DocumentWidth = canvasModel.DocumentWidth,
-                DocumentHeight = canvasModel.DocumentHeight
-            };
-
-            await pdfOutput.Build(this, Sheets);
-
-            OutputFiles.AddRange(pdfOutput.OutputFiles);
         }
     }
 }

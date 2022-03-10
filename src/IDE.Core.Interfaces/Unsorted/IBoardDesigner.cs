@@ -33,13 +33,6 @@ namespace IDE.Core.Interfaces
 
         bool HasHighlightedNets { get; }
 
-        IList<string> OutputFiles { get; }
-
-
-        // void Compile();
-
-        Task Build();
-
         void ChangeToCopperLayer(int layerNumber);
 
         void OnPropertyChanged(string propertyName);

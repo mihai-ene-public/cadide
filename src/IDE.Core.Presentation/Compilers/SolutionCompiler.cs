@@ -3,6 +3,7 @@ using IDE.Core.Common.Utilities;
 using IDE.Core.Documents;
 using IDE.Core.Errors;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Builders;
 using IDE.Core.Storage;
 using IDE.Core.Utilities;
 using System;
@@ -14,19 +15,23 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Presentation.Compilers;
 
-public class Compiler: ISolutionCompiler
+public class SolutionCompiler : ISolutionCompiler
 {
-    public Compiler(IFileCompiler fileCompiler)
+    public SolutionCompiler(IFileCompiler fileCompiler, ISchematicBuilder schematicBuilder, IBoardBuilder boardBuilder)
     {
         _outputToolWindow = ServiceProvider.GetToolWindow<IOutputToolWindow>();
         _application = ServiceProvider.Resolve<IApplicationViewModel>();
         _errorsToolWindow = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
         _fileCompiler = fileCompiler;
+        _schematicBuilder = schematicBuilder;
+        _boardBuilder = boardBuilder;
     }
 
     private readonly IOutputToolWindow _outputToolWindow;
     private readonly IErrorsToolWindow _errorsToolWindow;
     private readonly IFileCompiler _fileCompiler;
+    private readonly ISchematicBuilder _schematicBuilder;
+    private readonly IBoardBuilder _boardBuilder;
     private readonly IApplicationViewModel _application;
 
     List<ISolutionProjectNodeModel> solutionProjects = new List<ISolutionProjectNodeModel>();
@@ -384,16 +389,16 @@ public class Compiler: ISolutionCompiler
 
         foreach (IBoardDesigner board in brdFiles)
         {
-            await board.Build();
+            var buildResult = await _boardBuilder.Build(board);
 
-            outputFiles.AddRange(board.OutputFiles);
+            outputFiles.AddRange(buildResult.OutputFiles);
         }
 
         foreach (ISchematicDesigner sch in schFiles)
         {
-            await sch.Build();
+            var buildResult = await _schematicBuilder.Build(sch);
 
-            outputFiles.AddRange(sch.OutputFiles);
+            outputFiles.AddRange(buildResult.OutputFiles);
         }
 
         var outputFolder = Path.Combine(project.GetItemFolderFullPath(), "!Output");//folder

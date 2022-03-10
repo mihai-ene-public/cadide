@@ -16,11 +16,7 @@ namespace IDE.Core.Interfaces
         INetManager NetManager { get; }
         IBusManager BusManager { get; }
 
-        IList<string> OutputFiles { get; }
-
         IList<ISchematicRuleModel> Rules { get; }
-
-        Task Build();
 
         IList<ISchematicNet> GetNets();
     }

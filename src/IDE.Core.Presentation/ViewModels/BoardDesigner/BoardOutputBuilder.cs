@@ -5,6 +5,7 @@ using IDE.Core.Excelon;
 using IDE.Core.Gerber;
 using IDE.Core.Interfaces;
 using IDE.Core.PDF;
+using IDE.Core.Presentation.Builders;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -13,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace IDE.Documents.Views
 {
-    public class BoardBuilder
+    public class BoardOutputBuilder
     {
-        public async Task Build(IBoardDesigner board, string folderOutput, string brdName)
+        public async Task<BuildResult> Build(IBoardDesigner board, string folderOutput, string brdName)
         {
             //layer types: stackup: signal, plane;
             //             milling, silkscreen, soldermask, pasteMask 
@@ -29,7 +30,7 @@ namespace IDE.Documents.Views
                                          LayerType.BoardOutline
                                             };
 
-
+            var outputFiles=new List<string>();
             var gerberLayers = new List<GerberLayer>();
             var excelonFiles = new List<ExcelonLayer>();
 
@@ -45,7 +46,7 @@ namespace IDE.Documents.Views
             }
 
 
-            board.OutputFiles.Clear();
+            outputFiles.Clear();
             //clean output folder
             
             if (Directory.Exists(folderOutput))
@@ -61,7 +62,7 @@ namespace IDE.Documents.Views
             foreach (var gerberLayer in gerberLayers)
             {
                 await gerberLayer.BuildLayer();
-                board.OutputFiles.AddRange(gerberLayer.OutputFiles);
+                outputFiles.AddRange(gerberLayer.OutputFiles);
             }
 
             //excelon
@@ -72,7 +73,7 @@ namespace IDE.Documents.Views
             foreach (var excelonFile in excelonFiles)
             {
                 await excelonFile.Build();
-                board.OutputFiles.AddRange(excelonFile.OutputFiles);
+                outputFiles.AddRange(excelonFile.OutputFiles);
             }
 
             //create zip
@@ -83,14 +84,14 @@ namespace IDE.Documents.Views
                 {
                     using (var zipFile = new ZipArchive(fs, ZipArchiveMode.Create, false))
                     {
-                        foreach (var file in board.OutputFiles)
+                        foreach (var file in outputFiles)
                         {
                             var entry = zipFile.CreateEntryFromFile(file, Path.GetFileName(file));
                         }
                     }
                 }
 
-                board.OutputFiles.Add(zipPath);
+                outputFiles.Add(zipPath);
             }
 
             var pdfOutput = new PdfBoardOutput();
@@ -98,21 +99,26 @@ namespace IDE.Documents.Views
             var pdfSavePath = Path.Combine(folderOutput, $"{brdName}.pdf");
             var pdfPath = await pdfOutput.Build(board, pdfLayers, pdfSavePath);
 
-            board.OutputFiles.Add(pdfPath);
+            outputFiles.Add(pdfPath);
 
 
             //bom
             var bomWriter = new BomOutputWriter((BoardDesignerFileViewModel)board);
             await bomWriter.Build();
 
-            board.OutputFiles.AddRange(bomWriter.OutputFiles);
+            outputFiles.AddRange(bomWriter.OutputFiles);
 
             //assembly
             var assyWriter = new BoardAssemblyOutputService();
             await assyWriter.Build((BoardDesignerFileViewModel)board);
 
-            board.OutputFiles.AddRange(assyWriter.OutputFiles);
+            outputFiles.AddRange(assyWriter.OutputFiles);
 
+            return new BuildResult
+            {
+                Success = true,
+                OutputFiles = outputFiles
+            };
         }
 
     }

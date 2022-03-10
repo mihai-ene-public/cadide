@@ -20,6 +20,7 @@ using IDE.Core.Documents;
 using IDE.Core.Errors;
 using IDE.Core.Presentation.Infrastructure;
 using IDE.Core.Presentation.Compilers;
+using IDE.Core.Presentation.Builders;
 
 namespace IDE
 {
@@ -80,14 +81,13 @@ namespace IDE
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
 
-            
-
             services.AddSingleton<IServiceCollection>(services);
             services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();
 
             AddDocumentEditors(services);
             AddToolWindows(services);
             AddCompilers(services);
+            AddBuilders(services);
 
 
             serviceProvider = services.BuildServiceProvider();
@@ -124,7 +124,7 @@ namespace IDE
             services.AddSingleton<IActiveCompiler, ActiveCompiler>();
             services.AddSingleton<IFileCompiler, FileCompiler>();
             
-            services.AddTransient<ISolutionCompiler, Compiler>();
+            services.AddTransient<ISolutionCompiler, SolutionCompiler>();
             services.AddTransient<IFileCompiler, FileCompiler>();
 
             services.AddTransient<ISchematicRulesCompiler, SchematicRulesCompiler>();
@@ -135,6 +135,12 @@ namespace IDE
             services.AddTransient<IComponentCompiler, ComponentCompiler>();
             services.AddTransient<ISymbolCompiler, SymbolCompiler>();
             services.AddTransient<IFootprintCompiler, FootprintCompiler>();
+        }
+
+        private static void AddBuilders(IServiceCollection services)
+        {
+            services.AddTransient<IBoardBuilder, BoardBuilder>();
+            services.AddTransient<ISchematicBuilder, SchematicBuilder>();
         }
 
         public static void Run(StartupEventArgs _eventArgs)

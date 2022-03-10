@@ -1479,14 +1479,6 @@ namespace IDE.Documents.Views
                                     .ToList();
         }
 
-        public async Task Build()
-        {
-            var folderOutput = Path.Combine(ParentProject.GetItemFolderFullPath(), "!Output");
-            var brdName = Path.GetFileNameWithoutExtension(FilePath);
-
-            var brdBuilder = new BoardBuilder();
-            await brdBuilder.Build(this, folderOutput, brdName);
-        }
 
         public override void ApplySettings()
         {
