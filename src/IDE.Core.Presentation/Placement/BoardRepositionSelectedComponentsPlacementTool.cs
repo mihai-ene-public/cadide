@@ -9,7 +9,7 @@ using IDE.Documents.Views;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool
+    public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool, IBoardRepositionSelectedComponentsPlacementTool
     {
 
         public BoardRepositionSelectedComponentsPlacementTool(IList<FootprintBoardCanvasItem> selectedItems)

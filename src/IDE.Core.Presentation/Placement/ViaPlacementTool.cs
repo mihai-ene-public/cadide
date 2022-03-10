@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class ViaPlacementTool : PlacementTool
+    public class ViaPlacementTool : PlacementTool, IViaPlacementTool
     {
         ViaCanvasItem GetItem() => canvasItem as ViaCanvasItem;
 

@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class RectanglePlacementTool : PlacementTool
+    public class RectanglePlacementTool : PlacementTool, IRectanglePlacementTool
     {
 
         IRectangleCanvasItem GetItem() => canvasItem as IRectangleCanvasItem;

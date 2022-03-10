@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PolygonPlacementTool : PlacementTool
+    public class PolygonPlacementTool : PlacementTool, IPolygonPlacementTool
     {
         IPolygonCanvasItem GetItem() => canvasItem as IPolygonCanvasItem;
 

@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class BoxMeshItemPlacementTool : PlacementTool
+public class BoxMeshItemPlacementTool : PlacementTool, IBoxMeshItemPlacementTool
 {
     BoxMeshItem GetItem() => canvasItem as BoxMeshItem;
 

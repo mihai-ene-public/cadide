@@ -5,7 +5,7 @@ using IDE.Core.Types.Media3D;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class VolatileGroup3DPlacementTool : PlacementTool
+public class VolatileGroup3DPlacementTool : PlacementTool, IVolatileGroup3DPlacementTool
 {
     VolatileGroup3DCanvasItem GetItem() => canvasItem as VolatileGroup3DCanvasItem;
 

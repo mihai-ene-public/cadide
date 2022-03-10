@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class CirclePlacementTool : PlacementTool
+    public class CirclePlacementTool : PlacementTool, ICirclePlacementTool
     {
         ICircleCanvasItem GetItem() => canvasItem as ICircleCanvasItem;
 

@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PadPlacementTool : PlacementTool
+    public class PadPlacementTool : PlacementTool, IPadPlacementTool
     {
         IPadCanvasItem GetItem() => canvasItem as IPadCanvasItem;
 

@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class VolatileGroupPlacementTool : PlacementTool
+    public class VolatileGroupPlacementTool : PlacementTool, IVolatileGroupPlacementTool
     {
         VolatileGroupCanvasItem GetItem() => canvasItem as VolatileGroupCanvasItem;
 

@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class TextMeshItemPlacementTool : PlacementTool
+public class TextMeshItemPlacementTool : PlacementTool, ITextMeshItemPlacementTool
 {
     TextMeshItem GetItem() => canvasItem as TextMeshItem;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ExtrudedPolyMeshItemPlacementTool : PlacementTool
+public class ExtrudedPolyMeshItemPlacementTool : PlacementTool, IExtrudedPolyMeshItemPlacementTool
 {
     ExtrudedPolyMeshItem GetItem() => canvasItem as ExtrudedPolyMeshItem;
 

@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class TextPlacementTool : PlacementTool
+    public class TextPlacementTool : PlacementTool, ITextPlacementTool
     {
         ITextBaseCanvasItem GetItem() => canvasItem as ITextBaseCanvasItem;
 

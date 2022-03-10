@@ -6,7 +6,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class JunctionPlacementTool : PlacementTool
+    public class JunctionPlacementTool : PlacementTool, IJunctionPlacementTool
     {
         JunctionCanvasItem GetItem() => canvasItem as JunctionCanvasItem;
 
@@ -127,5 +127,9 @@ namespace IDE.Core.Presentation.Placement
 
             }
         }
+    }
+
+    internal interface IJunctionPlacementTool
+    {
     }
 }

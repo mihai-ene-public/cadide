@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class ImagePlacementTool : PlacementTool
+    public class ImagePlacementTool : PlacementTool, IImagePlacementTool
     {
         IImageCanvasItem GetItem() => canvasItem as IImageCanvasItem;
 
@@ -74,5 +74,9 @@ namespace IDE.Core.Presentation.Placement
                     break;
             }
         }
+    }
+
+    public interface IImagePlacementTool
+    {
     }
 }

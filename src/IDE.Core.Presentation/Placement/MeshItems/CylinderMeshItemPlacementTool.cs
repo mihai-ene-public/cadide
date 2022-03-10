@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class CylinderMeshItemPlacementTool : PlacementTool
+public class CylinderMeshItemPlacementTool : PlacementTool, ICylinderMeshItemPlacementTool
 {
     CylinderMeshItem GetItem() => canvasItem as CylinderMeshItem;
 

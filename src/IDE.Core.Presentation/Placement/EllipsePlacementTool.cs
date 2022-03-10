@@ -4,7 +4,7 @@ using System;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class EllipsePlacementTool : PlacementTool
+    public class EllipsePlacementTool : PlacementTool, IEllipsePlacementTool
     {
         IEllipseCanvasItem GetItem() => canvasItem as IEllipseCanvasItem;
 

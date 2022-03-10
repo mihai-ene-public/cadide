@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class LinePlacementTool : PlacementTool
+    public class LinePlacementTool : PlacementTool, ILinePlacementTool
     {
         ILineCanvasItem GetItem() => canvasItem as ILineCanvasItem;
 
@@ -62,5 +62,9 @@ namespace IDE.Core.Presentation.Placement
                     break;
             }
         }
+    }
+
+    internal interface ILinePlacementTool
+    {
     }
 }

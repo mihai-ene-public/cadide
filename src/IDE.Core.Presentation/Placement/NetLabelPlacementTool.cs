@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public  class NetLabelPlacementTool : PlacementTool
+    public  class NetLabelPlacementTool : PlacementTool, INetLabelPlacementTool
     {
         NetLabelCanvasItem GetItem() => canvasItem as NetLabelCanvasItem;
 

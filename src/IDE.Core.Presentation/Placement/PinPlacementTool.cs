@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PinPlacementTool : PlacementTool
+    public class PinPlacementTool : PlacementTool, IPinPlacementTool
     {
         IPinCanvasItem GetItem() => canvasItem as IPinCanvasItem;
 

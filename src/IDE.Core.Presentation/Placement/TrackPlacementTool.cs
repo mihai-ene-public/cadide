@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class TrackPlacementTool<TrackRoutingModeType> : PlacementTool where TrackRoutingModeType: TrackRoutingMode, new()
+    public class TrackPlacementTool<TrackRoutingModeType> : PlacementTool, ITrackPlacementTool where TrackRoutingModeType: TrackRoutingMode, new()
     {
 
         public TrackPlacementTool()

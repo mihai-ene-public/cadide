@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class BusLabelPlacementTool:PlacementTool
+    public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
     {
         BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
 

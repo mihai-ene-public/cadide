@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class HolePlacementTool : PlacementTool
+    public class HolePlacementTool : PlacementTool, IHolePlacementTool
     {
         IHoleCanvasItem GetItem() => canvasItem as IHoleCanvasItem;
 

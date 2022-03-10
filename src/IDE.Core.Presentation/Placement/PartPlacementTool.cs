@@ -7,7 +7,7 @@ using IDE.Documents.Views;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PartPlacementTool : PlacementTool
+    public class PartPlacementTool : PlacementTool, IPartPlacementTool
     {
         SchematicSymbolCanvasItem GetItem() => canvasItem as SchematicSymbolCanvasItem;
 

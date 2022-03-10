@@ -9,7 +9,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class BusWirePlacementTool : PlacementTool
+    public class BusWirePlacementTool : PlacementTool, IBusWirePlacementTool
     {
         BusWireCanvasItem GetItem() => canvasItem as BusWireCanvasItem;
 

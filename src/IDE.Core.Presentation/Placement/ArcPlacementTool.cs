@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class ArcPlacementTool : PlacementTool
+    public class ArcPlacementTool : PlacementTool, IArcPlacementTool
     {
         IArcCanvasItem GetArcItem() => canvasItem as IArcCanvasItem;
 

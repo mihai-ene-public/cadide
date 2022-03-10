@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class EllipsoidMeshItemPlacementTool : PlacementTool
+public class EllipsoidMeshItemPlacementTool : PlacementTool, IEllipsoidMeshItemPlacementTool
 {
     EllipsoidMeshItem GetItem() => canvasItem as EllipsoidMeshItem;
 

@@ -4,7 +4,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class SphereMeshItemPlacementTool : PlacementTool
+public class SphereMeshItemPlacementTool : PlacementTool, ISphereMeshItemPlacementTool
 {
     SphereMeshItem GetItem() => canvasItem as SphereMeshItem;
 
