@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Storage;
 using IDE.Documents.Views;
 
 namespace IDE.Core.Presentation.Compilers;
 
 public class ComponentCompiler : AbstractCompiler, IComponentCompiler
 {
+    private readonly IObjectFinder _objectFinder;
+
+    public ComponentCompiler(IObjectFinder objectFinder)
+    {
+        _objectFinder = objectFinder;
+    }
+
     public async Task<CompilerResult> Compile(IComponentDesigner component)
     {
         var slnNodeName = component.FileName;
@@ -42,7 +51,8 @@ public class ComponentCompiler : AbstractCompiler, IComponentCompiler
             {
                 if (gate.Name != null)
                 {
-                    var symbolSearch = project.FindObject(TemplateType.Symbol, gate.Gate.LibraryName, gate.Gate.symbolId);
+                    //var symbolSearch = project.FindObject(TemplateType.Symbol, gate.Gate.LibraryName, gate.Gate.symbolId);
+                    var symbolSearch = _objectFinder.FindObject<Symbol>(project.Project, gate.Gate.LibraryName, gate.Gate.symbolId);
                     if (symbolSearch == null)
                         throw new Exception($"Symbol {gate.Symbol.Name} was not found");
                 }
@@ -62,7 +72,7 @@ public class ComponentCompiler : AbstractCompiler, IComponentCompiler
             {
                 if (footprint.Name != null)
                 {
-                    var fptSearch = project.FindObject(TemplateType.Footprint, footprint.Footprint.Library, footprint.Footprint.Id);
+                    var fptSearch = _objectFinder.FindObject<Footprint>(project.Project, footprint.Footprint.Library, footprint.Footprint.Id);
                     if (fptSearch == null)
                         throw new Exception($"Footprint {footprint.Name} was not found");
                 }

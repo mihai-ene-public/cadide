@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Storage;
 using IDE.Documents.Views;
 
 namespace IDE.Core.Presentation.Compilers;
 
 public class FootprintCompiler : AbstractCompiler, IFootprintCompiler
 {
+    private readonly IObjectFinder<ModelDocument> _modelFinder;
+
+    public FootprintCompiler(IObjectFinder<ModelDocument> modelFinder)
+    {
+        _modelFinder = modelFinder;
+    }
+
     public async Task<CompilerResult> Compile(IFootprintDesigner footprint)
     {
         var hasErrors = false;
@@ -26,7 +35,7 @@ public class FootprintCompiler : AbstractCompiler, IFootprintCompiler
                 {
                     if (model.Name != null)
                     {
-                        var modelSearch = project.FindObject(TemplateType.Model, model.Library, model.Id);
+                        var modelSearch = _modelFinder.FindObject(project.Project, model.Library, model.Id); //project.FindObject(TemplateType.Model, model.Library, model.Id);
                         if (modelSearch == null)
                             throw new Exception($"Model {model.Name} was not found");
                     }

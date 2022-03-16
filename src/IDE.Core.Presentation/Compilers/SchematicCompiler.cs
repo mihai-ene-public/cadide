@@ -4,11 +4,20 @@ using System.Threading.Tasks;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using System.Linq;
+using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Storage;
 
 namespace IDE.Core.Presentation.Compilers
 {
     public class SchematicCompiler : AbstractCompiler, ISchematicCompiler
     {
+        private readonly IObjectFinder _objectFinder;
+
+        public SchematicCompiler(IObjectFinder objectFinder)
+        {
+            _objectFinder = objectFinder;
+        }
+
         public async Task<CompilerResult> Compile(ISchematicDesigner schematic)
         {
             var project = schematic.ProjectNode;
@@ -28,7 +37,7 @@ namespace IDE.Core.Presentation.Compilers
                     if (part.PartName != null)
                     {
                         //todo: changing the componentId doesn't report missing component
-                        var cmpSearch = project.FindObject(TemplateType.Component, part.Part.ComponentLibrary, part.Part.ComponentId);
+                        var cmpSearch = _objectFinder.FindObject<ComponentDocument>(project.Project, part.Part.ComponentLibrary, part.Part.ComponentId);//project.FindObject(TemplateType.Component, part.Part.ComponentLibrary, part.Part.ComponentId);
                         if (cmpSearch == null)
                             throw new Exception($"Component {part.Part.ComponentName} was not found for part {part.PartName}");
                     }

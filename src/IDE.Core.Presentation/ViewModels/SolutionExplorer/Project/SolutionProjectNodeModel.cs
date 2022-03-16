@@ -14,9 +14,6 @@ namespace IDE.Core.ViewModels
     {
         public IProjectDocument Project { get { return Document as ProjectDocument; } }
 
-        ///// <summary>
-        ///// the reference to the file
-        ///// </summary>
         public IProjectFileRef FileItem { get; set; }
 
         protected override string GetNameInternal()
@@ -68,100 +65,6 @@ namespace IDE.Core.ViewModels
             await compiler.BuildProject(this);
         }
 
-        /// <summary>
-        /// searches for an object defined in local project and in references
-        /// <para>used to solve for refenced objects in xml documents</para>
-        /// </summary>
-        /// <param name="name">name of the object. Not null</param>
-        /// <param name="libraryName">name of the library. May be null which is local</param>
-        /// <param name="type">type of object to find: symbol, footrpint, component, etc</param>
-        /// <returns></returns>
-        public ILibraryItem FindObject(TemplateType type, string libraryName, long id, DateTime? lastModified = null)
-        {
-            if (Project == null)
-                throw new Exception("Project document was not initialized");
-
-            //lib name local or null?
-            var isLocal = libraryName == null || libraryName == "local";
-
-            List<ILibraryItem> items = null;
-
-            var predicate = new Func<ILibraryItem, bool>(li =>
-              {
-                  var idMatched = li.Id == id;
-                  if (idMatched)
-                  {
-                      return isLocal && li.IsLocal || li.Library == libraryName;
-                  }
-
-                  return false;
-              });
-
-            if (cachedItems != null && cachedItems.ContainsKey(type) && cachedItems[type].Count > 0)
-            {
-                items = cachedItems[type].Where(predicate).ToList();
-            }
-            else
-            {
-                items = LoadObjects(null, type,
-                      predicate,
-                      stopIfFound: true,
-                      lastModified: lastModified);
-            }
-
-            var item = items.FirstOrDefault();
-
-            return item;
-        }
-
-        public ILibraryItem FindObject(TemplateType type, long id)
-        {
-            if (Project == null)
-                throw new Exception("Project document was not initialized");
-
-            //var items = LoadObjects(type);
-
-            //////lib name local or null?
-            ////var isLocal = libraryName == null || libraryName == "local";
-            ////items = items.Where(l => l.Id == id).ToList();
-            ////LibraryItem item = null;
-            ////if (isLocal)
-            ////    item = items.FirstOrDefault(l => l.IsLocal);
-            ////else
-            ////    item = items.FirstOrDefault(l => l.Library == libraryName);
-            //var item = items.FirstOrDefault(l => l.Id == id);
-
-            List<ILibraryItem> items = null;
-
-            var predicate = new Func<ILibraryItem, bool>(li =>
-            {
-                var idMatched = li.Id == id;
-                //if (idMatched)
-                //{
-                //    return isLocal && li.IsLocal || li.Library == libraryName;
-                //}
-
-                return idMatched;
-
-                // return false;
-            });
-
-            if (cachedItems != null && cachedItems.ContainsKey(type) && cachedItems[type].Count > 0)
-            {
-                items = cachedItems[type].Where(predicate).ToList();
-            }
-            else
-            {
-                items = LoadObjects(null, type,
-                      predicate,
-                      stopIfFound: true,
-                      lastModified: null);
-            }
-            var item = items.FirstOrDefault();
-
-            return item;
-
-        }
 
         public List<ILibraryItem> LoadObjects(string searchText, TemplateType type, Func<ILibraryItem, bool> predicate = null, bool stopIfFound = false, DateTime? lastModified = null)
         {

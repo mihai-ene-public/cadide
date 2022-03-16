@@ -21,6 +21,8 @@ using IDE.Core.Errors;
 using IDE.Core.Presentation.Infrastructure;
 using IDE.Core.Presentation.Compilers;
 using IDE.Core.Presentation.Builders;
+using IDE.Core.Presentation.Solution;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE
 {
@@ -80,6 +82,11 @@ namespace IDE
             services.AddSingleton<IFileExtensionToSolutionExplorerNodeMapper, FileExtensionToSolutionExplorerNodeMapper>();
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
+
+            services.AddSingleton<ISolutionRepository, SolutionRepository>();
+            services.AddSingleton(typeof(IObjectRepository<>), typeof(ObjectRepository<>));
+            services.AddSingleton(typeof(IObjectFinder<>), typeof(ObjectFinder<>));
+            services.AddSingleton<IObjectFinder, ObjectFinder>();
 
             services.AddSingleton<IServiceCollection>(services);
             services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();

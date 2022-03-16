@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using IDE.Core.Types.Media;
 using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Common;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE.Documents.Views
 {
@@ -17,11 +18,13 @@ namespace IDE.Documents.Views
         public Board3DPreviewHelper(IDispatcherHelper dispatcher)
         {
             var meshHelper = ServiceProvider.Resolve<IMeshHelper>();
+            _objectFinder = ServiceProvider.Resolve<IObjectFinder>();
             _meshHelper = meshHelper;
             _dispatcher = dispatcher;
         }
         private readonly IMeshHelper _meshHelper;
         private readonly IDispatcherHelper _dispatcher;
+        private readonly IObjectFinder _objectFinder;
 
         public async Task<BoardPreview3DViewModel> ShowBoardGeometries(IBoardDesigner layeredViewModel, ISolutionProjectNodeModel parentProject, double boardTotalThickness)
         {
@@ -39,15 +42,15 @@ namespace IDE.Documents.Views
 
             //smd and pad
             var footprints = canvasItems.OfType<FootprintBoardCanvasItem>().ToList();
-            var footprintItems = (from fp in footprints
-                                  from p in fp.Items
-                                  select p
+            var footprintItems = ( from fp in footprints
+                                   from p in fp.Items
+                                   select p
                                   ).ToList();
 
             //we add designators as text items
-            var designators = (from fp in footprints
-                               where fp.ShowName
-                               select (BaseCanvasItem)fp.Designator)
+            var designators = ( from fp in footprints
+                                where fp.ShowName
+                                select (BaseCanvasItem)fp.Designator )
                               .ToList();
 
             footprintItems.AddRange(designators);
@@ -111,12 +114,12 @@ namespace IDE.Documents.Views
 
             var stackLayers = BuildLayerOrder(layers);
 
-            boardContext.PadItemsOnTop = boardContext.PadItems.Where(p => (((BaseCanvasItem)p).ParentObject as FootprintBoardCanvasItem)?.Placement == FootprintPlacement.Top
-                                                                             || ((SingleLayerBoardCanvasItem)p).LayerId == LayerConstants.SignalTopLayerId)
+            boardContext.PadItemsOnTop = boardContext.PadItems.Where(p => ( ( (BaseCanvasItem)p ).ParentObject as FootprintBoardCanvasItem )?.Placement == FootprintPlacement.Top
+                                                                             || ( (SingleLayerBoardCanvasItem)p ).LayerId == LayerConstants.SignalTopLayerId)
                                        .ToList();
 
-            boardContext.PadItemsOnBottom = boardContext.PadItems.Where(p => (((BaseCanvasItem)p).ParentObject as FootprintBoardCanvasItem)?.Placement == FootprintPlacement.Bottom
-                                                                            || ((SingleLayerBoardCanvasItem)p).LayerId == LayerConstants.SignalBottomLayerId)
+            boardContext.PadItemsOnBottom = boardContext.PadItems.Where(p => ( ( (BaseCanvasItem)p ).ParentObject as FootprintBoardCanvasItem )?.Placement == FootprintPlacement.Bottom
+                                                                            || ( (SingleLayerBoardCanvasItem)p ).LayerId == LayerConstants.SignalBottomLayerId)
                                            .ToList();
 
             foreach (var layer in stackLayers)
@@ -326,10 +329,10 @@ namespace IDE.Documents.Views
             return stackLayers;
         }
 
-        async Task LoadModelForFootprint(FootprintBoardCanvasItem fp, List<ISelectableItem> models, double boardTotalThickness,
-                                        ISolutionProjectNodeModel parentProject, BoardPreview3DViewModel previewModel)
+        private async Task LoadModelForFootprint(FootprintBoardCanvasItem fp, List<ISelectableItem> models, double boardTotalThickness,
+                                         ISolutionProjectNodeModel parentProject, BoardPreview3DViewModel previewModel)
         {
-            //todo: we need to calculate a transform of the model of the footprint
+            await Task.CompletedTask;
             if (fp == null) return;
             var footprint = fp.CachedFootprint;
             if (footprint == null || footprint.Models == null)
@@ -341,7 +344,8 @@ namespace IDE.Documents.Views
                 if (modelData.ModelLibrary == null || modelData.ModelLibrary == "local")
                     modelLibrary = footprint.Library;
 
-                var modelDoc = await Task.Run(() => parentProject.FindObject(TemplateType.Model, modelLibrary, modelData.ModelId) as ModelDocument);
+                // var modelDoc = await Task.Run(() => parentProject.FindObject(TemplateType.Model, modelLibrary, modelData.ModelId) as ModelDocument);
+                var modelDoc = _objectFinder.FindObject<ModelDocument>(parentProject.Project, modelLibrary, modelData.ModelId);
                 // var direction = -2.0;
                 var height = 0.04;
                 var posZ = modelData.CenterZ;
@@ -371,9 +375,9 @@ namespace IDE.Documents.Views
                     groupItem.RotationX = modelData.RotationX;
                     groupItem.RotationY = modelData.RotationY;
                     var sign = fp.Placement == FootprintPlacement.Bottom ? -1.0 : 1.0;
-                    groupItem.RotationZ = sign * (fp.Rot + modelData.RotationZ);
+                    groupItem.RotationZ = sign * ( fp.Rot + modelData.RotationZ );
                     if (fp.Placement == FootprintPlacement.Bottom)
-                        groupItem.RotationY = ((int)groupItem.RotationY + 180) % 360;
+                        groupItem.RotationY = ( (int)groupItem.RotationY + 180 ) % 360;
 
                     groupItem.IsPlaced = true;
 
@@ -431,7 +435,7 @@ namespace IDE.Documents.Views
             if (itemsOnLayer != null)
                 toExcludeItems.AddRange(itemsOnLayer.OfType<ICanvasItem>());
             //drills from pads
-            toExcludeItems.AddRange(boardContext.DrillItems.Cast<ISelectableItem>().Where(d => d.ParentObject == null || (d.ParentObject as ViaCanvasItem)?.TentViaOnTop == false));
+            toExcludeItems.AddRange(boardContext.DrillItems.Cast<ISelectableItem>().Where(d => d.ParentObject == null || ( d.ParentObject as ViaCanvasItem )?.TentViaOnTop == false));
             toExcludeItems.AddRange(boardContext.MillingItems);
             toExcludeItems.AddRange(boardContext.PadItemsOnTop.Where(p => p.AutoGenerateSolderMask));
             toExcludeItems.AddRange(boardContext.ViaItems.Where(v => v.TentViaOnTop == false));
@@ -453,7 +457,7 @@ namespace IDE.Documents.Views
             if (itemsOnLayer != null)
                 toExcludeItems.AddRange(itemsOnLayer.OfType<ICanvasItem>());
             //drills from pads
-            toExcludeItems.AddRange(boardContext.DrillItems.Cast<ISelectableItem>().Where(d => d.ParentObject == null || (d.ParentObject as ViaCanvasItem)?.TentViaOnBottom == false));
+            toExcludeItems.AddRange(boardContext.DrillItems.Cast<ISelectableItem>().Where(d => d.ParentObject == null || ( d.ParentObject as ViaCanvasItem )?.TentViaOnBottom == false));
             toExcludeItems.AddRange(boardContext.MillingItems);
             toExcludeItems.AddRange(boardContext.PadItemsOnBottom.Where(p => p.AutoGenerateSolderMask));
             toExcludeItems.AddRange(boardContext.ViaItems.Where(v => v.TentViaOnBottom == false));

@@ -9,6 +9,7 @@ using IDE.Core.Types.Media;
 using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
 using System.Collections.ObjectModel;
+using IDE.Core.Presentation.ObjectFinding;
 //using System.ComponentModel;
 
 namespace IDE.Core.Designers
@@ -417,8 +418,8 @@ namespace IDE.Core.Designers
             try
             {
                 var lastRead = componentDocument?.LastAccessed;
-                var comp = ProjectModel.FindObject(TemplateType.Component, part.ComponentLibrary, part.ComponentId, lastRead) as ComponentDocument;
-
+                var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+                var comp = objectFinder.FindObject<ComponentDocument>(ProjectModel.Project, part.ComponentLibrary, part.ComponentId, lastRead);
 
                 if (comp != null)
                 {
@@ -594,8 +595,8 @@ namespace IDE.Core.Designers
                         lastModified = symbol.LastAccessed;
                     }
                 }
-
-                foundSymbol = ProjectModel.FindObject(TemplateType.Symbol, gate.LibraryName, gate.symbolId, lastModified) as Symbol;
+                var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+                foundSymbol = objectFinder.FindObject<Symbol>(ProjectModel.Project, gate.LibraryName, gate.symbolId, lastModified);
             }
 
             return foundSymbol;

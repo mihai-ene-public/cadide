@@ -15,6 +15,7 @@ using IDE.Core.Interfaces;
 using IDE.Core.Common;
 using System.Threading.Tasks;
 using IDE.Core.Types.Media;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE.Documents.Views
 {
@@ -23,7 +24,7 @@ namespace IDE.Documents.Views
     public class ComponentDesignerFileViewModel : FileBaseViewModel, IComponentDesigner
     {
 
-        public ComponentDesignerFileViewModel()
+        public ComponentDesignerFileViewModel(IObjectFinder objectFinder)
             : base(null)
         {
 
@@ -48,6 +49,7 @@ namespace IDE.Documents.Views
             BomItems = new ObservableCollection<BomItemDisplay>();
 
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
+            _objectFinder = objectFinder;
         }
 
         #region Fields
@@ -720,6 +722,8 @@ namespace IDE.Documents.Views
         }
 
         BomItemDisplay bomEditingItem;
+        private readonly IObjectFinder _objectFinder;
+
         public BomItemDisplay BomEditingItem
         {
             get { return bomEditingItem; }
@@ -926,8 +930,8 @@ namespace IDE.Documents.Views
                         Connects = new ObservableCollection<ConnectDisplay>()
                     };
 
-                    var fp = project.FindObject(TemplateType.Footprint, /*device.LibraryName,*/ device.footprintId) as Footprint;
-                    //var fp = componentDocument.Footprint.CachedFootprint;
+                    //var fp = project.FindObject(TemplateType.Footprint, device.footprintId) as Footprint;
+                    var fp = _objectFinder.FindObject<Footprint>(project.Project, device.footprintId);
 
                     if (fp == null)
                     {
@@ -985,7 +989,6 @@ namespace IDE.Documents.Views
             var project = ProjectNode;
 
             //load symbol gates
-            //Gates.Clear();
             var gates = new List<GateDisplay>();
             if (componentDocument.Gates != null)
             {
@@ -993,14 +996,12 @@ namespace IDE.Documents.Views
                 {
                     var g = new GateDisplay
                     {
-                        //Canvas = new DrawingViewModel(),
                         Gate = gate,
                     };
 
                     //solve symbol
-                    //var lastRead=
-                    var symbol = project.FindObject(TemplateType.Symbol, /*gate.LibraryName,*/ gate.symbolId) as Symbol;
-                    //var symbol = gate.CachedSymbol;
+                    //var symbol = project.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
+                    var symbol = _objectFinder.FindObject<Symbol>(project.Project, gate.symbolId);
 
                     //todo if the symbol is not solved we should show something and log to output
                     if (symbol == null)
@@ -1013,10 +1014,6 @@ namespace IDE.Documents.Views
                         g.Gate.symbolName = symbol.Name;
                         g.Gate.LibraryName = symbol.Library;
 
-                        //if (symbol.Items != null)
-                        //{
-                        //    g.Preview.SetPrimitives(symbol.GetDesignerPrimitiveItems());
-                        //}
                         g.Preview.PreviewDocument(symbol, null);
                     }
 
@@ -1048,7 +1045,8 @@ namespace IDE.Documents.Views
                     }
                 }
 
-                var foundSymbol = ProjectNode.FindObject(TemplateType.Symbol, gate.LibraryName, gate.symbolId, lastModified) as Symbol;
+                //var foundSymbol = ProjectNode.FindObject(TemplateType.Symbol, gate.LibraryName, gate.symbolId, lastModified) as Symbol;
+                var foundSymbol = _objectFinder.FindObject<Symbol>(ProjectNode.Project, gate.LibraryName, gate.symbolId, lastModified);
 
                 if (foundSymbol != null)
                 {

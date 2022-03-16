@@ -19,5 +19,7 @@ namespace IDE.Core.Interfaces
         string Library { get; set; }
 
         bool IsLocal { get; }
+
+        public DateTime? LastAccessed { get; set; }
     }
 }

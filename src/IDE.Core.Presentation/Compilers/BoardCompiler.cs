@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Presentation.Utilities;
+using IDE.Core.Storage;
 
 namespace IDE.Core.Presentation.Compilers;
 
 public class BoardCompiler : AbstractCompiler, IBoardCompiler
 {
+    private readonly IObjectFinder _objectFinder;
+
+    public BoardCompiler(IObjectFinder objectFinder)
+    {
+        _objectFinder = objectFinder;
+    }
+
     public async Task<CompilerResult> Compile(IBoardDesigner board)
     {
         var isValid = true;
@@ -29,11 +38,13 @@ public class BoardCompiler : AbstractCompiler, IBoardCompiler
                 if (part.PartName != null)
                 {
                     //todo: changing the componentId and footprintId doesn't report missing component or footprint
-                    var cmpSearch = project.FindObject(TemplateType.Component, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
+                    //var cmpSearch = project.FindObject(TemplateType.Component, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
+                    var cmpSearch = _objectFinder.FindObject<ComponentDocument>(project.Project, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
                     if (cmpSearch == null)
                         throw new Exception($"Part {part.PartName} was not found");
 
-                    var fptSearch = project.FindObject(TemplateType.Footprint, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
+                    //var fptSearch = project.FindObject(TemplateType.Footprint, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
+                    var fptSearch = _objectFinder.FindObject<Footprint>(project.Project, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
                     if (fptSearch == null)
                         throw new Exception($"Footprint for part '{part.PartName}' was not found");
                 }

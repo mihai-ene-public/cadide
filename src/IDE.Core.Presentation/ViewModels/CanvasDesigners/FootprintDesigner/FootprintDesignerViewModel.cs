@@ -17,6 +17,7 @@ using IDE.Core.Interfaces;
 using IDE.Core.Common;
 using System.Threading.Tasks;
 using IDE.Core.Types.Media;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE.Documents.Views
 {
@@ -27,7 +28,7 @@ namespace IDE.Documents.Views
     public class FootprintDesignerFileViewModel : CanvasDesignerFileViewModel, IFootprintDesigner
     {
 
-        public FootprintDesignerFileViewModel()
+        public FootprintDesignerFileViewModel(IObjectFinder objectFinder)
             : base()
         {
 
@@ -61,6 +62,7 @@ namespace IDE.Documents.Views
             canvasModel.Origin = new XPoint(halfSize, halfSize);
 
             canvasGrid.GridSizeModel.SelectedItem = new Core.Units.MillimeterUnit(0.1);
+            _objectFinder = objectFinder;
         }
 
         IDispatcherHelper dispatcher;
@@ -474,9 +476,9 @@ namespace IDE.Documents.Views
             }
 
             footprintDocument.Name = Path.GetFileNameWithoutExtension(filePath);
-            var itemsToSave = (from l in canvasModel.Items.OfType<LayerDesignerItem>()
-                               from s in l.Items
-                               select (LayerPrimitive)(s as BaseCanvasItem).SaveToPrimitive())
+            var itemsToSave = ( from l in canvasModel.Items.OfType<LayerDesignerItem>()
+                                from s in l.Items
+                                select (LayerPrimitive)( s as BaseCanvasItem ).SaveToPrimitive() )
                                 .Union(canvasModel.Items.Cast<BaseCanvasItem>()
                                                         .Select(d => (LayerPrimitive)d.SaveToPrimitive()));
             footprintDocument.Items = itemsToSave.ToList();
@@ -533,7 +535,7 @@ namespace IDE.Documents.Views
                         var canvasItem = (BoardCanvasItemViewModel)primitive.CreateDesignerItem();
                         canvasItem.LayerDocument = this;
                         canvasItem.LoadLayers();
-                        if (!(canvasItem is SingleLayerBoardCanvasItem))
+                        if (!( canvasItem is SingleLayerBoardCanvasItem ))
                             canvasModel.AddItem(canvasItem);
                     }
                 }
@@ -704,7 +706,7 @@ namespace IDE.Documents.Views
                                   {
                                       item.LayerDocument = this;
                                       item.LoadLayers();
-                                      if (!(item is SingleLayerBoardCanvasItem))
+                                      if (!( item is SingleLayerBoardCanvasItem ))
                                           canvasModel.AddItem(item);
                                   }
 
@@ -859,7 +861,7 @@ namespace IDE.Documents.Views
                 {
                     associate3DModelCommand = CreateCommand(p =>
                     {
-                        var project = (Item as SolutionExplorerNodeModel).ProjectNode;
+                        var project = ( Item as SolutionExplorerNodeModel ).ProjectNode;
                         if (project == null)
                             throw new Exception("This footprint does not belong to any project");
 
@@ -892,6 +894,8 @@ namespace IDE.Documents.Views
 
 
         ICommand remove3DModelCommand;
+        private readonly IObjectFinder _objectFinder;
+
         public ICommand Remove3DModelCommand
         {
             get
@@ -922,11 +926,12 @@ namespace IDE.Documents.Views
 
         void LoadFootprintModel(ModelData modelData)
         {
-            if (modelData == null)// || modelData.Model == null)
+            if (modelData == null)
                 return;
 
-            //var modelDoc = modelData.Model;
-            var modelDoc = ParentProject.FindObject(TemplateType.Model, modelData.ModelLibrary, modelData.ModelId) as ModelDocument;
+            //var modelDoc = ParentProject.FindObject(TemplateType.Model, modelData.ModelLibrary, modelData.ModelId) as ModelDocument;
+            var modelDoc = _objectFinder.FindObject<ModelDocument>(ParentProject.Project, modelData.ModelLibrary, modelData.ModelId);
+
             if (modelDoc != null && modelDoc.Items != null)
             {
                 var groupItem = new GroupMeshItem();
@@ -954,7 +959,9 @@ namespace IDE.Documents.Views
             {
                 var model = kvp.Value;
                 var lastRead = kvp.Value.LastAccessed;
-                var modelDoc = ParentProject.FindObject(TemplateType.Model, model.Library, model.Id, lastRead) as ModelDocument;
+                //var modelDoc = ParentProject.FindObject(TemplateType.Model, model.Library, model.Id, lastRead) as ModelDocument;
+                var modelDoc = _objectFinder.FindObject<ModelDocument>(ParentProject.Project, model.Library, model.Id, lastRead);
+
                 if (modelDoc != null)
                 {
                     var groupItem = kvp.Key;
@@ -1026,10 +1033,10 @@ namespace IDE.Documents.Views
                         var counts = Math.Truncate(rotZ / gridSize);
                         var delta = Math.Abs(rotZ - counts * gridSize);
 
-                        if (delta <= (gridSize / 2))
+                        if (delta <= ( gridSize / 2 ))
                             rotZ = counts * gridSize;
                         else
-                            rotZ = (counts + 1) * gridSize;
+                            rotZ = ( counts + 1 ) * gridSize;
 
                         groupItem.RotationZ = rotZ;
                     }

@@ -981,12 +981,12 @@ namespace IDE.Core.ViewModels
                 //var netsCache = new List<SchematicNet>();
                 //var buses = new List<SchematicBus>();
 
-                var projectNode = (SolutionProjectNodeModel)ProjectNode;
-                if (projectNode != null)
-                {
-                    projectNode.CreateCacheItems(TemplateType.Component);
-                    projectNode.CreateCacheItems(TemplateType.Symbol);
-                }
+                //var projectNode = (SolutionProjectNodeModel)ProjectNode;
+                //if (projectNode != null)
+                //{
+                //    projectNode.CreateCacheItems(TemplateType.Component);
+                //    projectNode.CreateCacheItems(TemplateType.Symbol);
+                //}
 
                 if (schematicDocument.Sheets != null)
                 {
@@ -1170,8 +1170,8 @@ namespace IDE.Core.ViewModels
                     }
                 }
 
-                if (projectNode != null)
-                    projectNode.ClearCachedItems();
+                //if (projectNode != null)
+                //    projectNode.ClearCachedItems();
 
                 //create a new sheet if neeeded
                 if (Sheets.Count == 0)

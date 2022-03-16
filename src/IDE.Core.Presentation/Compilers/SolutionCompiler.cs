@@ -4,6 +4,7 @@ using IDE.Core.Documents;
 using IDE.Core.Errors;
 using IDE.Core.Interfaces;
 using IDE.Core.Presentation.Builders;
+using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Storage;
 using IDE.Core.Utilities;
 using System;
@@ -17,7 +18,7 @@ namespace IDE.Core.Presentation.Compilers;
 
 public class SolutionCompiler : ISolutionCompiler
 {
-    public SolutionCompiler(IFileCompiler fileCompiler, ISchematicBuilder schematicBuilder, IBoardBuilder boardBuilder)
+    public SolutionCompiler(IFileCompiler fileCompiler, ISchematicBuilder schematicBuilder, IBoardBuilder boardBuilder, IObjectFinder objectFinder)
     {
         _outputToolWindow = ServiceProvider.GetToolWindow<IOutputToolWindow>();
         _application = ServiceProvider.Resolve<IApplicationViewModel>();
@@ -25,6 +26,7 @@ public class SolutionCompiler : ISolutionCompiler
         _fileCompiler = fileCompiler;
         _schematicBuilder = schematicBuilder;
         _boardBuilder = boardBuilder;
+        _objectFinder = objectFinder;
     }
 
     private readonly IOutputToolWindow _outputToolWindow;
@@ -32,6 +34,7 @@ public class SolutionCompiler : ISolutionCompiler
     private readonly IFileCompiler _fileCompiler;
     private readonly ISchematicBuilder _schematicBuilder;
     private readonly IBoardBuilder _boardBuilder;
+    private readonly IObjectFinder _objectFinder;
     private readonly IApplicationViewModel _application;
 
     List<ISolutionProjectNodeModel> solutionProjects = new List<ISolutionProjectNodeModel>();
@@ -205,7 +208,7 @@ public class SolutionCompiler : ISolutionCompiler
 
                         if (modelSearch == null)
                         {
-                            modelSearch = project.FindObject(TemplateType.Model, model.ModelLibrary, model.ModelId) as ModelDocument;
+                            modelSearch = _objectFinder.FindObject<ModelDocument>(project.Project, model.ModelLibrary, model.ModelId);
                             if (modelSearch != null)
                             {
                                 // modelSearch.Library = null;
@@ -236,7 +239,7 @@ public class SolutionCompiler : ISolutionCompiler
                         var symbolSearch = symbols.FirstOrDefault(s => s.Id == gate.symbolId);
                         if (symbolSearch == null)
                         {
-                            symbolSearch = project.FindObject(TemplateType.Symbol, gate.LibraryName, gate.symbolId) as Symbol;
+                            symbolSearch = _objectFinder.FindObject<Symbol>(project.Project, gate.LibraryName, gate.symbolId);
                             if (symbolSearch != null)
                             {
                                 //symbolSearch.Library = null;
@@ -258,7 +261,7 @@ public class SolutionCompiler : ISolutionCompiler
                     var fptSearch = footprints.FirstOrDefault(f => f.Id == cmp.Footprint.footprintId);
                     if (fptSearch == null)
                     {
-                        fptSearch = project.FindObject(TemplateType.Footprint, cmp.Footprint.LibraryName, cmp.Footprint.footprintId) as Footprint;
+                        fptSearch = _objectFinder.FindObject<Footprint>(project.Project, cmp.Footprint.LibraryName, cmp.Footprint.footprintId);
                         if (fptSearch != null)
                         {
                             //fptSearch.Library = null;
@@ -279,7 +282,7 @@ public class SolutionCompiler : ISolutionCompiler
 
                                     if (modelSearch == null)
                                     {
-                                        modelSearch = project.FindObject(TemplateType.Model, model.ModelLibrary, model.ModelId) as ModelDocument;
+                                        modelSearch = _objectFinder.FindObject<ModelDocument>(project.Project, model.ModelLibrary, model.ModelId);
                                         if (modelSearch != null)
                                         {
                                             // modelSearch.Library = null;

@@ -2,6 +2,7 @@
 using IDE.Core.Common;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 using IDE.Core.ViewModels;
@@ -19,8 +20,6 @@ namespace IDE.Documents.Views
     {
         public ItemSelectDialogViewModel()
         {
-            dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-
             PropertyChanged += ItemSelectDialogViewModel_PropertyChanged;
         }
 
@@ -33,15 +32,10 @@ namespace IDE.Documents.Views
                     break;
 
                 case nameof(SelectedItem):
-                  await PreviewSelectedItem();
+                    await PreviewSelectedItem();
                     break;
             }
-
         }
-
-
-
-        IDispatcherHelper dispatcher;
 
         public string WindowTitle
         {
@@ -110,6 +104,8 @@ namespace IDE.Documents.Views
 
         void LoadItems()
         {
+            var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+
             var libraries = new List<LibraryDisplay>();
             var libraryItems = ProjectModel.LoadObjects(null, TemplateType);
 
@@ -127,11 +123,6 @@ namespace IDE.Documents.Views
                 {
                     lib = new LibraryDisplay { Name = item.Library };
                     libraries.Add(lib);
-                    //dispatcher.RunOnDispatcher(() =>
-                    //{
-                    //    Libraries.Add(lib);
-                    //    OnPropertyChanged(nameof(Libraries));
-                    //});
                 }
 
                 var docName = item.Name;
@@ -146,7 +137,8 @@ namespace IDE.Documents.Views
                             continue;
 
                         //solve symbol
-                        var symbol = ProjectModel.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
+                        //var symbol = ProjectModel.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
+                        var symbol = objectFinder.FindObject<Symbol>(ProjectModel.Project, gate.symbolId);
 
                         //todo if the symbol is not solved we should show something and log to output
                         if (symbol == null)
@@ -170,7 +162,8 @@ namespace IDE.Documents.Views
                             {
                                 var footprintRef = compDoc.Footprint;
                                 {
-                                    var fp = ProjectModel.FindObject(TemplateType.Footprint, /*footprintRef.LibraryName,*/ footprintRef.footprintId) as Footprint;
+                                    //var fp = ProjectModel.FindObject(TemplateType.Footprint, footprintRef.footprintId) as Footprint;
+                                    var fp = objectFinder.FindObject<Footprint>(ProjectModel.Project, footprintRef.footprintId);
 
                                     if (fp == null)
                                     {
@@ -234,19 +227,11 @@ namespace IDE.Documents.Views
                         ProjectModel = ProjectModel
                     };
 
-                    // docDisplay.Preview.PreviewDocument((LibraryItem)item, ProjectModel);
-
                     lib.Items.Add(docDisplay);
                 }
             }
 
             fullSourceLibraries = libraries;
-
-            //    dispatcher.RunOnDispatcher(() =>
-            //{
-            //    Libraries.Clear();
-            //    Libraries.AddRange(libraries);
-            //});
 
             ApplyFromSource(fullSourceLibraries);
 
@@ -259,36 +244,6 @@ namespace IDE.Documents.Views
             return Task.Run(() =>
             {
                 selectedItem?.PreviewDocument();
-
-                //if (selectedItem != null)
-                //{
-                //    //switch (selectedItem)
-                //    //{
-                //    //    case ComponentItemDisplay comp:
-                //    //        {
-                //    //            //if (comp.Symbol != null)
-                //    //            //{
-                //    //            //    var symbolDoc = comp.Symbol.Document as Symbol;
-                //    //            //    comp.Symbol.Preview.PreviewDocument(symbolDoc, ProjectModel);
-                //    //            //}
-                //    //            //if (comp.Footprint != null)
-                //    //            //{
-                //    //            //    var fpDoc = comp.Footprint.Document as Footprint;
-                //    //            //    comp.Footprint.Preview.PreviewDocument(fpDoc, ProjectModel);
-                //    //            //}
-                //    //            com
-
-                //    //            break;
-                //    //        }
-
-                //    //    case LibraryItemDisplay libItem:
-                //    //        libItem.Preview.PreviewDocument((LibraryItem)libItem.Document, ProjectModel);
-                //    //        break;
-
-                //    //}
-
-
-                //}
             });
         }
 

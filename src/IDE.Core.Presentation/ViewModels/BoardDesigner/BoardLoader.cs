@@ -67,8 +67,6 @@ namespace IDE.Documents.Views
             //footprints
             if (boardDocument.Components != null)
             {
-                project?.CreateCacheItems(TemplateType.Footprint);
-
                 foreach (var fpInstance in boardDocument.Components)
                 // Parallel.ForEach(boardDocument.Components, fpInstance =>
                 {
@@ -84,10 +82,8 @@ namespace IDE.Documents.Views
                 }
                 // );
 
-                project?.ClearCachedItems();
+                //project?.ClearCachedItems();
             }
-
-            // dispatcher.RunOnDispatcher(() => canvasModel.AddItems(canvasItems));
 
             //net classes
             board.NetClasses.Clear();

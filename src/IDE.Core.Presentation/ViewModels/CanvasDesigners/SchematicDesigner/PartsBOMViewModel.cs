@@ -1,6 +1,7 @@
 ﻿using IDE.Core;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Storage;
 using IDE.Core.ViewModels;
 using System;
@@ -145,8 +146,8 @@ namespace IDE.Documents.Views
 
             var project = board.ProjectNode;
 
-
-            var schematic = project.FindObject(TemplateType.Schematic, null, board.BoardProperties.SchematicReference.schematicId) as SchematicDocument;
+            var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+            var schematic = objectFinder.FindObject<SchematicDocument>(project.Project, null, board.BoardProperties.SchematicReference.schematicId);
 
             var schParts = GetPartsWithGates(schematic);
 
@@ -328,14 +329,16 @@ namespace IDE.Documents.Views
     {
         public static ComponentDocument GetComponent(this Part part, ISolutionProjectNodeModel project)
         {
-            var comp = project.FindObject(TemplateType.Component, part.ComponentLibrary, part.ComponentId) as ComponentDocument;
+            var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+            var comp = objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, part.ComponentId);
 
             return comp;
         }
 
         public static ComponentDocument GetComponent(this BoardComponentInstance part, ISolutionProjectNodeModel project)
         {
-            var comp = project.FindObject(TemplateType.Component, part.ComponentLibrary, part.ComponentId) as ComponentDocument;
+            var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+            var comp = objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, part.ComponentId);
 
             return comp;
         }

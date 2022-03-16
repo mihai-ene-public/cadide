@@ -9,6 +9,7 @@ using IDE.Core.Types.Media;
 using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
 using IDE.Core.Presentation.Utilities;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE.Core.Designers
 {
@@ -424,11 +425,7 @@ namespace IDE.Core.Designers
             Footprint foundFootprint = null;
             try
             {
-                // CachedFootprint = fpInstance.CachedPart.CachedComponent.Footprint.CachedFootprint;
-                //var fpRef = fpInstance.CachedPart.CachedComponent.Footprint;
                 DateTime? lastModified = null;
-
-                //it was fpInstance.ComponentLibrary
 
                 if (CachedFootprint != null)
                 {
@@ -438,7 +435,8 @@ namespace IDE.Core.Designers
                     }
                 }
 
-                foundFootprint = ProjectModel.FindObject(TemplateType.Footprint, fpInstance.Library, fpInstance.FootprintId, lastModified) as Footprint;
+                var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+                foundFootprint = objectFinder.FindObject<Footprint>(ProjectModel.Project, fpInstance.Library, fpInstance.FootprintId, lastModified);
             }
             catch { }
 
@@ -451,7 +449,6 @@ namespace IDE.Core.Designers
             LoadComponent();
 
             //load footprint
-            //if (foundFootprint != null)
             {
                 CachedFootprint = foundFootprint;
 
@@ -559,7 +556,8 @@ namespace IDE.Core.Designers
                 var fp = FootprintPrimitive;
 
                 var lastRead = componentDocument?.LastAccessed;
-                var comp = ProjectModel.FindObject(TemplateType.Component, fp.ComponentLibrary, fp.ComponentId, lastRead) as ComponentDocument;
+                var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+                var comp = objectFinder.FindObject<ComponentDocument>(ProjectModel.Project, fp.ComponentLibrary, fp.ComponentId, lastRead);
 
 
                 if (comp != null)

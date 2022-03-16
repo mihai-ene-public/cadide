@@ -30,13 +30,14 @@ using IDE.Core.Types.Media;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Presentation.Importers.DXF;
 using IDE.Core.Presentation.Compilers;
+using IDE.Core.Presentation.ObjectFinding;
 
 namespace IDE.Documents.Views
 {
     public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
                                             , IBoardDesigner
     {
-        public BoardDesignerFileViewModel()
+        public BoardDesignerFileViewModel(IObjectFinder objectFinder)
             : base()
         {
             DocumentKey = "Board Editor";
@@ -68,11 +69,13 @@ namespace IDE.Documents.Views
             dirtyPropertiesProvider = ServiceProvider.Resolve<IDirtyMarkerTypePropertiesMapper>();
             _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
             _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
+            _objectFinder = objectFinder;
         }
 
         private readonly IDirtyMarkerTypePropertiesMapper dirtyPropertiesProvider;
         private readonly ISettingsManager _settingsManager;
         private readonly IActiveCompiler _activeCompiler;
+        private readonly IObjectFinder _objectFinder;
 
         protected override async Task AfterLoadDocumentInternal()
         {
@@ -1051,14 +1054,15 @@ namespace IDE.Documents.Views
                 return;
 
             //open the schematic; should be saved
-            var schematic = await Task.Run(() => ParentProject.FindObject(TemplateType.Schematic, null, boardProperties.SchematicReference.schematicId) as SchematicDocument);
+            //var schematic = await Task.Run(() => ParentProject.FindObject(TemplateType.Schematic, null, boardProperties.SchematicReference.schematicId) as SchematicDocument);
+            var schematic =  _objectFinder.FindObject<SchematicDocument>(ParentProject.Project, null, boardProperties.SchematicReference.schematicId);
             if (schematic == null)
                 return;//we could show a message
 
             State = DocumentState.IsLoading;
             IsLoading = true;
 
-            var brdUpdater = new BoardUpdateFromSchematicOperation(_dispatcher);
+            var brdUpdater = new BoardUpdateFromSchematicOperation(_dispatcher, _objectFinder);
             await brdUpdater.Update(this, schematic, ParentProject);
 
             await AfterLoadDocumentInternal();

@@ -6,6 +6,7 @@ using IDE.Core.Excelon;
 using IDE.Core.Gerber;
 using IDE.Core.Interfaces;
 using IDE.Core.PDF;
+using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -20,12 +21,14 @@ namespace IDE.Documents.Views
 {
     public class BoardUpdateFromSchematicOperation
     {
-        public BoardUpdateFromSchematicOperation(IDispatcherHelper dispatcher)
+        public BoardUpdateFromSchematicOperation(IDispatcherHelper dispatcher, IObjectFinder objectFinder)
         {
             _dispatcher = dispatcher;
+            _objectFinder = objectFinder;
         }
 
         private readonly IDispatcherHelper _dispatcher;
+        private readonly IObjectFinder _objectFinder;
 
         public async Task Update(IBoardDesigner board, SchematicDocument schematic, ISolutionProjectNodeModel project)
         {
@@ -79,7 +82,8 @@ namespace IDE.Documents.Views
                     //below is just the cached version which could be different after footprint is changed in the component
                     //we could have an update from libraries command
                     var compId = part.ComponentId;
-                    var component = await Task.Run(() => project.FindObject(TemplateType.Component, part.ComponentLibrary, compId) as Core.Storage.ComponentDocument);
+                    //var component = await Task.Run(() => project.FindObject(TemplateType.Component, part.ComponentLibrary, compId) as Core.Storage.ComponentDocument);
+                    var component =  _objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, compId);
 
                     if (component != null)
                         components.Add(component);

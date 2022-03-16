@@ -18,10 +18,6 @@ namespace IDE.Core.Interfaces
 
         void ClearCachedItems();
 
-        ILibraryItem FindObject(TemplateType type, string libraryName, long id, DateTime? lastModified = null);
-
-        ILibraryItem FindObject(TemplateType type, long id);
-
         List<ILibraryItem> LoadObjects(string searchText, TemplateType type, Func<ILibraryItem, bool> predicate = null, bool stopIfFound = false, DateTime? lastModified = null);
     }
 }
