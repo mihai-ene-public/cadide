@@ -99,22 +99,6 @@ namespace IDE.Core.ViewModels
             return items;
         }
 
-        Dictionary<TemplateType, List<ILibraryItem>> cachedItems = new Dictionary<TemplateType, List<ILibraryItem>>();
-
-        public void CreateCacheItems(TemplateType type)
-        {
-            if (cachedItems.ContainsKey(type) == false)
-                cachedItems.Add(type, new List<ILibraryItem>());
-
-            cachedItems[type] = LoadObjects(null, type);
-        }
-
-        public void ClearCachedItems()
-        {
-            if (cachedItems != null)
-                cachedItems.Clear();
-        }
-
         void LoadSymbols(List<ILibraryItem> symbols, Func<ILibraryItem, bool> predicate = null, bool stopIfFound = false, DateTime? lastModifed = null)
         {
             LoadItems<Symbol>("symbol", symbols, lib => lib.Symbols.Cast<LibraryItem>(), predicate, stopIfFound, lastModifed);

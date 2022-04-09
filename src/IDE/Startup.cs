@@ -23,6 +23,7 @@ using IDE.Core.Presentation.Compilers;
 using IDE.Core.Presentation.Builders;
 using IDE.Core.Presentation.Solution;
 using IDE.Core.Presentation.ObjectFinding;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace IDE
 {
@@ -83,6 +84,8 @@ namespace IDE
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
 
+            //services.AddTransient<IMemoryCache, MemoryCache>();
+            services.AddTransient<IMemoryCache, MemoryCache>(f => new MemoryCache(new MemoryCacheOptions()));
             services.AddSingleton<ISolutionRepository, SolutionRepository>();
             services.AddSingleton(typeof(IObjectRepository<>), typeof(ObjectRepository<>));
             services.AddSingleton(typeof(IObjectFinder<>), typeof(ObjectFinder<>));
@@ -130,7 +133,7 @@ namespace IDE
         {
             services.AddSingleton<IActiveCompiler, ActiveCompiler>();
             services.AddSingleton<IFileCompiler, FileCompiler>();
-            
+
             services.AddTransient<ISolutionCompiler, SolutionCompiler>();
             services.AddTransient<IFileCompiler, FileCompiler>();
 

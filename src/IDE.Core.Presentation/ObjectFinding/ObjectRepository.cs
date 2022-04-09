@@ -19,7 +19,7 @@ namespace IDE.Core.Presentation.ObjectFinding
         private IList<IProjectDocument> _solutionProjects;
         private readonly ISolutionRepository _solutionRepository;
 
-        public IList<T> LoadObjects(IProjectDocument project, string searchText, Func<T, bool> predicate = null, bool stopIfFound = false, DateTime? lastModified = null)
+        public IList<T> LoadObjects(IProjectDocument project, Func<T, bool> predicate = null, bool stopIfFound = false, DateTime? lastModified = null)
         {
             if (project == null)
                 throw new Exception("Project document is null");

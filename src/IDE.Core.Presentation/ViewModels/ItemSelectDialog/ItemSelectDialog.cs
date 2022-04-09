@@ -112,8 +112,8 @@ namespace IDE.Documents.Views
             if (TemplateType == TemplateType.Component)
             {
                 var project = ProjectModel as SolutionProjectNodeModel;
-                project.CreateCacheItems(TemplateType.Symbol);
-                project.CreateCacheItems(TemplateType.Footprint);
+                objectFinder.LoadCache<Symbol>(project.Project);
+                objectFinder.LoadCache<Footprint>(project.Project);
             }
 
             foreach (var item in libraryItems)
@@ -138,7 +138,7 @@ namespace IDE.Documents.Views
 
                         //solve symbol
                         //var symbol = ProjectModel.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
-                        var symbol = objectFinder.FindObject<Symbol>(ProjectModel.Project, gate.symbolId);
+                        var symbol = objectFinder.FindCachedObject<Symbol>(gate.symbolId);
 
                         //todo if the symbol is not solved we should show something and log to output
                         if (symbol == null)
@@ -163,7 +163,7 @@ namespace IDE.Documents.Views
                                 var footprintRef = compDoc.Footprint;
                                 {
                                     //var fp = ProjectModel.FindObject(TemplateType.Footprint, footprintRef.footprintId) as Footprint;
-                                    var fp = objectFinder.FindObject<Footprint>(ProjectModel.Project, footprintRef.footprintId);
+                                    var fp = objectFinder.FindCachedObject<Footprint>(footprintRef.footprintId);
 
                                     if (fp == null)
                                     {
@@ -235,8 +235,8 @@ namespace IDE.Documents.Views
 
             ApplyFromSource(fullSourceLibraries);
 
-            var p = ProjectModel as SolutionProjectNodeModel;
-            p.ClearCachedItems();
+            objectFinder.ClearCache<Symbol>();
+            objectFinder.ClearCache<Footprint>();
         }
 
         private Task PreviewSelectedItem()

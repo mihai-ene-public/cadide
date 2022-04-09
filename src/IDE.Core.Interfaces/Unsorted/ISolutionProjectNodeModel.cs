@@ -14,10 +14,6 @@ namespace IDE.Core.Interfaces
 
         void Save();
 
-        void CreateCacheItems(TemplateType type);
-
-        void ClearCachedItems();
-
         List<ILibraryItem> LoadObjects(string searchText, TemplateType type, Func<ILibraryItem, bool> predicate = null, bool stopIfFound = false, DateTime? lastModified = null);
     }
 }
