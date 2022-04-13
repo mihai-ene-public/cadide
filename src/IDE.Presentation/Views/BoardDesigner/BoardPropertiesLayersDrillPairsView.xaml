@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardPropertiesLayersDrillPairsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/Resources/Styles/GenericStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Margin="5">
+        <TextBlock Text="{x:Static strings:BoardDesignerStrings.DrillPairsLabel}"
+                   Style="{StaticResource subTitle_Style}" />
+        <Separator />
+        <Button Command="{Binding LayersAddDrillPairCommand}"
+                ToolTip="{x:Static strings:BoardDesignerStrings.AddNewDrillPairTooltip}"
+                Focusable="False"
+                HorizontalAlignment="Left"
+                Margin="5,10"
+                Width="24"
+                Height="24"
+                Padding="2">
+            <fa:FontAwesome Icon="Solid_Plus"
+                            FontSize="16" />
+        </Button>
+        <DataGrid ItemsSource="{Binding DrillPairs}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.StartLayerColumnHeader}"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LayerStart.LayerName, TargetNullValue='- None -'}"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Data.AvailableDrillLayers, Source={StaticResource windowProxy}}"
+                                      SelectedItem="{Binding LayerStart, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.StopLayerColumnHeader}"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Data.AvailableDrillLayers, Source={StaticResource windowProxy}}"
+                                      SelectedItem="{Binding LayerEnd, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LayerEnd.LayerName, TargetNullValue='- None -'}"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>

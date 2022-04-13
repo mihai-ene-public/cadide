@@ -1,0 +1,296 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardPropertiesLayersStackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
+             xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/Resources/Styles/GenericStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <utils:BindingProxy x:Key="windowProxy"
+                                Data="{Binding}" />
+
+            <ObjectDataProvider x:Key="LayerStackupSpecEnum"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="viewModels:LayerStackupSpec" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+    <StackPanel>
+
+        <TextBlock Text="{x:Static strings:BoardDesignerStrings.LayersText}"
+                   Style="{StaticResource subTitle_Style}" />
+        <Separator />
+        <StackPanel Orientation="Horizontal">
+            <ComboBox  Margin="5"
+                       Width="75"
+                       VerticalContentAlignment="Center"
+                       ItemsSource="{Binding Source={StaticResource LayerStackupSpecEnum}}"
+                       SelectedItem="{Binding LayerDisplay, UpdateSourceTrigger=PropertyChanged}"
+                       ToolTip="{x:Static strings:BoardDesignerStrings.LayerStackupSpecTooltip}" />
+
+            <Button Command="{Binding MoveLayerDownCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                    Focusable="False"
+                    Margin="3,0"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <!--<Image Source="{StaticResource arrow-down}"
+                       Stretch="Uniform" />-->
+                <fa:FontAwesome Icon="Solid_ArrowDown"
+                                FontSize="16" />
+            </Button>
+            <Button Command="{Binding MoveLayerUpCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                    Focusable="False"
+                    Margin="3,0"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <fa:FontAwesome Icon="Solid_ArrowUp"
+                                FontSize="16" />
+            </Button>
+
+            <Button Margin="1,5"
+                    Padding="2"
+                    Width="100"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddNewSignalLayerTooltip}"
+                    Command="{Binding AddLayerCommand}"
+                    CommandParameter="Signal"
+                    HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <!--<Image Source="{StaticResource plus}"
+                           Width="16"
+                           Height="16" />-->
+                    <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16" />
+                    <TextBlock Text="Signal"
+                               Margin="5,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button Margin="1,5"
+                    Padding="2"
+                    Width="100"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddNewPlaneLayerTooltip}"
+                    Command="{Binding AddLayerCommand}"
+                    CommandParameter="Plane"
+                    HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16" />
+                    <TextBlock Text="Plane"
+                               Margin="5,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button Margin="1,5"
+                    Padding="2"
+                    Focusable="False"
+                    Width="100"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddNewMechanicalLayerTooltip}"
+                    Command="{Binding AddLayerCommand}"
+                    CommandParameter="Mechanical"
+                    HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16" />
+                    <TextBlock Text="Mechanical"
+                               Margin="5,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button Margin="1,5"
+                    Padding="2"
+                    Width="100"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddNewDielectricLayerTooltip}"
+                    Command="{Binding AddLayerCommand}"
+                    CommandParameter="Dielectric"
+                    HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16" />
+                    <TextBlock Text="Dielectric"
+                               Margin="5,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button Margin="1,5"
+                    Padding="2"
+                    Width="100"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddNewGenericLayerTooltip}"
+                    Command="{Binding AddLayerCommand}"
+                    CommandParameter="Generic"
+                    HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <fa:FontAwesome Icon="Solid_Plus"
+                                    FontSize="16" />
+                    <TextBlock Text="Generic"
+                               Margin="5,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+
+            <!--<Button Content="Presets..."
+                                                Margin="5"
+                                                IsEnabled="False"
+                                                Width="75" />-->
+
+            <Button Margin="1,5"
+                    Padding="2"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.ExportLayersTooltip}"
+                    Command="{Binding ExportLayersCommand}"
+                    CommandParameter="Generic"
+                    HorizontalContentAlignment="Left">
+                <fa:FontAwesome Icon="Solid_FileExport"
+                                FontSize="16" />
+            </Button>
+
+            <Button Margin="1,5"
+                    Padding="2"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.ImportLayersTooltip}"
+                    Command="{Binding ImportLayersCommand}"
+                    CommandParameter="Generic"
+                    HorizontalContentAlignment="Left">
+                <fa:FontAwesome Icon="Solid_FileImport"
+                                FontSize="16" />
+            </Button>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding StackLayers}"
+                  SelectedItem="{Binding SelectedStackLayer,UpdateSourceTrigger=PropertyChanged}"
+                  IsSynchronizedWithCurrentItem="True"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  EnableRowVirtualization="True"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling">
+            <DataGrid.Columns>
+                <!-- Layer Color-->
+                <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerColorColumnHeader}"
+                                        Width="100">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <xctk:ColorPicker SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                              HorizontalAlignment="Center"
+                                              ShowDropDownButton="False"
+                                              BorderBrush="WhiteSmoke"
+                                              Width="22" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Rectangle Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Height="16"
+                                       Width="18"
+                                       Margin="5,3" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Binding="{Binding LayerName}"
+                                    Header="{x:Static strings:BoardDesignerStrings.LayerNameColumnHeader}"
+                                    Width="150">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.LayerTypeColumnHeader}"
+                                        IsReadOnly="True">
+                    <!--<DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding Source={StaticResource layerTypeEnum}}"
+                                                                  SelectedItem="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>-->
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding LayerType, UpdateSourceTrigger=PropertyChanged}"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Binding="{Binding Material}"
+                                    Header="{x:Static strings:BoardDesignerStrings.LayerMaterialColumnHeader}"
+                                    Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Thickness}"
+                                    Header="{x:Static strings:BoardDesignerStrings.LayerThicknessColumnHeader}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <!--<DataGridTextColumn Binding="{Binding DielectricConstant}"
+                                                                Header="Dielectric Constant">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.VerticalAlignment"
+                                                                Value="Center" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>-->
+
+                <DataGridTemplateColumn IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Data.DeleteLayerCommand, Source={StaticResource windowProxy}}"
+                                    CommandParameter="{Binding}"
+                                    Padding="2"
+                                    Focusable="False">
+                                <Image Source="{StaticResource cross}"
+                                       Width="12"
+                                       Height="12" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,10">
+            <TextBlock Text="{x:Static strings:BoardDesignerStrings.TotalBoardThicknessLabel}" />
+            <TextBlock Text="{Binding StackupTotalThickness, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </StackPanel>
+
+</UserControl>

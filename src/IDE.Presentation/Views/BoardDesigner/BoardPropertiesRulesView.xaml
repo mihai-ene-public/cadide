@@ -1,0 +1,1108 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardPropertiesRulesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
+             xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+             xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:wiz="clr-namespace:IDE.Core.Wizards"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IDE.Presentation;component/Resources/Styles/GenericStyles.xaml" />
+                <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroIcons/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <GridSplitter Width="3"
+                      Grid.Column="2"
+                      HorizontalAlignment="Left" />
+        <Rectangle Width="2"
+                   HorizontalAlignment="Right"
+                   Fill="Gray" />
+        <StackPanel  Grid.Column="0"
+                     Grid.Row="0"
+                     Margin="0,0,5,0">
+            <Button Command="{Binding RemoveRuleNodeCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.RemoveRuleTooltip}"
+                    Focusable="False"
+                    Margin="0,3,0,10"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <!--<Image Source="{StaticResource cross}"
+                       Stretch="Uniform" />-->
+                <fa:FontAwesome Icon="Solid_Trash"
+                                FontSize="16" />
+            </Button>
+
+            <Button Command="{Binding AddGroupRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddGroupRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource folder-open}"
+                       Stretch="Uniform" />
+            </Button>
+            <Button Command="{Binding AddElectricalClearanceRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddElectricalClearanceRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.electricalClearance}"
+                       Stretch="Uniform" />
+            </Button>
+            <Button Command="{Binding AddTrackWidthRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddTrackWidthRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.trackWidth}"
+                       Stretch="Uniform" />
+            </Button>
+            <Button Command="{Binding AddViaDefinitionRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddViaDefinitionRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.viaDefinition}"
+                       Stretch="Uniform" />
+            </Button>
+
+            <!-- DO NOT DELETE: it is hard to check, but we'll implement it later-->
+            <!--<Button Command="{Binding AddMinAnnularRingRuleCommand}"
+                                    ToolTip="Add Min annular ring rule"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource file-empty}"
+                                       Stretch="Uniform" />
+                            </Button>-->
+
+            <Button Command="{Binding AddHoleSizeRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddHoleSizeRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.holeSize}"
+                       Stretch="Uniform" />
+            </Button>
+            <Button Command="{Binding AddMaskExpansionCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddMaskExpansionRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.maskExpansion}"
+                       Stretch="Uniform" />
+            </Button>
+
+            <Button Command="{Binding AddManufacturingClearanceRuleCommand}"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.AddManufacturingClearanceRuleTooltip}"
+                    Focusable="False"
+                    Margin="3"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <Image Source="{StaticResource rules.manufClearance}"
+                       Stretch="Uniform" />
+            </Button>
+
+            <!--<Button Command="{Binding AddMatchedLengthsRuleCommand}"
+                                    ToolTip="Add Matching lengths rule"
+                                    Focusable="False"
+                                    Margin="3"
+                                    Visibility="Collapsed"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="2">
+                                <Image Source="{StaticResource file-empty}"
+                                       Stretch="Uniform" />
+                            </Button>-->
+
+            <Separator />
+
+            <Button Margin="1,5"
+                    Padding="2"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.ExportRulesTooltip}"
+                    Command="{Binding ExportRulesCommand}"
+                    CommandParameter="Generic"
+                    HorizontalContentAlignment="Left">
+                <fa:FontAwesome Icon="Solid_FileExport"
+                                FontSize="16" />
+            </Button>
+
+            <Button Margin="1,5"
+                    Padding="2"
+                    Focusable="False"
+                    ToolTip="{x:Static strings:BoardDesignerStrings.ImportRulesTooltip}"
+                    Command="{Binding ImportRulesCommand}"
+                    CommandParameter="Generic"
+                    HorizontalContentAlignment="Left">
+                <fa:FontAwesome Icon="Solid_FileImport"
+                                FontSize="16" />
+            </Button>
+
+        </StackPanel>
+        <TreeView Grid.Column="1"
+                  Name="treeRules"
+                  ItemsSource="{Binding Rules}">
+
+            <i:Interaction.Behaviors>
+                <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding CurrentRuleNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </i:Interaction.Behaviors>
+
+            <!-- This is to have a full selection of the tree item-->
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+
+                    <Setter Property="IsExpanded"
+                            Value="True" />
+                    <Style.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Grid.ColumnSpan"
+                                    Value="3" />
+
+                        </Style>
+
+                    </Style.Resources>
+
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+
+                <HierarchicalDataTemplate ItemsSource="{Binding Children, FallbackValue={x:Null}}"
+                                          DataType="{x:Type designers:AbstractBoardRule}">
+                    <StackPanel Orientation="Horizontal"
+                                Name="PART_ItemPanel"
+                                Margin="3">
+
+                        <Image Width="16"
+                               Height="16"
+                               Source="{Binding Converter={x:Static conv:BoardRuleToImageConverter.Instance}}" />
+
+                        <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                   Name="PART_ItemName"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                    </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsEnabled}"
+                                     Value="false">
+                            <Setter TargetName="PART_ItemPanel"
+                                    Property="Opacity"
+                                    Value="0.5" />
+                            <Setter TargetName="PART_ItemName"
+                                    Property="TextBlock.TextDecorations"
+                                    Value="Strikethrough" />
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <ContentControl Grid.Column="2"
+                        Margin="10,10,5,5"
+                        Content="{Binding SelectedItem, ElementName=treeRules, UpdateSourceTrigger=PropertyChanged}">
+            <ContentControl.Resources>
+
+                <DataTemplate DataType="{x:Type designers:ElectricalClearanceRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.ECRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Line X1="10"
+                                      Y1="60"
+                                      X2="40"
+                                      Y2="30"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+                                <Line X1="40"
+                                      Y1="30"
+                                      X2="90"
+                                      Y2="30"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+
+                                <Line X1="20"
+                                      Y1="80"
+                                      X2="50"
+                                      Y2="50"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+                                <Line X1="50"
+                                      Y1="50"
+                                      X2="90"
+                                      Y2="50"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <TextBlock Margin="0,10,0,5"
+                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterFirstObjectLabel}" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValue="{Binding Filter1.RuleFilterObject.ObjectType}"
+                                          ItemsSource="{Binding ObjectTypes}" />
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          Visibility="{Binding Filter1.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                          ItemsSource="{Binding Filter1.BoardObjects}"
+                                          SelectedItem="{Binding Filter1.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </StackPanel>
+
+                            <TextBlock Margin="0,10,0,5"
+                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterSecondObjectLabel}" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValue="{Binding Filter2.RuleFilterObject.ObjectType}"
+                                          ItemsSource="{Binding ObjectTypes}" />
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          Visibility="{Binding Filter2.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                          ItemsSource="{Binding Filter2.BoardObjects}"
+                                          SelectedItem="{Binding Filter2.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </StackPanel>
+
+                            <Separator Margin="0,10" />
+                            <wiz:SingleOptionGroupView Margin="0,5,0,0"
+                                                       DataContext="{Binding RuleLayerFilters}" />
+
+                            <Grid Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=All}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="75" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center" />
+                                <TextBox Grid.Row="0"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding DefaultClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                <TextBox Grid.Row="1"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding MinClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                <TextBox Grid.Row="2"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding MaxClearance,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </Grid>
+                            <StackPanel Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=PerLayer}">
+                                <DataGrid ItemsSource="{Binding LayerSpecs}"
+                                          AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding LayerName}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleLayerNameHeader}"
+                                                            IsReadOnly="True" />
+
+                                        <DataGridTextColumn Binding="{Binding Default}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                        <DataGridTextColumn Binding="{Binding Min}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                        <DataGridTextColumn Binding="{Binding Max}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type designers:TrackWidthRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.TrackWidthRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Line X1="40"
+                                      Y1="30"
+                                      X2="90"
+                                      Y2="30"
+                                      Stroke="Brown"
+                                      StrokeThickness="30"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <TextBlock Margin="0,10,0,5"
+                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByLabel}" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                          ItemsSource="{Binding ObjectTypes}" />
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </StackPanel>
+
+                            <Separator Margin="0,10" />
+                            <wiz:SingleOptionGroupView Margin="0,5,0,0"
+                                                       DataContext="{Binding RuleLayerFilters}" />
+
+                            <Grid Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=All}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="75" />
+                                    <ColumnDefinition Width="75" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center" />
+                                <TextBox Grid.Row="0"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding DefaultWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                <TextBox Grid.Row="1"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding MinWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                <TextBox Grid.Row="2"
+                                         Grid.Column="1"
+                                         Margin="5"
+                                         Text="{Binding MaxWidth,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                            </Grid>
+                            <StackPanel Visibility="{Binding LayerFilter, Converter={x:Static conv:EnumToVisibilityConverter.Instance}, ConverterParameter=PerLayer}">
+                                <DataGrid ItemsSource="{Binding LayerSpecs}"
+                                          AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding LayerName}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleLayerNameHeader}"
+                                                            IsReadOnly="True" />
+
+                                        <DataGridTextColumn Binding="{Binding Default}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                        <DataGridTextColumn Binding="{Binding Min}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                        <DataGridTextColumn Binding="{Binding Max}"
+                                                            Header="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type designers:ViaDefinitionRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.ViaDefinitionRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Ellipse Width="75"
+                                         Height="75"
+                                         Stroke="Brown"
+                                         Fill="Transparent"
+                                         StrokeThickness="25" />
+
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <TextBlock Margin="0,10,0,5"
+                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByDrillPair}" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <Separator Margin="0,10" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="200" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0"
+                                            Margin="10">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.DiameterLabel}"
+                                               Style="{StaticResource subTitle_Style}" />
+                                    <Separator Margin="0,10" />
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                    <TextBox Text="{Binding DiameterDefault,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                    <TextBox Text="{Binding DiameterMin,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                    <TextBox Text="{Binding DiameterMax,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Margin="10">
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.HoleLabel}"
+                                               Style="{StaticResource subTitle_Style}" />
+                                    <Separator Margin="0,10" />
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleDefaultValueLabel}" />
+                                    <TextBox Text="{Binding DrillDefault,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                                    <TextBox Text="{Binding DrillMin,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                                    <TextBox Text="{Binding DrillMax,Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type designers:MaskExpansionRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.MaskExpansionRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Rectangle Width="60"
+                                           Height="100"
+                                           Canvas.Top="0"
+                                           Canvas.Left="20"
+                                           Fill="#FF800080" />
+                                <Rectangle Width="40"
+                                           Height="80"
+                                           Canvas.Top="10"
+                                           Canvas.Left="30"
+                                           Fill="Brown" />
+
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.AppliesForLabel}"
+                                           VerticalAlignment="Center" />
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          ItemsSource="{Binding MaskRuleTypes}"
+                                          SelectedValue="{Binding MaskRuleType}"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName" />
+                            </StackPanel>
+
+                            <Separator Margin="0,10" />
+
+                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.ExpansionLabel}" />
+                            <TextBox Text="{Binding Expansion,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150"
+                                     HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+                <!--<DataTemplate DataType="{x:Type designers:MaskPasteMaskExpansionRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Paste mask expansion" />
+                                        <TextBox Text="{Binding Expansion, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </DataTemplate>-->
+                <!-- Plane-->
+                <!--<DataTemplate DataType="{x:Type designers:PlanePowerPlaneConnectStyleRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Expansion" />
+                                        <TextBox Text="{Binding Expansion, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="Air gap (mm)" />
+                                        <TextBox Text="{Binding AirGap, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="Conductor Width (mm)" />
+                                        <TextBox Text="{Binding ConductorWidth, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlanePowerPlaneClearanceRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Clearance" />
+                                        <TextBox Text="{Binding Clearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlanePolygonConnectStyleRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Air gap width" />
+                                        <TextBox Text="{Binding AirGapWidth, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>-->
+
+                <!-- Placement -->
+                <!--
+                                <DataTemplate DataType="{x:Type designers:PlacementComponentClearanceRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Min Vertical Clearance" />
+                                        <TextBox Text="{Binding MinVerticalClearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Min Horizontal Clearance" />
+                                        <TextBox Text="{Binding MinHorizontalClearance, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type designers:PlacementHeightRuleModel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Min" />
+                                        <TextBox Text="{Binding Min, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Max" />
+                                        <TextBox Text="{Binding Max, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <TextBlock Text="Preferred" />
+                                        <TextBox Text="{Binding Preferred, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    </StackPanel>
+                                </DataTemplate>-->
+
+                <!--Manufacturing-->
+                <!--<DataTemplate DataType="{x:Type designers:ManufacturingMinAnnularRingRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Minimum annular ring"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+
+                                                <Ellipse Width="75"
+                                                         Height="75"
+                                                         Stroke="Brown"
+                                                         Fill="Transparent"
+                                                         StrokeThickness="25" />
+
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="Name" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="Comment" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Text="Min annular ring" />
+                                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>-->
+
+                <DataTemplate DataType="{x:Type designers:ManufacturingHoleSizeRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.ManufacturingHoleSizeRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+                                <Ellipse Width="75"
+                                         Height="75"
+                                         Canvas.Top="15"
+                                         Canvas.Left="15"
+                                         Fill="#AAFFFFFF" />
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <!--<TextBlock Margin="0,10,0,5"
+                                                       Text="Filter by drill pair" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="200" />
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />-->
+                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMinValueLabel}" />
+                            <TextBox Text="{Binding Min,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150"
+                                     HorizontalAlignment="Left" />
+
+                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleMaxValueLabel}" />
+                            <TextBox Text="{Binding Max,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150"
+                                     HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type designers:ManufacturingClearanceRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.ManufacturingClearanceRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Ellipse Width="75"
+                                         Height="75"
+                                         Stroke="Brown"
+                                         Fill="Transparent"
+                                         StrokeThickness="25" />
+
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValue="{Binding ClearanceType}"
+                                          ItemsSource="{Binding ClearanceTypes}" />
+                            </StackPanel>
+
+                            <Separator Margin="0,10" />
+
+                            <TextBlock Text="{x:Static strings:BoardDesignerStrings.ClearanceLabel}" />
+                            <TextBox Text="{Binding Value,Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                     Width="150"
+                                     HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Grid>
+
+                </DataTemplate>
+
+                <!--<DataTemplate DataType="{x:Type designers:MatchLengthsRuleModel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Match lengths"
+                                                   Style="{StaticResource title_Style}" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Canvas Grid.Column="0"
+                                                    Margin="0,10,0,0">
+
+
+                                                <Line X1="10"
+                                                      Y1="60"
+                                                      X2="40"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="40"
+                                                      Y1="30"
+                                                      X2="90"
+                                                      Y2="30"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+                                                <Line X1="20"
+                                                      Y1="80"
+                                                      X2="50"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+                                                <Line X1="50"
+                                                      Y1="50"
+                                                      X2="90"
+                                                      Y2="50"
+                                                      Stroke="Brown"
+                                                      StrokeThickness="10"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeStartLineCap="Round" />
+
+
+                                            </Canvas>
+                                            <StackPanel Grid.Column="1"
+                                                        Margin="20,10,0,0">
+                                                <TextBlock Text="Name" />
+                                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="Comment" />
+                                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                                         Height="50" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Grid.Row="2">
+                                            <Separator Margin="0,10" />
+                                            <TextBlock Margin="0,10,0,5"
+                                                       Text="Filter by" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          SelectedValuePath="Value"
+                                                          DisplayMemberPath="DisplayName"
+                                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                                          ItemsSource="{Binding ObjectTypes}" />
+                                                <ComboBox Width="250"
+                                                          Margin="10,0"
+                                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            </StackPanel>
+
+                                            <Separator Margin="0,10" />
+
+                                            <TextBlock Text="Tolerance" />
+                                            <TextBox Text="{Binding Tolerance, UpdateSourceTrigger=PropertyChanged}"
+                                                     Width="150"
+                                                     HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                </DataTemplate>-->
+
+                <DataTemplate DataType="{x:Type designers:GroupRuleModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{x:Static strings:BoardDesignerStrings.GroupRuleTitle}"
+                                   Style="{StaticResource title_Style}" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!-- Drawing -->
+                            <Canvas Grid.Column="0"
+                                    Margin="0,10,0,0">
+
+                                <Line X1="10"
+                                      Y1="60"
+                                      X2="40"
+                                      Y2="30"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+                                <Line X1="40"
+                                      Y1="30"
+                                      X2="90"
+                                      Y2="30"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+
+                                <Line X1="20"
+                                      Y1="80"
+                                      X2="50"
+                                      Y2="50"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+                                <Line X1="50"
+                                      Y1="50"
+                                      X2="90"
+                                      Y2="50"
+                                      Stroke="Brown"
+                                      StrokeThickness="10"
+                                      StrokeEndLineCap="Round"
+                                      StrokeStartLineCap="Round" />
+
+                            </Canvas>
+                            <StackPanel Grid.Column="1"
+                                        Margin="20,10,0,0">
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleNameLabel}" />
+                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="{x:Static strings:BoardDesignerStrings.RuleCommentLabel}" />
+                                <TextBox Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}"
+                                         Height="50" />
+                                <CheckBox Margin="0,10,0,0"
+                                          Content="{x:Static strings:BoardDesignerStrings.RuleEnabledLabel}"
+                                          VerticalContentAlignment="Center"
+                                          IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Grid.Row="2">
+                            <Separator Margin="0,10" />
+                            <TextBlock Margin="0,10,0,5"
+                                       Text="{x:Static strings:BoardDesignerStrings.RuleFilterByLabel}" />
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="DisplayName"
+                                          SelectedValue="{Binding Filter.RuleFilterObject.ObjectType}"
+                                          ItemsSource="{Binding ObjectTypes}" />
+                                <ComboBox Width="250"
+                                          Margin="10,0"
+                                          Visibility="{Binding Filter.ShowObjects, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
+                                          ItemsSource="{Binding Filter.BoardObjects}"
+                                          SelectedItem="{Binding Filter.SelectedBoardObject, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+
+                </DataTemplate>
+
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
+
+</UserControl>

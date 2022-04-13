@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="IDE.Documents.Views.BoardOutputBomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="{x:Static strings:BoardDesignerStrings.ColumnsText}"
+                       Grid.Column="0"
+                       Grid.Row="0"
+                       Margin="5,0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left" />
+            <StackPanel  Grid.Column="0"
+                         Grid.Row="0"
+                         Margin="5,0"
+                         Orientation="Horizontal"
+                         HorizontalAlignment="Right">
+                <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputAllColumns}"
+                        Command="{Binding BuildOptions.Bom.MoveBomOutColumnDownCommand}"
+                        ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                        Focusable="False"
+                        Margin="3,0"
+                        Width="24"
+                        Height="24"
+                        Padding="2">
+                    <fa:FontAwesome Icon="Solid_ArrowDown"
+                                    FontSize="16" />
+                </Button>
+
+                <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputAllColumns}"
+                        Command="{Binding BuildOptions.Bom.MoveBomOutColumnUpCommand}"
+                        ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                        Focusable="False"
+                        Margin="3,0"
+                        Width="24"
+                        Height="24"
+                        Padding="2">
+                    <fa:FontAwesome Icon="Solid_ArrowUp"
+                                    FontSize="16" />
+                </Button>
+
+            </StackPanel>
+
+            <DataGrid x:Name="grid_BomOutputAllColumns"
+                      Grid.Column="0"
+                      Grid.Row="1"
+                      Margin="5"
+                      ItemsSource="{Binding BuildOptions.Bom.Columns}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="False"
+                      RowHeaderWidth="0"
+                      EnableRowVirtualization="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      GridLinesVisibility="None">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="{x:Static strings:BoardDesignerStrings.ShowColumnHeader}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Show, UpdateSourceTrigger=PropertyChanged}"
+                                          VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Binding="{Binding ColumnName}"
+                                        IsReadOnly="True"
+                                        Header="{x:Static strings:BoardDesignerStrings.ColumnNameColumnHeader}"
+                                        Width="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="10,25,10,0">
+
+                <Button CommandParameter="{Binding SelectedItems, ElementName=grid_BomOutputAllColumns}"
+                        Command="{Binding BuildOptions.Bom.AddBomOutputGroupCommand}"
+                        Margin="5"
+                        Padding="4"
+                        Width="24"
+                        Height="24"
+                        Focusable="False">
+                    <fa:FontAwesome Icon="Solid_ArrowRight"
+                                    FontSize="16" />
+                </Button>
+
+                <Button CommandParameter="{Binding SelectedItems, ElementName=grid_BomOutputGroupedColumns}"
+                        Command="{Binding BuildOptions.Bom.RemoveBomOutputGroupCommand}"
+                        Margin="5,10,5,5"
+                        Padding="4"
+                        Width="24"
+                        Height="23"
+                        Focusable="False">
+                    <fa:FontAwesome Icon="Solid_ArrowLeft"
+                                    FontSize="16" />
+                </Button>
+            </StackPanel>
+
+            <TextBlock Text="{x:Static strings:BoardDesignerStrings.GroupByLabel}"
+                       Grid.Column="2"
+                       Grid.Row="0"
+                       Margin="5,0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left" />
+
+            <StackPanel  Grid.Column="2"
+                         Grid.Row="0"
+                         Margin="5,0"
+                         Orientation="Horizontal"
+                         HorizontalAlignment="Right">
+                <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputGroupedColumns}"
+                        Command="{Binding BuildOptions.Bom.MoveBomOutGroupDownCommand}"
+                        ToolTip="{x:Static strings:BoardDesignerStrings.MoveDownTooltip}"
+                        Focusable="False"
+                        Margin="3,0"
+                        Width="24"
+                        Height="24"
+                        Padding="2">
+                    <fa:FontAwesome Icon="Solid_ArrowDown"
+                                    FontSize="16" />
+                </Button>
+
+                <Button CommandParameter="{Binding SelectedItem, ElementName=grid_BomOutputGroupedColumns}"
+                        Command="{Binding BuildOptions.Bom.MoveBomOutGroupUpCommand}"
+                        ToolTip="{x:Static strings:BoardDesignerStrings.MoveUpTooltip}"
+                        Focusable="False"
+                        Margin="3,0"
+                        Width="24"
+                        Height="24"
+                        Padding="2">
+                    <fa:FontAwesome Icon="Solid_ArrowUp"
+                                    FontSize="16" />
+                </Button>
+
+            </StackPanel>
+
+            <DataGrid x:Name="grid_BomOutputGroupedColumns"
+                      Grid.Column="2"
+                      Grid.Row="1"
+                      Margin="5"
+                      ItemsSource="{Binding BuildOptions.Bom.GroupColumns}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="False"
+                      RowHeaderWidth="0"
+                      EnableRowVirtualization="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      GridLinesVisibility="None">
+                <DataGrid.Columns>
+                    <!--<DataGridTemplateColumn Header="Show">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Show, UpdateSourceTrigger=PropertyChanged}"
+                                                              VerticalAlignment="Center" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>-->
+
+                    <DataGridTextColumn Binding="{Binding ColumnName}"
+                                        Header="{x:Static strings:BoardDesignerStrings.ColumnNameColumnHeader}"
+                                        IsReadOnly="True"
+                                        Width="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Grid>
+
+        <DataGrid Grid.Row="2"
+                  Margin="5"
+                  ItemsSource="{Binding BuildOptions.Bom.BomPreviewItems}"
+                  AutoGenerateColumns="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False"
+                  RowHeaderWidth="0"
+                  EnableRowVirtualization="True"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  GridLinesVisibility="None">
+
+        </DataGrid>
+    </Grid>
+</UserControl>

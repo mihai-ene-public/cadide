@@ -6,6 +6,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:commonTypes="clr-namespace:IDE.Core.Interfaces;assembly=IDE.Core.Interfaces"
              xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -61,8 +62,8 @@
                     Width="24"
                     Height="24"
                     Padding="2">
-                <Image Source="{StaticResource arrow-down}"
-                       Stretch="Uniform" />
+                <fa:FontAwesome Icon="Solid_ArrowDown"
+                                FontSize="16" />
             </Button>
 
             <Button CommandParameter="{Binding SelectedItem, ElementName=grid_AssyOutputAllColumns}"
@@ -73,8 +74,8 @@
                     Width="24"
                     Height="24"
                     Padding="2">
-                <Image Source="{StaticResource arrow-up}"
-                       Stretch="Uniform" />
+                <fa:FontAwesome Icon="Solid_ArrowUp"
+                                FontSize="16" />
             </Button>
 
         </StackPanel>
