@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="IDE.Documents.Views.SchematicPropertiesNetClassesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"
+                              MinWidth="200" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <GridSplitter Width="3"
+                      Grid.Column="0"
+                      Grid.Row="1"
+                      Margin="0,5"
+                      HorizontalAlignment="Right" />
+        <TextBlock Text="Net classes"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Margin="5,0"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left" />
+        <StackPanel  Grid.Column="0"
+                     Grid.Row="0"
+                     Margin="5,0"
+                     Orientation="Horizontal"
+                     HorizontalAlignment="Right">
+            <Button Command="{Binding NetClassesModel.AddGroupCommand}"
+                    CommandParameter="{Binding CurrentClassNode, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTip="Add group"
+                    Grid.Column="2"
+                    Focusable="False"
+                    Margin="3,0"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <fa:FontAwesome Icon="Solid_Folder"
+                                FontSize="16" />
+            </Button>
+            <Button Command="{Binding NetClassesModel.AddClassCommand}"
+                    CommandParameter="{Binding CurrentClassNode, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTip="Add a new net class"
+                    Grid.Column="3"
+                    Focusable="False"
+                    Margin="3,0"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <fa:FontAwesome Icon="Solid_Plus"
+                                FontSize="16" />
+            </Button>
+            <Button Command="{Binding NetClassesModel.RemoveClassNodeCommand}"
+                    ToolTip="Remove selected node"
+                    Grid.Column="4"
+                    Focusable="False"
+                    Margin="3,0"
+                    Width="24"
+                    Height="24"
+                    Padding="2">
+                <fa:FontAwesome Icon="Solid_Trash"
+                                FontSize="16" />
+            </Button>
+
+        </StackPanel>
+
+
+        <TreeView Grid.Column="0"
+                  Grid.Row="1"
+                  Margin="5"
+                  BorderThickness="1"
+                  ItemsSource="{Binding NetClassesModel.NetClasses}">
+            <i:Interaction.Behaviors>
+                <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding NetClassesModel.CurrentClassNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </i:Interaction.Behaviors>
+
+            <!-- This is to have a full selection of the tree item-->
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+
+                    <Setter Property="IsExpanded"
+                            Value="True" />
+
+                    <Style.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Grid.ColumnSpan"
+                                    Value="3" />
+                        </Style>
+
+                    </Style.Resources>
+
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <!--DataType="{x:Type designers:RuleCategoryItem}"-->
+                    <StackPanel Orientation="Horizontal"
+                                Margin="3">
+
+                        <!--<Image Width="16"
+                               Height="16"
+                               Source="pack://application:,,,/IDE.Resources;component/Images/document.png" />-->
+
+                        <fa:FontAwesome Icon="Solid_File"
+                                        FontSize="16" />
+                        <ctrls:EditBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                       DisplayText="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                       IsEditableOnDoubleClick="True"
+                                       FontSize="12"
+                                       FontFamily="Segoe UI"
+                                       Margin="5,0"
+                                       Focusable="True"
+                                       IsReadOnly="False"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       RenameCommand="{Binding RenameCommand}"
+                                       ToolTipService.ShowOnDisabled="True" />
+
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <TextBlock Text="Assigned nets"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   VerticalAlignment="Center"
+                   Margin="5,0" />
+        <ListView Name="list_AssignedNets"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  Margin="5"
+                  BorderThickness="1"
+                  ItemsSource="{Binding NetClassesModel.AssignedNets}">
+
+        </ListView>
+
+        <StackPanel Grid.Column="2"
+                    Grid.Row="1">
+            <Button CommandParameter="{Binding SelectedItems, ElementName=list_AvailableNets}"
+                    Command="{Binding NetClassesModel.AddNetsToClassCommand}"
+                    Margin="5"
+                    Padding="4"
+                    Width="32"
+                    Height="32"
+                    Focusable="False">
+                <fa:FontAwesome Icon="Solid_ArrowLeft"
+                                FontSize="16" />
+            </Button>
+            <Button CommandParameter="{Binding SelectedItems, ElementName=list_AssignedNets}"
+                    Command="{Binding NetClassesModel.RemoveNetsFromClassCommand}"
+                    Margin="5"
+                    Padding="4"
+                    Width="32"
+                    Height="32"
+                    Focusable="False">
+                <fa:FontAwesome Icon="Solid_ArrowRight"
+                                FontSize="16" />
+            </Button>
+        </StackPanel>
+
+        <TextBlock Text="Available nets"
+                   Grid.Column="3"
+                   Grid.Row="0"
+                   VerticalAlignment="Center"
+                   Margin="5,0" />
+        <ListView Name="list_AvailableNets"
+                  Grid.Column="3"
+                  Grid.Row="1"
+                  Margin="5"
+                  BorderThickness="1"
+                  ItemsSource="{Binding NetClassesModel.AvailableNets}">
+
+        </ListView>
+
+
+    </Grid>
+
+</UserControl>

@@ -69,12 +69,7 @@ namespace IDE.Documents.Views
         //    catch { }
         //}
 
-        void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            //Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            IDE.Core.Utilities.ProcessStarter.Start(e.Uri.AbsoluteUri);
-            e.Handled = true;
-        }
+       
 
 
     }
