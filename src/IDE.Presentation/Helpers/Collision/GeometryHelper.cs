@@ -2,6 +2,7 @@
 using IDE.Core.Designers;
 using IDE.Core.Errors;
 using IDE.Core.Interfaces;
+using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Presentation;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -255,28 +256,48 @@ namespace IDE.Core.Collision
         //this is tricky: position is not right and size/scale is not properly (fontsize in points, we need mm)
         public Geometry GetTextGeometry(ITextCanvasItem text)
         {
-            var fp = (text as ISelectableItem).ParentObject as IFootprintBoardCanvasItem;
-            //var fpRot = 0.0d;
-            //var tRot = text.Rot;
-            //if (fp != null)
-            //{
-            //    fpRot = fp.Rot;
-            //    if (fp.Placement == FootprintPlacement.Bottom)
-            //        tRot = 180.0d - tRot;
-            //}
-            //tRot += fpRot;
+            return GetTextGeometry(text.Text, text.FontFamily, text.FontSize, text.Bold, text.Italic);
 
+            //var fontStyle = FontStyles.Normal;
+            //if (text.Italic)
+            //    fontStyle = FontStyles.Italic;
+            //var fontWeight = FontWeights.Normal;
+            //if (text.Bold) fontWeight = FontWeights.Bold;
+
+            //var fontSizeMM = 0.0254 * 1000 * text.FontSize / 96.0d;
+
+            //var tf = new Typeface(new FontFamily(text.FontFamily), fontStyle, fontWeight, FontStretches.Normal);
+            //var formattedText = new FormattedText(
+            //    text.Text,
+            //    System.Globalization.CultureInfo.CurrentCulture,
+            //    FlowDirection.LeftToRight,
+            //    tf,
+            //    fontSizeMM,
+            //    Brushes.Black,
+            //    pixelsPerDip: 1.0d);
+
+
+            //var origin = new Point();
+
+            //var textGeometry = formattedText.BuildGeometry(origin);
+            //return textGeometry;
+        }
+
+        private Geometry GetTextGeometry(string textString, string fontFamily, double fontSize, bool bold, bool italic)
+        {
             var fontStyle = FontStyles.Normal;
-            if (text.Italic)
+            if (italic)
                 fontStyle = FontStyles.Italic;
+
             var fontWeight = FontWeights.Normal;
-            if (text.Bold) fontWeight = FontWeights.Bold;
+            if (bold)
+                fontWeight = FontWeights.Bold;
 
-            var fontSizeMM = 0.0254 * 1000 * text.FontSize / 96.0d;
+            var fontSizeMM = 0.0254 * 1000 * fontSize / 96.0d;
 
-            var tf = new Typeface(new FontFamily(text.FontFamily), fontStyle, fontWeight, FontStretches.Normal);
+            var tf = new Typeface(new FontFamily(fontFamily), fontStyle, fontWeight, FontStretches.Normal);
             var formattedText = new FormattedText(
-                text.Text,
+                textString,
                 System.Globalization.CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 tf,
@@ -294,6 +315,12 @@ namespace IDE.Core.Collision
         public void GetTextOutlines(ITextCanvasItem text, List<List<XPoint[]>> outlines)
         {
             var textGeometry = GetTextGeometry(text);
+            AppendOutlinesInternal(textGeometry, outlines);
+        }
+
+        public void GetTextOutlines(GlobalTextPrimitive text, List<List<XPoint[]>> outlines)
+        {
+            var textGeometry = GetTextGeometry(text.Text, text.FontFamily, text.FontSize, text.Bold, text.Italic);
             AppendOutlinesInternal(textGeometry, outlines);
         }
 
@@ -365,7 +392,7 @@ namespace IDE.Core.Collision
             if (pad == null)
                 return Geometry.Empty;
 
-            var fp = (pad as ISelectableItem).ParentObject as IFootprintBoardCanvasItem;
+            var fp = ( pad as ISelectableItem ).ParentObject as IFootprintBoardCanvasItem;
 
             var padRot = pad.Rot;
 
@@ -534,7 +561,7 @@ namespace IDE.Core.Collision
 
         public bool ItemIntersectsRectangle(ICanvasItem item, XRect rect)
         {
-            var itemBounds = ((ISelectableItem)item).GetBoundingRectangle();
+            var itemBounds = ( (ISelectableItem)item ).GetBoundingRectangle();
 
             if (rect.IntersectsWith(itemBounds))
             {
@@ -543,7 +570,7 @@ namespace IDE.Core.Collision
                     return true;
 
                 var rectGeom = new RectangleGeometry(rect.ToRect());
-                geometry2.Transform = ((ISelectableItem)item).GetTransform().ToMatrixTransform();
+                geometry2.Transform = ( (ISelectableItem)item ).GetTransform().ToMatrixTransform();
 
                 return Intersects(rectGeom, geometry2);
             }
@@ -579,10 +606,10 @@ namespace IDE.Core.Collision
         public bool Intersects(ICanvasItem item1, ICanvasItem item2)
         {
             var geometry1 = GetGeometryInternal(item1);
-            geometry1.Transform = ((ISelectableItem)item1).GetTransform().ToMatrixTransform();
+            geometry1.Transform = ( (ISelectableItem)item1 ).GetTransform().ToMatrixTransform();
 
             var geometry2 = GetGeometryInternal(item2);
-            geometry2.Transform = ((ISelectableItem)item2).GetTransform().ToMatrixTransform();
+            geometry2.Transform = ( (ISelectableItem)item2 ).GetTransform().ToMatrixTransform();
 
             return Intersects(geometry1, geometry2);
         }
@@ -594,7 +621,7 @@ namespace IDE.Core.Collision
             if (geometry2.IsEmpty())
                 return false;
 
-            geometry2.Transform = ((ISelectableItem)item).GetTransform().ToMatrixTransform();
+            geometry2.Transform = ( (ISelectableItem)item ).GetTransform().ToMatrixTransform();
 
             return Intersects(g, geometry2);
         }
@@ -686,8 +713,8 @@ namespace IDE.Core.Collision
                 var t = (double)i / n;
                 var u = 1 - t;
                 yield return new XPoint(
-                    (u * u * u * p1.X) + (3 * t * u * u * p2.X) + (3 * t * t * u * p3.X) + (t * t * t * p4.X),
-                    (u * u * u * p1.Y) + (3 * t * u * u * p2.Y) + (3 * t * t * u * p3.Y) + (t * t * t * p4.Y));
+                    ( u * u * u * p1.X ) + ( 3 * t * u * u * p2.X ) + ( 3 * t * t * u * p3.X ) + ( t * t * t * p4.X ),
+                    ( u * u * u * p1.Y ) + ( 3 * t * u * u * p2.Y ) + ( 3 * t * t * u * p3.Y ) + ( t * t * t * p4.Y ));
             }
         }
 

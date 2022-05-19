@@ -1,15 +1,14 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
 namespace IDE.Core.PDF
 {
-    internal class PdfLinePrimitive : PdfPrimitive
+    public class PdfPolylinePrimitive:PdfPrimitive
     {
-        public XPoint StartPoint { get; set; }
-        public XPoint EndPoint { get; set; }
         public double Width { get; set; }
+
+        public List<XPoint> Points { get; set; }
 
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
 
@@ -31,7 +30,7 @@ namespace IDE.Core.PDF
                     break;
             }
 
-            pdfDoc.DrawLine(new List<XPoint> { StartPoint, EndPoint }, Color, Width, dashArray);
+            pdfDoc.DrawLine(Points, Color, Width, dashArray);
         }
     }
 }

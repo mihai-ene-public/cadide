@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace IDE.Core.Designers
 {
-    public abstract class SingleLayerBoardCanvasItem : BoardCanvasItemViewModel
+    public abstract class SingleLayerBoardCanvasItem : BoardCanvasItemViewModel, ISingleLayerBoardCanvasItem
     {
 
         ILayerDesignerItem layer;

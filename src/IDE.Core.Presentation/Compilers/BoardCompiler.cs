@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Compilers;
 using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;

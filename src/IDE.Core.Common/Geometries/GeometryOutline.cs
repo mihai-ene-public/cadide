@@ -237,7 +237,6 @@ namespace IDE.Core.Common.Geometries
                 outlines.Add(outline);
             }
 
-
             return outlines;
         }
 

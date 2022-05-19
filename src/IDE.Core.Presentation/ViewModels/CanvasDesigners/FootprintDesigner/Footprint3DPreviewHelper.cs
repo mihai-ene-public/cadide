@@ -177,7 +177,7 @@ namespace IDE.Documents.Views
                     DrillType = p.Hole.DrillType,
                     Rot = p.Hole.Rot,
                     Height = p.Hole.Height
-                }).Cast<ICanvasItem>().Union(canvasItems.OfType<HoleCanvasItem>())
+                }).Union(canvasItems.OfType<IHoleCanvasItem>())
            .ToList();
 
             boardContext.MillingItems = canvasItems.OfType<SingleLayerBoardCanvasItem>()

@@ -38,9 +38,21 @@ namespace IDE.Core.Interfaces
         XColor FillColor { get; set; }
     }
 
-    public interface IPolygonBoardCanvasItem : IPolygonCanvasItem, IGenerateThermals, IExcludeItems, IRepourGeometry
+    public interface IPolygonBoardCanvasItem : IPolygonCanvasItem,
+        ISignalPrimitiveCanvasItem,
+        ISingleLayerBoardCanvasItem,
+        IGenerateThermals,
+        IExcludeItems,
+        IRepourGeometry
     {
         IGeometry PolygonGeometry { get; }
+        int DrawOrder { get; set; }
+    }
+    public interface ISingleLayerBoardCanvasItem : ISelectableItem
+    {
+        ILayerDesignerItem Layer { get; set; }
+
+        bool ShouldBeOnLayer(ILayerDesignerItem layer);
     }
 
     public interface IGenerateThermals
@@ -60,6 +72,19 @@ namespace IDE.Core.Interfaces
         ISelectableItem CanvasItem { get; }
 
         double Clearance { get; }
+    }
+
+    public class ItemWithClearance : IItemWithClearance
+    {
+        public ItemWithClearance(ISelectableItem canvasItem, double clearance)
+        {
+            CanvasItem = canvasItem;
+            Clearance = clearance;
+        }
+
+        public ISelectableItem CanvasItem { get; private set; }
+
+        public double Clearance { get; private set; }
     }
 
     public interface IPolygonGeometryPourProcessor

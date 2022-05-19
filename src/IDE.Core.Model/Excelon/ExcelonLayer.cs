@@ -17,8 +17,6 @@ namespace IDE.Core.Excelon
     {
         public ExcelonLayer(IBoardDesigner boardModel, BoardDrillPairOutput drillPair)// IEnumerable<IHoleCanvasItem> _drillItems, IEnumerable<ICanvasItem> _millingItems)
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-
             _drillPair = drillPair.DrillPair;
             var _drillItems = drillPair.DrillItems;
             var _millingItems = drillPair.MillingItems;
@@ -45,8 +43,6 @@ namespace IDE.Core.Excelon
         List<NCTool> tools = new List<NCTool>();
         List<ExcelonPrimitive> buildPlanDrillPrimitives = new List<ExcelonPrimitive>();
         List<ExcelonPrimitive> buildPlanMillingPrimitives = new List<ExcelonPrimitive>();
-
-        IGeometryHelper GeometryHelper;
 
         XRect boardRectangle;
         double boardOriginX;

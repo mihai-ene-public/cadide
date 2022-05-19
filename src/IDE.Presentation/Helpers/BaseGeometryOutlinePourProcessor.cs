@@ -77,12 +77,12 @@ namespace IDE.Core.Designers
             //add thermals
             foreach (var thermalItem in thermalItems)
             {
-                AddItemGeometry(thermalItem, toAddGeometries);//?
+                AddThermalGeometry(thermalItem, finalGeometry, toAddGeometries);
             }
 
             //do clipping; add thermals
             finalGeometry = GeometryOutline.Combine(toAddGeometries, null, GeometryCombineMode.Union);
-           
+
             return finalGeometry;
         }
 
@@ -99,16 +99,23 @@ namespace IDE.Core.Designers
                 toRemove.Add(geomItem);
         }
 
-        protected void AddGeometry(ItemWithClearance item, IList<IGeometryOutline> toAdd)
-        {
-            AddItemGeometry(item.CanvasItem, toAdd, item.Clearance);
-        }
 
-        private void AddItemGeometry(ISelectableItem item, IList<IGeometryOutline> toAdd, double clearance = 0)
+        private void AddThermalGeometry(ISelectableItem item, IGeometryOutline finalGeometry, IList<IGeometryOutline> toAdd, double clearance = 0)
         {
             var geomItem = _geometryHelper.GetGeometry(item, true, clearance);
-            if (geomItem != null)
-                toAdd.Add(geomItem);
+            if (geomItem == null)
+                return;
+
+            var subj = new List<IGeometryOutline>();
+            var clips = new List<IGeometryOutline>();
+            subj.Add(finalGeometry);
+            clips.Add(geomItem);
+            var intersection = (GeometryOutlines)GeometryOutline.Combine(subj, clips, GeometryCombineMode.Intersect);
+
+            if (intersection.Outlines.Count == 0)
+                return;
+
+            toAdd.Add(geomItem);
         }
 
         protected void BuildThermalsForPad(ItemWithClearance padItem, List<ISelectableItem> thermalItems, double thermalWidth)
@@ -124,24 +131,77 @@ namespace IDE.Core.Designers
                 placement = fp.Placement;
             rot = GetWorldRotation(t, placement);
 
-            //horizontal
+            //we add some tolerance so that when thermal geometry intersects with the final geometry will create some outlines
+            const double tolerance = 0.01d;
+
+            ////horizontal
+            //thermalItems.Add(new PadSmdCanvasItem
+            //{
+            //    X = position.X,
+            //    Y = position.Y,
+            //    Width = pad.Width + 2 * clearance,
+            //    Height = thermalWidth,
+            //    Rot = rot,
+            //    CornerRadius = 0
+            //});
+
+            ////vertical
+            //thermalItems.Add(new PadSmdCanvasItem
+            //{
+            //    X = position.X,
+            //    Y = position.Y,
+            //    Width = thermalWidth,
+            //    Height = pad.Height + 2 * clearance,
+            //    Rot = rot,
+            //    CornerRadius = 0
+            //});
+
+            //east
+            var posEast = new XPoint(0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            posEast = t.Transform(posEast);
             thermalItems.Add(new PadSmdCanvasItem
             {
-                X = position.X,
-                Y = position.Y,
-                Width = pad.Width + 2 * clearance,
+                X = posEast.X,
+                Y = posEast.Y,
+                Width = 0.5 * pad.Width + clearance + tolerance,
+                Height = thermalWidth,
+                Rot = rot,
+                CornerRadius = 0
+            });
+            //west
+            var posWest = new XPoint(-0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            posWest = t.Transform(posWest);
+            thermalItems.Add(new PadSmdCanvasItem
+            {
+                X = posWest.X,
+                Y = posWest.Y,
+                Width = 0.5 * pad.Width + clearance + tolerance,
                 Height = thermalWidth,
                 Rot = rot,
                 CornerRadius = 0
             });
 
-            //vertical
+            //north
+            var posNorth = new XPoint(0, -0.5 * ( 0.5 * pad.Height + clearance ));
+            posNorth = t.Transform(posNorth);
             thermalItems.Add(new PadSmdCanvasItem
             {
-                X = position.X,
-                Y = position.Y,
+                X = posNorth.X,
+                Y = posNorth.Y,
                 Width = thermalWidth,
-                Height = pad.Height + 2 * clearance,
+                Height = 0.5 * pad.Height + clearance + tolerance,
+                Rot = rot,
+                CornerRadius = 0
+            });
+            //south
+            var posSouth = new XPoint(0, 0.5 * ( 0.5 * pad.Height + clearance ));
+            posSouth = t.Transform(posSouth);
+            thermalItems.Add(new PadSmdCanvasItem
+            {
+                X = posSouth.X,
+                Y = posSouth.Y,
+                Width = thermalWidth,
+                Height = 0.5 * pad.Height + clearance + tolerance,
                 Rot = rot,
                 CornerRadius = 0
             });

@@ -1,6 +1,8 @@
 ﻿using IDE.Core.Common.Variables;
 using IDE.Core.Documents;
 using IDE.Core.Interfaces;
+using IDE.Core.Model.GlobalRepresentation;
+using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 using System;
@@ -124,7 +126,7 @@ namespace IDE.Core.Gerber
         double ToGerberX(double x)//x is in mm
         {
             if (units == Modes.Inches)
-                return (x - boardOriginX) / 25.4;
+                return ( x - boardOriginX ) / 25.4;
 
             return x - boardOriginX;
         }
@@ -132,7 +134,7 @@ namespace IDE.Core.Gerber
         double ToGerberY(double y)//y is in mm
         {
             if (units == Modes.Inches)
-                return (boardOriginY - y) / 25.4;
+                return ( boardOriginY - y ) / 25.4;
 
             return boardOriginY - y;
         }
@@ -355,7 +357,8 @@ namespace IDE.Core.Gerber
                         return GetPadPrimitive(pad, clearance);
 
                     case IPolygonBoardCanvasItem poly:
-                        return GetPolygonPrimitive(poly, clearance);
+                        //return GetPolygonPrimitive(poly, clearance);
+                        return GetPolygonPrimitive(poly);
 
                     case IArcCanvasItem arc:
                         return GetArcPrimitive(arc, transformed, clearance);
@@ -393,6 +396,47 @@ namespace IDE.Core.Gerber
             return null;
         }
 
+        private GerberPrimitive GetGerberPrimitive(GlobalPrimitive globalPrimitive)
+        {
+            if (globalPrimitive == null)
+                return null;
+
+            switch (globalPrimitive)
+            {
+                case GlobalPolygonPrimitive poly:
+                    return GetPolygonPrimitive(poly);
+
+                case GlobalLinePrimitive line:
+                    return GetLinePrimitive(line);
+
+                case GlobalPolylinePrimitive polyline:
+                    return GetPolylinePrimitive(polyline);
+
+                case GlobalViaPrimitive via:
+                    return GetViaPrimitive(via);
+
+                case GlobalArcPrimitive arc:
+                    return GetArcPrimitive(arc);
+
+                case GlobalRectanglePrimitive rect:
+                    return GetRectanglePrimitive(rect);
+
+                case GlobalCirclePrimitive circle:
+                    return GetCirclePrimitive(circle);
+
+                case GlobalHolePrimitive hole:
+                    return GetHolePrimitive(hole);
+
+                case GlobalFigure figure:
+                    return GetFigurePrimitive(figure);
+
+                case GlobalTextPrimitive text:
+                    return GetTextPrimitive(text);
+            }
+
+            return null;
+        }
+
         XPoint GetPointTransform(XTransform transform, double x, double y)
         {
             var p = new XPoint(x, y);
@@ -408,6 +452,22 @@ namespace IDE.Core.Gerber
         double GetRotationTransform(XTransform transform)
         {
             return Geometry2DHelper.GetRotationAngleFromMatrix(transform.Value);
+        }
+
+        private GerberPrimitive GetFigurePrimitive(GlobalFigure item)
+        {
+            var figure = new GerberFigure();
+
+            foreach (var fi in item.FigureItems)
+            {
+                var fp = GetGerberPrimitive(fi);
+                if (fp != null)
+                {
+                    figure.FigureItems.Add(fp);
+                }
+            }
+
+            return figure;
         }
 
         GerberPrimitive GetCirclePrimitive(ICircleCanvasItem item, double clearance = 0.0)
@@ -439,6 +499,41 @@ namespace IDE.Core.Gerber
                 {
                     X = ToGerberX(position.X),
                     Y = ToGerberY(position.Y),
+                    Diameter = item.Diameter - item.BorderWidth,
+                    Polarity = Polarity.Clear
+                });
+
+                return figure;
+            }
+
+            return null;
+        }
+
+        private GerberPrimitive GetCirclePrimitive(GlobalCirclePrimitive item)
+        {
+            if (item.IsFilled)
+            {
+                return new GerberCirclePrimitive
+                {
+                    X = ToGerberX(item.X),
+                    Y = ToGerberY(item.Y),
+                    Diameter = item.Diameter + item.BorderWidth
+                };
+            }
+            else if (item.BorderWidth > 0.0)
+            {
+                //big circle, substract hole not filled
+                var figure = new GerberFigure();
+                figure.FigureItems.Add(new GerberCirclePrimitive
+                {
+                    X = ToGerberX(item.X),
+                    Y = ToGerberY(item.Y),
+                    Diameter = item.Diameter + item.BorderWidth
+                });
+                figure.FigureItems.Add(new GerberCirclePrimitive
+                {
+                    X = ToGerberX(item.X),
+                    Y = ToGerberY(item.Y),
                     Diameter = item.Diameter - item.BorderWidth,
                     Polarity = Polarity.Clear
                 });
@@ -484,6 +579,17 @@ namespace IDE.Core.Gerber
             }
         }
 
+        private GerberPrimitive GetHolePrimitive(GlobalHolePrimitive item)
+        {
+            return new GerberCirclePrimitive
+            {
+                X = ToGerberX(item.X),
+                Y = ToGerberY(item.Y),
+                Diameter = item.Drill,
+                Polarity = Polarity.Clear
+            };
+        }
+
         GerberPrimitive GetViaPrimitive(IViaCanvasItem item, double clearance = 0)
         {
             var position = new XPoint(item.X, item.Y);//GetPointTransform(item.GetTransform(), item.X, item.Y);
@@ -501,6 +607,29 @@ namespace IDE.Core.Gerber
                 {
                     X = ToGerberX(position.X),
                     Y = ToGerberY(position.Y),
+                    Diameter = item.Drill,
+                    Polarity = Polarity.Clear
+                });
+            }
+            return figure;
+        }
+
+        private GerberPrimitive GetViaPrimitive(GlobalViaPrimitive item)
+        {
+            var figure = new GerberFigure();
+            figure.FigureItems.Add(new GerberCirclePrimitive
+            {
+                X = ToGerberX(item.X),
+                Y = ToGerberY(item.Y),
+                Diameter = item.PadDiameter 
+            });
+
+            if (item.Drill > 0.0)
+            {
+                figure.FigureItems.Add(new GerberCirclePrimitive
+                {
+                    X = ToGerberX(item.X),
+                    Y = ToGerberY(item.Y),
                     Diameter = item.Drill,
                     Polarity = Polarity.Clear
                 });
@@ -651,6 +780,68 @@ namespace IDE.Core.Gerber
             return figure;
         }
 
+        private GerberPrimitive GetPolygonPrimitive(GlobalPolygonPrimitive globalPoly)
+        {
+            var polyRegion = new GerberRegionPrimitive();
+            for (int i = 1; i < globalPoly.Points.Count; i++)
+            {
+                var sp = globalPoly.Points[i - 1];
+                var ep = globalPoly.Points[i];
+
+                polyRegion.RegionItems.Add(new GerberLinePrimitive
+                {
+                    StartPoint = ToGerberPoint(sp),
+                    EndPoint = ToGerberPoint(ep),
+                    //Width = item.BorderWidth
+                });
+            }
+            //add start point to close
+            polyRegion.RegionItems.Add(new GerberLinePrimitive
+            {
+                StartPoint = ToGerberPoint(globalPoly.Points[globalPoly.Points.Count - 1]),
+                EndPoint = ToGerberPoint(globalPoly.Points[0]),
+                //Width = item.BorderWidth
+            });
+
+            return polyRegion;
+        }
+
+        private GerberPrimitive GetPolygonPrimitive(GlobalPouredPolygonPrimitive globalPoly)
+        {
+            var figure = new GerberFigure();
+
+            //fill polygon
+            var polyRegion = GetGerberPrimitive(globalPoly.FillPrimitive);
+
+            if (polyRegion != null)
+                figure.FigureItems.Add(polyRegion);
+
+            //clear primitives
+            foreach (var clearPrimitive in globalPoly.RemovePrimitives)
+            {
+                AddClearFigure(clearPrimitive, figure);
+            }
+
+            //thermals
+            foreach (var thermal in globalPoly.Thermals)
+            {
+                var thermalGerber = GetGerberPrimitive(thermal);
+                if (thermalGerber != null)
+                {
+                    figure.FigureItems.Add(thermalGerber);
+                }
+            }
+
+            return figure;
+        }
+        private GerberPrimitive GetPolygonPrimitive(IPolygonBoardCanvasItem item)
+        {
+            var proc = new GlobalPrimitivePourProcessor();
+            var globalPrimitive = proc.GetPrimitive(item) as GlobalPouredPolygonPrimitive;
+
+            var primitive = GetPolygonPrimitive(globalPrimitive);
+            return primitive;
+        }
         void AddClearFigure(IItemWithClearance clearanceItem, GerberFigure figure)
         {
             var clearFigure = GetGerberPrimitive(clearanceItem.CanvasItem, true, clearanceItem.Clearance);
@@ -662,6 +853,28 @@ namespace IDE.Core.Gerber
             }
 
             figure.FigureItems.Add(clearFigure);
+        }
+
+        private void AddClearFigure(GlobalPrimitive globalPrimitive, GerberFigure figure)
+        {
+            var clearFigure = GetGerberPrimitive(globalPrimitive);
+
+            if (clearFigure == null)
+                return;
+
+            SetPolarityRecursive(clearFigure, Polarity.Clear);
+
+            figure.FigureItems.Add(clearFigure);
+        }
+
+        private void SetPolarityRecursive(GerberPrimitive primitive, Polarity polarity)
+        {
+            primitive.Polarity = polarity;
+            if (primitive is GerberFigure gFig)
+            {
+                foreach (var fi in gFig.FigureItems)
+                    SetPolarityRecursive(fi, polarity);
+            }
         }
 
         GerberPrimitive GetThermalsForPad(IItemWithClearance padItem, double thermalWidth)
@@ -680,27 +893,81 @@ namespace IDE.Core.Gerber
                 placement = fp.Placement;
             var rot = GetWorldRotation(t, placement);
 
-            //horizontal
-            var tFigure = new GerberRectanglePrimitive
-            {
-                X = ToGerberX(position.X),
-                Y = ToGerberY(position.Y),
-                Width = pad.Width + 2 * clearance,
-                Height = thermalWidth,
-                Rot = ToGerberRot(rot)
-            };
-            figure.FigureItems.Add(tFigure);
+            //we add some tolerance so that when thermal geometry intersects with the final geometry will create some outlines
+            const double tolerance = 0.01d;
 
-            //vertical
-            tFigure = new GerberRectanglePrimitive
+            ////horizontal
+            //var tFigure = new GerberRectanglePrimitive
+            //{
+            //    X = ToGerberX(position.X),
+            //    Y = ToGerberY(position.Y),
+            //    Width = pad.Width + 2 * clearance,
+            //    Height = thermalWidth,
+            //    Rot = ToGerberRot(rot)
+            //};
+            //figure.FigureItems.Add(tFigure);
+
+            ////vertical
+            //tFigure = new GerberRectanglePrimitive
+            //{
+            //    X = ToGerberX(position.X),
+            //    Y = ToGerberY(position.Y),
+            //    Width = thermalWidth,
+            //    Height = pad.Height + 2 * clearance,
+            //    Rot = ToGerberRot(rot)
+            //};
+            //figure.FigureItems.Add(tFigure);
+
+
+            //east
+            var posEast = new XPoint(0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            posEast = t.Transform(posEast);
+            figure.FigureItems.Add(new GerberRectanglePrimitive
             {
-                X = ToGerberX(position.X),
-                Y = ToGerberY(position.Y),
+                X = ToGerberX(posEast.X),
+                Y = ToGerberY(posEast.Y),
+                Width = 0.5 * pad.Width + clearance + tolerance,
+                Height = thermalWidth,
+                Rot = ToGerberRot(rot),
+                CornerRadius = 0
+            });
+            //west
+            var posWest = new XPoint(-0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            posWest = t.Transform(posWest);
+            figure.FigureItems.Add(new GerberRectanglePrimitive
+            {
+                X = ToGerberX(posWest.X),
+                Y = ToGerberY(posWest.Y),
+                Width = 0.5 * pad.Width + clearance + tolerance,
+                Height = thermalWidth,
+                Rot = ToGerberRot(rot),
+                CornerRadius = 0
+            });
+
+            //north
+            var posNorth = new XPoint(0, -0.5 * ( 0.5 * pad.Height + clearance ));
+            posNorth = t.Transform(posNorth);
+            figure.FigureItems.Add(new GerberRectanglePrimitive
+            {
+                X = ToGerberX(posNorth.X),
+                Y = ToGerberY(posNorth.Y),
                 Width = thermalWidth,
-                Height = pad.Height + 2 * clearance,
-                Rot = ToGerberRot(rot)
-            };
-            figure.FigureItems.Add(tFigure);
+                Height = 0.5 * pad.Height + clearance + tolerance,
+                Rot = ToGerberRot(rot),
+                CornerRadius = 0
+            });
+            //south
+            var posSouth = new XPoint(0, 0.5 * ( 0.5 * pad.Height + clearance ));
+            posSouth = t.Transform(posSouth);
+            figure.FigureItems.Add(new GerberRectanglePrimitive
+            {
+                X = ToGerberX(posSouth.X),
+                Y = ToGerberY(posSouth.Y),
+                Width = thermalWidth,
+                Height = 0.5 * pad.Height + clearance + tolerance,
+                Rot = ToGerberRot(rot),
+                CornerRadius = 0
+            });
 
             return figure;
         }
@@ -711,6 +978,16 @@ namespace IDE.Core.Gerber
             return new GerberPolylinePrimitive
             {
                 Width = item.Width + 2 * clearance,
+                Points = item.Points.Select(p => ToGerberPoint(p)).ToList()
+            };
+        }
+
+        private GerberPrimitive GetPolylinePrimitive(GlobalPolylinePrimitive item)
+        {
+            //not needed to be transformed...
+            return new GerberPolylinePrimitive
+            {
+                Width = item.Width,
                 Points = item.Points.Select(p => ToGerberPoint(p)).ToList()
             };
         }
@@ -732,7 +1009,19 @@ namespace IDE.Core.Gerber
                 EndPoint = ToGerberPoint(ep),
                 Width = item.BorderWidth + 2 * clearance,
                 SizeDiameter = 2 * item.Radius,
-                SweepDirection = item.IsMirrored() ? (XSweepDirection)(1 - (int)item.SweepDirection) : item.SweepDirection
+                SweepDirection = item.IsMirrored() ? (XSweepDirection)( 1 - (int)item.SweepDirection ) : item.SweepDirection
+            };
+        }
+
+        private GerberPrimitive GetArcPrimitive(GlobalArcPrimitive item)
+        {
+            return new GerberArcPrimitive
+            {
+                StartPoint = ToGerberPoint(item.StartPoint),
+                EndPoint = ToGerberPoint(item.EndPoint),
+                Width = item.Width,
+                SizeDiameter = item.SizeDiameter,
+                SweepDirection = item.SweepDirection
             };
         }
 
@@ -750,15 +1039,13 @@ namespace IDE.Core.Gerber
 
         GerberPrimitive GetTextPrimitive(ITextCanvasItem text)
         {
-            var figure = new GerberFigure();
             var t = text.GetTransform();
+            
+            var figure = new GerberFigure();
 
             var outlineList = new List<List<XPoint[]>>();
-            //var textGeometry = GeometryHelper.GetTextGeometry(text);
-            //textGeometry.AppendOutlines(outlineList);
             GeometryHelper.GetTextOutlines(text, outlineList);
 
-            //var holes = new List<Point[]>();
             var darkRegions = new List<GerberRegionPrimitive>();
             var clearRegions = new List<GerberRegionPrimitive>();
 
@@ -771,10 +1058,6 @@ namespace IDE.Core.Gerber
                     var outline = outlines[i];
                     var isHole = i != outlines.Count - 1 && meshHelper.IsPointInPolygon(outerOutline, outline[0]);
 
-                    //polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
-                    ////register holes
-                    //if (isHole)
-                    //    holes.Add(outline);
                     var polyRegion = GetRegionFromPoints(outline.Select(p => GetPointTransform(t, new XPoint(p.X, p.Y))).ToArray());
                     if (isHole)
                     {
@@ -785,16 +1068,50 @@ namespace IDE.Core.Gerber
                     {
                         darkRegions.Add(polyRegion);
                     }
-
-
-                    // figure.FigureItems.Add(polyRegion);
                 }
-
-                // meshBuilder.AddExtrudedSegments(outerOutline.ToSegments().ToList(), textDirection, p0, p1);
             }
 
             figure.FigureItems.AddRange(darkRegions);
             figure.FigureItems.AddRange(clearRegions);
+
+            return figure;
+        }
+
+        private GerberPrimitive GetTextPrimitive(GlobalTextPrimitive text)
+        {
+            var figure = new GerberFigure();
+
+            //todo: uncomment
+            //var outlineList = new List<List<XPoint[]>>();
+            //GeometryHelper.GetTextOutlines(text, outlineList);
+
+            //var darkRegions = new List<GerberRegionPrimitive>();
+            //var clearRegions = new List<GerberRegionPrimitive>();
+
+            //foreach (var outlines in outlineList)
+            //{
+            //    var outerOutline = outlines.OrderBy(x => Geometry2DHelper.AreaOfSegment(x)).Last();
+
+            //    for (int i = 0; i < outlines.Count; i++)
+            //    {
+            //        var outline = outlines[i];
+            //        var isHole = i != outlines.Count - 1 && meshHelper.IsPointInPolygon(outerOutline, outline[0]);
+
+            //        var polyRegion = GetRegionFromPoints(outline.Select(p => GetPointTransform(t, new XPoint(p.X, p.Y))).ToArray());
+            //        if (isHole)
+            //        {
+            //            polyRegion.Polarity = Polarity.Clear;
+            //            clearRegions.Add(polyRegion);
+            //        }
+            //        else
+            //        {
+            //            darkRegions.Add(polyRegion);
+            //        }
+            //    }
+            //}
+
+            //figure.FigureItems.AddRange(darkRegions);
+            //figure.FigureItems.AddRange(clearRegions);
 
             return figure;
         }
@@ -1081,7 +1398,82 @@ namespace IDE.Core.Gerber
                 return figure;
             }
         }
+        private GerberPrimitive GetRectanglePrimitive(GlobalRectanglePrimitive item)
+        {
+            return new GerberRectanglePrimitive
+            {
+                X = ToGerberX(item.X),
+                Y = ToGerberY(item.Y),
+                Width = item.Width,
+                Height = item.Height,
+                CornerRadius = item.CornerRadius,
+                Rot = ToGerberRot(item.Rot)
+            };
 
+            //if (item.CornerRadius > 0.0d)
+            //{
+            //    return new GerberRectanglePrimitive
+            //    {
+            //        X = ToGerberX(item.X),
+            //        Y = ToGerberY(item.Y),
+            //        Width = item.Width,
+            //        Height = item.Height,
+            //        CornerRadius = item.CornerRadius,
+            //        Rot = ToGerberRot(item.Rot)
+            //    };
+            //}
+            //else
+            //{
+            //    var t = new XTransformGroup();
+            //    t.Children.Add(new XRotateTransform(item.Rot));//?
+
+            //    var points = new List<XPoint>();
+            //    var rect = new XRect(-0.5 * item.Width, -0.5 * item.Height, item.Width, item.Height);
+            //    points.Add(rect.TopLeft);
+            //    points.Add(rect.TopRight);
+            //    points.Add(rect.BottomRight);
+            //    points.Add(rect.BottomLeft);
+
+            //    //transform points
+            //    for (int i = 0; i < points.Count; i++)
+            //    {
+            //        points[i] = t.Transform(points[i]);
+            //    }
+
+
+            //    var figure = new GerberFigure();
+
+            //    //border
+            //    if (item.IsFilled)
+            //    {
+            //        var polyRegion = new GerberRegionPrimitive();
+            //        for (int i = 1; i < points.Count; i++)
+            //        {
+            //            var sp = points[i - 1];
+            //            var ep = points[i];
+
+            //            polyRegion.RegionItems.Add(new GerberLinePrimitive
+            //            {
+            //                StartPoint = ToGerberPoint(sp),
+            //                EndPoint = ToGerberPoint(ep),
+            //                //Width = item.BorderWidth
+            //            });
+            //        }
+            //        //add start point to close
+            //        polyRegion.RegionItems.Add(new GerberLinePrimitive
+            //        {
+            //            StartPoint = ToGerberPoint(points[points.Count - 1]),
+            //            EndPoint = ToGerberPoint(points[0]),
+            //            //Width = item.BorderWidth
+            //        });
+            //        figure.FigureItems.Add(polyRegion);
+
+            //    }
+
+            //    return figure;
+            //}
+
+        }
         GerberPrimitive GetLinePrimitive(ILineCanvasItem item, bool transformed = true, double clearance = 0)
         {
             var sp = new XPoint(item.X1, item.Y1);
@@ -1098,6 +1490,16 @@ namespace IDE.Core.Gerber
                 StartPoint = ToGerberPoint(sp),
                 EndPoint = ToGerberPoint(ep),
                 Width = item.Width + 2 * clearance
+            };
+        }
+
+        private GerberPrimitive GetLinePrimitive(GlobalLinePrimitive item)
+        {
+            return new GerberLinePrimitive
+            {
+                StartPoint = ToGerberPoint(item.StartPoint),
+                EndPoint = ToGerberPoint(item.EndPoint),
+                Width = item.Width
             };
         }
 

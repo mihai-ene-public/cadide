@@ -12,10 +12,12 @@ using IDE.Core.Presentation;
 using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
 using IDE.Core.Presentation.Utilities;
+using IDE.Core.Model.GlobalRepresentation;
+using IDE.Core.Model.GlobalRepresentation.Primitives;
 
 namespace IDE.Core.Designers
 {
-    public class PolygonBoardCanvasItem : SingleLayerBoardCanvasItem, ISignalPrimitiveCanvasItem, IPolygonBoardCanvasItem//, IPlainDesignerItem
+    public class PolygonBoardCanvasItem : SingleLayerBoardCanvasItem, IPolygonBoardCanvasItem
     {
         public PolygonBoardCanvasItem()
         {
@@ -299,18 +301,23 @@ namespace IDE.Core.Designers
 
                 var thisBoard = LayerDocument as IBoardDesigner;
 
-                // var proc = ServiceProvider.Resolve<IPolygonGeometryPourProcessor>();
-                var proc = ServiceProvider.Resolve<IPolygonGeometryOutlinePourProcessor>();
+                //var proc = ServiceProvider.Resolve<IPolygonGeometryOutlinePourProcessor>();
+                var proc = new GlobalPrimitivePourProcessor();
                 var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-                await Task.Run(() => proc.GetGeometry(this, thisBoard))
-                    .ContinueWith(t =>
-                    {
-                        dispatcher.RunOnDispatcher(() =>
-                        PolygonGeometry = new GeometryWrapper(t.Result));
-                    });
+                //await Task.Run(() => proc.GetGeometry(this, thisBoard))
+                //    .ContinueWith(t =>
+                //    {
+                //        dispatcher.RunOnDispatcher(() =>
+                //        PolygonGeometry = new GeometryWrapper(t.Result));
+                //    });
+                var globalPrimitive = proc.GetPrimitive(this) as GlobalPouredPolygonPrimitive;
+                dispatcher.RunOnDispatcher(() =>
+                       PolygonGeometry = new GeometryWrapper(( globalPrimitive.FinalGeometry )));
 
                 sw.Stop();
                 Debug.WriteLine($"Geometry generated: {sw.ElapsedMilliseconds} ms");
+
+                await Task.CompletedTask;
             }
 
         }
@@ -401,92 +408,6 @@ namespace IDE.Core.Designers
 
             return new XRect(minPoint, maxPoint);
         }
-
-        //public override void PlacingMouseMove(PlacementStatus status, Point mousePosition)
-        //{
-        //    var mpX = SnapToGrid(mousePosition.X);
-        //    var mpY = SnapToGrid(mousePosition.Y);
-        //    switch (status)
-        //    {
-        //        case PlacementStatus.Ready:
-        //            {
-        //                if (polygonPoints.Count > 1)
-        //                {
-        //                    //we update our 2 points at once
-        //                    PolygonPoints[polygonPoints.Count - 1] = new Point(mpX, mpY);
-        //                    PolygonPoints[polygonPoints.Count - 2] = new Point(mpX, mpY);
-        //                    OnPropertyChanged(nameof(PolygonPoints));
-        //                }
-
-        //            }
-        //            break;
-        //        case PlacementStatus.Started:
-        //            {
-        //                if (PolygonPoints.Count > 0)
-        //                {
-        //                    PolygonPoints[PolygonPoints.Count - 1] = new Point(mpX, mpY);
-        //                    OnPropertyChanged(nameof(PolygonPoints));
-        //                }
-        //            }
-        //            break;
-        //    }
-        //}
-
-        //public override void PlacingMouseUp(PlacementData status, Point _mousePosition)
-        //{
-        //    var mousePosition = new Point(SnapToGrid(_mousePosition.X), SnapToGrid(_mousePosition.Y));
-        //    switch (status.PlacementStatus)
-        //    {
-        //        //1st click
-        //        case PlacementStatus.Ready:
-        //            //add 2 points
-        //            PolygonPoints.Add(mousePosition);
-        //            PolygonPoints.Add(mousePosition);
-        //            status.PlacementStatus = PlacementStatus.Started;
-        //            break;
-        //        //n-th click
-        //        case PlacementStatus.Started:
-
-        //            if (polygonPoints.Count < 1)
-        //                break;
-
-        //            var firstPoint = polygonPoints.FirstOrDefault();
-
-        //            if (firstPoint != null)
-        //            {
-        //                const double eps = 0.5;//this could be the grid size
-
-
-        //                var distance = (mousePosition - firstPoint).Length;
-        //                if (polygonPoints.Count >= 3 && distance <= eps)
-        //                {
-        //                    //remove last point
-        //                    PolygonPoints.RemoveAt(PolygonPoints.Count - 1);
-        //                    IsPlaced = true;
-        //                    Parent.OnDrawingChanged();
-
-        //                    //create another object
-        //                    var canvasItem = (PolygonBoardCanvasItem)Activator.CreateInstance(GetType());
-        //                    canvasItem.BorderWidth = BorderWidth;
-        //                    canvasItem.Layer = Layer;
-
-        //                    Parent.PlacingObject = new PlacementData
-        //                    {
-        //                        PlacementStatus = PlacementStatus.Ready,
-        //                        PlacingObjects = new List<ISelectableItem> { canvasItem }
-        //                    };
-
-        //                    Parent.AddItem(canvasItem);
-        //                }
-        //                else
-        //                {
-        //                    PolygonPoints.Add(mousePosition);
-        //                }
-        //            }
-
-        //            break;
-        //    }
-        //}
 
         protected override void LoadFromPrimitiveInternal(IPrimitive primitive)
         {
@@ -692,18 +613,7 @@ namespace IDE.Core.Designers
 
 
 
-    public class ItemWithClearance : IItemWithClearance
-    {
-        public ItemWithClearance(ISelectableItem canvasItem, double clearance)
-        {
-            CanvasItem = canvasItem;
-            Clearance = clearance;
-        }
 
-        public ISelectableItem CanvasItem { get; private set; }
-
-        public double Clearance { get; private set; }
-    }
 
 
 }

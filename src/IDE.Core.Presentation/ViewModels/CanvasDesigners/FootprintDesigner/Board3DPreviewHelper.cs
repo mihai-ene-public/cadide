@@ -85,14 +85,12 @@ namespace IDE.Documents.Views
                 ParentObject = p.ParentObject
             }
             )
-            .Cast<ICanvasItem>()
-            .Union(footprintItems.OfType<HoleCanvasItem>()) //holes from footprints
+           // .Cast<ICanvasItem>()
+            .Union(footprintItems.OfType<IHoleCanvasItem>()) //holes from footprints
             .Union(canvasItems.OfType<HoleCanvasItem>())
-            .Union(boardContext.ViaItems.Select(v => new CircleBoardCanvasItem
+            .Union(boardContext.ViaItems.Select(v => new HoleCanvasItem
             {
-                BorderWidth = 0,
-                IsFilled = true,
-                Diameter = v.Drill,
+                Drill = v.Drill,
                 X = v.X,
                 Y = v.Y,
                 ParentObject = v

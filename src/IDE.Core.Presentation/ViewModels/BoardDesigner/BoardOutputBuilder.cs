@@ -30,7 +30,7 @@ namespace IDE.Documents.Views
                                          LayerType.BoardOutline
                                             };
 
-            var outputFiles=new List<string>();
+            var outputFiles = new List<string>();
             var gerberLayers = new List<GerberLayer>();
             var excelonFiles = new List<ExcelonLayer>();
 
@@ -48,7 +48,7 @@ namespace IDE.Documents.Views
 
             outputFiles.Clear();
             //clean output folder
-            
+
             if (Directory.Exists(folderOutput))
             {
                 foreach (var file in Directory.GetFiles(folderOutput, $"{brdName}-*.*"))
@@ -121,5 +121,32 @@ namespace IDE.Documents.Views
             };
         }
 
+        public async Task<BuildResult> Build(IBoardDesigner board)
+        {
+            var project = board.ProjectNode;
+            var folderOutput = Path.Combine(project.GetItemFolderFullPath(), "!Output");
+            var brdName = Path.GetFileNameWithoutExtension(board.FilePath);
+
+            //layer types: stackup: signal, plane;
+            //             milling, silkscreen, soldermask, pasteMask 
+            var validLayerTypes = new[] {  LayerType.Signal,
+                                         LayerType.Plane,
+                                         LayerType.SolderMask,
+                                         LayerType.PasteMask,
+                                         LayerType.SilkScreen,
+                                         LayerType.Mechanical,
+                                         LayerType.Generic,
+                                         LayerType.BoardOutline
+                                            };
+
+            var outputFiles = new List<string>();
+            var gerberLayers = new List<GerberLayer>();
+            var excelonFiles = new List<ExcelonLayer>();
+
+            var outputHelper = new BoardGlobalOutputHelper();
+            var buildResult = outputHelper.Build(board, validLayerTypes);
+
+            throw new NotImplementedException();
+        }
     }
 }

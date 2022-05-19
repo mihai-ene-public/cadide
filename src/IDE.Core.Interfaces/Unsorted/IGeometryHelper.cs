@@ -9,6 +9,8 @@ namespace IDE.Core.Interfaces
 
         void GetTextOutlines(ITextCanvasItem text, List<List<XPoint[]>> outlines);
 
+        //void GetTextOutlines(GlobalTextPrimitive text, List<List<XPoint[]>> outlines)
+
         XRect GetGeometryBounds(ICanvasItem item);
         XRect GetGeometryBounds(object geometry);
 

@@ -24,6 +24,7 @@ using IDE.Core.Presentation.Builders;
 using IDE.Core.Presentation.Solution;
 using IDE.Core.Presentation.ObjectFinding;
 using Microsoft.Extensions.Caching.Memory;
+using IDE.Core.Interfaces.Compilers;
 
 namespace IDE
 {
