@@ -41,4 +41,17 @@ namespace IDE.Core.Interfaces
 
         double FontSize { get; }
     }
+
+    public interface IGlobalTextPrimitive
+    {
+        bool Bold { get; set; }
+        string FontFamily { get; set; }
+        double FontSize { get; set; }
+        bool Italic { get; set; }
+        double Rot { get; set; }
+        string Text { get; set; }
+        double Width { get; set; }
+        double X { get; set; }
+        double Y { get; set; }
+    }
 }

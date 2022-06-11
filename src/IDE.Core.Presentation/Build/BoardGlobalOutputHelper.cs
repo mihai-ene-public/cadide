@@ -23,6 +23,12 @@ public class BoardGlobalOutputHelper
         var layers = BuildLayers(board, boardContext, validLayerTypes);
         var drillPairs = BuildDrillPairs(board, boardContext);
 
+        var brdOutline = _globalPrimitiveHelper.GetGlobalPrimitive(board.BoardOutline);
+        foreach (var layer in layers)
+        {
+            layer.BoardOutline = brdOutline;
+        }
+
         return new BuildGlobalResult
         {
             Layers = layers,
@@ -30,19 +36,39 @@ public class BoardGlobalOutputHelper
         };
     }
 
-    private IList<BoardDrillPairOutput> BuildDrillPairs(IBoardDesigner board, BoardContext boardContext)
+    private IList<GlobalPrimitive> GetPrimitives(IEnumerable<ICanvasItem> canvasItems)
     {
-        var drillLayers = new List<BoardDrillPairOutput>();
+        var globalPrimitives = new List<GlobalPrimitive>();
+        foreach (var item in canvasItems)
+        {
+            var p = _globalPrimitiveHelper.GetGlobalPrimitive(item);
+            if (p != null)
+            {
+                globalPrimitives.Add(p);
+            }
+        }
+
+        return globalPrimitives;
+    }
+
+    private IList<BoardGlobalDrillPairOutput> BuildDrillPairs(IBoardDesigner board, BoardContext boardContext)
+    {
+        var drillLayers = new List<BoardGlobalDrillPairOutput>();
 
         var topBottomPair = board.DrillPairs.FirstOrDefault(d => d.LayerStart.LayerId == LayerConstants.SignalTopLayerId
                                                                  && d.LayerEnd.LayerId == LayerConstants.SignalBottomLayerId);
 
+        var drillPrimitives = GetPrimitives(boardContext.DrillItems.Cast<ICanvasItem>());
+        
+
+        var millPrimitives = GetPrimitives(boardContext.MillingItems);
+
         //top-bottom
-        drillLayers.Add(new BoardDrillPairOutput
+        drillLayers.Add(new BoardGlobalDrillPairOutput
         {
             DrillPair = topBottomPair,
-            DrillItems = boardContext.DrillItems,
-            MillingItems = boardContext.MillingItems
+            DrillPrimitives = drillPrimitives,
+            MillingPrimitives = millPrimitives
         });
 
         //the rest of pairs
@@ -60,11 +86,12 @@ public class BoardGlobalOutputHelper
             } as IHoleCanvasItem)
             .ToList();
 
-            drillLayers.Add(new BoardDrillPairOutput
+            var viaHolesPrimitives = GetPrimitives(viaHoles);
+
+            drillLayers.Add(new BoardGlobalDrillPairOutput
             {
                 DrillPair = viaGroup.Key,
-                DrillItems = viaHoles,
-                // MillingItems = millingItems
+                DrillPrimitives = viaHolesPrimitives,
             });
         }
 
@@ -121,13 +148,16 @@ public class BoardGlobalOutputHelper
 
         boardContext.DrillItems.AddRange(footprintItems.OfType<HoleCanvasItem>()); //holes from footprints
         boardContext.DrillItems.AddRange(canvasItems.OfType<HoleCanvasItem>());
-        boardContext.DrillItems.AddRange(boardContext.ViaItems.Select(v => new HoleCanvasItem
-        {
-            Drill = v.Drill,
-            X = v.X,
-            Y = v.Y,
-            ParentObject = v
-        }));
+        //vias from top-bottom
+        boardContext.DrillItems.AddRange(boardContext.ViaItems.Where(v => v.DrillPair?.LayerStart?.LayerId == LayerConstants.SignalTopLayerId
+                                    && v.DrillPair.LayerEnd?.LayerId == LayerConstants.SignalBottomLayerId)
+            .Select(v => new HoleCanvasItem
+            {
+                Drill = v.Drill,
+                X = v.X,
+                Y = v.Y,
+                ParentObject = v
+            }));
 
         boardContext.MillingItems.AddRange(canvasItems.OfType<SingleLayerBoardCanvasItem>()
                                 .Where(c => c.Layer != null && c.Layer.LayerId == LayerConstants.MultiLayerMillingId));
@@ -267,9 +297,8 @@ public class BoardGlobalOutputHelper
         var toAddItems = new List<ICanvasItem>();
         var toExcludeItems = new List<ICanvasItem>();
 
-        var addItems = new List<ICanvasItem>();
         if (itemsOnLayer != null)
-            addItems.AddRange(itemsOnLayer);
+            toAddItems.AddRange(itemsOnLayer);
 
         return GetOutput(layer, toAddItems, toExcludeItems);
     }
@@ -279,9 +308,8 @@ public class BoardGlobalOutputHelper
         var toAddItems = new List<ICanvasItem>();
         var toExcludeItems = new List<ICanvasItem>();
 
-        var addItems = new List<ICanvasItem>();
         if (itemsOnLayer != null)
-            addItems.AddRange(itemsOnLayer);
+            toAddItems.AddRange(itemsOnLayer);
 
         return GetOutput(layer, toAddItems, toExcludeItems);
     }
@@ -314,7 +342,6 @@ public class BoardGlobalOutputHelper
 
         return GetOutput(layer, toAddItems, toExcludeItems);
     }
-
 
     private BoardGlobalLayerOutput BuildSolderMaskTop(BoardContext boardContext, ILayerDesignerItem layer, IEnumerable<ICanvasItem> itemsOnLayer)
     {

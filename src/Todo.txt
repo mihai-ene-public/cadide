@@ -1,0 +1,14 @@
+
+Need to re-architect the tiers:
+	1-Common
+		- common interfaces and enums
+	2-Data:
+		- persisted documents: schematic, board, footprint, etc
+	3-Services
+		- where logic is defined
+		- we have the compile and build
+		- gerber generation
+		- any output generation
+	4-Presentation
+		- ViewModels and Views
+		- Controls

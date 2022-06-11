@@ -140,18 +140,19 @@ namespace IDE.Documents.Views
     {
 
 
-        public List<PartBomItemDisplay> GetBomFromBoard(BoardDesignerFileViewModel board)
+        public List<PartBomItemDisplay> GetBomFromBoard(IBoardDesigner board)
         {
             var items = new List<PartBomItemDisplay>();
+            var brd = (BoardDesignerFileViewModel)board;
 
             var project = board.ProjectNode;
 
             var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-            var schematic = objectFinder.FindObject<SchematicDocument>(project.Project, null, board.BoardProperties.SchematicReference.schematicId);
+            var schematic = objectFinder.FindObject<SchematicDocument>(project.Project, null, brd.BoardProperties.SchematicReference.schematicId);
 
             var schParts = GetPartsWithGates(schematic);
 
-            var parts = board.GetBoardParts();
+            var parts = brd.GetBoardParts();
 
             foreach (var p in parts)
             {
@@ -174,7 +175,7 @@ namespace IDE.Documents.Views
         }
 
 
-        public Task<DynamicList> GetOutputData(BoardDesignerFileViewModel board, IList<BomOutputColumn> columns, IList<BomOutputColumn> groupColumns)
+        public Task<DynamicList> GetOutputData(IBoardDesigner board, IList<BomOutputColumn> columns, IList<BomOutputColumn> groupColumns)
         {
             return Task.Run((() =>
             {

@@ -6,5 +6,5 @@ public class BuildGlobalResult
 {
     public IList<BoardGlobalLayerOutput> Layers { get; set; }
 
-    public IList<BoardDrillPairOutput> DrillLayers { get; set; }
+    public IList<BoardGlobalDrillPairOutput> DrillLayers { get; set; }
 }

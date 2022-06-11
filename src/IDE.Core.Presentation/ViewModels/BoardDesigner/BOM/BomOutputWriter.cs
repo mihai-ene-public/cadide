@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Build;
+using IDE.Core.Interfaces;
 using IDE.Documents.Views;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,16 +12,12 @@ namespace IDE.Core.BOM
 {
     public class BomOutputWriter
     {
-        public BomOutputWriter(BoardDesignerFileViewModel boardModel)
+        public BomOutputWriter()
         {
-            board = boardModel;
         }
 
-        BoardDesignerFileViewModel board;
 
-        public List<string> OutputFiles { get; private set; } = new List<string>();
-
-        public async Task Build()
+        public async Task Build(IBoardDesigner board, string csvPath)
         {
             var buildOptions = (BoardBuildOptionsViewModel)board.BuildOptions;
             var columns = buildOptions.Bom.Columns;
@@ -29,27 +26,11 @@ namespace IDE.Core.BOM
             var bomHelper = new BomHelper();
             var list = await bomHelper.GetOutputData(board, columns, groupColumns);
 
-            var csvPath = GetCsvFilePath();
             var csvWriter = new CsvWriter();
             await csvWriter.WriteCsv(list, csvPath);
-            
-            OutputFiles.Clear();
-            OutputFiles.Add(csvPath);
         }
 
-        private string GetCsvFilePath()
-        {
-            var project = board.ProjectNode;
-            if (project == null)
-                return null;
-
-            var savePath = Path.Combine(project.GetItemFolderFullPath(), "!Output");//folder
-            Directory.CreateDirectory(savePath);
-            var brdName = Path.GetFileNameWithoutExtension(board.FilePath);
-            savePath = Path.Combine(savePath, $"{brdName}-BOM.csv");
-
-            return savePath;
-        }
+        
     }
 
 }

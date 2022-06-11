@@ -13,5 +13,7 @@
         /// </param>
         /// <returns></returns>
         IGeometryOutline GetGeometry(ICanvasItem item, bool applyTransform = false, double clearance = 0.0d);
+
+        bool Intersects(ICanvasItem item1, ICanvasItem item2);
     }
 }

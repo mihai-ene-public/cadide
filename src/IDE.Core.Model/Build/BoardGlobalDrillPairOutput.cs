@@ -8,7 +8,7 @@ namespace IDE.Core.Build
     {
         public ILayerPairModel DrillPair { get; set; }
 
-        public IList<GlobalPrimitive> MillingItems { get; set; }
-        public IList<GlobalPrimitive> DrillItems { get; set; }
+        public IList<GlobalPrimitive> MillingPrimitives { get; set; }
+        public IList<GlobalPrimitive> DrillPrimitives { get; set; }
     }
 }

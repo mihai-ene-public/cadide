@@ -90,6 +90,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                 Width = item.Width,
                 Height = item.Height,
                 CornerRadius = item.CornerRadius,
+                BorderWidth = item.BorderWidth,
                 Rot = rot,
             };
         }
@@ -125,21 +126,33 @@ namespace IDE.Core.Model.GlobalRepresentation
             }
             else
             {
-                var placement = FootprintPlacement.Top;
-                var fp = item.ParentObject as IFootprintBoardCanvasItem;
-                if (fp != null)
-                    placement = fp.Placement;
+                //var placement = FootprintPlacement.Top;
+                //var fp = item.ParentObject as IFootprintBoardCanvasItem;
+                //if (fp != null)
+                //    placement = fp.Placement;
 
-                var rot = GetWorldRotation(t, placement);
+                //var rot = GetWorldRotation(t, placement);
 
-                return new GlobalRectanglePrimitive
+                //return new GlobalRectanglePrimitive
+                //{
+                //    X = position.X,
+                //    Y = position.Y,
+                //    Width = item.Drill,
+                //    Height = item.Height,
+                //    CornerRadius = item.Drill * 0.5,
+                //    Rot = rot
+                //};
+
+                var startPoint = new XPoint(0, -0.5 * item.Height + 0.5 * item.Drill);
+                var endPoint = new XPoint(0, 0.5 * item.Height - 0.5 * item.Drill);
+                startPoint = t.Transform(startPoint);
+                endPoint = t.Transform(endPoint);
+
+                return new GlobalLinePrimitive
                 {
-                    X = position.X,
-                    Y = position.Y,
-                    Width = item.Drill,
-                    Height = item.Height,
-                    CornerRadius = item.Drill * 0.5,
-                    Rot = rot
+                    StartPoint = startPoint,
+                    EndPoint = endPoint,
+                    Width = item.Drill
                 };
             }
         }
@@ -196,10 +209,22 @@ namespace IDE.Core.Model.GlobalRepresentation
 
         private GlobalPrimitive GetPolygonPrimitive(IPolygonBoardCanvasItem item)
         {
+            //we want a poured poly when filled and we want a clearance of filled primitive when adding clearance
+
+            //todo: pour poly only when on a signal or plane (copper) layer
+            if (item.Layer != null && ( item.Layer.LayerType == LayerType.Signal || item.Layer.LayerType == LayerType.Plane ))
+            {
+                var proc = new GlobalPrimitivePourProcessor();
+                var globalPrimitive = proc.GetPrimitive(item);
+                return globalPrimitive;
+            }
+
             var t = item.GetTransform();
             return new GlobalPolygonPrimitive
             {
-                Points = item.PolygonPoints.Select(p => t.Transform(p)).ToList()
+                Points = item.PolygonPoints.Select(p => t.Transform(p)).ToList(),
+                BorderWidth = item.BorderWidth,
+                IsFilled = item.IsFilled,
             };
         }
 
@@ -229,10 +254,12 @@ namespace IDE.Core.Model.GlobalRepresentation
         {
             var sp = new XPoint(item.StartPointX, item.StartPointY);
             var ep = new XPoint(item.EndPointX, item.EndPointY);
+            var center = item.GetCenter();
 
             var t = item.GetTransform();
             sp = GetPointTransform(t, sp);
             ep = GetPointTransform(t, ep);
+            center = GetPointTransform(t, center);
 
             return new GlobalArcPrimitive
             {
@@ -240,6 +267,10 @@ namespace IDE.Core.Model.GlobalRepresentation
                 EndPoint = ep,
                 Width = item.BorderWidth,
                 SizeDiameter = 2 * item.Radius,
+                IsLargeArc = item.IsLargeArc,
+                Center = center,
+                RotationAngle = item.RotationAngle,
+                IsMirrored = item.IsMirrored(),
                 SweepDirection = item.IsMirrored() ? (XSweepDirection)( 1 - (int)item.SweepDirection ) : item.SweepDirection
             };
         }
@@ -271,7 +302,7 @@ namespace IDE.Core.Model.GlobalRepresentation
         {
             var t = item.GetTransform();
 
-            var figure = new GlobalFigure();
+            var figure = new GlobalFigurePrimitive();
             double lx = 0;
             foreach (var letter in item.LetterItems)
             {
@@ -292,7 +323,7 @@ namespace IDE.Core.Model.GlobalRepresentation
 
         private GlobalPrimitive GetRegionPrimitive(IRegionCanvasItem item)
         {
-            var figure = new GlobalFigure();
+            var figure = new GlobalFigurePrimitive();
 
             var startPoint = item.StartPoint;
 

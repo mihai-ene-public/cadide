@@ -27,8 +27,6 @@ namespace IDE.Core.Build
 
         public async Task<string> Build()
         {
-            var buildOptions = (BoardBuildOptionsViewModel)board.BuildOptions;
-
             var layers = BuildOutputLayers();
 
             var topLayers = layers.Where(l => l.Layer.IsTopLayer).ToList();
@@ -203,4 +201,5 @@ namespace IDE.Core.Build
             };
         }
     }
+
 }

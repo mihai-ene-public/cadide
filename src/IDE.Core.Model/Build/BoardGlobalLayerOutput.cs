@@ -8,6 +8,8 @@ namespace IDE.Core.Build
     {
         public ILayerDesignerItem Layer { get; set; }
 
+        public GlobalPrimitive BoardOutline { get; set; }
+
         public IList<GlobalPrimitive> AddItems { get; set; }
         public IList<GlobalPrimitive> ExtractItems { get; set; }
     }

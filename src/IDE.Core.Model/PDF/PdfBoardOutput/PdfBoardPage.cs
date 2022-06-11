@@ -21,11 +21,8 @@ namespace IDE.Core.PDF
             sheetWidth = widthMillimeters;
             sheetHeight = heightMillimeters;
 
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-
             LoadOptions();
         }
-        IGeometryHelper GeometryHelper;
 
         IBoardDesigner board;
         PdfDocument pdfDoc;
@@ -40,7 +37,7 @@ namespace IDE.Core.PDF
         double boardOriginX;
         double boardOriginY;
 
-        XColor backgroundColor = XColor.FromRgb(255, 255, 255);//Colors.White;
+        XColor backgroundColor = XColor.FromRgb(255, 255, 255);
 
         XColor darkColor = XColor.FromRgb(0, 0, 0);
 
@@ -244,8 +241,6 @@ namespace IDE.Core.PDF
                     case IRegionCanvasItem region:
                         return GetRegionPrimitive(region);
 
-                    //case IPlaneBoardCanvasItem plane:
-                    //    return GetPlanePrimitive(plane);
                 }
 
 
@@ -347,7 +342,6 @@ namespace IDE.Core.PDF
                 Width = ToPdfSize(item.Diameter + 2 * clearance),
                 Height = ToPdfSize(item.Diameter + 2 * clearance),
                 BorderWidth = ToPdfSize(item.BorderWidth),
-                //Color = ToPdfColor(item.BorderColor),
                 FillColor = GetFillColor(item.IsFilled)
             };
         }
@@ -355,7 +349,6 @@ namespace IDE.Core.PDF
         PdfPrimitive GetViaPrimitive(IViaCanvasItem item, double clearance = 0)
         {
             var figure = new PdfFigure();
-            //var pos = new Point(item.X, item.Y);
 
             figure.FigureItems.Add(new PdfEllipsePrimitive
             {
@@ -395,7 +388,6 @@ namespace IDE.Core.PDF
                     Width = ToPdfSize(item.Drill + 2 * clearance),
                     Height = ToPdfSize(item.Drill + 2 * clearance),
                     BorderWidth = 0,
-                    //Color = ToPdfColor(item.BorderColor),
                     FillColor = GetFillColor(true)
                 };
             }
@@ -439,16 +431,6 @@ namespace IDE.Core.PDF
                                                 item.CornerRadius + clearance, t);
 
                 return figure;
-                //return new PdfRoundedRectanglePrimitive
-                //{
-                //    FillColor = GetFillColor(true),
-                //    X = ToPdfX(position.X),
-                //    Y = ToPdfY(position.Y),
-                //    Width = ToPdfSize(item.Width),
-                //    Height = ToPdfSize(item.Height),
-                //    CornerRadius = ToPdfSize(item.CornerRadius),
-                //    Rot = ToPdfRot(rot)
-                //};
             }
             else
             {
@@ -757,7 +739,6 @@ namespace IDE.Core.PDF
                 FontFamily = text.FontFamily.ToString(),
                 FontSize = text.FontSize,
                 FontWeight = text.Bold ? 600 : 0,
-                //Color = ToPdfColor(text.TextColor)
             };
         }
 

@@ -15,23 +15,9 @@ namespace IDE.Core.Excelon
     //represents a file that will be exported
     public class ExcelonLayer
     {
-        public ExcelonLayer(IBoardDesigner boardModel, BoardDrillPairOutput drillPair)// IEnumerable<IHoleCanvasItem> _drillItems, IEnumerable<ICanvasItem> _millingItems)
+        public ExcelonLayer()
         {
-            _drillPair = drillPair.DrillPair;
-            var _drillItems = drillPair.DrillItems;
-            var _millingItems = drillPair.MillingItems;
-
-            if (_drillItems != null)
-                drillItems = _drillItems.Where(d => d.DrillType == DrillType.Drill).ToList();
-
-            if (_millingItems == null)
-                _millingItems = new List<ICanvasItem>();
-            millingItems = _millingItems.Union(_drillItems.Where(d => d.DrillType == DrillType.Slot));//.ToList();
-
-
-            board = boardModel;
-
-            LoadOptions();
+           
         }
 
         IBoardDesigner board;
@@ -58,8 +44,24 @@ namespace IDE.Core.Excelon
 
         #endregion
 
-        public Task Build()
+        public Task Build(IBoardDesigner boardModel, BoardDrillPairOutput drillPair)
         {
+            _drillPair = drillPair.DrillPair;
+            var _drillItems = drillPair.DrillItems;
+            var _millingItems = drillPair.MillingItems;
+
+            if (_drillItems != null)
+                drillItems = _drillItems.Where(d => d.DrillType == DrillType.Drill).ToList();
+
+            if (_millingItems == null)
+                _millingItems = new List<ICanvasItem>();
+            millingItems = _millingItems.Union(_drillItems.Where(d => d.DrillType == DrillType.Slot));//.ToList();
+
+
+            board = boardModel;
+
+            LoadOptions();
+
             buildPlanDrillPrimitives.Clear();
             buildPlanMillingPrimitives.Clear();
 
@@ -83,25 +85,6 @@ namespace IDE.Core.Excelon
             //calculate Excelon board origin
             if (board.BoardOutline == null)
                 return;
-            //var upperLeft = board.BoardOutline.StartPoint;
-            //var lowerRight = upperLeft;
-            //var startPoint = board.BoardOutline.StartPoint;
-            //foreach (var item in board.BoardOutline.Items)
-            //{
-            //    //upperLeft: Xmin, Ymin
-            //    if (upperLeft.X > item.EndPointX)
-            //        upperLeft.X = item.EndPointX;
-            //    if (upperLeft.Y > item.EndPointY)
-            //        upperLeft.Y = item.EndPointY;
-
-            //    //lowerRight: Xmax, Ymax
-            //    if (lowerRight.X < item.EndPointX)
-            //        lowerRight.X = item.EndPointX;
-            //    if (lowerRight.Y < item.EndPointY)
-            //        lowerRight.Y = item.EndPointY;
-            //}
-
-            //boardRectangle = new Rect(upperLeft, lowerRight);
             boardRectangle = board.GetBoardRectangle();
 
             boardOriginX = boardRectangle.BottomLeft.X;
@@ -372,12 +355,12 @@ namespace IDE.Core.Excelon
             }
             else
             {
-                var placement = FootprintPlacement.Top;
-                var fp = item.ParentObject as IFootprintBoardCanvasItem;
-                if (fp != null)
-                    placement = fp.Placement;
+                //var placement = FootprintPlacement.Top;
+                //var fp = item.ParentObject as IFootprintBoardCanvasItem;
+                //if (fp != null)
+                //    placement = fp.Placement;
 
-                var rot = GetWorldRotation(t, placement);
+                //var rot = GetWorldRotation(t, placement);
 
                 //return new GerberRectanglePrimitive
                 //{

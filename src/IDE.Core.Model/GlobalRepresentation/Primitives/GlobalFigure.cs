@@ -2,7 +2,7 @@
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalFigure : GlobalPrimitive
+    public class GlobalFigurePrimitive : GlobalPrimitive
     {
         public IList<GlobalPrimitive> FigureItems { get; set; } = new List<GlobalPrimitive>();
 

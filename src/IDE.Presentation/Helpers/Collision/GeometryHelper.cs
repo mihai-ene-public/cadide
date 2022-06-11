@@ -193,11 +193,12 @@ namespace IDE.Core.Collision
                 var segments = new List<LineSegment>();
                 for (int i = 1; i < poly.PolygonPoints.Count; i++)
                 {
-                    segments.Add(new LineSegment(poly.PolygonPoints[i].ToPoint(), true) { IsSmoothJoin = true });
+                    segments.Add(new LineSegment(poly.PolygonPoints[i].ToPoint(), false) { IsSmoothJoin = true });
                 }
 
                 var figure = new PathFigure(start, segments, true);
-                figure.IsFilled = poly.IsFilled;
+                //a poly was selected only when it's filled
+                //figure.IsFilled = poly.IsFilled;
                 g.Figures.Add(figure);
             }
 
@@ -318,7 +319,7 @@ namespace IDE.Core.Collision
             AppendOutlinesInternal(textGeometry, outlines);
         }
 
-        public void GetTextOutlines(GlobalTextPrimitive text, List<List<XPoint[]>> outlines)
+        public void GetTextOutlines(IGlobalTextPrimitive text, List<List<XPoint[]>> outlines)
         {
             var textGeometry = GetTextGeometry(text.Text, text.FontFamily, text.FontSize, text.Bold, text.Italic);
             AppendOutlinesInternal(textGeometry, outlines);

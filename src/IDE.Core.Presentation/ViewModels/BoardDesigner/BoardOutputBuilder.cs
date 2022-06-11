@@ -32,7 +32,7 @@ namespace IDE.Documents.Views
 
             var outputFiles = new List<string>();
             var gerberLayers = new List<GerberLayer>();
-            var excelonFiles = new List<ExcelonLayer>();
+            //var excelonFiles = new List<ExcelonLayer>();
 
 
             var outputHelper = new BoardOutputHelper(validLayerTypes, board);
@@ -68,13 +68,16 @@ namespace IDE.Documents.Views
             //excelon
             foreach (var drillPair in outputHelper.DrillLayers)
             {
-                excelonFiles.Add(new ExcelonLayer(board, drillPair));
+                //excelonFiles.Add(new ExcelonLayer(board, drillPair));
+                var ncLayer = new ExcelonLayer();
+                await ncLayer.Build(board, drillPair);
+                outputFiles.AddRange(ncLayer.OutputFiles);
             }
-            foreach (var excelonFile in excelonFiles)
-            {
-                await excelonFile.Build();
-                outputFiles.AddRange(excelonFile.OutputFiles);
-            }
+            //foreach (var excelonFile in excelonFiles)
+            //{
+            //    await excelonFile.Build();
+            //    outputFiles.AddRange(excelonFile.OutputFiles);
+            //}
 
             //create zip
             if (board.BuildOptions.GerberCreateZipFile)
@@ -103,10 +106,11 @@ namespace IDE.Documents.Views
 
 
             //bom
-            var bomWriter = new BomOutputWriter((BoardDesignerFileViewModel)board);
-            await bomWriter.Build();
+            var csvPath = Path.Combine(folderOutput, $"{brdName}-BOM.csv"); 
+            var bomWriter = new BomOutputWriter();
+            await bomWriter.Build(board, csvPath);
 
-            outputFiles.AddRange(bomWriter.OutputFiles);
+            outputFiles.Add(csvPath);
 
             //assembly
             var assyWriter = new BoardAssemblyOutputService();
@@ -121,32 +125,6 @@ namespace IDE.Documents.Views
             };
         }
 
-        public async Task<BuildResult> Build(IBoardDesigner board)
-        {
-            var project = board.ProjectNode;
-            var folderOutput = Path.Combine(project.GetItemFolderFullPath(), "!Output");
-            var brdName = Path.GetFileNameWithoutExtension(board.FilePath);
-
-            //layer types: stackup: signal, plane;
-            //             milling, silkscreen, soldermask, pasteMask 
-            var validLayerTypes = new[] {  LayerType.Signal,
-                                         LayerType.Plane,
-                                         LayerType.SolderMask,
-                                         LayerType.PasteMask,
-                                         LayerType.SilkScreen,
-                                         LayerType.Mechanical,
-                                         LayerType.Generic,
-                                         LayerType.BoardOutline
-                                            };
-
-            var outputFiles = new List<string>();
-            var gerberLayers = new List<GerberLayer>();
-            var excelonFiles = new List<ExcelonLayer>();
-
-            var outputHelper = new BoardGlobalOutputHelper();
-            var buildResult = outputHelper.Build(board, validLayerTypes);
-
-            throw new NotImplementedException();
-        }
+        
     }
 }

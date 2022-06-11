@@ -8,6 +8,8 @@
         public double Height { get; set; }
         public double CornerRadius { get; set; }
 
+        public double BorderWidth { get; set; }
+
         public bool IsFilled { get; set; } = true;
 
         public double Rot { get; set; }

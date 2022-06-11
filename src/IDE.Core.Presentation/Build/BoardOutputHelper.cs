@@ -132,7 +132,7 @@ namespace IDE.Core.Build
             foreach (var layer in layers)
             {
                 var layerId = layer.LayerId;
-                var layerGroup = itemsGroupedByLayer.FirstOrDefault(g => g.Key == layerId);//.Cast<ICanvasItem>();
+                var layerGroup = itemsGroupedByLayer.FirstOrDefault(g => g.Key == layerId);
 
                 IEnumerable<ICanvasItem> layerItems = layerGroup?.Cast<ICanvasItem>();
 

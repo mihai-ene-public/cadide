@@ -15,10 +15,17 @@ namespace IDE.Core.Model.GlobalRepresentation.Primitives
         //stroke width
         public double Width { get; set; }
 
+        public bool IsLargeArc { get; set; }
+
         public XSweepDirection SweepDirection { get; set; }
 
         //this is actual the radius
         public double SizeDiameter { get; set; }
+        
+        public bool IsMirrored { get; set; }
+
+        public XPoint Center { get; set; }
+        public double RotationAngle { get; set; }
 
         public override void AddClearance(double clearance)
         {

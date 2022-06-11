@@ -24,6 +24,17 @@ namespace IDE.Core.Common.Geometries
             return g;
         }
 
+        public bool Intersects(ICanvasItem item1, ICanvasItem item2)
+        {
+            var geometry1 = GetGeometryInternal(item1);
+            geometry1.Transform = ( (ISelectableItem)item1 ).GetTransform();
+
+            var geometry2 = GetGeometryInternal(item2);
+            geometry2.Transform = ( (ISelectableItem)item2 ).GetTransform();
+
+            return GeometryOutline.Intersects(geometry1, geometry2);
+        }
+
         internal IGeometryOutline GetGeometryInternal(ICanvasItem item, double clearance = 0)
         {
             if (item != null)

@@ -353,6 +353,43 @@ namespace IDE.Core.Designers
             Rot = RotateSafe(Rot);
         }
 
+        protected override XTransform GetLocalRotationTransform()
+        {
+            return new XRotateTransform(Rot);
+        }
+
+        protected override XTransform GetLocalTranslationTransform()
+        {
+            return new XTranslateTransform(X, Y);
+        }
+
+        protected override XTransform GetLocalMirrorTransform()
+        {
+            if (ParentObject == null && IsMirrored())
+            {
+                return new XScaleTransform
+                {
+                    ScaleX = -1,
+                };
+            }
+
+            return base.GetLocalMirrorTransform();
+        }
+
+        protected override XTransform GetGlobalMirror(IContainerSelectableItem parentObject)
+        {
+            if (IsMirrored())
+            {
+                return new XScaleTransform
+                {
+                    ScaleX = -1,
+                };
+            }
+
+
+            return XTransform.Identity;
+        }
+
         public override string ToString()
         {
             //trim the text to show for a single line

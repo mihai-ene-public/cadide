@@ -127,14 +127,14 @@ namespace IDE.Core.Common.Geometries
         {
             return new IntPoint
             {
-                X = (long)(point.X * toleranceMultiplier),
-                Y = (long)(point.Y * toleranceMultiplier)
+                X = (long)( point.X * toleranceMultiplier ),
+                Y = (long)( point.Y * toleranceMultiplier )
             };
         }
 
         protected static long ToIntValue(double value, int toleranceMultiplier = DefaultClipperMultiplyValue)
         {
-            return (long)(value * toleranceMultiplier);
+            return (long)( value * toleranceMultiplier );
         }
 
         protected static XPoint FromIntPoint(IntPoint point, int scalingFactor = DefaultClipperMultiplyValue)
@@ -271,6 +271,17 @@ namespace IDE.Core.Common.Geometries
             }
 
             return geometry;
+        }
+
+        public static bool Intersects(IGeometryOutline subjectGeometry, IGeometryOutline clipGeometry)
+        {
+            var subj = new List<IGeometryOutline>();
+            var clips = new List<IGeometryOutline>();
+            subj.Add(subjectGeometry);
+            clips.Add(clipGeometry);
+            var intersection = (GeometryOutlines)Combine(subj, clips, GeometryCombineMode.Intersect);
+
+            return intersection.Outlines.Count > 0;
         }
 
         protected static void LoadPaths(IGeometryOutline geometry, IList<IList<XPoint>> paths)

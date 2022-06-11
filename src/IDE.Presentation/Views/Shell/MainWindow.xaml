@@ -120,6 +120,12 @@
             </avalonDock:DockingManager.DocumentContextMenu>
 
             <avalonDock:LayoutRoot>
+                <avalonDock:LayoutPanel Orientation="Horizontal">
+                    <avalonDock:LayoutDocumentPaneGroup>
+                        <avalonDock:LayoutDocumentPane>
+                        </avalonDock:LayoutDocumentPane>
+                    </avalonDock:LayoutDocumentPaneGroup>
+                </avalonDock:LayoutPanel>
             </avalonDock:LayoutRoot>
 
         </avalonDock:DockingManager>

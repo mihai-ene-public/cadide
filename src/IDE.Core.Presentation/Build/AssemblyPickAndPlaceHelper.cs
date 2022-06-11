@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 using IDE.Documents.Views;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace IDE.Core.Build
 {
     public class AssemblyPickAndPlaceHelper
     {
-        public List<AssemblyPickAndPlaceItemDisplay> GetPickAndPlaceList(BoardDesignerFileViewModel board)
+        private List<AssemblyPickAndPlaceItemDisplay> GetPickAndPlaceList(IBoardDesigner board)
         {
             var buildOptions = ((BoardBuildOptionsViewModel)board.BuildOptions).Assembly;
 
@@ -21,7 +22,9 @@ namespace IDE.Core.Build
             var boardOriginY = boardRectangle.BottomLeft.Y;
             var useImperial = buildOptions.PositionUnits == OutputUnits.inch;
 
-            var parts = board.GetBoardFootprints();
+            var parts = board.CanvasModel.GetFootprints()
+                                    .OrderBy(f => f.PartName, new IndexedNameComparer())
+                                    .ToList();
 
             foreach (var p in parts)
             {
@@ -67,7 +70,7 @@ namespace IDE.Core.Build
             return rot.ToString("0", CultureInfo.InvariantCulture);
         }
 
-        public Task<DynamicList> GetOutputData(BoardDesignerFileViewModel board, IList<AssemblyOutputColumn> columns)
+        public Task<DynamicList> GetOutputData(IBoardDesigner board, IList<AssemblyOutputColumn> columns)
         {
             return Task.Run(() =>
             {

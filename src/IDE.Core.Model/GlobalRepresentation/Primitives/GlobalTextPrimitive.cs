@@ -1,6 +1,8 @@
-﻿namespace IDE.Core.Model.GlobalRepresentation.Primitives
+﻿using IDE.Core.Interfaces;
+
+namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalTextPrimitive : GlobalPrimitive
+    public class GlobalTextPrimitive : GlobalPrimitive, IGlobalTextPrimitive
     {
         public double X { get; set; }
         public double Y { get; set; }

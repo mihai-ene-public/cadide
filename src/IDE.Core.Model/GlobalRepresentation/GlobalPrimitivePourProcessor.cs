@@ -30,7 +30,8 @@ namespace IDE.Core.Model.GlobalRepresentation
 
             var fillPrimitive = new GlobalPolygonPrimitive
             {
-                Points = thisItem.PolygonPoints.Select(p => t.Transform(p)).ToList()
+                Points = thisItem.PolygonPoints.Select(p => t.Transform(p)).ToList(),
+                IsFilled = true
             };
 
             var pouredPolyPrimitive = new GlobalPouredPolygonPrimitive
@@ -162,10 +163,9 @@ namespace IDE.Core.Model.GlobalRepresentation
                             continue;
 
                         var itemRect = track.GetBoundingRectangle();
-                        if (thisPolyRect.Intersects(itemRect))
+                        if (thisPolyRect.Intersects(itemRect) && _geometryHelper.Intersects(polyItem, track))
                         {
                             var clearance = _boardRulesCompiler.GetElectricalClearance(board, polyItem, track, defaultClearance);
-                            //var inflatedItem = track;
                             var inflatedItem = new ItemWithClearance(track, clearance);//GetItemWithClearance(track, clearance);
 
                             returnItems.Add(inflatedItem);
@@ -186,7 +186,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                         }
 
                         //isPad is a small hack; it doesn't create a proper tranform for the rectangle for a pad
-                        if (thisPolyRect.Intersects(itemRect) || isPad)
+                        if (( thisPolyRect.Intersects(itemRect) || isPad ) && _geometryHelper.Intersects(polyItem, item))
                         {
                             if (item is ISignalPrimitiveCanvasItem otherSignalItem)
                             {
