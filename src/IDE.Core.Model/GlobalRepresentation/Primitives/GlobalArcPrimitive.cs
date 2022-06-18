@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalArcPrimitive : GlobalPrimitive
+    public class GlobalArcPrimitive : GlobalPrimitive, IArcShape
     {
         public XPoint StartPoint { get; set; }
 
@@ -19,7 +20,6 @@ namespace IDE.Core.Model.GlobalRepresentation.Primitives
 
         public XSweepDirection SweepDirection { get; set; }
 
-        //this is actual the radius
         public double SizeDiameter { get; set; }
         
         public bool IsMirrored { get; set; }

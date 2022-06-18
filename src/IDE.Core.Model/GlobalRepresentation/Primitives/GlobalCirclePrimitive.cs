@@ -1,6 +1,8 @@
-﻿namespace IDE.Core.Model.GlobalRepresentation.Primitives
+﻿using IDE.Core.Interfaces;
+
+namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalCirclePrimitive : GlobalPrimitive
+    public class GlobalCirclePrimitive : GlobalPrimitive, ICircleShape
     {
         public double X { get; set; }
         public double Y { get; set; }

@@ -1,6 +1,8 @@
-﻿namespace IDE.Core.Model.GlobalRepresentation.Primitives
+﻿using IDE.Core.Interfaces;
+
+namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalHolePrimitive : GlobalPrimitive
+    public class GlobalHolePrimitive : GlobalPrimitive, IHoleShape
     {
         public double X { get; set; }
         public double Y { get; set; }

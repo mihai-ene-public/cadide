@@ -1381,13 +1381,14 @@ namespace IDE.Documents.Views
 
         async Task ShowLayersGeometries()
         {
-            var boardPreviewHelper = new Board3DPreviewHelper(_dispatcher);
+            //var boardPreviewHelper = new Board3DPreviewHelper(_dispatcher);
+            //var model = await boardPreviewHelper.ShowBoardGeometries(this, ParentProject, boardProperties.StackupTotalThickness);
 
-            var model = await boardPreviewHelper.ShowBoardGeometries(this, ParentProject, boardProperties.StackupTotalThickness);
+            var boardPreviewHelper = new Board3DPreviewGlobalHelper(_dispatcher);
+            var model = await boardPreviewHelper.GeneratePreview(this, boardProperties.StackupTotalThickness);
+
 
             BoardPreview3DViewModel = model;
-
-
         }
 
 

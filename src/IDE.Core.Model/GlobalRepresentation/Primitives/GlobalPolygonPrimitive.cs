@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalPolygonPrimitive : GlobalPrimitive
+    public class GlobalPolygonPrimitive : GlobalPrimitive, IPolygonShape
     {
-        public List<XPoint> Points { get; set; } = new List<XPoint>();
+        public IList<XPoint> Points { get; set; } = new List<XPoint>();
 
         public double BorderWidth { get; set; }
 

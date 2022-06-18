@@ -15,7 +15,6 @@ namespace IDE.Documents.Views
         public BoardPreview3DViewModel(ICanvasDesignerFileViewModel canvasDesigner, IDispatcherHelper dispatcher)
         {
             Model3DCanvasModel = new DrawingViewModel(canvasDesigner, dispatcher);
-            Model3DCanvasModel.DrawingChanged += Model3DCanvasModel_DrawingChanged;
         }
 
         #region Model3DCanvasModel
@@ -36,13 +35,6 @@ namespace IDE.Documents.Views
                 }
             }
         }
-
-        void Model3DCanvasModel_DrawingChanged(DrawingChangedReason reason)
-        {
-            //IsDirty = true;
-        }
-
-
 
         #endregion Model3DCanvasModel
 

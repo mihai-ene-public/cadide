@@ -430,6 +430,9 @@ public class GerberLayer
             case GlobalFigurePrimitive figure:
                 return GetFigurePrimitive(figure);
 
+            //case GlobalRegionPrimitive region:
+            //    return GetRegionPrimitive(region);
+
             case GlobalTextPrimitive text:
                 return GetTextPrimitive(text);
         }

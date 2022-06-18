@@ -7,16 +7,11 @@ namespace IDE.Core.Interfaces
 {
     public interface IMeshHelper
     {
-        //object BuildMeshFromItems(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness);
-
         IMeshModel BuildMeshFromItems2(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness);
 
+        IMeshModel BuildMeshFromShapes(IEnumerable<IShape> unionItems, IEnumerable<IShape> extractItems, double thickness);
+
         bool IsPointInPolygon(IList<XPoint> polygon, XPoint testPoint);
-
-
-       // IList<ISelectableItem> GetModel3DGroupChildren(object model3DGroup);
-
-        //object ApplyColoredModel(XColor color, object model3DGroupObj);
 
         IMeshModel GetMeshModelFromCData(XmlCDataSection cData);
 

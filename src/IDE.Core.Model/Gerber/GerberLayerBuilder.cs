@@ -295,8 +295,8 @@ namespace IDE.Core.Gerber
                 case GlobalTextPrimitive text:
                     return GetTextPrimitive(text);
 
-                //case GlobalRegionPrimitive region:
-                //    return GetRegionPrimitive(region);
+                case GlobalRegionPrimitive region:
+                    return GetRegionPrimitive(region);
 
                 case GlobalFigurePrimitive figure:
                     return GetFigurePrimitive(figure);
@@ -573,6 +573,20 @@ namespace IDE.Core.Gerber
                 {
                     figure.FigureItems.Add(fp);
                 }
+            }
+
+            return figure;
+        }
+
+        private GerberPrimitive GetRegionPrimitive(GlobalRegionPrimitive item)
+        {
+            //we shouldn't convert to Gerber coordinates here
+            var figure = new GerberFigure();
+
+            foreach (GlobalPrimitive regionItem in item.Items)
+            {
+                var primitive = GetGerberPrimitive(regionItem);
+                figure.FigureItems.Add(primitive);
             }
 
             return figure;

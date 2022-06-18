@@ -2,7 +2,7 @@
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalTextPrimitive : GlobalPrimitive, IGlobalTextPrimitive
+    public class GlobalTextPrimitive : GlobalPrimitive, IGlobalTextPrimitive, ITextShape
     {
         public double X { get; set; }
         public double Y { get; set; }

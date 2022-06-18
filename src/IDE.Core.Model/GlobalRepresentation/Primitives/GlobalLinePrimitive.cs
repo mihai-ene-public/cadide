@@ -3,7 +3,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalLinePrimitive : GlobalPrimitive
+    public class GlobalLinePrimitive : GlobalPrimitive, ILineShape
     {
         public XPoint StartPoint { get; set; }
         public XPoint EndPoint { get; set; }

@@ -256,6 +256,9 @@ namespace IDE.Core.Excelon
 
                 case GlobalFigurePrimitive figure:
                     return GeFigurePrimitive(figure);
+
+                //case GlobalRegionPrimitive region:
+                //    return GetRegionPrimitive(region);
             }
 
             return null;

@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
+using IDE.Core.Interfaces;
+using IDE.Core.Types.Media;
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    ////public class GlobalRegionPrimitive : GlobalPrimitive
-    ////{
-    ////    public List<GlobalPrimitive> RegionItems { get; set; } = new List<GlobalPrimitive>();
+    public class GlobalRegionPrimitive : GlobalPrimitive, IRegionShape
+    {
+        public XPoint StartPoint { get; set; }
+        public double Width { get; set; }
+        public IList<IShape> Items { get; set; }=new List<IShape>();
 
-    ////    public override void AddClearance(double clearance)
-    ////    {
+        public override void AddClearance(double clearance)
+        {
 
-    ////    }
-    ////}
+        }
+    }
 }

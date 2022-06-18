@@ -177,8 +177,8 @@ namespace IDE.Core.PDF
                 case GlobalTextPrimitive text:
                     return GetTextPrimitive(text);
 
-                //case GlobalRegionPrimitive region:
-                //    return GetRegionPrimitive(region);
+                case GlobalRegionPrimitive region:
+                    return GetRegionPrimitive(region);
 
                 case GlobalFigurePrimitive figure:
                     return GetFigurePrimitive(figure);
@@ -530,6 +530,19 @@ namespace IDE.Core.PDF
                 {
                     figure.FigureItems.Add(fp);
                 }
+            }
+
+            return figure;
+        }
+
+        private PdfPrimitive GetRegionPrimitive(GlobalRegionPrimitive item)
+        {
+            var figure = new PdfFigure();
+
+            foreach (GlobalPrimitive regionItem in item.Items)
+            {
+                var primitive = GetPrimitive(regionItem);
+                figure.FigureItems.Add(primitive);
             }
 
             return figure;

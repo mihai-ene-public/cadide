@@ -37,10 +37,14 @@
             <DataTemplate x:Key="{x:Type docViews:Preview3DLayerData}">
                 <ctrls:MeshGeometryVisual3D Geometry="{Binding Mesh, Converter={x:Static conv:MeshModelToMeshGeometry3DConverter.Instance}}"
                                             IsRendering="{Binding IsVisible}"
-                                            Color="{Binding DisplayColor,Converter={x:Static conv:XColorToColorConverter.Instance}, FallbackValue=Yellow}"
+                                            Color="{Binding DisplayColor, Converter={x:Static conv:XColorToColorConverter.Instance}, FallbackValue=Yellow}"
                                             IsTransparent="{Binding IsTransparent}"
-                                             CullMode="Back"
-                                            />
+                                            CullMode="Back"
+                                            >
+                    <ctrls:MeshGeometryVisual3D.Transform>
+                        <TranslateTransform3D OffsetZ="{Binding PositionZ}" />
+                    </ctrls:MeshGeometryVisual3D.Transform>
+                </ctrls:MeshGeometryVisual3D>
             </DataTemplate>
         </hx:Viewport3DX.Resources>
         <hx:Viewport3DX.InputBindings>

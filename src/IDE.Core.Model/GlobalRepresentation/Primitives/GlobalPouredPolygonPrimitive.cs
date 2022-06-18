@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using IDE.Core.Interfaces;
 using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Model.GlobalRepresentation.Primitives
 {
-    public class GlobalPouredPolygonPrimitive : GlobalPrimitive
+    public class GlobalPouredPolygonPrimitive : GlobalPrimitive, IPouredPolygonShape
     {
         public GlobalPrimitive FillPrimitive { get; set; }
 

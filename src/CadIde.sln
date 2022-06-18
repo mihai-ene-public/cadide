@@ -2,8 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IDE", "IDE", "{507C0D83-3E4A-4B08-9550-653124D22E6D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDE", "IDE\IDE.csproj", "{B158E3F6-DE87-4B5B-B4AA-8580B55A6F5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{8E363EDF-2B7D-467D-A35B-36892B35C959}"
@@ -456,7 +454,7 @@ Global
 		{E7E187DD-EEEA-4596-8505-480B9B826EF5} = {8E363EDF-2B7D-467D-A35B-36892B35C959}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = en-US
 		SolutionGuid = {5B06FD82-AA10-40E9-9392-03FA5CB97720}
+		RESX_NeutralResourcesLanguage = en-US
 	EndGlobalSection
 EndGlobal

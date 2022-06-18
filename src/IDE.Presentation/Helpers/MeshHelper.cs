@@ -32,19 +32,9 @@ namespace IDE.Core.Collision
         public MeshHelper()
         {
             GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-            dispatcherHelper = ServiceProvider.Resolve<IDispatcherHelper>();
         }
         IGeometryHelper GeometryHelper;
-        IDispatcherHelper dispatcherHelper;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="meshBuilder"></param>
-        /// <param name="geometry"></param>
-        /// <param name="textDirection">ex: Vector3D(1,0,0)</param>
-        /// <param name="p0">ex Point3D(0,0,0)</param>
-        /// <param name="p1">ex Point3D(0,0,1)</param>
         public void ExtrudeGeometry(MeshBuilder meshBuilder, Geometry geometry, XVector3D textDirection, XPoint3D p0, XPoint3D p1, bool checkHoles = true)
         {
             if (geometry.IsEmpty()) return;
@@ -210,7 +200,7 @@ namespace IDE.Core.Collision
 
         public SharpDX.Vector3 Project(Vertex v, XPoint3D p0, XVector3D x, XVector3D y, XVector3D z, double h)
         {
-            return (p0 + x * v.X - y * v.Y + z * h).ToVector3();
+            return ( p0 + x * v.X - y * v.Y + z * h ).ToVector3();
         }
 
 
@@ -221,9 +211,9 @@ namespace IDE.Core.Collision
             int j = polygon.Count - 1;
             for (int i = 0; i < polygon.Count; i++)
             {
-                if ((polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y) || (polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y))
+                if (( polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y ) || ( polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y ))
                 {
-                    if (polygon[i].X + ((testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X)) < testPoint.X)
+                    if (polygon[i].X + ( ( testPoint.Y - polygon[i].Y ) / ( polygon[j].Y - polygon[i].Y ) * ( polygon[j].X - polygon[i].X ) ) < testPoint.X)
                     {
                         result = !result;
                     }
@@ -284,85 +274,6 @@ namespace IDE.Core.Collision
             return outlines;
         }
 
-        //public MeshGeometry3D BuildMeshFromItems(IEnumerable<ICanvasItem> items, double start, double thickness)
-        //{
-        //    var GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-        //    // var geom = Geometry.Empty;
-        //    var builder = new MeshBuilder();
-        //    foreach (var item in items)
-        //    {
-        //        var geomItem = (Geometry)GeometryHelper.GetGeometry(item);
-        //        var checkHoles = true;
-
-        //        if (item is IArcCanvasItem)
-        //            checkHoles = false;
-        //        else if (item is IPolygonCanvasItem)
-        //            checkHoles = !(item as IPolygonCanvasItem).IsFilled;
-
-        //        //using negative values because we start from 0 and go deeper
-        //        ExtrudeGeometry(builder, geomItem, new Vector3D(1, 0, 0), new Point3D(0, 0, -start), new Point3D(0, 0, -(start + thickness)), checkHoles);
-        //    }
-
-        //    return builder.ToMesh(true);
-        //}
-
-        //public MeshGeometry3D BuildMeshFromItemsInternal(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness)
-        //{
-        //    var GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-        //    // var geom = Geometry.Empty;
-        //    var builder = new MeshBuilder();
-        //    foreach (ISelectableItem item in unionItems)
-        //    {
-        //        var geomItem = Geometry.Empty;
-
-        //        if (item is IPolygonBoardCanvasItem poly)
-        //        {
-        //            //creating a mesh from a poly geometry doesn't work anyway, therefore it is commented
-        //            //if (poly.PolygonGeometry != null)
-        //            //{
-        //            //    geomItem = poly.PolygonGeometry.Clone();//?
-        //            //                                            //that geometry has dpi transform
-        //            //    geomItem.Transform = item.GetTransform().ToMatrixTransform();
-        //            //}
-
-        //        }
-        //        else
-        //        {
-        //            geomItem = (Geometry)GeometryHelper.GetGeometry(item);
-        //            if (geomItem.IsEmpty())
-        //                continue;
-
-        //            geomItem.Transform = item.GetTransform().ToMatrixTransform();
-        //        }
-
-        //        foreach (ISelectableItem extractItem in extractItems)
-        //        {
-        //            var extractGeom = (Geometry)GeometryHelper.GetGeometry(extractItem);
-        //            extractGeom.Transform = extractItem.GetTransform().ToMatrixTransform();
-
-        //            geomItem = Geometry.Combine(geomItem, extractGeom, System.Windows.Media.GeometryCombineMode.Exclude, null, 5e-3, ToleranceType.Absolute);
-        //        }
-
-        //        var checkHoles = true;
-
-        //        if (item is IArcCanvasItem)
-        //            checkHoles = false;
-        //        else if (item is IPolygonCanvasItem)
-        //            checkHoles = !(item as IPolygonCanvasItem).IsFilled;
-
-        //        //using negative values because we start from 0 and go deeper
-        //        ExtrudeGeometry(builder, geomItem, new Vector3D(1, 0, 0), new Point3D(0, 0, -start), new Point3D(0, 0, -(start + thickness)), checkHoles);
-        //    }
-
-        //    return builder.ToMesh(true);
-        //}
-
-
-        //public object BuildMeshFromItems(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness)
-        //{
-        //    return BuildMeshFromItemsInternal(unionItems, extractItems, start, thickness);
-        //}
-
         public IMeshModel BuildMeshFromItems2(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness)
         {
             var mg = BuildMeshFromItemsInternal2(unionItems, extractItems, start, thickness);
@@ -420,7 +331,6 @@ namespace IDE.Core.Collision
             if (polyItems.Count > 0)
             {
                 fills = new List<IList<XPoint>>();
-                // holes = new List<IList<XPoint>>();
 
                 var polyPourProcessor = ServiceProvider.Resolve<IPolygonGeometryOutlinePourProcessor>();
 
@@ -438,6 +348,74 @@ namespace IDE.Core.Collision
                 }
 
                 ExtrudeOutlines(builder, fills, holes, start, thickness);
+            }
+
+            builder.Normals = null;
+            builder.ComputeNormalsAndTangents(MeshFaces.Default, builder.HasTangents);
+
+            return builder.ToMesh();
+        }
+
+
+        public IMeshModel BuildMeshFromShapes(IEnumerable<IShape> unionItems, IEnumerable<IShape> extractItems, double thickness)
+        {
+            var mg = BuildMeshFromShapesInternal(unionItems, extractItems, thickness);
+            return mg.ToMeshModel();
+        }
+
+        private MeshGeometry3D BuildMeshFromShapesInternal(IEnumerable<IShape> unionShapes, IEnumerable<IShape> extractShapes, double thickness)
+        {
+            var geometryOutlineHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
+            var builder = new MeshBuilder();
+
+            IList<IList<XPoint>> fills = new List<IList<XPoint>>();
+            IList<IList<XPoint>> holes = new List<IList<XPoint>>();
+
+            foreach (var shape in unionShapes)
+            {
+                if (shape is IPouredPolygonShape)
+                    continue;
+
+                var geomItem = geometryOutlineHelper.GetShapeGeometry(shape);
+
+                if (geomItem == null)
+                    continue;
+
+                AppendOutlines(geomItem, fills);
+            }
+
+            foreach (var  shape in extractShapes)
+            {
+                var geomItem = geometryOutlineHelper.GetShapeGeometry(shape);
+
+                if (geomItem == null)
+                    continue;
+
+                AppendOutlines(geomItem, holes);
+            }
+
+            fills = GeometryOutline.Combine(fills, null, Common.Geometries.GeometryCombineMode.Union);
+            holes = GeometryOutline.Combine(holes, null, Common.Geometries.GeometryCombineMode.Union);
+
+            ExtrudeOutlines(builder, fills, holes, thickness);
+
+            //polys last
+            var polyShapes = unionShapes.OfType<IPouredPolygonShape>().ToList();
+            if(polyShapes.Count>0)
+            {
+                fills = new List<IList<XPoint>>();
+
+                foreach(var poly in polyShapes)
+                {
+                    var geomItem = poly.FinalGeometry;
+
+                    if (geomItem == null)
+                        continue;
+
+                    AppendOutlines(geomItem, fills);
+                }
+
+                ExtrudeOutlines(builder, fills, holes, thickness);
             }
 
             builder.Normals = null;
@@ -485,7 +463,7 @@ namespace IDE.Core.Collision
 
             var textDirection = new XVector3D(1, 0, 0);
             var p0 = new XPoint3D(0, 0, -start);
-            var p1 = new XPoint3D(0, 0, -(start + thickness));
+            var p1 = new XPoint3D(0, 0, -( start + thickness ));
 
             // Build the polygon to mesh (using Triangle.NET to triangulate)
             var polygon = new TriangleNet.Geometry.Polygon();
@@ -522,6 +500,11 @@ namespace IDE.Core.Collision
             }
 
             TriangulatePoly(builder, textDirection, p0, p1, polygon, reverse: true);
+        }
+
+        private void ExtrudeOutlines(MeshBuilder builder, IList<IList<XPoint>> fills, IList<IList<XPoint>> holes, double thickness)
+        {
+            ExtrudeOutlines(builder, fills, holes, 0.0d, thickness);
         }
 
         public IMeshModel CreateTube(IList<XPoint3D> xpath, double diameter, int thetaDiv, bool capped)

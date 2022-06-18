@@ -579,7 +579,7 @@ namespace IDE.Documents.Views
                 DisplayColor = color,
                 LayerColor = layerColor,
                 LayerType = layerType,
-                PositionZ = posZ
+                //PositionZ = posZ
             };
         }
 

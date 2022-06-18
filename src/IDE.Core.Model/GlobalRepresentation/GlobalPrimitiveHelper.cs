@@ -323,18 +323,33 @@ namespace IDE.Core.Model.GlobalRepresentation
 
         private GlobalPrimitive GetRegionPrimitive(IRegionCanvasItem item)
         {
-            var figure = new GlobalFigurePrimitive();
+            //var figure = new GlobalFigurePrimitive();
 
+            //var startPoint = item.StartPoint;
+
+            //foreach (var regionItem in item.Items)
+            //{
+            //    var primitive = GetGlobalPrimitive(regionItem, startPoint, item.Width);
+            //    startPoint = regionItem.EndPoint;
+            //    figure.FigureItems.Add(primitive);
+            //}
+
+            //return figure;
+
+            var region = new GlobalRegionPrimitive();
+            region.Width = item.Width;
             var startPoint = item.StartPoint;
+            region.StartPoint = startPoint;
 
             foreach (var regionItem in item.Items)
             {
                 var primitive = GetGlobalPrimitive(regionItem, startPoint, item.Width);
                 startPoint = regionItem.EndPoint;
-                figure.FigureItems.Add(primitive);
+                region.Items.Add(primitive);
             }
 
-            return figure;
+            return region;
+
         }
 
         private GlobalPrimitive GetPlanePrimitive(IPlaneBoardCanvasItem item)
