@@ -35,7 +35,7 @@ namespace IDE.Core.Gerber
 
         public Task<BuildResult> Build(IBoardDesigner board, BoardGlobalLayerOutput layer, string gerberFilePath)
         {
-           // _board = board;
+            // _board = board;
 
             LoadOptions(board);
 
@@ -238,17 +238,22 @@ namespace IDE.Core.Gerber
         private double ToGerberX(double x)//x is in mm
         {
             if (units == Modes.Inches)
-                return ( x - boardOriginX ) / 25.4;
+                return RoundGerberValue(( x - boardOriginX ) / 25.4);
 
-            return x - boardOriginX;
+            return RoundGerberValue(x - boardOriginX);
         }
 
         private double ToGerberY(double y)//y is in mm
         {
             if (units == Modes.Inches)
-                return ( boardOriginY - y ) / 25.4;
+                return RoundGerberValue(( boardOriginY - y ) / 25.4);
 
-            return boardOriginY - y;
+            return RoundGerberValue(boardOriginY - y);
+        }
+
+        private double RoundGerberValue(double x)
+        {
+            return Math.Round(x, formatStatementDigitsAfterDecimal);
         }
 
         private XPoint ToGerberPoint(XPoint p)
@@ -258,6 +263,7 @@ namespace IDE.Core.Gerber
 
         private double ToGerberRot(double rot)
         {
+            rot = Math.Round(rot, 2);
             return -rot;
         }
 

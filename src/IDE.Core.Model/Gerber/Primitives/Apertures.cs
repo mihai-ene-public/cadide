@@ -132,6 +132,7 @@ namespace IDE.Core.Gerber
 
         protected string WriteDouble(double number)
         {
+            number = Math.Round(number, 6);
             return number.ToString(CultureInfo.InvariantCulture);
         }
     }
@@ -224,7 +225,7 @@ namespace IDE.Core.Gerber
         {
             if (Width == 0.00d || Height == 0.00d)
                 return;
-            writer.WriteLine($"{Code},{(int)Exposure},{WriteDouble( Width)},{WriteDouble(Height)},{WriteDouble(CenterPointX)},{WriteDouble(CenterPointY)},$1*");
+            writer.WriteLine($"{Code},{(int)Exposure},{WriteDouble(Width)},{WriteDouble(Height)},{WriteDouble(CenterPointX)},{WriteDouble(CenterPointY)},$1*");
         }
     }
 

@@ -66,7 +66,11 @@ namespace IDE.Core.Build
 
         string GetAssemblyRot(double rot)
         {
-            rot = -rot;
+            if (rot != 0.00d)
+            {
+                rot = -Math.Round(rot, 2);
+            }
+
             return rot.ToString("0", CultureInfo.InvariantCulture);
         }
 

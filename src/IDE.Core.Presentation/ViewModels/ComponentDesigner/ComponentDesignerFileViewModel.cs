@@ -1076,7 +1076,8 @@ namespace IDE.Documents.Views
                 var pads = ((from p in footprint.Footprint.Items.OfType<Pad>()
                              select new { p.number })
                          .Union(from p in footprint.Footprint.Items.OfType<Smd>()
-                                select new { p.number })).OrderBy(p => p.number).ToList();
+                                select new { p.number }))
+                         .OrderBy(p => p.number, new IndexedNameComparer()).ToList();
 
 
                 foreach (var pad in pads)

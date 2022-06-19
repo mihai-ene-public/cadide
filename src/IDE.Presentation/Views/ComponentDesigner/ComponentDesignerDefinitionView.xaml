@@ -115,7 +115,8 @@
                           IsExpanded="True"
                           Margin="0,10,0,0">
                     <DataGrid ItemsSource="{Binding Footprint.Connects}"
-                              AutoGenerateColumns="False">
+                              AutoGenerateColumns="False"
+                              CanUserSortColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Pad}"
                                                 Header="Pad"

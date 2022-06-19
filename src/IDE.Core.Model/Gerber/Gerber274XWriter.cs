@@ -342,19 +342,9 @@ namespace IDE.Core.Gerber
 %ADD11RORD11,45*%
             */
             int id = GetNextId();
-            //WriteLine($"%AMRORD{id.ToString(dFormat)}*");
-            ////rectangle
-            //WriteLine($"21,1,{width},{height},0,0,$1*");
-            //if (isRounded)
-            //{
-            //    //one circle up and one down
-            //    WriteLine($"1,1,{width},0.0,{0.5 * height},$1*");
-            //    WriteLine($"1,1,{width},0.0,{-0.5 * height},$1*");
-            //}
-            //WriteLine("%");
             var am = new ApertureMacro
             {
-                Name = $"RORD{ id.ToString(dFormat) }"
+                Name = $"RORD{id.ToString(dFormat)}"
             };
 
             //primitives are built in a generic way; we need to optimize this
@@ -405,7 +395,7 @@ namespace IDE.Core.Gerber
                     Exposure = AMPrimitiveExposure.On,
                     Diameter = diameter,
                     CenterX = -0.5 * aperture.Width + aperture.CornerRadius,
-                    CenterY =- 0.5 * aperture.Height + aperture.CornerRadius
+                    CenterY = -0.5 * aperture.Height + aperture.CornerRadius
                 });
                 am.Primitives.Add(new AMCirclePrimitive
                 {
@@ -416,14 +406,22 @@ namespace IDE.Core.Gerber
                 });
             }
             am.WriteTo(this);
-            WriteLine($"%ADD{id.ToString(dFormat)}{am.Name},{aperture.Rot}*%");
+
+            //there is an issue that for some values when aperture.Rot is 0, then the string gets as -0
+            var rot = 0.00d;
+            if (aperture.Rot != rot)
+            {
+                rot = Math.Round(aperture.Rot, 2);
+            }
+            var definition = $"%ADD{id.ToString(dFormat)}{am.Name},{rot}*%";
+            WriteLine(definition);
 
             return id;
         }
 
         string GetApertureDefinitionString(int codeNumber, ApertureTypes apertureType, params double[] parameters)
         {
-            var pString = string.Join("X", parameters.Select(p => p.ToString(coordinateFormat, CultureInfo.InvariantCulture)));
+            var pString = string.Join("X", parameters.Select(p => p.ToString(CultureInfo.InvariantCulture)));
             var ret = $"%ADD{codeNumber.ToString(dFormat)}{apertureType},{pString}*%";
             return ret;
         }
