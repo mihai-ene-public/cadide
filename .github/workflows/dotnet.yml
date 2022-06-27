@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: windows-latest
+    
+    env:
+      SolutionPath: src/cadide.sln
       
     steps:
     - name: Checkout
@@ -21,16 +24,14 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: src
-      
+      run: dotnet restore $env:SolutionPath
+            
     - name: Build
-      run: dotnet build --no-restore
-      if: ${{false}}
-      working-directory: src
-      
+      run: dotnet build --no-restore $env:SolutionPath
+      if: ${{true}}
+            
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      if: ${{false}}
-      working-directory: src
+      run: dotnet test --no-build --verbosity normal $env:SolutionPath
+      if: ${{true}}
+      #working-directory: src
 
