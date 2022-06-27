@@ -22,12 +22,15 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: src
       
     - name: Build
       run: dotnet build --no-restore
       if: ${{false}}
+      working-directory: src
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
       if: ${{false}}
+      working-directory: src
 
