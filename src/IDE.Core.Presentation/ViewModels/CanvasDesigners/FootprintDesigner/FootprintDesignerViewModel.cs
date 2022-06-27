@@ -834,9 +834,12 @@ namespace IDE.Documents.Views
 
         async Task ShowLayersGeometries()
         {
-            var boardPreviewHelper = new Footprint3DPreviewHelper(_dispatcher);
+            //var boardPreviewHelper = new Footprint3DPreviewHelper(_dispatcher);
+            //var model = await boardPreviewHelper.GeneratePreview(this);
 
+            var boardPreviewHelper = new Board3DPreviewGlobalHelper(_dispatcher);
             var model = await boardPreviewHelper.GeneratePreview(this);
+
             model.Items = modelsDictionary.Keys.Cast<ISelectableItem>().ToList();
 
 

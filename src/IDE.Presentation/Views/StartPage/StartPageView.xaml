@@ -204,7 +204,7 @@
                    Grid.RowSpan="2"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
-                   Width="100" />
+                   Width="64" />
 
         </Grid>
     </ScrollViewer>

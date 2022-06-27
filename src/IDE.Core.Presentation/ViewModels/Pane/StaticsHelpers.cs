@@ -22,7 +22,7 @@
         /// Get a path to the directory where the application
         /// can persist/load user data on session exit and re-start.
         /// </summary>
-        public static string DirAppData => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CadIde");
+        public static string DirAppData => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "XNoCAD");
 
         /// <summary>
         /// Get a path to the directory where the user store his documents
@@ -34,7 +34,7 @@
         /// </summary>
         public static string AssemblyTitle => Assembly.GetEntryAssembly().GetName().Name;
 
-        public static string ApplicationTitle => "CadIde";
+        public static string ApplicationTitle => "XNoCAD";
 
         /// <summary>
         /// contains edition name

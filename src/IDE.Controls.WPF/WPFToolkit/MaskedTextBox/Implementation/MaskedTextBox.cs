@@ -1035,8 +1035,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = this.CanDelete( this.SelectionStart, this.SelectionLength, true, this.MaskedTextProvider.Clone() as MaskedTextProvider );
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecuteDeletePreviousWord( object sender, CanExecuteRoutedEventArgs e )
@@ -1065,8 +1063,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = canDeletePreviousWord;
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecuteDeleteNextWord( object sender, CanExecuteRoutedEventArgs e )
@@ -1095,8 +1091,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = canDeleteNextWord;
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecuteBackspace( object sender, CanExecuteRoutedEventArgs e )
@@ -1107,8 +1101,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = this.CanDelete( this.SelectionStart, this.SelectionLength, false, this.MaskedTextProvider.Clone() as MaskedTextProvider );
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecuteCut( object sender, CanExecuteRoutedEventArgs e )
@@ -1130,8 +1122,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = canCut;
       e.Handled = true;
 
-      if( ( !canCut ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecutePaste( object sender, CanExecuteRoutedEventArgs e )
@@ -1164,8 +1154,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = canPaste;
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void CanExecuteCopy( object sender, CanExecuteRoutedEventArgs e )
@@ -1176,8 +1164,6 @@ namespace Xceed.Wpf.Toolkit
       e.CanExecute = !m_maskedTextProvider.IsPassword;
       e.Handled = true;
 
-      if( ( !e.CanExecute ) && ( this.BeepOnError ) )
-        System.Media.SystemSounds.Beep.Play();
     }
 
     private void ExecuteCopy()
@@ -1185,7 +1171,6 @@ namespace Xceed.Wpf.Toolkit
       string selectedText = this.GetSelectedText();
       try
       {
-        new UIPermission( UIPermissionClipboard.AllClipboard ).Demand();
 
         if( selectedText.Length == 0 )
         {
@@ -1388,11 +1373,6 @@ namespace Xceed.Wpf.Toolkit
             this.RefreshCurrentText( false );
 
           this.SelectionStart = caretIndex + 1;
-        }
-        else
-        {
-          if( this.BeepOnError )
-            System.Media.SystemSounds.Beep.Play();
         }
 
         if( this.SelectionLength > 0 )
@@ -1720,11 +1700,6 @@ namespace Xceed.Wpf.Toolkit
 
         this.CaretIndex = tentativeCaretIndex + 1;
       }
-      else
-      {
-        if( this.BeepOnError )
-          System.Media.SystemSounds.Beep.Play();
-      }
     }
 
     internal virtual bool CanReplace( MaskedTextProvider provider, string text, int startPosition, int selectionLength, bool rejectInputOnFirstFailure, out int tentativeCaretIndex )
@@ -1839,9 +1814,6 @@ namespace Xceed.Wpf.Toolkit
 
       if( !success )
       {
-        if( this.BeepOnError )
-          System.Media.SystemSounds.Beep.Play();
-
         return;
       }
 

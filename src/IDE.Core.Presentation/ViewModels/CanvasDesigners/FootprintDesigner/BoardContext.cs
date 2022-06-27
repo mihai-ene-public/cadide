@@ -4,7 +4,7 @@ using IDE.Core.Interfaces;
 
 namespace IDE.Documents.Views;
 
-internal class BoardContext
+public class BoardContext
 {
     public ICanvasItem PcbBody { get; set; }
 

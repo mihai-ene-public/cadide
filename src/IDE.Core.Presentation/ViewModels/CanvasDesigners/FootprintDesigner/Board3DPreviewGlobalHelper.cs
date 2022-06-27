@@ -35,7 +35,6 @@ public class Board3DPreviewGlobalHelper
     {
         var validLayerTypes = new[] { LayerType.Signal,
                                       LayerType.Plane,
-                                      //LayerType.PasteMask,//?
                                       LayerType.SolderMask,
                                       LayerType.SilkScreen,
                                       LayerType.Dielectric };
@@ -44,43 +43,7 @@ public class Board3DPreviewGlobalHelper
         var buildResult = outputHelper.Build(board, validLayerTypes);
 
         var stackLayers = BuildLayerOrder(buildResult.Layers);
-
-        IList<Preview3DLayerData> solidLayers = new List<Preview3DLayerData>();
-
-        //var layerStartHeight = 0.04d;
-        //var layerStartPos = 0.04d;// - boardTotalThickness;
-
-        foreach (var stackLayer in stackLayers)
-        {
-            var layerThickness = stackLayer.LayerThickness;
-            var layerStartPos = stackLayer.LayerPositionZ;
-
-
-            var meshColor = XColors.Gray;
-            var layerType = stackLayer.Layer.Layer.LayerType;
-            var layer = stackLayer.Layer;
-
-            _layerTypeColors.TryGetValue(layerType, out meshColor);
-
-
-            if (layerType == LayerType.SolderMask)
-            {
-                var previewLayer = BuildSolderMaskLayer(layer, meshColor, layerStartPos, layerThickness);
-                solidLayers.Add(previewLayer);
-            }
-            else if (layerType == LayerType.Dielectric)
-            {
-                var previewLayer = BuildDielectricLayer(layer, meshColor, layerStartPos, layerThickness);
-                solidLayers.Add(previewLayer);
-            }
-            else
-            {
-                var previewLayer = BuildAnyOtherLayer(layer, meshColor, layerStartPos, layerThickness);
-                solidLayers.Add(previewLayer);
-            }
-
-            layerStartPos += layerThickness;
-        }
+        var solidLayers = BuildSolidLayers(stackLayers);
 
         var previewModel = new BoardPreview3DViewModel((ICanvasDesignerFileViewModel)board, _dispatcher);
 
@@ -112,13 +75,98 @@ public class Board3DPreviewGlobalHelper
         return previewModel;
     }
 
+    public async Task<BoardPreview3DViewModel> GeneratePreview(IFootprintDesigner footprintDesigner)
+    {
+        var validLayerTypes = new[] { LayerType.Signal,
+                                      LayerType.Plane,
+                                      LayerType.SolderMask,
+                                      LayerType.SilkScreen,
+                                      LayerType.Dielectric };
+
+        var outputHelper = new BoardGlobalOutputHelper();
+        var buildResult = outputHelper.Build(footprintDesigner, validLayerTypes);
+
+        var stackLayers = BuildLayerOrder(buildResult.Layers);
+        var solidLayers = BuildSolidLayers(stackLayers);
+
+        var previewModel = new BoardPreview3DViewModel((ICanvasDesignerFileViewModel)footprintDesigner, _dispatcher);
+
+        //offset
+        var bodyRect = buildResult.BodyRectangle;
+        previewModel.OffsetX = -bodyRect.X - 0.5 * bodyRect.Width;
+        previewModel.OffsetY = -bodyRect.Y - 0.5 * bodyRect.Height;
+
+        previewModel.Preview3DLayers = solidLayers;
+
+        await Task.CompletedTask;
+
+        return previewModel;
+    }
+
+    private IList<Preview3DLayerData> BuildSolidLayers(IList<StackLayer> stackLayers)
+    {
+        IList<Preview3DLayerData> solidLayers = new List<Preview3DLayerData>();
+
+
+        foreach (var stackLayer in stackLayers)
+        {
+            var layerThickness = stackLayer.LayerThickness;
+            var layerStartPos = stackLayer.LayerPositionZ;
+
+
+            var meshColor = XColors.Gray;
+            var layerType = stackLayer.Layer.Layer.LayerType;
+            var layer = stackLayer.Layer;
+
+            _layerTypeColors.TryGetValue(layerType, out meshColor);
+
+
+            if (layerType == LayerType.SolderMask)
+            {
+                var previewLayer = BuildSolderMaskLayer(layer, meshColor, layerStartPos, layerThickness);
+                solidLayers.Add(previewLayer);
+            }
+            else if (layerType == LayerType.Dielectric)
+            {
+                var previewLayer = BuildDielectricLayer(layer, meshColor, layerStartPos, layerThickness);
+                solidLayers.Add(previewLayer);
+            }
+            else
+            {
+                var previewLayer = BuildAnyOtherLayer(layer, meshColor, layerStartPos, layerThickness);
+                solidLayers.Add(previewLayer);
+            }
+
+        }
+
+        return solidLayers;
+    }
+
+
+
     private double GetLayerThickness(BoardGlobalLayerOutput layer)
     {
-        var layerThickness = 0.01;
-        if (layer.Layer.Thickness > 0.0)
+        var layerThickness = GetDefaultThicknessForLayerType(layer.Layer.LayerType);
+        if (layer.Layer.Thickness > 0.01d)
             layerThickness = layer.Layer.Thickness;
 
         return layerThickness;
+    }
+
+    private double GetDefaultThicknessForLayerType(LayerType layerType)
+    {
+        var d = new Dictionary<LayerType, double>
+        {
+            [LayerType.Signal] = 0.01d,
+            [LayerType.SolderMask] = 0.011d,
+            [LayerType.Dielectric] = 1.55d,
+            [LayerType.SilkScreen] = 0.01d,
+        };
+
+        if (d.ContainsKey(layerType))
+            return d[layerType];
+
+        return 0.01d;
     }
 
     private StackLayer GetStackLayer(BoardGlobalLayerOutput layer, double layerPosZ)
@@ -164,7 +212,7 @@ public class Board3DPreviewGlobalHelper
         var tMask = layers.FirstOrDefault(l => l.Layer.LayerId == LayerConstants.SolderTopLayerId);
         if (tMask != null)
         {
-           // var prevLayer = stackLayers.Last();
+            // var prevLayer = stackLayers.Last();
             var stackLayer = GetStackLayer(tMask, layerPosZ);
             //layerPosZ = prevLayer.LayerPositionZ;
             //stackLayer.LayerThickness += prevLayer.LayerThickness;
@@ -183,7 +231,7 @@ public class Board3DPreviewGlobalHelper
             stackLayers.Add(stackLayer);
         }
 
-       
+
 
         //stackup inner layers in the order presented in the layers tab in properties: signal, plane, dielectric
         var bottomSideLayerIds = new[]

@@ -3,6 +3,7 @@ using IDE.Core.Interfaces;
 using IDE.Core.Model.GlobalRepresentation;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Storage;
+using IDE.Core.Types.Media;
 using IDE.Documents.Views;
 
 namespace IDE.Core.Build;
@@ -12,15 +13,18 @@ public class BoardGlobalOutputHelper
     public BoardGlobalOutputHelper()
     {
         _globalPrimitiveHelper = new GlobalPrimitiveHelper();
+        _boardContextBuilder = new BoardContextBuilder();
     }
 
     private readonly GlobalPrimitiveHelper _globalPrimitiveHelper;
+    private readonly BoardContextBuilder _boardContextBuilder;
 
     public BuildGlobalResult Build(IBoardDesigner board, LayerType[] validLayerTypes)
     {
-        var boardContext = BuildBoardContext(board);
+        var canvasModel = board.CanvasModel;
+        var boardContext = _boardContextBuilder.BuildBoardContext(canvasModel);
 
-        var layers = BuildLayers(board, boardContext, validLayerTypes);
+        var layers = BuildLayers(board.LayerItems, boardContext, validLayerTypes);
         var drillPairs = BuildDrillPairs(board, boardContext);
 
         var brdOutline = _globalPrimitiveHelper.GetGlobalPrimitive(board.BoardOutline);
@@ -35,6 +39,87 @@ public class BoardGlobalOutputHelper
             DrillLayers = drillPairs
         };
     }
+
+    public BuildGlobalResult Build(IFootprintDesigner footprintDesigner, LayerType[] validLayerTypes)
+    {
+        var canvasModel = footprintDesigner.CanvasModel;
+        var boardContext = _boardContextBuilder.BuildBoardContext(canvasModel);
+
+        var rect = GetBoundingRect(boardContext.CanvasItems.Cast<ISelectableItem>());
+
+        const int rectSizeModifier = 3;
+        var rectSize = rectSizeModifier * Math.Max(rect.Width, rect.Height);
+        var rectCenter = rect.GetCenter();
+        var footprintRectangle = new RectangleBoardCanvasItem
+        {
+            BorderWidth = 0,
+            IsFilled = true,
+            X = rectCenter.X,
+            Y = rectCenter.Y,
+            Width = rectSize,
+            Height = rectSize
+        };
+
+        boardContext.PcbBody = footprintRectangle;
+
+        var docLayers = new List<ILayerDesignerItem>(footprintDesigner.LayerItems);
+        //add some extra layers
+        docLayers.Add(new LayerDesignerItem(null)
+        {
+            LayerType = LayerType.Dielectric
+        });
+        docLayers.Add(new LayerDesignerItem(null)
+        {
+            LayerType = LayerType.Signal,
+            LayerId = LayerConstants.SignalBottomLayerId
+        });
+        docLayers.Add(new LayerDesignerItem(null)
+        {
+            LayerType = LayerType.SolderMask,
+            LayerId = LayerConstants.SolderBottomLayerId
+        });
+
+        var layers = BuildLayers(docLayers, boardContext, validLayerTypes);
+
+        //todo: maybe create a region for this rectangle
+        var brdOutline = _globalPrimitiveHelper.GetGlobalPrimitive(footprintRectangle);
+        foreach (var layer in layers)
+        {
+            layer.BoardOutline = brdOutline;
+        }
+
+        var bodyRect = footprintRectangle.GetBoundingRectangle();
+
+        return new BuildGlobalResult
+        {
+            Layers = layers,
+            BodyRectangle = bodyRect,
+        };
+    }
+
+    private XRect GetBoundingRect(IEnumerable<ISelectableItem> canvasItems)
+    {
+        var rect = XRect.Empty;
+
+
+        var pads = canvasItems.OfType<IPadCanvasItem>().ToList();
+
+        var rectSource = pads.Count > 0 ? pads : canvasItems;
+
+        //offset all primitives to the center given by the center of the bounding rectange of all primitives
+        foreach (BaseCanvasItem item in rectSource)
+        {
+            var itemRect = item.GetBoundingRectangle();
+            rect.Union(itemRect);
+        }
+
+        if (rect.IsEmpty)
+            return new XRect(0, 0, 5, 5);
+
+        return rect;
+    }
+
+
 
     private IList<GlobalPrimitive> GetPrimitives(IEnumerable<ICanvasItem> canvasItems)
     {
@@ -59,7 +144,7 @@ public class BoardGlobalOutputHelper
                                                                  && d.LayerEnd.LayerId == LayerConstants.SignalBottomLayerId);
 
         var drillPrimitives = GetPrimitives(boardContext.DrillItems.Cast<ICanvasItem>());
-        
+
 
         var millPrimitives = GetPrimitives(boardContext.MillingItems);
 
@@ -98,80 +183,7 @@ public class BoardGlobalOutputHelper
         return drillLayers;
     }
 
-    private BoardContext BuildBoardContext(IBoardDesigner board)
-    {
-        var boardContext = new BoardContext();
-
-        var canvasModel = board.CanvasModel;
-
-        var canvasItems = canvasModel.GetItems().ToList();
-        boardContext.CanvasItems.AddRange(canvasItems);
-
-        boardContext.PcbBody = canvasItems.OfType<RegionBoardCanvasItem>().FirstOrDefault();
-
-        //smd and pad
-        var footprints = canvasItems.OfType<FootprintBoardCanvasItem>().ToList();
-        var footprintItems = ( from fp in footprints
-                               from p in fp.Items
-                               select p
-                              ).ToList();
-
-        //we add designators as text items
-        var designators = ( from fp in footprints
-                            where fp.ShowName
-                            select (BaseCanvasItem)fp.Designator )
-                          .ToList();
-
-        footprintItems.AddRange(designators);
-
-        boardContext.FootprintItems.AddRange(footprintItems);
-
-        boardContext.PadItems.AddRange(footprintItems.OfType<IPadCanvasItem>());
-        boardContext.PadItems.AddRange(canvasItems.OfType<IPadCanvasItem>());
-        boardContext.ViaItems.AddRange(canvasItems.OfType<ViaCanvasItem>());
-
-        //todo: we must assign a layer for the drill pair; for now, top and bottom
-
-        //drills from pads and holes
-        boardContext.DrillItems.AddRange(boardContext.PadItems.OfType<PadThtCanvasItem>().Select(
-        p => new HoleCanvasItem
-        {
-            Drill = p.Drill,
-            X = p.X + p.Hole.X,
-            Y = p.Y + p.Hole.Y,
-            DrillType = p.Hole.DrillType,
-            Rot = p.Hole.Rot,
-            Height = p.Hole.Height,
-            ParentObject = p.ParentObject
-        }
-        ));
-
-        boardContext.DrillItems.AddRange(footprintItems.OfType<HoleCanvasItem>()); //holes from footprints
-        boardContext.DrillItems.AddRange(canvasItems.OfType<HoleCanvasItem>());
-        //vias from top-bottom
-        boardContext.DrillItems.AddRange(boardContext.ViaItems.Where(v => v.DrillPair?.LayerStart?.LayerId == LayerConstants.SignalTopLayerId
-                                    && v.DrillPair.LayerEnd?.LayerId == LayerConstants.SignalBottomLayerId)
-            .Select(v => new HoleCanvasItem
-            {
-                Drill = v.Drill,
-                X = v.X,
-                Y = v.Y,
-                ParentObject = v
-            }));
-
-        boardContext.MillingItems.AddRange(canvasItems.OfType<SingleLayerBoardCanvasItem>()
-                                .Where(c => c.Layer != null && c.Layer.LayerId == LayerConstants.MultiLayerMillingId));
-        boardContext.MillingItems.AddRange(footprintItems.OfType<SingleLayerBoardCanvasItem>().Where(c => c.Layer != null && c.Layer.LayerId == LayerConstants.MultiLayerMillingId));
-
-        boardContext.PadItemsOnTop.AddRange(boardContext.PadItems.Where(p => ( ( (BaseCanvasItem)p ).ParentObject as FootprintBoardCanvasItem )?.Placement == FootprintPlacement.Top
-                                                                           || ( (SingleLayerBoardCanvasItem)p ).LayerId == LayerConstants.SignalTopLayerId));
-
-        boardContext.PadItemsOnBottom.AddRange(boardContext.PadItems.Where(p => ( ( (BaseCanvasItem)p ).ParentObject as FootprintBoardCanvasItem )?.Placement == FootprintPlacement.Bottom
-                                                                        || ( (SingleLayerBoardCanvasItem)p ).LayerId == LayerConstants.SignalBottomLayerId));
-
-        return boardContext;
-    }
-    private List<BoardGlobalLayerOutput> BuildLayers(IBoardDesigner board, BoardContext boardContext, LayerType[] validLayerTypes)
+    private List<BoardGlobalLayerOutput> BuildLayers(IList<ILayerDesignerItem> documentLayers, BoardContext boardContext, LayerType[] validLayerTypes)
     {
         var outputLayers = new List<BoardGlobalLayerOutput>();
 
@@ -180,7 +192,7 @@ public class BoardGlobalOutputHelper
                                           .Where(p => validLayerTypes.Contains(p.GetLayerType()))
                                           .GroupBy(p => p.LayerId);
 
-        var layers = board.LayerItems.Where(l => validLayerTypes.Contains(l.LayerType)).ToList();
+        var layers = documentLayers.Where(l => validLayerTypes.Contains(l.LayerType)).ToList();
 
         foreach (var layer in layers)
         {
