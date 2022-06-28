@@ -32,6 +32,6 @@ jobs:
             
     - name: Test
       run: dotnet test --no-build --verbosity normal $env:SolutionPath
-      if: ${{true}}
+      if: ${{false}}
       #working-directory: src
 
