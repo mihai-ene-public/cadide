@@ -27,7 +27,7 @@ jobs:
       run: dotnet restore $env:SolutionPath
             
     - name: Build
-      run: dotnet build --no-restore $env:SolutionPath
+      run: dotnet build --configuration Release --no-restore $env:SolutionPath
       if: ${{true}}
             
     - name: Test
