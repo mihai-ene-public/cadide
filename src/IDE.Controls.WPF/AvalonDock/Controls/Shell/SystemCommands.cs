@@ -90,33 +90,6 @@ namespace Microsoft.Windows.Shell
       _PostSystemCommand( window, SC.RESTORE );
     }
 
-    /// <summary>Display the system menu at a specified location.</summary>
-    /// <param name="screenLocation">The location to display the system menu, in logical screen coordinates.</param>
-    public static void ShowSystemMenu( Window window, Point screenLocation )
-    {
-      Verify.IsNotNull( window, "window" );
-      ShowSystemMenuPhysicalCoordinates( window, DpiHelper.LogicalPixelsToDevice( screenLocation ) );
-    }
-
-    internal static void ShowSystemMenuPhysicalCoordinates( Window window, Point physicalScreenLocation )
-    {
-      const uint TPM_RETURNCMD = 0x0100;
-      const uint TPM_LEFTBUTTON = 0x0;
-
-      Verify.IsNotNull( window, "window" );
-      IntPtr hwnd = new WindowInteropHelper( window ).Handle;
-      if( hwnd == IntPtr.Zero || !NativeMethods.IsWindow( hwnd ) )
-      {
-        return;
-      }
-
-      IntPtr hmenu = NativeMethods.GetSystemMenu( hwnd, false );
-
-      uint cmd = NativeMethods.TrackPopupMenuEx( hmenu, TPM_LEFTBUTTON | TPM_RETURNCMD, ( int )physicalScreenLocation.X, ( int )physicalScreenLocation.Y, hwnd, IntPtr.Zero );
-      if( 0 != cmd )
-      {
-        NativeMethods.PostMessage( hwnd, WM.SYSCOMMAND, new IntPtr( cmd ), IntPtr.Zero );
-      }
-    }
+    
   }
 }

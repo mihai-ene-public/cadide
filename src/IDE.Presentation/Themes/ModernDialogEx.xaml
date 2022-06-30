@@ -33,7 +33,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="controls:ModernWindow">
-          <Border x:Name="WindowBorder" Margin="{Binding Source={x:Static shell:SystemParameters2.Current}, Path=WindowNonClientFrameThickness}">
+          <Border x:Name="WindowBorder" Margin="1">
             <Border.Background>
               <SolidColorBrush x:Name="WindowBorderBackground" Color="{DynamicResource WindowBackgroundColor}" />
             </Border.Background>

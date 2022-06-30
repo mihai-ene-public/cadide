@@ -55,8 +55,10 @@ namespace IDE.Documents.Views
 
         }
 
-        async Task<List<ComponentDocument>> UpdatePartsFromSchematic(IBoardDesigner board, SchematicDocument schematic, ISolutionProjectNodeModel project)
+        private async Task<List<ComponentDocument>> UpdatePartsFromSchematic(IBoardDesigner board, SchematicDocument schematic, ISolutionProjectNodeModel project)
         {
+            await Task.CompletedTask;
+
             var canvasModel = board.CanvasModel;
 
             //there are refresh issues when adding new parts(footprints)

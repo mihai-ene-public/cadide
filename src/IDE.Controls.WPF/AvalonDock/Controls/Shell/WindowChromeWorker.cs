@@ -52,13 +52,7 @@ namespace Microsoft.Windows.Shell
     private bool _isHooked = false;
 
     // These fields are for tracking workarounds for WPF 3.5SP1 behaviors.
-    private bool _isFixedUp = false;
-    private bool _isUserResizing = false;
     private bool _hasUserMovedWindow = false;
-    private Point _windowPosAtStartOfUserMove = default( Point );
-
-    // Field to track attempts to force off Device Bitmaps on Win7.
-    private int _blackGlassFixupAttemptCount;
 
     /// <summary>Object that describes the current modifications being made to the chrome.</summary>
     private WindowChrome _chromeInfo;
@@ -86,22 +80,12 @@ namespace Microsoft.Windows.Shell
                 new HANDLE_MESSAGE(WM.DWMCOMPOSITIONCHANGED, _HandleDwmCompositionChanged),
             };
 
-      if( Utility.IsPresentationFrameworkVersionLessThan4 )
-      {
-        _messageTable.AddRange( new[]
-        {
-                   new HANDLE_MESSAGE(WM.SETTINGCHANGE,         _HandleSettingChange),
-                   new HANDLE_MESSAGE(WM.ENTERSIZEMOVE,         _HandleEnterSizeMove),
-                   new HANDLE_MESSAGE(WM.EXITSIZEMOVE,          _HandleExitSizeMove),
-                   new HANDLE_MESSAGE(WM.MOVE,                  _HandleMove),
-                } );
-      }
+
     }
 
     public void SetWindowChrome( WindowChrome newChrome )
     {
       VerifyAccess();
-      Assert.IsNotNull( _window );
 
       if( newChrome == _chromeInfo )
       {
@@ -139,19 +123,12 @@ namespace Microsoft.Windows.Shell
       var w = ( Window )d;
       var cw = ( WindowChromeWorker )e.NewValue;
 
-      // The WindowChromeWorker object should only be set on the window once, and never to null.
-      Assert.IsNotNull( w );
-      Assert.IsNotNull( cw );
-      Assert.IsNull( cw._window );
 
       cw._SetWindow( w );
     }
 
     private void _SetWindow( Window window )
     {
-      Assert.IsNull( _window );
-      Assert.IsNotNull( window );
-
       _window = window;
 
       // There are potentially a couple funny states here.
@@ -159,14 +136,6 @@ namespace Microsoft.Windows.Shell
       // We shouldn't add any hooks in that case, just exit early.
       // If the window hasn't yet been shown, then we need to make sure to remove hooks after it's closed.
       _hwnd = new WindowInteropHelper( _window ).Handle;
-
-      if( Utility.IsPresentationFrameworkVersionLessThan4 )
-      {
-        // On older versions of the framework the client size of the window is incorrectly calculated.
-        // We need to modify the template to fix this on behalf of the user.
-        Utility.AddDependencyPropertyChangeListener( _window, Window.TemplateProperty, _OnWindowPropertyChangedThatRequiresTemplateFixup );
-        Utility.AddDependencyPropertyChangeListener( _window, Window.FlowDirectionProperty, _OnWindowPropertyChangedThatRequiresTemplateFixup );
-      }
 
       _window.Closed += _UnsetWindow;
 
@@ -176,7 +145,6 @@ namespace Microsoft.Windows.Shell
         // We've seen that the HwndSource can't always be retrieved from the HWND, so cache it early.
         // Specifically it seems to sometimes disappear when the OS theme is changing.
         _hwndSource = HwndSource.FromHwnd( _hwnd );
-        Assert.IsNotNull( _hwndSource );
         _window.ApplyTemplate();
 
         if( _chromeInfo != null )
@@ -189,9 +157,7 @@ namespace Microsoft.Windows.Shell
         _window.SourceInitialized += ( sender, e ) =>
         {
           _hwnd = new WindowInteropHelper( _window ).Handle;
-          Assert.IsNotDefault( _hwnd );
           _hwndSource = HwndSource.FromHwnd( _hwnd );
-          Assert.IsNotNull( _hwndSource );
 
           if( _chromeInfo != null )
           {
@@ -203,12 +169,6 @@ namespace Microsoft.Windows.Shell
 
     private void _UnsetWindow( object sender, EventArgs e )
     {
-      if( Utility.IsPresentationFrameworkVersionLessThan4 )
-      {
-        Utility.RemoveDependencyPropertyChangeListener( _window, Window.TemplateProperty, _OnWindowPropertyChangedThatRequiresTemplateFixup );
-        Utility.RemoveDependencyPropertyChangeListener( _window, Window.FlowDirectionProperty, _OnWindowPropertyChangedThatRequiresTemplateFixup );
-      }
-
       if( _chromeInfo != null )
       {
         _chromeInfo.PropertyChangedThatRequiresRepaint -= _OnChromePropertyChangedThatRequiresRepaint;
@@ -231,20 +191,7 @@ namespace Microsoft.Windows.Shell
       window.SetValue( WindowChromeWorkerProperty, chrome );
     }
 
-    private void _OnWindowPropertyChangedThatRequiresTemplateFixup( object sender, EventArgs e )
-    {
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
-
-      if( _chromeInfo != null && _hwnd != IntPtr.Zero )
-      {
-        // Assume that when the template changes it's going to be applied.
-        // We don't have a good way to externally hook into the template
-        // actually being applied, so we asynchronously post the fixup operation
-        // at Loaded priority, so it's expected that the visual tree will be
-        // updated before _FixupFrameworkIssues is called.
-        _window.Dispatcher.BeginInvoke( DispatcherPriority.Loaded, ( _Action )_FixupFrameworkIssues );
-      }
-    }
+    
 
     private void _ApplyNewCustomChrome()
     {
@@ -266,8 +213,6 @@ namespace Microsoft.Windows.Shell
         _isHooked = true;
       }
 
-      _FixupFrameworkIssues();
-
       // Force this the first time.
       _UpdateSystemMenu( _window.WindowState );
       _UpdateFrameState( true );
@@ -275,138 +220,8 @@ namespace Microsoft.Windows.Shell
       NativeMethods.SetWindowPos( _hwnd, IntPtr.Zero, 0, 0, 0, 0, _SwpFlags );
     }
 
-    private void _FixupFrameworkIssues()
-    {
-      Assert.IsNotNull( _chromeInfo );
-      Assert.IsNotNull( _window );
-
-      // This margin is only necessary if the client rect is going to be calculated incorrectly by WPF.
-      // This bug was fixed in V4 of the framework.
-      if( !Utility.IsPresentationFrameworkVersionLessThan4 )
-      {
-        return;
-      }
-
-      if( _window.Template == null )
-      {
-        // Nothing to fixup yet.  This will get called again when a template does get set.
-        return;
-      }
-
-      // Guard against the visual tree being empty.
-      if( VisualTreeHelper.GetChildrenCount( _window ) == 0 )
-      {
-        // The template isn't null, but we don't have a visual tree.
-        // Hope that ApplyTemplate is in the queue and repost this, because there's not much we can do right now.
-        _window.Dispatcher.BeginInvoke( DispatcherPriority.Loaded, ( _Action )_FixupFrameworkIssues );
-        return;
-      }
-
-      var rootElement = ( FrameworkElement )VisualTreeHelper.GetChild( _window, 0 );
-
-      RECT rcWindow = NativeMethods.GetWindowRect( _hwnd );
-      RECT rcAdjustedClient = _GetAdjustedWindowRect( rcWindow );
-
-      Rect rcLogicalWindow = DpiHelper.DeviceRectToLogical( new Rect( rcWindow.Left, rcWindow.Top, rcWindow.Width, rcWindow.Height ) );
-      Rect rcLogicalClient = DpiHelper.DeviceRectToLogical( new Rect( rcAdjustedClient.Left, rcAdjustedClient.Top, rcAdjustedClient.Width, rcAdjustedClient.Height ) );
-
-      Thickness nonClientThickness = new Thickness(
-         rcLogicalWindow.Left - rcLogicalClient.Left,
-         rcLogicalWindow.Top - rcLogicalClient.Top,
-         rcLogicalClient.Right - rcLogicalWindow.Right,
-         rcLogicalClient.Bottom - rcLogicalWindow.Bottom );
-
-      if( rootElement != null )
-      {
-        rootElement.Margin = new Thickness(
-            0,
-            0,
-            -( nonClientThickness.Left + nonClientThickness.Right ),
-            -( nonClientThickness.Top + nonClientThickness.Bottom ) );
-      }
-
-      // The negative thickness on the margin doesn't properly get applied in RTL layouts.
-      // The width is right, but there is a black bar on the right.
-      // To fix this we just add an additional RenderTransform to the root element.
-      // This works fine, but if the window is dynamically changing its FlowDirection then this can have really bizarre side effects.
-      // This will mostly work if the FlowDirection is dynamically changed, but there aren't many real scenarios that would call for
-      // that so I'm not addressing the rest of the quirkiness.
-      if( rootElement != null )
-      {
-        if( _window.FlowDirection == FlowDirection.RightToLeft )
-        {
-          rootElement.RenderTransform = new MatrixTransform( 1, 0, 0, 1, -( nonClientThickness.Left + nonClientThickness.Right ), 0 );
-        }
-        else
-        {
-          rootElement.RenderTransform = null;
-        }
-      }
-
-      if( !_isFixedUp )
-      {
-        _hasUserMovedWindow = false;
-        _window.StateChanged += _FixupRestoreBounds;
-
-        _isFixedUp = true;
-      }
-    }
-
-    // There was a regression in DWM in Windows 7 with regard to handling WM_NCCALCSIZE to effect custom chrome.
-    // When windows with glass are maximized on a multimonitor setup the glass frame tends to turn black.
-    // Also when windows are resized they tend to flicker black, sometimes staying that way until resized again.
-    //
-    // This appears to be a bug in DWM related to device bitmap optimizations.  At least on RTM Win7 we can
-    // evoke a legacy code path that bypasses the bug by calling an esoteric DWM function.  This doesn't affect
-    // the system, just the application.
-    // WPF also tends to call this function anyways during animations, so we're just forcing the issue
-    // consistently and a bit earlier.
-    [SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
-    private void _FixupWindows7Issues()
-    {
-      if( _blackGlassFixupAttemptCount > 5 )
-      {
-        // Don't keep trying if there's an endemic problem with this.
-        return;
-      }
-
-      if( Utility.IsOSWindows7OrNewer && NativeMethods.DwmIsCompositionEnabled() )
-      {
-        ++_blackGlassFixupAttemptCount;
-
-        bool success = false;
-        try
-        {
-          DWM_TIMING_INFO? dti = NativeMethods.DwmGetCompositionTimingInfo( _hwnd );
-          success = dti != null;
-        }
-        catch( Exception )
-        {
-          // We aren't sure of all the reasons this could fail.
-          // If we find new ones we should consider making the NativeMethod swallow them as well.
-          // Since we have a limited number of retries and this method isn't actually critical, just repost.
-
-          // Disabling this for the published code to reduce debug noise.  This will get compiled away for retail binaries anyways.
-          //Assert.Fail(e.Message);
-        }
-
-        // NativeMethods.DwmGetCompositionTimingInfo swallows E_PENDING.
-        // If the call wasn't successful, try again later.
-        if( !success )
-        {
-          Dispatcher.BeginInvoke( DispatcherPriority.Loaded, ( _Action )_FixupWindows7Issues );
-        }
-        else
-        {
-          // Reset this.  We will want to force this again if DWM composition changes.
-          _blackGlassFixupAttemptCount = 0;
-        }
-      }
-    }
-
     private void _FixupRestoreBounds( object sender, EventArgs e )
     {
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
       if( _window.WindowState == WindowState.Maximized || _window.WindowState == WindowState.Minimized )
       {
         // Old versions of WPF sometimes force their incorrect idea of the Window's location
@@ -431,8 +246,6 @@ namespace Microsoft.Windows.Shell
 
     private RECT _GetAdjustedWindowRect( RECT rcWindow )
     {
-      // This should only be used to work around issues in the Framework that were fixed in 4.0
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
 
       var style = ( WS )NativeMethods.GetWindowLongPtr( _hwnd, GWL.STYLE );
       var exstyle = ( WS_EX )NativeMethods.GetWindowLongPtr( _hwnd, GWL.EXSTYLE );
@@ -449,9 +262,6 @@ namespace Microsoft.Windows.Shell
     {
       get
       {
-        // We're only detecting this state to work around .Net 3.5 issues.
-        // This logic won't work correctly when those issues are fixed.
-        Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
 
         if( _window.WindowState != WindowState.Normal )
         {
@@ -470,8 +280,6 @@ namespace Microsoft.Windows.Shell
 
     private IntPtr _WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
     {
-      // Only expecting messages for our cached HWND.
-      Assert.AreEqual( hwnd, _hwnd );
 
       var message = ( WM )msg;
       foreach( var handlePair in _messageTable )
@@ -580,8 +388,8 @@ namespace Microsoft.Windows.Shell
           _window.ContextMenu.Placement = PlacementMode.MousePoint;
           _window.ContextMenu.IsOpen = true;
         }
-        else if( WindowChrome.GetWindowChrome( _window ).ShowSystemMenu )
-          SystemCommands.ShowSystemMenuPhysicalCoordinates( _window, new Point( Utility.GET_X_LPARAM( lParam ), Utility.GET_Y_LPARAM( lParam ) ) );
+        //else if( WindowChrome.GetWindowChrome( _window ).ShowSystemMenu )
+        //  SystemCommands.ShowSystemMenuPhysicalCoordinates( _window, new Point( Utility.GET_X_LPARAM( lParam ), Utility.GET_Y_LPARAM( lParam ) ) );
       }
       handled = false;
       return IntPtr.Zero;
@@ -620,7 +428,6 @@ namespace Microsoft.Windows.Shell
 
       if( !_isGlassEnabled )
       {
-        Assert.IsNotDefault( lParam );
         var wp = ( WINDOWPOS )Marshal.PtrToStructure( lParam, typeof( WINDOWPOS ) );
         _SetRoundingRegion( wp );
       }
@@ -638,79 +445,6 @@ namespace Microsoft.Windows.Shell
       return IntPtr.Zero;
     }
 
-    private IntPtr _HandleSettingChange( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled )
-    {
-      // There are several settings that can cause fixups for the template to become invalid when changed.
-      // These shouldn't be required on the v4 framework.
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
-
-      _FixupFrameworkIssues();
-
-      handled = false;
-      return IntPtr.Zero;
-    }
-
-    private IntPtr _HandleEnterSizeMove( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled )
-    {
-      // This is only intercepted to deal with bugs in Window in .Net 3.5 and below.
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
-
-      _isUserResizing = true;
-
-      // On Win7 if the user is dragging the window out of the maximized state then we don't want to use that location
-      // as a restore point.
-      Assert.Implies( _window.WindowState == WindowState.Maximized, Utility.IsOSWindows7OrNewer );
-      if( _window.WindowState != WindowState.Maximized )
-      {
-        // Check for the docked window case.  The window can still be restored when it's in this position so 
-        // try to account for that and not update the start position.
-        if( !_IsWindowDocked )
-        {
-          _windowPosAtStartOfUserMove = new Point( _window.Left, _window.Top );
-        }
-        // Realistically we also don't want to update the start position when moving from one docked state to another (or to and from maximized),
-        // but it's tricky to detect and this is already a workaround for a bug that's fixed in newer versions of the framework.
-        // Not going to try to handle all cases.
-      }
-
-      handled = false;
-      return IntPtr.Zero;
-    }
-
-    private IntPtr _HandleExitSizeMove( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled )
-    {
-      // This is only intercepted to deal with bugs in Window in .Net 3.5 and below.
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
-
-      _isUserResizing = false;
-
-      // On Win7 the user can change the Window's state by dragging the window to the top of the monitor.
-      // If they did that, then we need to try to update the restore bounds or else WPF will put the window at the maximized location (e.g. (-8,-8)).
-      if( _window.WindowState == WindowState.Maximized )
-      {
-        Assert.IsTrue( Utility.IsOSWindows7OrNewer );
-        _window.Top = _windowPosAtStartOfUserMove.Y;
-        _window.Left = _windowPosAtStartOfUserMove.X;
-      }
-
-      handled = false;
-      return IntPtr.Zero;
-    }
-
-    private IntPtr _HandleMove( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled )
-    {
-      // This is only intercepted to deal with bugs in Window in .Net 3.5 and below.
-      Assert.IsTrue( Utility.IsPresentationFrameworkVersionLessThan4 );
-
-      if( _isUserResizing )
-      {
-        _hasUserMovedWindow = true;
-      }
-
-      handled = false;
-      return IntPtr.Zero;
-    }
-
     #endregion
 
     /// <summary>Add and remove a native WindowStyle from the HWND.</summary>
@@ -719,7 +453,6 @@ namespace Microsoft.Windows.Shell
     /// <returns>Whether the styles of the HWND were modified as a result of this call.</returns>
     private bool _ModifyStyle( WS removeStyle, WS addStyle )
     {
-      Assert.IsNotDefault( _hwnd );
       var dwStyle = ( WS )NativeMethods.GetWindowLongPtr( _hwnd, GWL.STYLE ).ToInt32();
       var dwNewStyle = ( dwStyle & ~removeStyle ) | addStyle;
       if( dwStyle == dwNewStyle )
@@ -828,7 +561,6 @@ namespace Microsoft.Windows.Shell
         return;
       }
 
-      // Don't rely on SystemParameters2 for this, just make the check ourselves.
       bool frameState = NativeMethods.DwmIsCompositionEnabled();
 
       if( force || frameState != _isGlassEnabled )
@@ -844,7 +576,6 @@ namespace Microsoft.Windows.Shell
           _ClearRoundingRegion();
           _ExtendGlassFrame();
 
-          _FixupWindows7Issues();
         }
 
         NativeMethods.SetWindowPos( _hwnd, IntPtr.Zero, 0, 0, 0, 0, _SwpFlags );
@@ -946,7 +677,6 @@ namespace Microsoft.Windows.Shell
             topRightRadius = Math.Min( topRightRadius, shortestDimension / 2 );
             Rect topRightRegionRect = new Rect( 0, 0, windowSize.Width / 2 + topRightRadius, windowSize.Height / 2 + topRightRadius );
             topRightRegionRect.Offset( windowSize.Width / 2 - topRightRadius, 0 );
-            Assert.AreEqual( topRightRegionRect.Right, windowSize.Width );
 
             _CreateAndCombineRoundRectRgn( hrgn, topRightRegionRect, topRightRadius );
 
@@ -954,7 +684,6 @@ namespace Microsoft.Windows.Shell
             bottomLeftRadius = Math.Min( bottomLeftRadius, shortestDimension / 2 );
             Rect bottomLeftRegionRect = new Rect( 0, 0, windowSize.Width / 2 + bottomLeftRadius, windowSize.Height / 2 + bottomLeftRadius );
             bottomLeftRegionRect.Offset( 0, windowSize.Height / 2 - bottomLeftRadius );
-            Assert.AreEqual( bottomLeftRegionRect.Bottom, windowSize.Height );
 
             _CreateAndCombineRoundRectRgn( hrgn, bottomLeftRegionRect, bottomLeftRadius );
 
@@ -962,8 +691,6 @@ namespace Microsoft.Windows.Shell
             bottomRightRadius = Math.Min( bottomRightRadius, shortestDimension / 2 );
             Rect bottomRightRegionRect = new Rect( 0, 0, windowSize.Width / 2 + bottomRightRadius, windowSize.Height / 2 + bottomRightRadius );
             bottomRightRegionRect.Offset( windowSize.Width / 2 - bottomRightRadius, windowSize.Height / 2 - bottomRightRadius );
-            Assert.AreEqual( bottomRightRegionRect.Right, windowSize.Width );
-            Assert.AreEqual( bottomRightRegionRect.Bottom, windowSize.Height );
 
             _CreateAndCombineRoundRectRgn( hrgn, bottomRightRegionRect, bottomRightRadius );
           }
@@ -1044,7 +771,6 @@ namespace Microsoft.Windows.Shell
 
     private void _ExtendGlassFrame()
     {
-      Assert.IsNotNull( _window );
 
       // Expect that this might be called on OSes other than Vista.
       if( !Utility.IsOSVistaOrNewer )
@@ -1155,7 +881,6 @@ namespace Microsoft.Windows.Shell
 
       if( !isClosing )
       {
-        _RestoreFrameworkIssueFixups();
         _RestoreGlassFrame();
         _RestoreHrgn();
 
@@ -1165,8 +890,6 @@ namespace Microsoft.Windows.Shell
 
     private void _UnhookCustomChrome()
     {
-      Assert.IsNotDefault( _hwnd );
-      Assert.IsNotNull( _window );
 
       if( _isHooked )
       {
@@ -1175,31 +898,9 @@ namespace Microsoft.Windows.Shell
       }
     }
 
-    private void _RestoreFrameworkIssueFixups()
-    {
-      // This margin is only necessary if the client rect is going to be calculated incorrectly by WPF.
-      // This bug was fixed in V4 of the framework.
-      if( Utility.IsPresentationFrameworkVersionLessThan4 )
-      {
-        Assert.IsTrue( _isFixedUp );
-
-        var rootElement = ( FrameworkElement )VisualTreeHelper.GetChild( _window, 0 );
-        if( rootElement != null )
-        {
-          // Undo anything that was done before.
-          rootElement.Margin = new Thickness();
-        }
-
-        _window.StateChanged -= _FixupRestoreBounds;
-        _isFixedUp = false;
-      }
-    }
 
     private void _RestoreGlassFrame()
     {
-      Assert.IsNull( _chromeInfo );
-      Assert.IsNotNull( _window );
-
       // Expect that this might be called on OSes other than Vista
       // and if the window hasn't yet been shown, then we don't need to undo anything.
       if( !Utility.IsOSVistaOrNewer || _hwnd == IntPtr.Zero )

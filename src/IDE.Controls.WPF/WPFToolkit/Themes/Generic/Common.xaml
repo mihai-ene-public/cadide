@@ -184,10 +184,10 @@
 
    <conv:ColorBlendConverter x:Key="Window_WindowBackground_converter" BlendedColor="#FFA0A0A0" BlendedColorRatio="0.35" />
    <SolidColorBrush x:Key="Window_WindowBackground" 
-                    Color="{Binding 
+                    Color="#c40078d7"
+                    Opacity="0.85"/><!--Color="{Binding 
                         Source={x:Static media:WindowColors.ColorizationColor}, 
-                        Converter={StaticResource Window_WindowBackground_converter}}" 
-                    Opacity="0.85"/>
+                        Converter={StaticResource Window_WindowBackground_converter}}"--> 
 
    <SolidColorBrush x:Key="Window_Background"  Color="White"/>
 
@@ -199,9 +199,7 @@
 
    <conv:ColorBlendConverter x:Key="Window_WindowInactiveBackground_converter" BlendedColor="#FFF0F0F0" BlendedColorRatio="0.67" />
    <SolidColorBrush x:Key="Window_WindowInactiveBackground" 
-                    Color="{Binding 
-                        Source={x:Static media:WindowColors.ColorizationColor}, 
-                        Converter={StaticResource Window_WindowInactiveBackground_converter}}" 
+                    Color="#c40078d7"
                     Opacity="0.85"/>
 
    <SolidColorBrush x:Key="Window_CaptionForeground" Color="Black"/>

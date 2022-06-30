@@ -424,13 +424,13 @@
                                             VerticalAlignment="Center">
                                         <!---->
                                     </Slider>
-                                    <xctk:ByteUpDown Grid.Row="0"
+                                    <TextBox Grid.Row="0"
                                                       Grid.Column="2"
-                                                      Value="{Binding Value, ElementName=PART_RSlider}"
+                                                      Text="{Binding Value, ElementName=PART_RSlider}"
                                                       VerticalAlignment="Center"
                                                       Background="Transparent"
-                                                     ShowButtonSpinner="False">
-                                    </xctk:ByteUpDown>
+                                                     >
+                                    </TextBox>
 
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
@@ -450,13 +450,13 @@
                                             VerticalAlignment="Center"
                                             >
                                     </Slider>
-                                    <xctk:ByteUpDown Grid.Row="1"
+                                    <TextBox Grid.Row="1"
                                                       Grid.Column="2"
-                                                      Value="{Binding Value, ElementName=PART_GSlider}"
+                                                      Text="{Binding Value, ElementName=PART_GSlider}"
                                                       VerticalAlignment="Center"
                                                       Background="Transparent"
-                                                     ShowButtonSpinner="False">
-                                    </xctk:ByteUpDown>
+                                                     >
+                                    </TextBox>
 
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0"
@@ -475,13 +475,13 @@
                                             Value="{Binding B, RelativeSource={RelativeSource TemplatedParent}}"
                                             VerticalAlignment="Center">
                                     </Slider>
-                                    <xctk:ByteUpDown Grid.Row="2"
+                                    <TextBox Grid.Row="2"
                                                       Grid.Column="3"
-                                                      Value="{Binding Value, ElementName=PART_BSlider}"
+                                                      Text="{Binding Value, ElementName=PART_BSlider}"
                                                       VerticalAlignment="Center"
                                                       Background="Transparent"
-                                                     ShowButtonSpinner="False">
-                                    </xctk:ByteUpDown>
+                                                     >
+                                    </TextBox>
 
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="0"
@@ -501,14 +501,14 @@
                                             VerticalAlignment="Center"
                                             Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     </Slider>
-                                    <xctk:ByteUpDown Grid.Row="3"
+                                    <TextBox Grid.Row="3"
                                                       Grid.Column="3"
-                                                      Value="{Binding Value, ElementName=PART_OpacitySlider}"
+                                                      Text="{Binding Value, ElementName=PART_OpacitySlider}"
                                                       VerticalAlignment="Center"
                                                       Background="Transparent"
                                                       Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                     ShowButtonSpinner="False">
-                                    </xctk:ByteUpDown>
+                                                     >
+                                    </TextBox>
                                 </Grid>
                             </Border>
                         </Grid>

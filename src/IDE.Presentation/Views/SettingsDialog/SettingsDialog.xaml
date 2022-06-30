@@ -7,11 +7,8 @@
                   xmlns:settings="clr-namespace:IDE.Core.Settings.Options;assembly=IDE.Core.Presentation"
                   
                   xmlns:conv="clr-namespace:IDE.Core.Converters"
-                 
                   
                   xmlns:local="clr-namespace:IDE.Documents.Views"
-                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                  xmlns:ctrls="clr-namespace:IDE.Core.Controls"
                   WindowStartupLocation="CenterOwner"
                   ShowInTaskbar="false"
                   MinWidth="300"

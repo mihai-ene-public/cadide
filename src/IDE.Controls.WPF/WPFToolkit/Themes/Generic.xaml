@@ -19,40 +19,18 @@
                     xmlns:core="clr-namespace:Xceed.Wpf.Toolkit.Core">
    <ResourceDictionary.MergedDictionaries>
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Themes/Generic/Brushes.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Themes/Generic/Buttons.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Themes/Generic/Common.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Chromes/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/BusyIndicator/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/ButtonSpinner/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Calculator/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/CalculatorUpDown/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Primitives/Themes/Generic/WindowControl.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Primitives/Themes/Generic/SelectorItem.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/CheckComboBox/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/CheckListBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/ChildWindow/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/CollectionControl/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/ColorCanvas/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/ColorPicker/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/DropDownButton/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/IconButton/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Magnifier/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/MessageBox/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/DateTimeUpDown/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/DateTimePicker/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/MultiLineTextEditor/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/NumericUpDown/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Pie/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/RangeSlider/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/SplitButton/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/PropertyGrid/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/RichTextBoxFormatBar/Themes/Generic.xaml" />
 
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/TimePicker/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/TimeSpanUpDown/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/WatermarkComboBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/WatermarkTextBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Wizard/Themes/Generic.xaml" />
-      <core:VersionResourceDictionary AssemblyName="IDE.Controls.WPF" SourcePath="WPFToolkit/Zoombox/Themes/Generic.xaml" />
    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

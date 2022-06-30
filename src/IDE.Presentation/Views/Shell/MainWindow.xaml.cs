@@ -167,7 +167,7 @@ namespace IDE.App.Views.Shell
                     layoutSerializer.LayoutSerializationCallback += UpdateLayout;
                     layoutSerializer.Deserialize(sr);
                 }
-                catch (Exception exp)
+                catch
                 {
                     //logger.ErrorFormat("Error Loading Layout: {0}\n\n{1}", exp.Message, xmlLayout);
                 }

@@ -112,8 +112,6 @@
     <None Remove="WPFToolkit\Themes\Generic\Images\restore_inactive.png" />
     <None Remove="WPFToolkit\Themes\Generic\Images\restore_normal.png" />
     <None Remove="WPFToolkit\Themes\Generic\Images\restore_pressed.png" />
-    <None Remove="WPFToolkit\Zoombox\Resources\Zoom.cur" />
-    <None Remove="WPFToolkit\Zoombox\Resources\ZoomRelative.cur" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
@@ -219,7 +217,5 @@
     <Resource Include="WPFToolkit\Themes\Generic\Images\restore_inactive.png" />
     <Resource Include="WPFToolkit\Themes\Generic\Images\restore_normal.png" />
     <Resource Include="WPFToolkit\Themes\Generic\Images\restore_pressed.png" />
-    <Resource Include="WPFToolkit\Zoombox\Resources\Zoom.cur" />
-    <Resource Include="WPFToolkit\Zoombox\Resources\ZoomRelative.cur" />
   </ItemGroup>
 </Project>

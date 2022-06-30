@@ -16,6 +16,7 @@
                   behav:RemoveIcon.Remove="true"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                   mc:Ignorable="d">
     <Grid Margin="9,3">
         <Grid.RowDefinitions>
@@ -39,6 +40,17 @@
             <StackPanel Grid.Column="0"
                         Grid.Row="0"
                         Margin="18,3,3,3">
+                <Button>
+                    Normal
+                </Button>
+                <xctk:WatermarkTextBox x:Name="_txtFilter"
+                                            Background="Transparent"
+                                            Text="{Binding SearchItemsFilter, Delay=800, UpdateSourceTrigger=PropertyChanged}"
+                                            Watermark="Search items"
+                                            BorderThickness="1">
+
+                </xctk:WatermarkTextBox>
+                
                 <TextBlock Grid.Column="1"
                            FontSize="20"
                            Margin="3"

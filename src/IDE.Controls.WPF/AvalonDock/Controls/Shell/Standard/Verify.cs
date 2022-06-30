@@ -71,7 +71,6 @@ namespace Standard
     public static void IsNeitherNullNorEmpty( string value, string name )
     {
       // catch caller errors, mixing up the parameters.  Name should never be empty.
-      Assert.IsNeitherNullNorEmpty( name );
 
       // Notice that ArgumentNullException and ArgumentException take the parameters in opposite order :P
       const string errorMessage = "The parameter can not be either null or empty.";
@@ -96,7 +95,6 @@ namespace Standard
     public static void IsNeitherNullNorWhitespace( string value, string name )
     {
       // catch caller errors, mixing up the parameters.  Name should never be empty.
-      Assert.IsNeitherNullNorEmpty( name );
 
       // Notice that ArgumentNullException and ArgumentException take the parameters in opposite order :P
       const string errorMessage = "The parameter can not be either null or empty or consist only of white space characters.";
@@ -280,7 +278,6 @@ namespace Standard
     [DebuggerStepThrough]
     public static void TypeSupportsInterface( Type type, Type interfaceType, string parameterName )
     {
-      Assert.IsNeitherNullNorEmpty( parameterName );
       Verify.IsNotNull( type, "type" );
       Verify.IsNotNull( interfaceType, "interfaceType" );
 
@@ -305,9 +302,6 @@ namespace Standard
     [DebuggerStepThrough]
     internal static void ImplementsInterface( object parameter, Type interfaceType, string parameterName )
     {
-      Assert.IsNotNull( parameter );
-      Assert.IsNotNull( interfaceType );
-      Assert.IsTrue( interfaceType.IsInterface );
 
       bool isImplemented = false;
       foreach( var ifaceType in parameter.GetType().GetInterfaces() )

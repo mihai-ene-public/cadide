@@ -72,7 +72,6 @@ namespace Microsoft.Windows.Shell
       var window = ( Window )d;
       var newChrome = ( WindowChrome )e.NewValue;
 
-      Assert.IsNotNull( window );
 
       // Update the ChromeWorker with this new object.
 
@@ -257,36 +256,9 @@ namespace Microsoft.Windows.Shell
       return new WindowChrome();
     }
 
-    private static readonly List<_SystemParameterBoundProperty> _BoundProperties = new List<_SystemParameterBoundProperty>
-        {
-            new _SystemParameterBoundProperty { DependencyProperty = CornerRadiusProperty, SystemParameterPropertyName = "WindowCornerRadius" },
-            new _SystemParameterBoundProperty { DependencyProperty = CaptionHeightProperty, SystemParameterPropertyName = "WindowCaptionHeight" },
-            new _SystemParameterBoundProperty { DependencyProperty = ResizeBorderThicknessProperty, SystemParameterPropertyName = "WindowResizeBorderThickness" },
-            new _SystemParameterBoundProperty { DependencyProperty = GlassFrameThicknessProperty, SystemParameterPropertyName = "WindowNonClientFrameThickness" },
-        };
-
     public WindowChrome()
     {
-      // Effective default values for some of these properties are set to be bindings
-      // that set them to system defaults.
-      // A more correct way to do this would be to Coerce the value iff the source of the DP was the default value.
-      // Unfortunately with the current property system we can't detect whether the value being applied at the time
-      // of the coersion is the default.
-      foreach( var bp in _BoundProperties )
-      {
-        // This list must be declared after the DP's are assigned.
-        Assert.IsNotNull( bp.DependencyProperty );
-        BindingOperations.SetBinding(
-            this,
-            bp.DependencyProperty,
-            new Binding
-            {
-              Source = SystemParameters2.Current,
-              Path = new PropertyPath( bp.SystemParameterPropertyName ),
-              Mode = BindingMode.OneWay,
-              UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-            } );
-      }
+     
     }
 
     private void _OnPropertyChangedThatRequiresRepaint()

@@ -29,8 +29,7 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
             LoadLibraryExFlags dwFlags
             );
 
-        [DllImport("kernel32", SetLastError = true),
-        ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+        [DllImport("kernel32", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool FreeLibrary(IntPtr hModule);
 
@@ -50,16 +49,6 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern IntPtr GetActiveWindow();
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int GetCurrentThreadId();
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist"), DllImport("comctl32.dll", PreserveSig = false)]
-        //public static extern void TaskDialogIndirect([In] ref TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
-
-
         public delegate uint TaskDialogCallback(IntPtr hwnd, uint uNotification, IntPtr wParam, IntPtr lParam, IntPtr dwRefData);
 
 
@@ -67,165 +56,6 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
         public const int WM_GETICON = 0x007F;
         public const int WM_SETICON = 0x0080;
         public const int ICON_SMALL = 0;
-
-        //public enum TaskDialogNotifications
-        //{
-        //    Created = 0,
-        //    Navigated = 1,
-        //    ButtonClicked = 2,            // wParam = Button ID
-        //    HyperlinkClicked = 3,            // lParam = (LPCWSTR)pszHREF
-        //    Timer = 4,            // wParam = Milliseconds since dialog created or timer reset
-        //    Destroyed = 5,
-        //    RadioButtonClicked = 6,            // wParam = Radio Button ID
-        //    DialogConstructed = 7,
-        //    VerificationClicked = 8,             // wParam = 1 if checkbox checked, 0 if not, lParam is unused and always 0
-        //    Help = 9,
-        //    ExpandoButtonClicked = 10            // wParam = 0 (dialog is now collapsed), wParam != 0 (dialog is now expanded)
-        //}
-
-        [Flags]
-        public enum TaskDialogCommonButtonFlags
-        {
-            OkButton = 0x0001, // selected control return value IDOK
-            YesButton = 0x0002, // selected control return value IDYES
-            NoButton = 0x0004, // selected control return value IDNO
-            CancelButton = 0x0008, // selected control return value IDCANCEL
-            RetryButton = 0x0010, // selected control return value IDRETRY
-            CloseButton = 0x0020  // selected control return value IDCLOSE
-        };
-
-        [Flags]
-        public enum TaskDialogFlags
-        {
-            EnableHyperLinks = 0x0001,
-            UseHIconMain = 0x0002,
-            UseHIconFooter = 0x0004,
-            AllowDialogCancellation = 0x0008,
-            UseCommandLinks = 0x0010,
-            UseCommandLinksNoIcon = 0x0020,
-            ExpandFooterArea = 0x0040,
-            ExpandedByDefault = 0x0080,
-            VerificationFlagChecked = 0x0100,
-            ShowProgressBar = 0x0200,
-            ShowMarqueeProgressBar = 0x0400,
-            CallbackTimer = 0x0800,
-            PositionRelativeToWindow = 0x1000,
-            RtlLayout = 0x2000,
-            NoDefaultRadioButton = 0x4000,
-            CanBeMinimized = 0x8000
-        };
-
-        public enum TaskDialogMessages
-        {
-            NavigatePage = WM_USER + 101,
-            ClickButton = WM_USER + 102, // wParam = Button ID
-            SetMarqueeProgressBar = WM_USER + 103, // wParam = 0 (nonMarque) wParam != 0 (Marquee)
-            SetProgressBarState = WM_USER + 104, // wParam = new progress state
-            SetProgressBarRange = WM_USER + 105, // lParam = MAKELPARAM(nMinRange, nMaxRange)
-            SetProgressBarPos = WM_USER + 106, // wParam = new position
-            SetProgressBarMarquee = WM_USER + 107, // wParam = 0 (stop marquee), wParam != 0 (start marquee), lparam = speed (milliseconds between repaints)
-            SetElementText = WM_USER + 108, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
-            ClickRadioButton = WM_USER + 110, // wParam = Radio Button ID
-            EnableButton = WM_USER + 111, // lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID
-            EnableRadioButton = WM_USER + 112, // lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID
-            ClickVerification = WM_USER + 113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
-            UpdateElementText = WM_USER + 114, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
-            SetButtonElevationRequiredState = WM_USER + 115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
-            UpdateIcon = WM_USER + 116  // wParam = icon element (TASKDIALOG_ICON_ELEMENTS), lParam = new icon (hIcon if TDF_USE_HICON_* was set, PCWSTR otherwise)
-        }
-
-        public enum TaskDialogElements
-        {
-            Content,
-            ExpandedInformation,
-            Footer,
-            MainInstruction
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
-        public struct TASKDIALOG_BUTTON
-        {
-            public int nButtonID;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszButtonText;
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable"), StructLayout(LayoutKind.Sequential, Pack = 4)]
-        public struct TASKDIALOGCONFIG
-        {
-            public uint cbSize;
-            public IntPtr hwndParent;
-            public IntPtr hInstance;
-            public TaskDialogFlags dwFlags;
-            public TaskDialogCommonButtonFlags dwCommonButtons;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszWindowTitle;
-            public IntPtr hMainIcon;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszMainInstruction;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszContent;
-            public uint cButtons;
-            //[MarshalAs(UnmanagedType.LPArray)]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
-            public IntPtr pButtons;
-            public int nDefaultButton;
-            public uint cRadioButtons;
-            //[MarshalAs(UnmanagedType.LPArray)]
-            public IntPtr pRadioButtons;
-            public int nDefaultRadioButton;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszVerificationText;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszExpandedInformation;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszExpandedControlText;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszCollapsedControlText;
-            public IntPtr hFooterIcon;
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string pszFooterText;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public TaskDialogCallback pfCallback;
-            public IntPtr lpCallbackData;
-            public uint cxWidth;
-        }
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
-
-        #endregion
-
-        #region Activation Context
-
-        //[DllImport("Kernel32.dll", SetLastError = true)]
-        //public extern static ActivationContextSafeHandle CreateActCtx(ref ACTCTX actctx);
-
-        [DllImport("kernel32.dll"), ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-        public extern static void ReleaseActCtx(IntPtr hActCtx);
-        
-        //[DllImport("Kernel32.dll", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public extern static bool ActivateActCtx(ActivationContextSafeHandle hActCtx, out IntPtr lpCookie);
-        
-        //[DllImport("Kernel32.dll", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public extern static bool DeactivateActCtx(uint dwFlags, IntPtr lpCookie);
-
-        public const int ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID = 0x004;
-
-        //public struct ACTCTX
-        //{
-        //    public int cbSize;
-        //    public uint dwFlags;
-        //    public string lpSource;
-        //    public ushort wProcessorArchitecture;
-        //    public ushort wLangId;
-        //    public string lpAssemblyDirectory;
-        //    public string lpResourceName;
-        //    public string lpApplicationName;
-        //}
-
 
         #endregion
 
@@ -417,165 +247,6 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
 
         #endregion
 
-        #region Credentials
-
-        internal const int CREDUI_MAX_USERNAME_LENGTH = 256 + 1 + 256;
-        internal const int CREDUI_MAX_PASSWORD_LENGTH = 256;
-
-        //[Flags]
-        //public enum CREDUI_FLAGS
-        //{
-        //    INCORRECT_PASSWORD = 0x1,
-        //    DO_NOT_PERSIST = 0x2,
-        //    REQUEST_ADMINISTRATOR = 0x4,
-        //    EXCLUDE_CERTIFICATES = 0x8,
-        //    REQUIRE_CERTIFICATE = 0x10,
-        //    SHOW_SAVE_CHECK_BOX = 0x40,
-        //    ALWAYS_SHOW_UI = 0x80,
-        //    REQUIRE_SMARTCARD = 0x100,
-        //    PASSWORD_ONLY_OK = 0x200,
-        //    VALIDATE_USERNAME = 0x400,
-        //    COMPLETE_USERNAME = 0x800,
-        //    PERSIST = 0x1000,
-        //    SERVER_CREDENTIAL = 0x4000,
-        //    EXPECT_CONFIRMATION = 0x20000,
-        //    GENERIC_CREDENTIALS = 0x40000,
-        //    USERNAME_TARGET_CREDENTIALS = 0x80000,
-        //    KEEP_USERNAME = 0x100000
-        //}
-
-        //[Flags]
-        //public enum CredUIWinFlags
-        //{
-        //    Generic = 0x1,
-        //    Checkbox = 0x2,
-        //    AutoPackageOnly = 0x10,
-        //    InCredOnly = 0x20,
-        //    EnumerateAdmins = 0x100,
-        //    EnumerateCurrentUser = 0x200,
-        //    SecurePrompt = 0x1000,
-        //    Pack32Wow = 0x10000000
-        //}
-
-        //internal enum CredUIReturnCodes
-        //{
-        //    NO_ERROR = 0,
-        //    ERROR_CANCELLED = 1223,
-        //    ERROR_NO_SUCH_LOGON_SESSION = 1312,
-        //    ERROR_NOT_FOUND = 1168,
-        //    ERROR_INVALID_ACCOUNT_NAME = 1315,
-        //    ERROR_INSUFFICIENT_BUFFER = 122,
-        //    ERROR_INVALID_PARAMETER = 87,
-        //    ERROR_INVALID_FLAGS = 1004
-        //}
-
-        //internal enum CredTypes
-        //{
-        //    CRED_TYPE_GENERIC = 1,
-        //    CRED_TYPE_DOMAIN_PASSWORD = 2,
-        //    CRED_TYPE_DOMAIN_CERTIFICATE = 3,
-        //    CRED_TYPE_DOMAIN_VISIBLE_PASSWORD = 4
-        //}
-
-        //internal enum CredPersist
-        //{
-        //    Session = 1,
-        //    LocalMachine = 2,
-        //    Enterprise = 3
-        //}
-
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-        //internal struct CREDUI_INFO
-        //{
-        //    public int cbSize;
-        //    public IntPtr hwndParent;
-        //    [MarshalAs(UnmanagedType.LPWStr)]
-        //    public string pszMessageText;
-        //    [MarshalAs(UnmanagedType.LPWStr)]
-        //    public string pszCaptionText;
-        //    public IntPtr hbmBanner;
-        //}
-
-        //[DllImport("credui.dll", CharSet = CharSet.Unicode)]
-        //extern static internal CredUIReturnCodes CredUIPromptForCredentials(
-        //    ref CREDUI_INFO pUiInfo,
-        //    string targetName,
-        //    IntPtr Reserved,
-        //    int dwAuthError,
-        //    StringBuilder pszUserName,
-        //    uint ulUserNameMaxChars,
-        //    StringBuilder pszPassword,
-        //    uint ulPaswordMaxChars,
-        //    [MarshalAs(UnmanagedType.Bool), In(), Out()] ref bool pfSave,
-        //    CREDUI_FLAGS dwFlags);
-
-        //[DllImport("credui.dll", CharSet = CharSet.Unicode)]
-        //public static extern CredUIReturnCodes CredUIPromptForWindowsCredentials(
-        //    ref CREDUI_INFO pUiInfo,
-        //    uint dwAuthError,
-        //    ref uint pulAuthPackage,
-        //    IntPtr pvInAuthBuffer,
-        //    uint ulInAuthBufferSize,
-        //    out IntPtr ppvOutAuthBuffer,
-        //    out uint pulOutAuthBufferSize,
-        //    [MarshalAs(UnmanagedType.Bool)] ref bool pfSave,
-        //    CredUIWinFlags dwFlags);
-
-        //[DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "CredReadW", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //extern static internal bool CredRead(string TargetName, CredTypes Type, int Flags, out IntPtr Credential);
-
-        //[DllImport("advapi32.dll"), ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-        //extern static internal void CredFree(IntPtr Buffer);
-
-        //[DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "CredDeleteW", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //extern static internal bool CredDelete(string TargetName, CredTypes Type, int Flags);
-
-        //[DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "CredWriteW", SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //extern static internal bool CredWrite(ref CREDENTIAL Credential, int Flags);
-
-        //[DllImport("credui.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public static extern bool CredPackAuthenticationBuffer(uint dwFlags, string pszUserName, string pszPassword, IntPtr pPackedCredentials, ref uint pcbPackedCredentials);
-
-        //[DllImport("credui.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public static extern bool CredUnPackAuthenticationBuffer(uint dwFlags, IntPtr pAuthBuffer, uint cbAuthBuffer, StringBuilder pszUserName, ref uint pcchMaxUserName, StringBuilder pszDomainName, ref uint pcchMaxDomainName, StringBuilder pszPassword, ref uint pcchMaxPassword);
-
-        // Disable the "Internal field is never assigned to" warning.
-//#pragma warning disable 649
-//        // This type does not own the IntPtr native resource; when CredRead is used, CredFree must be called on the
-//        // IntPtr that the struct was marshalled from to release all resources including the CredentialBlob IntPtr,
-//        // When allocating the struct manually for CredWrite you should also manually deallocate the CredentialBlob.
-//        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable")]
-//        public struct CREDENTIAL
-//        {
-//            public int Flags;
-//            public CredTypes Type;
-//            [MarshalAs(UnmanagedType.LPWStr)]
-//            public string TargetName;
-//            [MarshalAs(UnmanagedType.LPWStr)]
-//            public string Comment;
-//            public long LastWritten;
-//            public uint CredentialBlobSize;
-//            // Since the resource pointed to must be either released manually or by CredFree, SafeHandle is not appropriate here
-//            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
-//            public IntPtr CredentialBlob;
-//            [MarshalAs(UnmanagedType.U4)]
-//            public CredPersist Persist;
-//            public int AttributeCount;
-//            public IntPtr Attributes;
-//            [MarshalAs(UnmanagedType.LPWStr)]
-//            public string TargetAlias;
-//            [MarshalAs(UnmanagedType.LPWStr)]
-//            public string UserName;
-//        }
-//#pragma warning restore 649
-
-        #endregion
-
         #region Downlevel folder browser dialog
 
         public enum FolderBrowserDialogMessage
@@ -643,7 +314,6 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
 
     }
 
-    [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
     class SafeModuleHandle : SafeHandle
     {
         public SafeModuleHandle()
@@ -656,27 +326,11 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
             get { return handle == IntPtr.Zero; }
         }
 
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
             return NativeMethods.FreeLibrary(handle);
         }
     }
 
-    //[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
-    //class ActivationContextSafeHandle : SafeHandleZeroOrMinusOneIsInvalid
-    //{
-    //    public ActivationContextSafeHandle()
-    //        : base(true)
-    //    {
-    //    }
-
-    //    [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-    //    protected override bool ReleaseHandle()
-    //    {
-    //        NativeMethods.ReleaseActCtx(handle);
-    //        return true;
-    //    }
-    //}
 
 }

@@ -296,18 +296,6 @@ namespace Standard
 
     public static HRESULT Make( bool severe, Facility facility, int code )
     {
-      // #define MAKE_HRESULT(sev,fac,code) \
-      //    ((HRESULT) (((unsigned long)(sev)<<31) | ((unsigned long)(fac)<<16) | ((unsigned long)(code))) )
-
-      // Severity has 1 bit reserved.
-      // bitness is enforced by the boolean parameter.
-
-      // Facility has 11 bits reserved (different than SCODES, which have 4 bits reserved)
-      // MSDN documentation incorrectly uses 12 bits for the ESE facility (e5e), so go ahead and let that one slide.
-      // And WIC also ignores it the documented size...
-      Assert.Implies( ( int )facility != ( int )( ( int )facility & 0x1FF ), facility == Facility.Ese || facility == Facility.WinCodec );
-      // Code has 4 bits reserved.
-      Assert.AreEqual( code, code & 0xFFFF );
 
       return new HRESULT( ( uint )( ( severe ? ( 1 << 31 ) : 0 ) | ( ( int )facility << 16 ) | code ) );
     }
@@ -483,12 +471,7 @@ namespace Standard
         // implementations of IErrorInfo available and I don't think it's worth the maintenance
         // overhead of doing it, nor would it have significant value over this approach.
         Exception e = Marshal.GetExceptionForHR( ( int )_value, new IntPtr( -1 ) );
-        Assert.IsNotNull( e );
-        // ArgumentNullException doesn't have the right constructor parameters,
-        // (nor does Win32Exception...)
-        // but E_POINTER gets mapped to NullReferenceException,
-        // so I don't think it will ever matter.
-        Assert.IsFalse( e is ArgumentNullException );
+
 
         // If we're not getting anything better than a COMException from Marshal,
         // then at least check the facility and attempt to do better ourselves.
@@ -510,7 +493,6 @@ namespace Standard
           if( null != cons )
           {
             e = cons.Invoke( new object[] { message } ) as Exception;
-            Assert.IsNotNull( e );
           }
         }
         throw e;
@@ -524,7 +506,6 @@ namespace Standard
     {
       ( ( HRESULT )Win32Error.GetLastError() ).ThrowIfFailed();
       // Only expecting to call this when we're expecting a failed GetLastError()
-      Assert.Fail();
     }
   }
 }

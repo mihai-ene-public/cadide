@@ -152,15 +152,25 @@
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                             </Border>
 
-                            <xctk:ButtonChrome x:Name="ToggleButtonChrome"
+                            <!--<xctk:ButtonChrome x:Name="ToggleButtonChrome"
                                                Grid.Column="1"
                                                CornerRadius="0,2.75,2.75,0"
                                                Visibility="{Binding ShowDropDownButton, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                RenderChecked="{Binding IsOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}}"
                                                RenderEnabled="{Binding IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}}"
                                                RenderMouseOver="{TemplateBinding IsMouseOver}"
-                                               RenderPressed="{TemplateBinding IsPressed}">
-
+                                               RenderPressed="{TemplateBinding IsPressed}"
+                                               >-->
+                            <ToggleButton x:Name="ToggleButtonChrome"
+                                          Grid.Column="1"
+                                          Visibility="{Binding ShowDropDownButton, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          IsChecked="{Binding IsOpen, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}}"
+                                          IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}}"
+                                          Padding="0"
+                                          >
+                                <!--<Button x:Name="ToggleButtonChrome"
+                                               Grid.Column="1"
+                                               Visibility="{Binding ShowDropDownButton, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=xctk:ColorPicker}, Converter={StaticResource BooleanToVisibilityConverter}}">-->
                                 <Grid x:Name="arrowGlyph"
                                       IsHitTestVisible="False"
                                       Grid.Column="1"
@@ -172,7 +182,9 @@
                                           Fill="White"
                                           Margin="0,1,0,0" />
                                 </Grid>
-                            </xctk:ButtonChrome>
+                                <!--</xctk:ButtonChrome>-->
+                                <!--</Button>-->
+                            </ToggleButton>
                         </Grid>
 
                     </Grid>

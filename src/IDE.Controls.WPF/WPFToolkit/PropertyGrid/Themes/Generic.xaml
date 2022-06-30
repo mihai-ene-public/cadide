@@ -27,9 +27,6 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="../../NumericUpDown/Themes/Generic.xaml" />
-    <ResourceDictionary Source="../../DateTimeUpDown/Themes/Generic.xaml" />
-    <ResourceDictionary Source="../../TimeSpanUpDown/Themes/Generic.xaml" />
     <ResourceDictionary Source="../../WatermarkTextBox/Themes/Generic.xaml" />
     <ResourceDictionary Source="../../ColorPicker/Themes/Generic.xaml" />
     <ResourceDictionary Source="../../CollectionControl/Themes/Generic.xaml" />
@@ -53,175 +50,6 @@
   <x:Static x:Key="EmptyString"
             Member="sys:String.Empty" />
 
-  <!-- PropertyGrid numeric Editors -->
-  <Style x:Key="PropertyGridNumericUpDown"
-         TargetType="{x:Type prim:InputBase}"
-         BasedOn="{StaticResource NumericUpDown}">
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorByteUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorDecimalUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorDoubleUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorIntegerUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorLongUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorShortUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorSingleUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <!-- PropertyGrid DateTime Editors -->
-  <Style TargetType="{x:Type editor:PropertyGridEditorDateTimeUpDown}"
-         BasedOn="{StaticResource DateTimeUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <!-- PropertyGrid TimeSpan Editors -->
-  <Style TargetType="{x:Type editor:PropertyGridEditorTimeSpanUpDown}"
-         BasedOn="{StaticResource TimeSpanUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
 
   <!-- PropertyGrid ComboBox Editors -->
   <Style TargetType="{x:Type editor:PropertyGridEditorComboBox}"
@@ -286,10 +114,6 @@
             Value="Gray" />
   </Style>
 
-  <!-- PropertyGrid MaskedTextBox Editors -->
-  <Style TargetType="{x:Type editor:PropertyGridEditorMaskedTextBox}"
-         BasedOn="{StaticResource {x:Type TextBox}}">
-  </Style>
 
   <!-- PropertyGrid ColorPicker Editors -->
   <Style TargetType="{x:Type editor:PropertyGridEditorColorPicker}"
@@ -332,79 +156,6 @@
   <!-- available in code-behind (not xaml).                                              -->
   <!-- (ex. Office2007 theme)                                                            -->
   <!-- ===============================================================================   -->
-
-  <!-- Internal PropertyGrid numeric Editors -->
-  <Style TargetType="{x:Type editor:PropertyGridEditorSByteUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorUIntegerUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorULongUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
-
-  <Style TargetType="{x:Type editor:PropertyGridEditorUShortUpDown}"
-         BasedOn="{StaticResource PropertyGridNumericUpDown}">
-    <Style.Triggers>
-      <MultiTrigger>
-        <MultiTrigger.Conditions>
-          <Condition Property="IsKeyboardFocusWithin"
-                     Value="False" />
-          <Condition Property="IsMouseOver"
-                     Value="False" />
-        </MultiTrigger.Conditions>
-        <Setter Property="BorderBrush"
-                Value="Transparent" />
-        <Setter Property="ShowButtonSpinner"
-                Value="False" />
-      </MultiTrigger>
-    </Style.Triggers>
-  </Style>
 
 
 

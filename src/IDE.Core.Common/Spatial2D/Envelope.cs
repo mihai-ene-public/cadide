@@ -170,6 +170,15 @@ namespace IDE.Core.Spatial2D
         {
             return this == other;
         }
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         public static bool operator ==(Envelope left, Envelope right)
         {
