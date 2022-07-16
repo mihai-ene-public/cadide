@@ -66,5 +66,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}  
         asset_path: src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
-        asset_name: XNoCAD-${{ env:_Platform }}-${{ github.event.inputs.releaseName }}.zip
+        asset_name: XNoCAD-${{ env._Platform }}-${{ github.event.inputs.releaseName }}.zip
         asset_content_type: application/zip
