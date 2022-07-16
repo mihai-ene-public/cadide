@@ -19,8 +19,8 @@ jobs:
     env:
       SolutionPath: src/cadide.sln
       ProjectPath: src/ide/ide.csproj
-      Configuration: Release
-      Platform: win-x64
+      _Configuration: Release
+      _Platform: win-x64
       
     steps:
     - name: Checkout specific label
@@ -37,11 +37,11 @@ jobs:
       run: dotnet restore $env:SolutionPath
             
     - name: Publish
-      run: dotnet publish -c $env:Configuration -r $env:Platform --no-restore $env:ProjectPath
+      run: dotnet publish -c $env:_Configuration -r $env:_Platform --no-restore --self-contained $env:ProjectPath
       
       #zip
     - name: Create archive
-      run: Compress-Archive -Path src\ide\bin\Release\net6.0-windows\win-x64\* -DestinationPath src\ide\bin\Release\net6.0-windows\win-x64\Binaries.zip
+      run: Compress-Archive -Path src\ide\bin\Release\net6.0-windows\win-x64\publish\* -DestinationPath src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
       
       #create Release (disabled)
       # Create the release:  https://github.com/actions/create-release
@@ -52,8 +52,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref}} #${{ github.event.inputs.releaseName }}
-        release_name:  ${{ github.ref }}
+        tag_name: ${{ github.event.inputs.releaseName }}
+        release_name:  ${{ github.event.inputs.releaseName }}
         draft: false
         prerelease: true
       
@@ -64,7 +64,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: src\ide\bin\Release\net6.0-windows\win-x64\Binaries.zip
-        asset_name: Binaries.zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }}  
+        asset_path: src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
+        asset_name: XNoCAD-${{ env._Platform }}-${{ github.event.inputs.releaseName }}.zip
         asset_content_type: application/zip
