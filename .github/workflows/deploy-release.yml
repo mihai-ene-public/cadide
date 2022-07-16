@@ -34,7 +34,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Restore dependencies
-      run: dotnet restore -c $env:Configuration -r $env:Platform $env:SolutionPath
+      run: dotnet restore -c $env:Configuration $env:SolutionPath
             
     - name: Publish
       run: dotnet publish -c $env:Configuration -r $env:Platform --no-restore $env:ProjectPath
