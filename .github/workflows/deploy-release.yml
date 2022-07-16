@@ -1,5 +1,5 @@
 # The purpose for this workflow is to deploy published binaries to an existing release or create a new release
-# It will run manually havin version as input
+# It will run manually having version as input
 
 name: Publish release
 
@@ -34,7 +34,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Restore dependencies
-      run: dotnet restore -c $env:Configuration $env:SolutionPath
+      run: dotnet restore $env:SolutionPath
             
     - name: Publish
       run: dotnet publish -c $env:Configuration -r $env:Platform --no-restore $env:ProjectPath
