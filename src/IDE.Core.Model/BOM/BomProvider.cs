@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using RestSharp;
 using System.Diagnostics;
-using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 
 namespace IDE.Core.BOM
 {
-
+    /*Leave this commented for now, because it needs to be redone to support multiple providers (Octopart, DigiKey, etc) and multiple suppliers (Farnell, Digikey, etc)
     /// <summary>
     /// Octopart provider. If we will have multiple providers, make a base class
     /// </summary>
@@ -333,4 +330,5 @@ namespace IDE.Core.BOM
         }
     }
 
+    */
 }

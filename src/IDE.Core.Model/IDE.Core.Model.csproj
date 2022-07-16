@@ -1,13 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup Label="Globals">
-		<SccProjectName>SAK</SccProjectName>
-		<SccProvider>SAK</SccProvider>
-		<SccAuxPath>SAK</SccAuxPath>
-		<SccLocalPath>SAK</SccLocalPath>
-		<Configurations>Debug;Release</Configurations>
-	</PropertyGroup>
-
+	
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -47,11 +40,5 @@
 
 	<ItemGroup>
 		<PackageReference Include="IxMilia.Dxf" Version="0.8.0" />
-		<PackageReference Include="Newtonsoft.Json">
-			<Version>10.0.3</Version>
-		</PackageReference>
-		<PackageReference Include="RestSharp">
-			<Version>106.6.10</Version>
-		</PackageReference>
 	</ItemGroup>
 </Project>

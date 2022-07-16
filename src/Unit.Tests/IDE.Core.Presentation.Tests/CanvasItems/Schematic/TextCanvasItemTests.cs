@@ -1,7 +1,6 @@
 ﻿using Eagle;
 using IDE.Core.Designers;
 using IDE.Core.Types.Media;
-using RestSharp.Extensions;
 using System;
 using System.Text;
 using Xunit;

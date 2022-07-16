@@ -17,7 +17,6 @@ using IDE.Core.PDF;
 using IDE.Core.Settings.Options;
 using IDE.Core.Settings;
 using IDE.Core.Types.Media;
-using Newtonsoft.Json.Serialization;
 using IDE.Core.Presentation.Utilities;
 using System.Collections;
 using IDE.Core.Presentation.Compilers;

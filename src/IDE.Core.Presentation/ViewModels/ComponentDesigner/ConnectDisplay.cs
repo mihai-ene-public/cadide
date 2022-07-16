@@ -79,7 +79,7 @@ namespace IDE.Documents.Views
                 }
             }
 
-            return "NC";
+            return "Not connected";
         }
 
     }
