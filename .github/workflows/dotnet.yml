@@ -1,4 +1,4 @@
-name: .NET
+name: Build and test on push or pull request
 
 on:
   push:
@@ -32,6 +32,6 @@ jobs:
             
     - name: Test
       run: dotnet test --no-build --verbosity normal $env:SolutionPath
-      if: ${{false}}
+      if: ${{true}}
       #working-directory: src
 
