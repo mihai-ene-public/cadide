@@ -25,8 +25,8 @@ jobs:
     steps:
     - name: Checkout specific label
       uses: actions/checkout@v3
-      with:
-        ref: '${{ github.event.inputs.releaseName }}'
+      #with:
+       # ref: '${{ github.event.inputs.releaseName }}'
     
     - name: Install .NET Core
       uses: actions/setup-dotnet@v2
