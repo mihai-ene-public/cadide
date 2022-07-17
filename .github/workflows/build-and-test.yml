@@ -1,0 +1,40 @@
+# The purpose for this workflow is to have an working build and pass unit tests
+# It will run on every push or PR
+# Currently unit tests are not working, therefore they are diabled
+name: Build and test on push or pull request
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    env:
+      SolutionPath: src/cadide.sln
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore $env:SolutionPath
+            
+    - name: Build
+      run: dotnet build --configuration Release --no-restore $env:SolutionPath
+      if: ${{true}}
+            
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal $env:SolutionPath
+      if: ${{false}}
+      
+

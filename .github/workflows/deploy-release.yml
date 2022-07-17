@@ -1,0 +1,70 @@
+# The purpose for this workflow is to deploy published binaries to an existing release or create a new release
+# It will run manually having version as input
+
+name: Publish release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseName:
+        description: 'Release version'
+        required: true
+        default: '-release version-'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    env:
+      SolutionPath: src/cadide.sln
+      ProjectPath: src/ide/ide.csproj
+      _Configuration: Release
+      _Platform: win-x64
+      
+    steps:
+    - name: Checkout specific label
+      uses: actions/checkout@v3
+      #with:
+       # ref: '${{ github.event.inputs.releaseName }}'
+    
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore $env:SolutionPath
+            
+    - name: Publish
+      run: dotnet publish -c $env:_Configuration -r $env:_Platform --no-restore --self-contained $env:ProjectPath
+      
+      #zip
+    - name: Create archive
+      run: Compress-Archive -Path src\ide\bin\Release\net6.0-windows\win-x64\publish\* -DestinationPath src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
+      
+      #create Release (disabled)
+      # Create the release:  https://github.com/actions/create-release
+    - name: Create release
+      id: create_release
+      if: ${{true}}
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.event.inputs.releaseName }}
+        release_name:  ${{ github.event.inputs.releaseName }}
+        draft: false
+        prerelease: true
+      
+      # Upload release asset:   https://github.com/actions/upload-release-asset
+    - name: Update release asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}  
+        asset_path: src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
+        asset_name: XNoCAD-${{ env._Platform }}-${{ github.event.inputs.releaseName }}.zip
+        asset_content_type: application/zip
