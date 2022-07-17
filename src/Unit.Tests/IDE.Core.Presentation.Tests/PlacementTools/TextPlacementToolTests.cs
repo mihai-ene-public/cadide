@@ -15,13 +15,11 @@ public class TextPlacementToolTests : PlacementToolTest
         var dispatcherMock = new Mock<IDispatcherHelper>();
         var schMock = new Mock<ISchematicDesigner>();
 
-        var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
         _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-        ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+        ( (CanvasGrid)_canvasModel.CanvasGrid ).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
         var canvasItemType = typeof(TextCanvasItem);
-        placementTool = PlacementTool.CreateTool(canvasItemType);
+        placementTool = new TextPlacementTool();
         placementTool.CanvasModel = _canvasModel;
         placementTool.StartPlacement(canvasItemType);
     }

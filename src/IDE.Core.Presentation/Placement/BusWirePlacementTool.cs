@@ -11,6 +11,13 @@ namespace IDE.Core.Presentation.Placement
 {
     public class BusWirePlacementTool : PlacementTool, IBusWirePlacementTool
     {
+        public BusWirePlacementTool()
+        {
+            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+        }
+
+        private readonly IGeometryHelper GeometryHelper;
+
         BusWireCanvasItem GetItem() => canvasItem as BusWireCanvasItem;
 
         static NetPlacementMode placementMode = NetPlacementMode.Single;

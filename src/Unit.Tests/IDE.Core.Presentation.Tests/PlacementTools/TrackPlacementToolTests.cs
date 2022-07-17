@@ -22,8 +22,6 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
                                action();
                            });
 
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
             var fileModelMock = new Mock<IBoardDesigner>();
 
             IList<ILayerDesignerItem> layerItems = new List<ILayerDesignerItem>()
@@ -41,7 +39,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
 
             var canvasItemType = typeof(TrackBoardCanvasItem);
             var placementToolType = typeof(TrackPlacementTool<SingleTrackRoutingMode>);
-            placementTool = PlacementTool.CreateTool(canvasItemType, placementToolType);
+            placementTool = new TrackPlacementTool<SingleTrackRoutingMode>();//PlacementTool.CreateTool(canvasItemType, placementToolType);
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
 

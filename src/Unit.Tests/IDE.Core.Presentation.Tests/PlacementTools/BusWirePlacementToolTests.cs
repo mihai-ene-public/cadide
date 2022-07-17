@@ -21,8 +21,6 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
                                action();
                            });
 
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
             var schMock = new Mock<ISchematicDesigner>();
             schMock.SetupGet(x => x.BusManager)
                     .Returns(new SchematicBusManager());//mock net manager?
@@ -31,7 +29,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
             var canvasItemType = typeof(BusWireCanvasItem);
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new BusWirePlacementTool();//PlacementTool.CreateTool(canvasItemType);
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
 

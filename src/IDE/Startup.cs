@@ -25,6 +25,7 @@ using IDE.Core.Presentation.Solution;
 using IDE.Core.Presentation.ObjectFinding;
 using Microsoft.Extensions.Caching.Memory;
 using IDE.Core.Interfaces.Compilers;
+using IDE.Core.Presentation.Placement;
 
 namespace IDE
 {
@@ -85,7 +86,6 @@ namespace IDE
             services.AddSingleton<ISchematicRulesToModelMapper, SchematicRulesDataToModelMapper>();
             services.AddSingleton<IDialogModelToWindowMapper, DialogModelToWindowMapper>();
 
-            //services.AddTransient<IMemoryCache, MemoryCache>();
             services.AddTransient<IMemoryCache, MemoryCache>(f => new MemoryCache(new MemoryCacheOptions()));
             services.AddSingleton<ISolutionRepository, SolutionRepository>();
             services.AddSingleton(typeof(IObjectRepository<>), typeof(ObjectRepository<>));
@@ -99,6 +99,7 @@ namespace IDE
             AddToolWindows(services);
             AddCompilers(services);
             AddBuilders(services);
+            AddPlacementTools(services);
 
 
             serviceProvider = services.BuildServiceProvider();
@@ -152,6 +153,42 @@ namespace IDE
         {
             services.AddTransient<IBoardBuilder, BoardBuilder>();
             services.AddTransient<ISchematicBuilder, SchematicBuilder>();
+        }
+
+        private static void AddPlacementTools(IServiceCollection services)
+        {
+            services.AddSingleton<IPlacementToolFactory, PlacementToolFactory>();
+
+            services.AddTransient<ISphereMeshItemPlacementTool, SphereMeshItemPlacementTool>();
+            services.AddTransient<IBoxMeshItemPlacementTool, BoxMeshItemPlacementTool>();
+            services.AddTransient<ITextMeshItemPlacementTool, TextMeshItemPlacementTool>();
+            services.AddTransient<IConeMeshItemPlacementTool, ConeMeshItemPlacementTool>();
+            services.AddTransient<ICylinderMeshItemPlacementTool, CylinderMeshItemPlacementTool>();
+            services.AddTransient<IEllipsoidMeshItemPlacementTool, EllipsoidMeshItemPlacementTool>();
+            services.AddTransient<IExtrudedPolyMeshItemPlacementTool, ExtrudedPolyMeshItemPlacementTool>();
+            services.AddTransient<IVolatileGroup3DPlacementTool, VolatileGroup3DPlacementTool>();
+            
+            services.AddTransient<IVolatileGroupPlacementTool, VolatileGroupPlacementTool>();
+            services.AddTransient<ILinePlacementTool, LinePlacementTool>();
+            services.AddTransient<IArcPlacementTool, ArcPlacementTool>();
+            services.AddTransient<ITextPlacementTool, TextPlacementTool>();
+            services.AddTransient<IRectanglePlacementTool, RectanglePlacementTool>();
+            services.AddTransient<IPolygonPlacementTool, PolygonPlacementTool>();
+            services.AddTransient<ICirclePlacementTool, CirclePlacementTool>();
+            services.AddTransient<IEllipsePlacementTool, EllipsePlacementTool>();
+            services.AddTransient<IImagePlacementTool, ImagePlacementTool>();
+            services.AddTransient<IPinPlacementTool, PinPlacementTool>();
+            services.AddTransient<IHolePlacementTool, HolePlacementTool>();
+            services.AddTransient<IPadPlacementTool, PadPlacementTool>();
+            services.AddTransient<INetWirePlacementTool, NetWirePlacementTool>();
+            services.AddTransient<IBusWirePlacementTool, BusWirePlacementTool>();
+            services.AddTransient<IJunctionPlacementTool, JunctionPlacementTool>();
+            services.AddTransient<INetLabelPlacementTool, NetLabelPlacementTool>();
+            services.AddTransient<IBusLabelPlacementTool, BusLabelPlacementTool>();
+            services.AddTransient<IPartPlacementTool, PartPlacementTool>();
+            services.AddTransient<IViaPlacementTool, ViaPlacementTool>();
+
+
         }
 
         public static void Run(StartupEventArgs _eventArgs)

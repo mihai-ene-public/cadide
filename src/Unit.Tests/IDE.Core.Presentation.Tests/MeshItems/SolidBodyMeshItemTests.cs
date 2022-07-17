@@ -11,14 +11,14 @@ namespace IDE.Core.Presentation.Tests.MeshItems
     {
         public SolidBodyMeshItemTests()
         {
-            var meshHelperMock = new Mock<IMeshHelper>();
-            ServiceProvider.RegisterResolver(t =>
-            {
-                if (t == typeof(IMeshHelper))
-                    return meshHelperMock.Object;
+            //var meshHelperMock = new Mock<IMeshHelper>();
+            //ServiceProvider.RegisterResolver(t =>
+            //{
+            //    if (t == typeof(IMeshHelper))
+            //        return meshHelperMock.Object;
 
-                throw new NotImplementedException();
-            });
+            //    throw new NotImplementedException();
+            //});
         }
 
         [Theory]

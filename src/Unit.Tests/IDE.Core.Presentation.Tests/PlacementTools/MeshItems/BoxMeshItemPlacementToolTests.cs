@@ -15,13 +15,11 @@ public class BoxMeshItemPlacementToolTests : PlacementToolTest
         var dispatcherMock = new Mock<IDispatcherHelper>();
         var schMock = new Mock<ISchematicDesigner>();
 
-        var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
         _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
         ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
         var canvasItemType = typeof(BoxMeshItem);
-        placementTool = PlacementTool.CreateTool(canvasItemType);
+        placementTool = new BoxMeshItemPlacementTool();// PlacementTool.CreateTool(canvasItemType);
         placementTool.CanvasModel = _canvasModel;
         placementTool.StartPlacement(canvasItemType);
     }

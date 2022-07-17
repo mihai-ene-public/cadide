@@ -25,7 +25,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
 
             var canvasItemType = typeof(VolatileGroupCanvasItem);
             var canvasItem = new VolatileGroupCanvasItem();
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new VolatileGroupPlacementTool();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItem);
         }

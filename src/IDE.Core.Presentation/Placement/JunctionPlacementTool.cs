@@ -8,6 +8,12 @@ namespace IDE.Core.Presentation.Placement
 {
     public class JunctionPlacementTool : PlacementTool, IJunctionPlacementTool
     {
+        public JunctionPlacementTool()
+        {
+            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+        }
+
+        private readonly IGeometryHelper GeometryHelper;
         JunctionCanvasItem GetItem() => canvasItem as JunctionCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)
@@ -127,9 +133,5 @@ namespace IDE.Core.Presentation.Placement
 
             }
         }
-    }
-
-    internal interface IJunctionPlacementTool
-    {
     }
 }

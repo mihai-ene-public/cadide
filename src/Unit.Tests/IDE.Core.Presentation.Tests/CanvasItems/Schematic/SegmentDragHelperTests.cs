@@ -15,8 +15,6 @@ namespace IDE.Core.Presentation.Tests
     {
         public SegmentDragHelperTests()
         {
-            var c = new PrimitiveToCanvasItemMapper();//it register itself
-
             var debounceMock = new Mock<IDebounceDispatcher>();
 
             var dispatcherMock = new Mock<IDispatcherHelper>();

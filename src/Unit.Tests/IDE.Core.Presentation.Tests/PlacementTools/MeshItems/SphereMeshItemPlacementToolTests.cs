@@ -15,13 +15,11 @@ public class SphereMeshItemPlacementToolTests : PlacementToolTest
         var dispatcherMock = new Mock<IDispatcherHelper>();
         var schMock = new Mock<ISchematicDesigner>();
 
-        var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
         _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
         ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
         var canvasItemType = typeof(SphereMeshItem);
-        placementTool = PlacementTool.CreateTool(canvasItemType);
+        placementTool = new SphereMeshItemPlacementTool();
         placementTool.CanvasModel = _canvasModel;
         placementTool.StartPlacement(canvasItemType);
     }

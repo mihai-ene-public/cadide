@@ -42,9 +42,9 @@ namespace IDE.Documents.Views
         public ObservableCollection<ToolBoxItem> Primitives { get; set; } = new ObservableCollection<ToolBoxItem>();
 
 
-        void StartPlacingObject(ToolBoxItem tbItem)
+        private void StartPlacingObject(ToolBoxItem toolBoxItem)
         {
-            canvasModel.StartPlacement(tbItem.Type, tbItem.PlacementToolType);
+            canvasModel.StartPlacement(toolBoxItem.Type, toolBoxItem.PlacementToolType);
         }
     }
 }

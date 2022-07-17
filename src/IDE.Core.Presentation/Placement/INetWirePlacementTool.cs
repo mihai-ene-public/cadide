@@ -1,6 +1,6 @@
 ﻿namespace IDE.Core.Presentation.Placement
 {
-    internal interface INetWirePlacementTool
+    public interface INetWirePlacementTool
     {
     }
 }

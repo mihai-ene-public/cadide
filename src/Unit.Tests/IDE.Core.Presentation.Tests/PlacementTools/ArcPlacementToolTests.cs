@@ -16,14 +16,11 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var dispatcherMock = new Mock<IDispatcherHelper>();
             var schMock = new Mock<ISchematicDesigner>();
 
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
             _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
             ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
-            //todo: maybe we need to separate tests for RectangleBoardCanvasItem
             var canvasItemType = typeof(ArcCanvasItem);
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new ArcPlacementTool();//PlacementTool.CreateTool(canvasItemType);
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
         }

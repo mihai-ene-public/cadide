@@ -1,6 +1,6 @@
 ﻿namespace IDE.Core.Presentation.Placement
 {
-    internal interface ITextPlacementTool
+    public interface ITextPlacementTool
     {
     }
 }

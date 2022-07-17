@@ -18,7 +18,7 @@ namespace IDE.Core.Presentation.Tests
                 Y = y
             };
 
-            var expected = new XRect(x, y, 16.4055, 3.4864);
+            var expected = new XRect(x, y, 16.4055, 3.9825);
             var actual = item.GetBoundingRectangle();
 
             Assert.Equal(expected, actual);

@@ -8,6 +8,13 @@ namespace IDE.Core.Presentation.Placement
 {
     public class ViaPlacementTool : PlacementTool, IViaPlacementTool
     {
+        public ViaPlacementTool()
+        {
+            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+        }
+
+        private readonly IGeometryHelper GeometryHelper;
+
         ViaCanvasItem GetItem() => canvasItem as ViaCanvasItem;
 
         BoardObstacleProvider obstaclesProvider;

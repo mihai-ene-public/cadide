@@ -19,7 +19,7 @@ public class VolatileGroup3DPlacementToolTests : PlacementToolTest
 
         var canvasItemType = typeof(VolatileGroup3DCanvasItem);
         var canvasItem = new VolatileGroup3DCanvasItem();
-        placementTool = PlacementTool.CreateTool(canvasItemType);
+        placementTool = new VolatileGroup3DPlacementTool();
         placementTool.CanvasModel = _canvasModel;
         placementTool.StartPlacement(canvasItem);
     }

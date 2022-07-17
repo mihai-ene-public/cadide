@@ -8,6 +8,12 @@ namespace IDE.Core.Presentation.Placement
 {
     public  class NetLabelPlacementTool : PlacementTool, INetLabelPlacementTool
     {
+        public NetLabelPlacementTool()
+        {
+            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+        }
+
+        private readonly IGeometryHelper GeometryHelper;
         NetLabelCanvasItem GetItem() => canvasItem as NetLabelCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)

@@ -81,7 +81,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
                 // A List of T
                 if (listType != null)
                 {
-                    if (!listType.IsPrimitive && !listType.Equals(typeof(String)) && !listType.IsEnum)
+                    if (!listType.IsPrimitive && !listType.Equals(typeof(string)) && !listType.IsEnum)
                         editor = new Xceed.Wpf.Toolkit.PropertyGrid.Editors.CollectionEditor();
                     else
                         editor = new Xceed.Wpf.Toolkit.PropertyGrid.Editors.PrimitiveTypeCollectionEditor();

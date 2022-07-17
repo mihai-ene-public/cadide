@@ -7,15 +7,13 @@ using System.Collections.Generic;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PlacementTool : IPlacementTool//<T> where T: ISelectableItem
+    public class PlacementTool : IPlacementTool
     {
 
         public PlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-        }
 
-        protected IGeometryHelper GeometryHelper;
+        }
 
         /// <summary>
         /// canvasItem that we are currently placing
@@ -101,14 +99,26 @@ namespace IDE.Core.Presentation.Placement
 
             CanvasModel.AddItem(canvasItem);
 
+            ShowPlacingItemProperties();
+        }
 
-            //show properties for the current placing item UpdateSelection()?
-            var pw = ServiceProvider.GetToolWindow<PropertiesToolWindowViewModel>(false);
-            if (pw != null)
+        //todo: this could be an event that is handled in canvas designer
+        private void ShowPlacingItemProperties()
+        {
+            try
             {
-                pw.SelectedObject = canvasItem;
-                pw.IsVisible = true;
-                pw.IsActive = true;
+                //show properties for the current placing item UpdateSelection()?
+                var pw = ServiceProvider.GetToolWindow<PropertiesToolWindowViewModel>(false);
+                if (pw != null)
+                {
+                    pw.SelectedObject = canvasItem;
+                    pw.IsVisible = true;
+                    pw.IsActive = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
 
@@ -119,9 +129,6 @@ namespace IDE.Core.Presentation.Placement
 
         public virtual void SetupCanvasItem()
         {
-
-
-
             if (canvasItem is SingleLayerBoardCanvasItem boardItem)
             {
                 var layeredDoc = GetLayeredDocument();
@@ -145,17 +152,6 @@ namespace IDE.Core.Presentation.Placement
                 }
             }
 
-            //else if (canvasItem is MultiLayerBoardCanvasItem multiLayerItem)
-            //{
-            //    //var boardItem = canvasItem as MultiLayerBoardCanvasItem;
-            //    var layeredDoc = GetLayeredDocument();
-            //    if (layeredDoc != null)
-            //    {
-            //        multiLayerItem.LayerDocument = layeredDoc;
-            //        multiLayerItem.LoadLayers();
-            //    }
-
-            //}
         }
 
         public static PlacementTool CreateTool(Type canvasItemType, Type placementToolType = null)
@@ -166,117 +162,13 @@ namespace IDE.Core.Presentation.Placement
                 return placementTool;
             }
 
-            var mapping = GetMapping();
-
-            if (mapping.ContainsKey(canvasItemType))
-            {
-                placementToolType = mapping[canvasItemType];
-                var placementTool = (PlacementTool)Activator.CreateInstance(placementToolType);
-                return placementTool;
-            }
+            var toolFactory = ServiceProvider.Resolve<IPlacementToolFactory>();
+            var pt = toolFactory.Create(canvasItemType);
+            if (pt != null)
+                return pt;
 
             throw new NotSupportedException();
         }
 
-        private static Dictionary<Type, Type> GetMapping()
-        {
-            var mapping = new Dictionary<Type, Type>()
-            {
-                //sphere
-                 { typeof(SphereMeshItem),typeof(SphereMeshItemPlacementTool)},
-
-                //box
-                 { typeof(BoxMeshItem),typeof(BoxMeshItemPlacementTool)},
-
-                 //text 3d
-                 { typeof(TextMeshItem),typeof(TextMeshItemPlacementTool)},
-
-                //cone
-                 { typeof(ConeMeshItem),typeof(ConeMeshItemPlacementTool)},
-
-                //cylinder
-                 { typeof(CylinderMeshItem),typeof(CylinderMeshItemPlacementTool)},
-
-                //ellipsoid
-                 { typeof(EllipsoidMeshItem),typeof(EllipsoidMeshItemPlacementTool)},
-
-                //extruded poly
-                 { typeof(ExtrudedPolyMeshItem),typeof(ExtrudedPolyMeshItemPlacementTool)},
-
-
-                //group
-                { typeof(VolatileGroup3DCanvasItem),typeof(VolatileGroup3DPlacementTool)},
-                { typeof(VolatileGroupCanvasItem),typeof(VolatileGroupPlacementTool)},
-
-                //line
-                { typeof(LineSchematicCanvasItem),typeof(LinePlacementTool)},
-                { typeof(LineBoardCanvasItem),typeof(LinePlacementTool)},
-
-                //arc
-                { typeof(ArcCanvasItem),typeof(ArcPlacementTool)},
-                { typeof(ArcBoardCanvasItem),typeof(ArcPlacementTool)},
-
-                //text
-                { typeof(TextCanvasItem),typeof(TextPlacementTool)},
-                { typeof(TextBoardCanvasItem),typeof(TextPlacementTool)},
-                { typeof(TextSingleLineBoardCanvasItem),typeof(TextPlacementTool)},
-
-                //rect
-                { typeof(RectangleCanvasItem),typeof(RectanglePlacementTool)},
-                { typeof(RectangleBoardCanvasItem),typeof(RectanglePlacementTool)},
-
-                //poly
-                { typeof(PolygonCanvasItem),typeof(PolygonPlacementTool)},
-                { typeof(PolygonBoardCanvasItem),typeof(PolygonPlacementTool)},
-
-                //circle
-                { typeof(CircleCanvasItem),typeof(CirclePlacementTool)},
-                { typeof(CircleBoardCanvasItem),typeof(CirclePlacementTool)},
-
-                //ellipse
-                { typeof(EllipseCanvasItem),typeof(EllipsePlacementTool)},
-
-                //image
-                { typeof(ImageCanvasItem),typeof(ImagePlacementTool)},
-
-                //pin
-                { typeof(PinCanvasItem),typeof(PinPlacementTool)},
-
-                //hole
-                { typeof(HoleCanvasItem),typeof(HolePlacementTool)},
-
-                //pad/smd
-                { typeof(PadThtCanvasItem),typeof(PadPlacementTool)},
-                { typeof(PadSmdCanvasItem),typeof(PadPlacementTool)},
-
-                //sch net wire
-                { typeof(NetWireCanvasItem),typeof(NetWirePlacementTool)},
-
-                //sch bus wire
-                { typeof(BusWireCanvasItem),typeof(BusWirePlacementTool)},
-
-                //junction
-                { typeof(JunctionCanvasItem),typeof(JunctionPlacementTool)},
-
-                //net label
-                { typeof(NetLabelCanvasItem),typeof(NetLabelPlacementTool)},
-
-                //bus label
-                { typeof(BusLabelCanvasItem),typeof(BusLabelPlacementTool)},
-
-                //part
-                { typeof(SchematicSymbolCanvasItem),typeof(PartPlacementTool)},
-
-                //board via
-                { typeof(ViaCanvasItem),typeof(ViaPlacementTool)},
-
-                 ////trace
-                // { typeof(TraceBoardCanvasItem),typeof(TracePlacementTool)},
-
-                 //track (new routing)
-
-            };
-            return mapping;
-        }
     }
 }

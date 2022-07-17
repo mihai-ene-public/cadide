@@ -33,15 +33,13 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             fileModelMock.SetupGet(x => x.LayerItems)
                          .Returns(layerItems);
 
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
             _canvasModel = new DrawingViewModel(fileModelMock.Object, dispatcherMock.Object);
             ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
 
 
             var canvasItemType = typeof(ViaCanvasItem);
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new ViaPlacementTool();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
         }

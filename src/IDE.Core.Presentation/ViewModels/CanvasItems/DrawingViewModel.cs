@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using IDE.Documents.DiagramDesigner.Messenger;
 using System.Windows.Input;
 using IDE.Core.ViewModels;
 using IDE.Core.Commands;
@@ -243,12 +242,10 @@ namespace IDE.Core.Designers
                 //show properties to view (this could be an option)
                 if (pw.SelectedObject != null)
                 {
-                    //pw.IsSelected = true;
                     pw.IsVisible = true;
 
                     if (oldSelected != pw.SelectedObject)
                         pw.IsActive = true;
-                    //pw.IsSelected = true;
                 }
             }
 
@@ -291,8 +288,6 @@ namespace IDE.Core.Designers
             {
                 if (item is LayerDesignerItem layer)
                     lst.AddRange(layer.Items);
-                //else if (item is GroupMeshItem groupMeshItem)
-                //    lst.AddRange(groupMeshItem.Items);
                 else
                     lst.Add(item);
             }
@@ -460,41 +455,6 @@ namespace IDE.Core.Designers
             }
         }
 
-        //ICommand rotateCommand;
-        //public ICommand RotateCommand
-        //{
-        //    get
-        //    {
-        //        if (rotateCommand == null)
-        //            rotateCommand = CreateCommand(p =>
-        //            {
-        //                if (PlacementTool != null
-        //                    && PlacementTool.CanvasItem != null)
-        //                {
-        //                    //if we have a placing net wire
-        //                    var net = PlacementTool.CanvasItem;// as NetWireCanvasItem;
-        //                    if (net is NetWireCanvasItem)
-        //                    {
-        //                        NetWireCanvasItem.CyclePlacementMode();
-        //                        return;
-        //                    }
-        //                    //TODO: these below: TrackPlacementTool.CyclePlacement
-        //                    //else if (net is TraceBoardCanvasItem)
-        //                    //{
-        //                    //    TraceBoardCanvasItem.CyclePlacementMode();
-        //                    //    return;
-        //                    //}
-
-        //                }
-
-        //                var item = GetActionObjects();
-        //                item?.ForEach(c => c.Rotate());
-        //            });
-
-        //        return rotateCommand;
-        //    }
-        //}
-
         public void ChangeFootprintPlacement()
         {
 
@@ -601,9 +561,6 @@ namespace IDE.Core.Designers
                 }
             }
 
-
-
-
             //group rectangle
             var rect = XRect.Empty;
             foreach (var item in canvasItems)
@@ -632,14 +589,7 @@ namespace IDE.Core.Designers
         public void DeleteSelectedItems()
         {
             var selectedItems = SelectedItems.ToList();
-            //if (selectedItems.Count == 1 && selectedItems[0] is TrackBoardCanvasItem trackItem)
-            //{
-            //    trackItem.RemoveSelectedSegment();
-            //}
-            //else if (selectedItems.Count == 1 && selectedItems[0] is BusWireCanvasItem busItem)
-            //{
-            //    busItem.RemoveSelectedSegment(this);
-            //}
+
             if (selectedItems.Count == 1 && selectedItems[0] is ISegmentedPolylineSelectableCanvasItem wire)
             {
                 var segmentRemover = new SegmentRemoverHelper(this, wire, _dispatcher);
@@ -654,41 +604,14 @@ namespace IDE.Core.Designers
             OnDrawingChanged(DrawingChangedReason.ItemRemoved);
         }
 
-        //ICommand changeModeCommand;
-        //public ICommand ChangeModeCommand
-        //{
-        //    get
-        //    {
-        //        if (changeModeCommand == null)
-        //            changeModeCommand = CreateCommand(p =>
-        //            {
-        //                if (placingObject != null
-        //                && placingObject.PlacingObjects != null)
-        //                {
-        //                    //if we have a placing net wire
-        //                    var net = placingObject.PlacingObjects.FirstOrDefault() as NetWireCanvasItem;
-        //                    if (net != null)
-        //                        NetWireCanvasItem.CyclePlacementMode();
-        //                }
-
-
-        //            });
-
-        //        return changeModeCommand;
-        //    }
-        //}
-
-
         public void AddItem(ISelectableItem item)
         {
             item.PropertyChanged += DesignerItemBaseViewModel_PropertyChanged;
 
             if (item is SingleLayerBoardCanvasItem)
                 return;
-            // item.Parent = this;
             items.Add(item);
 
-            //  AddIntoTree(item);
         }
 
         void DesignerItemBaseViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -712,49 +635,22 @@ namespace IDE.Core.Designers
                 OnDrawingChanged(DrawingChangedReason.ItemModified);
         }
 
-        //void AddIntoTree(ISelectableItem item)
-        //{
-        //    tree.Add(Rectangle.FromRect(item.GetBoundingRectangle()), item);
-        //}
-
-        //void RemoveFromTree(ISelectableItem item)
-        //{
-        //    try
-        //    {
-        //        tree.Delete(Rectangle.FromRect(item.GetBoundingRectangle()), item);
-        //    }
-        //    catch { }//don't really care
-        //}
-
         public void AddItems(IEnumerable<ISelectableItem> addItems)
         {
             foreach (var item in addItems)
             {
-                //if (item is SingleLayerBoardCanvasItem)
-                //    continue;
-                //items.Add(item);
                 AddItem(item);
             }
         }
 
         public void RemoveItem(ISelectableItem item)
         {
-            //IContainerSelectableItem
-            //we need to use IContainerSelectableItem (with options: can select items, can move, hihglight, etc)
-
-            //if (item is ISignalPrimitiveCanvasItem si)
-            //    si.Signal = null;
-            //if (item is SingleLayerBoardCanvasItem layeritem)
-            //{
-            //    layeritem.Layer = null;
-            //}
             item.RemoveFromCanvas();
 
             items.Remove(item);
 
             item.PropertyChanged -= DesignerItemBaseViewModel_PropertyChanged;
 
-            //RemoveFromTree(item);
         }
 
         public void RemoveItems(IEnumerable<ISelectableItem> removeItems)
@@ -779,14 +675,6 @@ namespace IDE.Core.Designers
 
         public void ClearHighlightedItems()
         {
-            //foreach (ISelectableItem item in GetItems())
-            //{
-            //item.IsHighLighted = false;
-            //if (item is IContainerSelectableItem)
-            //    foreach (var child in ((IContainerSelectableItem)item).Items)
-            //        child.IsHighLighted = false;
-            //}
-
             if (FileDocument is ICanvasWithHighlightedItems canvas)
                 canvas.ClearHighlightedItems();
 

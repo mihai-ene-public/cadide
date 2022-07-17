@@ -8,6 +8,13 @@ namespace IDE.Core.Presentation.Placement
 {
     public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
     {
+        public BusLabelPlacementTool()
+        {
+            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+        }
+
+        private readonly IGeometryHelper GeometryHelper;
+
         BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)

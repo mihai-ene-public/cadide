@@ -15,13 +15,11 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var dispatcherMock = new Mock<IDispatcherHelper>();
             var fileModelMock = new Mock<IFileBaseViewModel>();
 
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
-
             _canvasModel = new DrawingViewModel(fileModelMock.Object, dispatcherMock.Object);
             ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
             var canvasItemType = typeof(HoleCanvasItem);
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new HolePlacementTool();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
         }

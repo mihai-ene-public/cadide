@@ -198,8 +198,6 @@ namespace IDE.Core.Behaviors
         private static void OnBaseOnStyleChanged(DependencyObject d,
                                                  DependencyPropertyChangedEventArgs e)
         {
-            if (e == null) return;
-
             if (d == null) return;
 
             //// if (e.OldValue == null) return;

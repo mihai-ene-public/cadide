@@ -15,8 +15,6 @@ namespace IDE.Core.Presentation.Tests
     {
         public NetWireSegmentRemoverHelperTests()
         {
-            var c = new PrimitiveToCanvasItemMapper();//it register itself
-
             var debounceMock = new Mock<IDebounceDispatcher>();
             var dispatcherMock = new Mock<IDispatcherHelper>();
             dispatcherMock.Setup(x => x.RunOnDispatcher(It.IsAny<Action>()))

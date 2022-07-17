@@ -77,7 +77,7 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
         /// <value>
         /// The path of the folder first selected in the dialog box or the last folder selected by the user. The default is an empty string ("").
         /// </value>
-        [Browsable(true), 
+        [Browsable(true),
             Description("The path selected by the user."),
             DefaultValue(""),
             Localizable(true),
@@ -214,16 +214,11 @@ namespace IDE.Presentation.Dialogs.FolderBrowserDialog
             }
             finally
             {
-                if (rootItemIdList != null)
-                {
-                    IMalloc malloc = NativeMethods.SHGetMalloc();
-                    malloc.Free(rootItemIdList);
-                    Marshal.ReleaseComObject(malloc);
-                }
-                if (resultItemIdList != null)
-                {
-                    Marshal.FreeCoTaskMem(resultItemIdList);
-                }
+                IMalloc malloc = NativeMethods.SHGetMalloc();
+                malloc.Free(rootItemIdList);
+                Marshal.ReleaseComObject(malloc);
+
+                Marshal.FreeCoTaskMem(resultItemIdList);
             }
         }
 

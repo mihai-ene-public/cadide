@@ -1,6 +1,6 @@
 ﻿namespace IDE.Core.Presentation.Placement
 {
-    internal interface IPadPlacementTool
+    public interface IPadPlacementTool
     {
     }
 }

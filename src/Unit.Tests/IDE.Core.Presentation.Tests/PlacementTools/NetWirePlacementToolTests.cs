@@ -41,19 +41,17 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
 
 
 
-            ServiceProvider.RegisterResolver(t =>
-            {
-                if (t == typeof(IGeometryHelper))
-                    return new GeometryHelper();
-                if (t == typeof(IDebounceDispatcher))
-                    return debounceMock.Object;
-                if (t == typeof(IDispatcherHelper))
-                    return dispatcherMock.Object;
+            //ServiceProvider.RegisterResolver(t =>
+            //{
+            //    if (t == typeof(IGeometryHelper))
+            //        return new GeometryHelper();
+            //    if (t == typeof(IDebounceDispatcher))
+            //        return debounceMock.Object;
+            //    if (t == typeof(IDispatcherHelper))
+            //        return dispatcherMock.Object;
 
-                throw new NotImplementedException();
-            });
-
-            var c = new PrimitiveToCanvasItemMapper();//it registers itself
+            //    throw new NotImplementedException();
+            //});
 
             var schMock = new Mock<ISchematicDesigner>();
             schMock.SetupGet(x => x.NetManager)
@@ -63,7 +61,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
             var canvasItemType = typeof(NetWireCanvasItem);
-            placementTool = PlacementTool.CreateTool(canvasItemType);
+            placementTool = new NetWirePlacementTool();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
 

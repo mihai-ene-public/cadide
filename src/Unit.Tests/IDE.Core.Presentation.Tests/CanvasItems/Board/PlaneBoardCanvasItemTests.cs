@@ -16,13 +16,13 @@ namespace IDE.Core.Presentation.Tests.CanvasItems.Board
         {
             var debounceMock = new Mock<IDebounceDispatcher>();
 
-            ServiceProvider.RegisterResolver(t =>
-            {
-                if (t == typeof(IDebounceDispatcher))
-                    return debounceMock.Object;
+            //ServiceProvider.RegisterResolver(t =>
+            //{
+            //    if (t == typeof(IDebounceDispatcher))
+            //        return debounceMock.Object;
 
-                throw new NotImplementedException();
-            });
+            //    throw new NotImplementedException();
+            //});
         }
 
         private RegionBoard CreateRegionBoard()

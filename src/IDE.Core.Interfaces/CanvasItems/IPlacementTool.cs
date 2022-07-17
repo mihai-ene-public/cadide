@@ -15,13 +15,6 @@ namespace IDE.Core.Interfaces
             - on 2nd click we add the 2nd point; create a new line and add it to canvas; 1st point is the last point; the second updates with mouse position; Status = Started
 
     */
-    //public class PlacementData
-    //{
-    //    public List<ISelectableItem> PlacingObjects { get; set; }
-
-
-    //    public PlacementStatus PlacementStatus { get; set; }
-    //}
 
     public interface IPlacementTool
     {
