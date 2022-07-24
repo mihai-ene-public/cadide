@@ -1,6 +1,8 @@
 # XNoCAD
 A PCB CAD designer software.
 
+[![Build and test on push or pull request](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml)
+
 ## How to build
 - Use Visual Studio 2022 Community or higher from [here](https://www.visualstudio.com/)
 - Make sure you have **.NET desktop development** workload installed
