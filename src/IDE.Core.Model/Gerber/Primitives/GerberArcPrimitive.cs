@@ -1,4 +1,5 @@
-﻿using IDE.Core.Types.Media;
+﻿using IDE.Core.Model.Gerber.Primitives.Apertures;
+using IDE.Core.Types.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;

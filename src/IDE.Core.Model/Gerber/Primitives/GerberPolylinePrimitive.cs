@@ -1,5 +1,7 @@
 ﻿using IDE.Core.Types.Media;
 using System.Collections.Generic;
+using IDE.Core.Model.Gerber.Primitives.Apertures;
+
 
 namespace IDE.Core.Gerber
 {
