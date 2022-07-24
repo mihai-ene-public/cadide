@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:utils="clr-namespace:IDE.Core.Utilities"
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="300">
@@ -25,28 +26,19 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Header="Copy Path to Clipboard"
+                                <MenuItem Header="{x:Static resources:Strings.CopyPathToClipboard}"
                                           Command="{x:Static ctrls:FileHyperlink.CopyUri}"
                                           CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                           Margin="3" />
 
-                                <MenuItem DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
-                                          Command="cmd:AppCommand.LoadFile"
-                                          CommandParameter="{Binding NavigateUri}"
-                                          Margin="3" />
 
-                                <MenuItem Header="Open With Windows Application..."
-                                          Command="{x:Static ctrls:FileHyperlink.NavigateToUri}"
-                                          CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
-                                          Margin="3" />
-
-                                <MenuItem Header="Open In Containing Folder"
+                                <MenuItem Header="{x:Static resources:Strings.OpenFolderInFileExplorer}"
                                           Command="{x:Static ctrls:FileHyperlink.OpenContainingFolder}"
                                           CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                           Margin="3" />
                                 <Separator />
 
-                                <MenuItem Header="Remove"
+                                <MenuItem Header="{x:Static resources:Strings.Remove}"
                                           Command="{Binding Data.RemoveEntryCommand, Source={StaticResource modelProxy}}"
                                           CommandParameter="{Binding}"
                                           CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"

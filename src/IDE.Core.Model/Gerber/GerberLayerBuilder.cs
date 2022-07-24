@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using IDE.Core.Build;
 using IDE.Core.Interfaces;
+using IDE.Core.Model.Gerber.Primitives.Apertures;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Types.Media;
 

@@ -1,6 +1,7 @@
 ﻿using IDE.Core.Common.Variables;
 using IDE.Core.Documents;
 using IDE.Core.Interfaces;
+using IDE.Core.Model.Gerber.Primitives.Apertures;
 using IDE.Core.Model.GlobalRepresentation;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Storage;

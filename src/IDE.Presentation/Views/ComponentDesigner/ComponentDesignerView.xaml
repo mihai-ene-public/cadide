@@ -4,12 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IDE.Documents.Views"
-             xmlns:s="clr-namespace:IDE.Core.StyleSelectors"
-             xmlns:ctrls="clr-namespace:IDE.Core.Controls"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:storage="clr-namespace:IDE.Core.Storage;assembly=IDE.Core.Data"
              xmlns:data="clr-namespace:IDE.Core.Interfaces;assembly=IDE.Core.Interfaces"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              mc:Ignorable="d"
              d:DesignHeight="800"
              d:DesignWidth="1300">
@@ -76,18 +74,18 @@
                     </Setter>
                 </Style>
             </TabControl.Resources>
-            <TabItem Header="Definition"
+            <TabItem Header="{x:Static strings:ComponentDesignerStrings.Definition}"
                      Height="26"
                      Margin="-1,-2,1,-2"
                      VerticalAlignment="Top">
                 <local:ComponentDesignerDefinitionView />
             </TabItem>
 
-            <TabItem Header="Properties">
+            <TabItem Header="{x:Static strings:ComponentDesignerStrings.Properties}">
                 <local:ComponentDesignerPropertiesView />
             </TabItem>
 
-            <TabItem Header="BOM">
+            <TabItem Header="{x:Static strings:ComponentDesignerStrings.BOM}">
                 <local:ComponentDesignerBomView />
             </TabItem>
         </TabControl>

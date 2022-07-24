@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
              xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -99,22 +101,22 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Part Name"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.PartName}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding PartName, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Supplier"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Supplier}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Supplier, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Supplier Part Number"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.SupplierPartNumber}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Manufacturer"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Manufacturer}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged}"
@@ -126,22 +128,22 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="MPN"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.MpnShort}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding MPN, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Packaging"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Packaging}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Packaging, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Package/Case"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.PackageCase}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Package, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Stock"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Stock}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Stock, UpdateSourceTrigger=PropertyChanged}"
@@ -204,7 +206,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Documents"
+                            <TextBlock Text="{x:Static strings:BomStrings.Documents}"
                                        FontSize="18"
                                        Grid.Row="0" />
                             <ListView Grid.Row="1"

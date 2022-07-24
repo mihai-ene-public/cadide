@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:IDE.Documents.Views"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-              xmlns:ctrls="clr-namespace:IDE.Controls"
-              xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+
              mc:Ignorable="d"
              Background="Transparent"
              d:DesignHeight="300"
@@ -21,7 +23,7 @@
         <StackPanel Orientation="Horizontal"
                     Margin="0,5">
             <ToggleButton IsChecked="{Binding LayeredDocument.MaskUnselectedLayer, UpdateSourceTrigger=PropertyChanged}"
-                          ToolTip="Mask unselected layers"
+                          ToolTip="{x:Static strings:Strings.LayersToolWindow_MaskUnselectedLayers}"
                           >
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -44,15 +46,11 @@
             </ToggleButton>
             <ToggleButton Margin="5,0,0,0"
                           IsChecked="{Binding LayeredDocument.HideUnselectedLayer, UpdateSourceTrigger=PropertyChanged}"
-                          ToolTip="Hide unselected layers"
+                          ToolTip="{x:Static strings:Strings.LayersToolWindow_HideUnselectedLayers}"
                           Padding="0"
                           >
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <!--<Path Name="PART_Path"
-                              Data="M0.5,0 L0,0.5 0.5,1 1,0.5"
-                              Fill="DarkGray"
-                              Stretch="Fill" />-->
                         <fa:FontAwesome Name="PART_Path"
                                         Icon="Solid_WindowMinimize" 
                                         FontSize="16"
@@ -95,15 +93,8 @@
                             <ColumnDefinition Width="75" />
                         </Grid.ColumnDefinitions>
 
-                        <!--<Rectangle Grid.Column="0"
-                                   Fill="{Binding LayerColor,Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
-                                   Width="18"
-                                   Height="16"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left" />-->
                         <ToggleButton Grid.Column="0"
                                       IsChecked="{Binding IsSetVisible, UpdateSourceTrigger=PropertyChanged}"
-                                        ToolTip="Toggle layer visibility"
                                       VerticalAlignment="Center"
                                        >
                             <ToggleButton.Template>
@@ -133,9 +124,6 @@
                                           BorderBrush="Transparent"
                                           Width="22" />
 
-                        <!--<TextBlock Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   Text="{Binding LayerName, UpdateSourceTrigger=PropertyChanged, FallbackValue=unknown}" />-->
                         <ctrls:EditableLabel Grid.Column="2"
                                              Text="{Binding LayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        DisplayText="{Binding LayerName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

@@ -35,7 +35,6 @@
                     Orientation="Horizontal">
             <Button Command="{Binding RefreshCommand}"
                     SnapsToDevicePixels="True"
-                    ToolTip="Refresh overview"
                     ToolTipService.ShowOnDisabled="True"
                     Margin="5"
                     Padding="0"

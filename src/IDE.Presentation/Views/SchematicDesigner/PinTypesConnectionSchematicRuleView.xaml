@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              xmlns:ctrls="clr-namespace:IDE.Controls"
              
              mc:Ignorable="d" 
@@ -85,83 +86,83 @@
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Style="{StaticResource rotatedtext}"
-                       Text="NoConnect"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeNoConnect}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="2"
                        Style="{StaticResource rotatedtext}"
-                       Text="Power"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypePower}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="3"
                        Style="{StaticResource rotatedtext}"
-                       Text="HiZ"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeHiZ}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="4"
                        Style="{StaticResource rotatedtext}"
-                       Text="OpenEmitter"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOpenEmitter}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="5"
                        Style="{StaticResource rotatedtext}"
-                       Text="OpenCollector"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOpenCollector}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="6"
                        Style="{StaticResource rotatedtext}"
-                       Text="IO"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeIO}"/>
             <TextBlock Grid.Row="0"
                        Grid.Column="7"
                        Style="{StaticResource rotatedtext}"
-                       Text="Output"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOutput}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="8"
                        Style="{StaticResource rotatedtext}"
-                       Text="Input"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeInput}"/>
 
             <TextBlock Grid.Row="0"
                        Grid.Column="9"
                        Style="{StaticResource rotatedtext}"
-                       Text="Passive"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypePassive}"/>
 
             <!-- Row headers-->
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
-                       Text="Passive"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypePassive}"/>
 
             <TextBlock Grid.Row="2"
                        Grid.Column="0"
-                       Text="Input"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeInput}"/>
 
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
-                       Text="Output"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOutput}"/>
 
             <TextBlock Grid.Row="4"
                        Grid.Column="0"
-                       Text="IO"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeIO}"/>
 
             <TextBlock Grid.Row="5"
                        Grid.Column="0"
-                       Text="OpenCollector"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOpenCollector}"/>
 
             <TextBlock Grid.Row="6"
                        Grid.Column="0"
-                       Text="OpenEmitter"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeOpenEmitter}"/>
 
             <TextBlock Grid.Row="7"
                        Grid.Column="0"
-                       Text="HiZ"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeHiZ}"/>
 
             <TextBlock Grid.Row="8"
                        Grid.Column="0"
-                       Text="Power"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypePower}"/>
 
             <TextBlock Grid.Row="9"
                        Grid.Column="0"
-                       Text="NoConnect"/>
+                       Text="{x:Static strings:SchematicStrings.PinTypeNoConnect}"/>
 
             <!-- Passive-->
             <ctrls:ItemPicker Grid.Row="1"

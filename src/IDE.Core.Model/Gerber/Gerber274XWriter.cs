@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Globalization;
+using IDE.Core.Model.Gerber.Primitives.Apertures;
 
 namespace IDE.Core.Gerber
 {

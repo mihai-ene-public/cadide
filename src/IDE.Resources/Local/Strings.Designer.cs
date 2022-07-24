@@ -511,6 +511,15 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy path to clipboard.
+        /// </summary>
+        public static string CopyPathToClipboard {
+            get {
+                return ResourceManager.GetString("CopyPathToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MenuAboutHeader {
@@ -655,11 +664,56 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string NewItemBrowseText {
+            get {
+                return ResourceManager.GetString("NewItemBrowseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create folder for solution.
+        /// </summary>
+        public static string NewItemCreateFolderLabel {
+            get {
+                return ResourceManager.GetString("NewItemCreateFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Project.
         /// </summary>
         public static string NewItemDialogNewProject {
             get {
                 return ResourceManager.GetString("NewItemDialogNewProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location:.
+        /// </summary>
+        public static string NewItemLocationLabel {
+            get {
+                return ResourceManager.GetString("NewItemLocationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solution name:.
+        /// </summary>
+        public static string NewItemSolutionNameLabel {
+            get {
+                return ResourceManager.GetString("NewItemSolutionNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open folder in File Explorer.
+        /// </summary>
+        public static string OpenFolderInFileExplorer {
+            get {
+                return ResourceManager.GetString("OpenFolderInFileExplorer", resourceCulture);
             }
         }
         
@@ -786,6 +840,15 @@ namespace IDE.Resources.Local {
         public static string ProjectPropertiesVersionLabel {
             get {
                 return ResourceManager.GetString("ProjectPropertiesVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         

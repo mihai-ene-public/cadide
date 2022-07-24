@@ -37,28 +37,18 @@ namespace IDE.Documents.Views
         public NewItemWindow()
         {
             InitializeComponent();
-
-            //DataContext = model;
         }
 
-       // NewItemWindowViewModel model = new NewItemWindowViewModel();
-
-        NewItemWindowViewModel Model
-        {
-            get
-            {
-                return DataContext as NewItemWindowViewModel;
-            }
-        }
-
-        void btnOK_Click(object sender, RoutedEventArgs e)
+        private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (Model.SelectedTemplate == null)
+                var model = DataContext as NewItemWindowViewModel;
+
+                if (model.SelectedTemplate == null)
                     throw new Exception("You must select a template");
 
-                Model.CreateItem();
+                model.CreateItem();
 
                 DialogResult = true;
                 Close();

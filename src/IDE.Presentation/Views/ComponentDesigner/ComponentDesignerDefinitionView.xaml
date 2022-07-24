@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IDE.Documents.Views"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
@@ -27,12 +29,12 @@
                      Grid.Row="0"
                      Grid.Column="0"
                      Orientation="Horizontal">
-            <Button Content="Add gate ..."
+            <Button Content="{x:Static strings:ComponentDesignerStrings.AddGate}"
                     Command="{Binding AddGateCommand}"
                     Focusable="False" />
 
-            <Button Content="Import component ..."
-                    ToolTip="Import an existing component. Definition, Properties and BOM will be overridden!"
+            <Button Content="{x:Static strings:ComponentDesignerStrings.ImportComponentText}"
+                    ToolTip="{x:Static strings:ComponentDesignerStrings.ImportComponentTooltip}"
                     Command="{Binding ImportComponentCommand}"
                     Focusable="False"
                     Margin="10,0,0,0" />
@@ -79,7 +81,7 @@
 
                     <Button Command="{Binding ChangeFootprintCommand}"
                             CommandParameter="{Binding}"
-                            ToolTip="Change footprint"
+                            ToolTip="{x:Static strings:ComponentDesignerStrings.ChangeFootprint}"
                             Grid.Column="3"
                             Focusable="False"
                             Margin="3,0"
@@ -91,7 +93,7 @@
                     </Button>
                     <Button Command="{Binding DeleteFootprintCommand}"
                             CommandParameter="{Binding}"
-                            ToolTip="Remove footprint"
+                            ToolTip="{x:Static strings:ComponentDesignerStrings.RemoveFootprint}"
                             Grid.Column="4"
                             Focusable="False"
                             Margin="3,0"
@@ -110,7 +112,7 @@
 
                 </Grid>
 
-                <Expander Header="Pad to pin connections"
+                <Expander Header="{x:Static strings:ComponentDesignerStrings.PadToPinConnections}"
                           Grid.Row="2"
                           IsExpanded="True"
                           Margin="0,10,0,0">
@@ -119,9 +121,9 @@
                               CanUserSortColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Pad}"
-                                                Header="Pad"
+                                                Header="{x:Static strings:ComponentDesignerStrings.Pad}"
                                                 IsReadOnly="True" />
-                            <DataGridTemplateColumn Header="Gate">
+                            <DataGridTemplateColumn Header="{x:Static strings:ComponentDesignerStrings.Gate}">
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{Binding Gates}"
@@ -138,9 +140,9 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn Binding="{Binding Pin}"
-                                                Header="Pin" />
+                                                Header="{x:Static strings:ComponentDesignerStrings.Pin}" />
                             <DataGridTextColumn Binding="{Binding PinName}"
-                                                Header="Pin name"
+                                                Header="{x:Static strings:ComponentDesignerStrings.PinName}"
                                                 IsReadOnly="True" />
 
                         </DataGrid.Columns>

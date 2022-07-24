@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
+
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid >
@@ -20,33 +22,33 @@
         <StackPanel Grid.Column="0"
                     Margin="0,20"
                     DataContext="{Binding BomEditingItem}">
-            <TextBlock Text="Supplier" />
+            <TextBlock Text="{x:Static strings:BomStrings.Supplier}" />
             <TextBox Text="{Binding Supplier, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Supplier part number" />
+            <TextBlock Text="{x:Static strings:BomStrings.SupplierPartNumber}" />
             <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Manufacturer" />
+            <TextBlock Text="{x:Static strings:BomStrings.Manufacturer}" />
             <TextBox Text="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Manufacturer part number" />
+            <TextBlock Text="{x:Static strings:BomStrings.Mpn}" />
             <TextBox Text="{Binding MPN, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Description" />
+            <TextBlock Text="{x:Static strings:BomStrings.Description}" />
             <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged }"
                      AcceptsReturn="True"
                      Height="40" />
 
-            <TextBlock Text="RoHS" />
+            <TextBlock Text="{x:Static strings:BomStrings.RoHS}" />
             <TextBox Text="{Binding RoHS, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Packaging" />
+            <TextBlock Text="{x:Static strings:BomStrings.Packaging}" />
             <TextBox Text="{Binding Packaging, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Package/Case" />
+            <TextBlock Text="{x:Static strings:BomStrings.PackageCase}" />
             <TextBox Text="{Binding Package, UpdateSourceTrigger=PropertyChanged }" />
 
-            <TextBlock Text="Stock" />
+            <TextBlock Text="{x:Static strings:BomStrings.Stock}" />
             <TextBox Text="{Binding Stock, UpdateSourceTrigger=PropertyChanged }" />
         </StackPanel>
         <Grid Grid.Column="1"
@@ -57,7 +59,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        FontSize="18"
-                       Text="Properties" />
+                       Text="{x:Static strings:BomStrings.Properties}" />
 
             <DataGrid Margin="0,10"
                       Grid.Row="1"
@@ -75,12 +77,12 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name"
+                    <DataGridTextColumn Header="{x:Static strings:BomStrings.Name}"
                                         Width="150"
                                         MinWidth="75"
                                         Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                         IsReadOnly="False" />
-                    <DataGridTextColumn Header="Value"
+                    <DataGridTextColumn Header="{x:Static strings:BomStrings.Value}"
                                         Width="*"
                                         MinWidth="75"
                                         Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
@@ -104,7 +106,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Documents"
+                <TextBlock Text="{x:Static strings:BomStrings.Documents}"
                            FontSize="18"
                            Grid.Row="0" />
 
@@ -124,7 +126,7 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Name}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
@@ -148,11 +150,11 @@
                 <TextBlock Grid.Row="0"
                            Margin="0,10,0,0"
                            FontSize="18"
-                           Text="Prices" />
+                           Text="{x:Static strings:BomStrings.Prices}" />
                 <StackPanel Grid.Row="1">
                     <TextBlock Grid.Row="0"
                                Margin="0,10,0,0"
-                               Text="Currency" />
+                               Text="{x:Static strings:BomStrings.Currency}" />
                     <TextBox Text="{Binding BomEditingItem.Currency, UpdateSourceTrigger=PropertyChanged}"
                              Width="100"
                              HorizontalAlignment="Left" />
@@ -173,12 +175,12 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Quantity"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Quantity}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="False" />
-                        <DataGridTextColumn Header="Price"
+                        <DataGridTextColumn Header="{x:Static strings:BomStrings.Price}"
                                             Width="*"
                                             MinWidth="75"
                                             Binding="{Binding Price, StringFormat={}{0:0.0000}, UpdateSourceTrigger=PropertyChanged}"

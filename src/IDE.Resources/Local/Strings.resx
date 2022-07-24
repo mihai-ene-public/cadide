@@ -267,6 +267,9 @@
   <data name="CommandShow3DText" xml:space="preserve">
     <value>Show 3D</value>
   </data>
+  <data name="CopyPathToClipboard" xml:space="preserve">
+    <value>Copy path to clipboard</value>
+  </data>
   <data name="MenuAboutHeader" xml:space="preserve">
     <value>About</value>
   </data>
@@ -315,8 +318,23 @@
   <data name="MenuViewHeader" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="NewItemBrowseText" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="NewItemCreateFolderLabel" xml:space="preserve">
+    <value>Create folder for solution</value>
+  </data>
   <data name="NewItemDialogNewProject" xml:space="preserve">
     <value>New Project</value>
+  </data>
+  <data name="NewItemLocationLabel" xml:space="preserve">
+    <value>Location:</value>
+  </data>
+  <data name="NewItemSolutionNameLabel" xml:space="preserve">
+    <value>Solution name:</value>
+  </data>
+  <data name="OpenFolderInFileExplorer" xml:space="preserve">
+    <value>Open folder in File Explorer</value>
   </data>
   <data name="ProjectPropertiesBuildHeader" xml:space="preserve">
     <value>Build</value>
@@ -359,6 +377,9 @@
   </data>
   <data name="ProjectPropertiesVersionLabel" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
   </data>
   <data name="SchematicPropertiesBomHeader" xml:space="preserve">
     <value>BOM</value>

@@ -1,1 +1,14 @@
 ****
+
+Alternative to 3D
+	Veldrid:
+		https://github.com/mellinoe/veldrid-samples
+		https://github.com/mellinoe/veldrid
+	OpenTK
+		https://github.com/opentk/opentk
+		https://github.com/opentk/GLWpfControl
+	UrhoSharp
+
+	Microsoft Angle
+
+	MonoGame

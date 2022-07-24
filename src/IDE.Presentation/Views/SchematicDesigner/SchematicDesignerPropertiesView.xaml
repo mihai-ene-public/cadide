@@ -3,11 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
-             xmlns:ctrls="clr-namespace:IDE.Controls"
-             xmlns:conv="clr-namespace:IDE.Core.Converters"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:IDE.Documents.Views"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="1000">
@@ -51,19 +48,19 @@
             </TabControl.Resources>
 
 
-            <TabItem Header="General">
+            <TabItem Header="{x:Static strings:SchematicStrings.GeneralTabHeader}">
                 <local:SchematicPropertiesGeneralView />
             </TabItem>
-            <TabItem Header="Net Classes">
+            <TabItem Header="{x:Static strings:SchematicStrings.NetClassesTabHeader}">
                 <TabItem.Content>
                     <local:SchematicPropertiesNetClassesView />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Header="Electrical rules (ERC)">
+            <TabItem Header="{x:Static strings:SchematicStrings.ERCTabHeader}">
                 <local:SchematicRulesView />
             </TabItem>
 
-            <TabItem Header="BOM">
+            <TabItem Header="{x:Static strings:SchematicStrings.BomTabHeader}">
                 <local:PartsBomView DataContext="{Binding PartsBOMViewModel}" />
             </TabItem>
         </TabControl>

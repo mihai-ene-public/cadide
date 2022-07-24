@@ -999,4 +999,10 @@ All Files (*.*)|*.*</value>
     <value>Optimize Workspace</value>
     <comment>Command name shown in menu</comment>
   </data>
+  <data name="LayersToolWindow_HideUnselectedLayers" xml:space="preserve">
+    <value>Hide unselected layers</value>
+  </data>
+  <data name="LayersToolWindow_MaskUnselectedLayers" xml:space="preserve">
+    <value>Mask unselected layers</value>
+  </data>
 </root>

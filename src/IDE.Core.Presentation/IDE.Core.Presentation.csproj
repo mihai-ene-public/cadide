@@ -61,10 +61,30 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>BoardDesignerStrings.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Resources\BomStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>BomStrings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ComponentDesignerStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ComponentDesignerStrings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\SchematicStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>SchematicStrings.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Resources\Strings.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\ToolbarStrings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>ToolbarStrings.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>
@@ -80,9 +100,25 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>BoardDesignerStrings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\BomStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>BomStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ComponentDesignerStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ComponentDesignerStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\SchematicStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>SchematicStrings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Resources\Strings.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ToolbarStrings.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		  <LastGenOutput>ToolbarStrings.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 </Project>

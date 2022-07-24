@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
+             xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -16,7 +17,7 @@
                     Orientation="Horizontal">
 
             <Button Command="{Binding MoveBomItemDownCommand}"
-                    ToolTip="Move down"
+                    ToolTip="{x:Static strings:ComponentDesignerStrings.MoveDownTooltip}"
                     Focusable="False"
                     Margin="3,0"
                     Width="24"
@@ -27,7 +28,7 @@
             </Button>
 
             <Button Command="{Binding MoveBomItemUpCommand}"
-                    ToolTip="Move up"
+                    ToolTip="{x:Static strings:ComponentDesignerStrings.MoveUpTooltip}"
                     Focusable="False"
                     Margin="3,0"
                     Width="24"
@@ -46,29 +47,44 @@
                                 Width="75"
                                 ToolTip="Search parts using Octopart api. This is an experimental feature. In settings you must specify an apikey that you take from the Octopart website."
                                 Visibility="{Binding IsBomSearchEnabled,FallbackValue=Collapsed, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=true}" />-->
-            <Button Content="Add"
+            <Button 
                     Command="{Binding AddBomCommand}"
                     Grid.Row="0"
-                    Margin="10,5"
                     HorizontalAlignment="Left"
-                    Width="75"
-                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=false}" />
+                    Margin="10,5"
+                    Width="24"
+                    Height="24"
+                    Padding="2"
+                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=false}">
+                <fa:FontAwesome Icon="Solid_Plus"
+                                FontSize="16" />
+            </Button>
 
-            <Button Content="Edit"
+            <Button
                     Command="{Binding EditBomCommand}"
                     Grid.Row="0"
                     Margin="10,5"
                     HorizontalAlignment="Left"
-                    Width="75"
-                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=false}" />
+                    Width="24"
+                    Height="24"
+                    Padding="2"
+                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=false}">
+                <fa:FontAwesome Icon="Solid_PencilAlt"
+                                FontSize="16" />
+            </Button>
 
-            <Button Content="Back"
+            <Button 
                     Command="{Binding BackToBomCommand}"
                     Grid.Row="0"
                     Margin="10,5"
                     HorizontalAlignment="Left"
-                    Width="75"
-                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=true}" />
+                    Width="24"
+                    Height="24"
+                    Padding="2"
+                    Visibility="{Binding IsBomEditing, Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=true}">
+                <fa:FontAwesome Icon="Solid_ArrowLeft"
+                                FontSize="16" />
+            </Button>
         </StackPanel>
         <Grid Visibility="{Binding IsBomEditing,FallbackValue=Collapsed,  Converter={x:Static conv:EnumToVisibilityConverter.Instance},ConverterParameter=false}"
               Grid.Row="1">
@@ -121,17 +137,17 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>-->
-                        <DataGridTextColumn Header="Supplier"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Supplier}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Supplier, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Supplier Part Number"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.SupplierPartNumber}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Manufacturer"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Manufacturer}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged}"
@@ -143,12 +159,12 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="MPN"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.MPN}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding MPN, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Description"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Description}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
@@ -160,21 +176,21 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Header="RoHS"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.RoHS}"
                                             Width="80"
                                             Binding="{Binding RoHS, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Packaging"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Packaging}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Packaging, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Package/Case"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.PackageCase}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Package, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="True" />
-                        <DataGridTextColumn Header="Stock"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Stock}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Stock, UpdateSourceTrigger=PropertyChanged}"
@@ -237,7 +253,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Documents"
+                            <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Documents}"
                                        FontSize="18"
                                        Grid.Row="0" />
                             <ListView Grid.Row="1"
@@ -313,33 +329,33 @@
             <StackPanel Grid.Column="0"
                         Margin="0,20"
                         DataContext="{Binding BomEditingItem}">
-                <TextBlock Text="Supplier" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Supplier}" />
                 <TextBox Text="{Binding Supplier, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Supplier part number" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.SupplierPartNumber}" />
                 <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Manufacturer" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Manufacturer}" />
                 <TextBox Text="{Binding Manufacturer, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Manufacturer part number" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.ManufacturerPartNumber}" />
                 <TextBox Text="{Binding MPN, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Description" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Description}" />
                 <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged }"
                          AcceptsReturn="True"
                          Height="40" />
 
-                <TextBlock Text="RoHS" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.RoHS}" />
                 <TextBox Text="{Binding RoHS, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Packaging" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Packaging}" />
                 <TextBox Text="{Binding Packaging, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Package/Case" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.PackageCase}" />
                 <TextBox Text="{Binding Package, UpdateSourceTrigger=PropertyChanged }" />
 
-                <TextBlock Text="Stock" />
+                <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Stock}" />
                 <TextBox Text="{Binding Stock, UpdateSourceTrigger=PropertyChanged }" />
             </StackPanel>
             <Grid Grid.Column="1"
@@ -350,7 +366,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
                            FontSize="18"
-                           Text="Properties" />
+                           Text="{x:Static strings:ComponentDesignerStrings.Properties}" />
                 <!--<ListView Margin="10,10,0,0"
                                       Grid.Row="1"
                                       ItemsSource="{Binding Properties}">
@@ -387,12 +403,12 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Name"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Name}"
                                             Width="150"
                                             MinWidth="75"
                                             Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                             IsReadOnly="False" />
-                        <DataGridTextColumn Header="Value"
+                        <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Value}"
                                             Width="*"
                                             MinWidth="75"
                                             Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
@@ -416,7 +432,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Documents"
+                    <TextBlock Text="{x:Static strings:ComponentDesignerStrings.Documents}"
                                FontSize="18"
                                Grid.Row="0" />
                     <!--<ListView Grid.Row="1"
@@ -452,7 +468,7 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name"
+                            <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Name}"
                                                 Width="150"
                                                 MinWidth="75"
                                                 Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
@@ -476,7 +492,7 @@
                     <TextBlock Grid.Row="0"
                                Margin="0,10,0,0"
                                FontSize="18"
-                               Text="Prices" />
+                               Text="{x:Static strings:ComponentDesignerStrings.Prices}" />
                     <!--<ListView Grid.Row="1"
                                           Margin="10,0,0,0"
                                           ItemsSource="{Binding BomSelectedItem.Prices}"
@@ -502,7 +518,7 @@
                     <StackPanel Grid.Row="1">
                         <TextBlock Grid.Row="0"
                                    Margin="0,10,0,0"
-                                   Text="Currency" />
+                                   Text="{x:Static strings:ComponentDesignerStrings.Currency}" />
                         <TextBox Text="{Binding BomEditingItem.Currency, UpdateSourceTrigger=PropertyChanged}"
                                  Width="100"
                                  HorizontalAlignment="Left" />
@@ -523,12 +539,12 @@
                             </Style>
                         </DataGrid.Resources>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Quantity"
+                            <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Quantity}"
                                                 Width="150"
                                                 MinWidth="75"
                                                 Binding="{Binding Number, UpdateSourceTrigger=PropertyChanged}"
                                                 IsReadOnly="False" />
-                            <DataGridTextColumn Header="Price"
+                            <DataGridTextColumn Header="{x:Static strings:ComponentDesignerStrings.Price}"
                                                 Width="*"
                                                 MinWidth="75"
                                                 Binding="{Binding Price, StringFormat={}{0:0.0000}, UpdateSourceTrigger=PropertyChanged}"
