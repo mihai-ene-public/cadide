@@ -1,22 +1,16 @@
-# Downloading and installing Modern PCB Designer
+---
+layout: default
+title: Download and install
+nav_order: 1
+parent: Getting Started
+---
+# Downloading and installing XNoCAD
 
-Modern PCB Designer is currenly available for **Windows** only.
+XNoCAD is currently available for **Windows** only.
 
-To see what's new, read the [Release Notes](https://modernpcbstudio.com/release-notes)
+To see what's new, see the [Releases Page](https://github.com/mihai-ene-public/cadide/releases)
 
-## Download
-
-Go to the [Downloads](https://modernpcbstudio.com/downloads) page.
-
-There are two editions of Modern PCB Designer. If you don't know what edition to download, start with the **Light** edition.
-
-You will not be asked to provide an email to use either the trial or the free versions.
-If the trial expires, you can open your projects in the free edition.
-Both editions can be installed side by side.
-
-## How to install
-If your browser warns you about the application not being safe, click to accept the download. The application is guaranteed to be safe as long as you download it from this site.
-
-If the **Windows SmartScreen** shows up (the blue window that says '*Windows protected your PC ...Running this app might put your PC at risk*'):
-Click on '**More info**' in this window, then click on '**Run anyway**' button to install.
+On, the releases page for the release of your choice, download the .zip file that starts with XNoCAD.
+Extract this .zip file in a folder of your choice.
+In this folder double click on IDE.exe. You can also create a Desktop shortcut.
 
