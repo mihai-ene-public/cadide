@@ -1,0 +1,38 @@
+- name: Overview
+  href: intro.md
+- name: Downloading and installing
+  href: download-and-install.md
+
+- name: Getting started tutorial
+  items:
+  - name: Overview
+    href: tutorial-overview.md
+  - name: Create a new project
+    href: tutorial-create-new-project.md
+  - name: Create a new symbol
+    href: tutorial-create-new-symbol.md
+  - name: Create a new footprint
+    href: tutorial-create-new-footprint.md
+  - name: Create a new model
+    href: tutorial-create-new-model.md
+  - name: Create a new component
+    href: tutorial-create-new-component.md
+  - name: Create a new schematic
+    href: tutorial-create-new-schematic.md
+  - name: Create a new board
+    href: tutorial-create-new-board.md
+  - name: Create output files
+    href: tutorial-create-output.md
+
+- name: Getting started video tutorials
+  items:
+  - name: Introduction
+    href: video-intro.md
+  - name: UI overview
+    href: video-ui-overview.md
+  - name: Creating a new project and components
+    href: video-new-project.md
+  - name: Creating the schematic
+    href: video-schematic.md
+  - name: Creating the board and output files
+    href: video-board.md
