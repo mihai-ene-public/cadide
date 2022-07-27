@@ -1,4 +1,11 @@
-# About Modern PCB Designer
+---
+layout: default
+title: About this tutorial
+nav_order: 2
+parent: Getting Started
+---
+
+# About this tutorial
 
 In this tutorial we'll build a popular circuit, which is a two transistor LED flasher.
 

@@ -1,6 +1,12 @@
+---
+layout: default
+title: Create a new project
+nav_order: 3
+parent: Getting Started
+---
 # Creating a new project
 
-Open Modern PCB Designer
+Open XNoCAD
  
 Click on **New Project**, choose the **Board** as project type, type the name for the project, then click OK.
 

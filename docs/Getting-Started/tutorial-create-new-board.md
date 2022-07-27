@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new board
+nav_order: 9
+parent: Getting Started
+---
 # Creating the board
 
 It will be a 2 layer board and will look similar to a breakout board. Breakout boards are usually used for testing a circuit or for fast prototyping.

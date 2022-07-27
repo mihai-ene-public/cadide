@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new model
+nav_order: 6
+parent: Getting Started
+---
 # Creating a new model (Resistor)
 
 In **Solution** tool window, right-click on **Models** folder and choose **Add->Model...** from context menu. 

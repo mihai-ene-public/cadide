@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new symbol
+nav_order: 4
+parent: Getting Started
+---
 # Creating a new symbol (Resistor)
 
 In the **Solution** tool window, select the **Symbols** folder and right-click and choose **Add-> Symbol...**, in the window that appears choose the name for the symbol: **Resistor** and click OK.

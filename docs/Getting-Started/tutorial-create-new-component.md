@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new component
+nav_order: 7
+parent: Getting Started
+---
 # Creating a new component (Resistor)
 
 A component links pins from the symbol with pads from the footprint; here you can also define the prefix, custom properties, and BOM data.

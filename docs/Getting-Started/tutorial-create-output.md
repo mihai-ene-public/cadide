@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create output files
+nav_order: 10
+parent: Getting Started
+---
 # Creating output files
 
 Gerber files are sent to a board house for manufacturing.

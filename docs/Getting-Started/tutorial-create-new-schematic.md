@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new schematic
+nav_order: 8
+parent: Getting Started
+---
 # Creating the schematic
 
 ## Placing components

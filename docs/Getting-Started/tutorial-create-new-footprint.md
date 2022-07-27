@@ -1,3 +1,9 @@
+---
+layout: default
+title: Create a new footprint
+nav_order: 5
+parent: Getting Started
+---
 # Creating a new footprint (Resistor)
 
 In the **Solution** tool window, right click on the folder **Footprints** and choose **Add -> Footprint** from the context menu. 
