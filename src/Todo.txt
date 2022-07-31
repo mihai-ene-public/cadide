@@ -12,3 +12,19 @@ Alternative to 3D
 	Microsoft Angle
 
 	MonoGame
+
+
+.AperFunction (GlobalPrimitive-GerberPrimitive)
+	PadTht - ComponentPad (only for actual pads, not thermals)
+	PadSmd - SMDPad (only for actual pads, not thermals)
+	Via - ViaPad (only for actual pads, not thermals)
+	Track - Conductor
+	Text - NonConductor (Text on copper layer)
+	BoardOutline - Profile
+Object:
+	NetName -> .N (Net)
+	PartName -> .C
+	Pin: PinNumber, PartName, [PinName] -> .P (Pin)
+
+	  UI options and binding to model
+	

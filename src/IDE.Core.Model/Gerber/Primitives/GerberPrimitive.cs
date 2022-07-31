@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDE.Core.Model.Gerber.Primitives.Apertures;
+using IDE.Core.Model.Gerber.Primitives.Attributes;
+
 
 namespace IDE.Core.Gerber
 {
@@ -16,6 +18,9 @@ namespace IDE.Core.Gerber
         protected List<ApertureDefinitionBase> cachedApertures = new List<ApertureDefinitionBase>();
 
         protected List<ApertureDefinitionBase> cachedClearanceApertures = new List<ApertureDefinitionBase>();
+
+        public Dictionary<string, ObjectGerberAttribute> ObjectAttributes { get; set; } = new Dictionary<string, ObjectGerberAttribute>();
+
 
         public List<ApertureDefinitionBase> GetApertures()
         {
@@ -42,5 +47,6 @@ namespace IDE.Core.Gerber
         }
 
         public virtual void WriteGerber(Gerber274XWriter gerberWriter) { }
+
     }
 }

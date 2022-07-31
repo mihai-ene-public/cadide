@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface ISmdCanvasItem
+    public interface IPadSmdCanvasItem: IPadCanvasItem
     {
 
     }

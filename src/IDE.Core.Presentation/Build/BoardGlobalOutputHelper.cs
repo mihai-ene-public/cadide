@@ -28,6 +28,10 @@ public class BoardGlobalOutputHelper
         var drillPairs = BuildDrillPairs(board, boardContext);
 
         var brdOutline = _globalPrimitiveHelper.GetGlobalPrimitive(board.BoardOutline);
+        if (brdOutline != null)
+        {
+            brdOutline.Tags[nameof(GlobalStandardPrimitiveTag.Role)] = GlobalStandardPrimitiveRole.BoardOutline;
+        }
         foreach (var layer in layers)
         {
             layer.BoardOutline = brdOutline;

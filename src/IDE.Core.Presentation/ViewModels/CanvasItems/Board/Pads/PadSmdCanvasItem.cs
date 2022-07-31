@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace IDE.Core.Designers
 {
-    public class PadSmdCanvasItem : PadSimpleCanvasItem
+    public class PadSmdCanvasItem : PadSimpleCanvasItem, IPadSmdCanvasItem
     {
         public PadSmdCanvasItem()
             : base()

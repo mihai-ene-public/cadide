@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.Interfaces
 {
-    public interface IViaCanvasItem : ISelectableItem
+    public interface IViaCanvasItem : ISignalPrimitiveCanvasItem
     {
         double X { get; }
 

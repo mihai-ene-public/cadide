@@ -159,32 +159,21 @@ namespace IDE.Core.Model.GlobalRepresentation
 
         private GlobalPrimitive GetViaPrimitive(IViaCanvasItem item)
         {
-            //var position = new XPoint(item.X, item.Y);
-            //var figure = new GlobalFigure();
-            //figure.FigureItems.Add(new GlobalCirclePrimitive
-            //{
-            //    X = position.X,
-            //    Y = position.Y,
-            //    Diameter = item.Diameter
-            //});
-
-            //if (item.Drill > 0.0)
-            //{
-            //    figure.FigureItems.Add(new GlobalHolePrimitive
-            //    {
-            //        X = position.X,
-            //        Y = position.Y,
-            //        Drill = item.Drill,
-            //    });
-            //}
-            //return figure;
-            return new GlobalViaPrimitive
+            var via =  new GlobalViaPrimitive
             {
                 X = item.X,
                 Y = item.Y,
                 PadDiameter = item.Diameter,
                 Drill = item.Drill,
             };
+
+            via.Tags[nameof(GlobalStandardPrimitiveTag.Role)] = GlobalStandardPrimitiveRole.Via;
+
+            var netName = item.Signal?.Name;
+            if (!string.IsNullOrEmpty(netName))
+                via.Tags[nameof(GlobalStandardPrimitiveTag.NetName)] = netName;
+
+            return via;
         }
 
         private GlobalPrimitive GetPadPrimitive(IPadCanvasItem item)
@@ -196,7 +185,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                 placement = fp.Placement;
             var rot = GetWorldRotation(t, placement);
 
-            return new GlobalRectanglePrimitive
+            var pad = new GlobalRectanglePrimitive
             {
                 X = position.X,
                 Y = position.Y,
@@ -205,7 +194,29 @@ namespace IDE.Core.Model.GlobalRepresentation
                 CornerRadius = item.CornerRadius,
                 Rot = rot
             };
+
+            if (item is IPadSmdCanvasItem)
+                pad.Tags[nameof(GlobalStandardPrimitiveTag.Role)] = GlobalStandardPrimitiveRole.PadSmd;
+
+            if (item is IPadThtCanvasItem)
+                pad.Tags[nameof(GlobalStandardPrimitiveTag.Role)] = GlobalStandardPrimitiveRole.PadTht;
+
+            var netName = item.Signal?.Name;
+            if (!string.IsNullOrEmpty(netName))
+                pad.Tags[nameof(GlobalStandardPrimitiveTag.NetName)] = netName;
+
+            if (item.ParentObject is IFootprintBoardCanvasItem footprint && footprint != null)
+            {
+                var partName = footprint.PartName;
+                if (!string.IsNullOrEmpty(partName))
+                {
+                    pad.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+                    pad.Tags[nameof(GlobalStandardPrimitiveTag.PinNumber)] = item.Number;
+                }
+            }
+            return pad;
         }
+
 
         private GlobalPrimitive GetPolygonPrimitive(IPolygonBoardCanvasItem item)
         {
@@ -220,12 +231,18 @@ namespace IDE.Core.Model.GlobalRepresentation
             }
 
             var t = item.GetTransform();
-            return new GlobalPolygonPrimitive
+            var poly =  new GlobalPolygonPrimitive
             {
                 Points = item.PolygonPoints.Select(p => t.Transform(p)).ToList(),
                 BorderWidth = item.BorderWidth,
                 IsFilled = item.IsFilled,
             };
+
+            var netName = item.Signal?.Name;
+            if (!string.IsNullOrEmpty(netName))
+                poly.Tags[nameof(GlobalStandardPrimitiveTag.NetName)] = netName;
+
+            return poly;
         }
 
         private GlobalPrimitive GetLinePrimitive(ILineRegionItem item, XPoint startPoint, double width)
@@ -360,11 +377,19 @@ namespace IDE.Core.Model.GlobalRepresentation
         private GlobalPrimitive GetPolylinePrimitive(IPolylineCanvasItem item)
         {
             //not needed to be transformed...
-            return new GlobalPolylinePrimitive
+            var polyline = new GlobalPolylinePrimitive
             {
                 Width = item.Width,
                 Points = item.Points.ToList()
             };
+
+            if (item is ITrackBoardCanvasItem track)
+            {
+                polyline.Tags[nameof(GlobalStandardPrimitiveTag.Role)] = GlobalStandardPrimitiveRole.Track;
+                polyline.Tags[nameof(GlobalStandardPrimitiveTag.NetName)] = track.Signal?.Name;
+            }
+
+            return polyline;
         }
 
         private GlobalPrimitive GetLinePrimitive(ILineCanvasItem item)

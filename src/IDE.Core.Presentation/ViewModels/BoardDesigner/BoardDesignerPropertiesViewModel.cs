@@ -1025,24 +1025,6 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
         void LoadBuildOptions(BoardDocument boardDoc)
         {
             buildOptions.LoadFrom(boardDoc);
-
-            //if (boardDoc.OutputOptions != null)
-            //{
-            //    //gerber
-            //    buildOptions.GerberFormatBeforeDecimal = boardDoc.OutputOptions.GerberFormatBeforeDecimal;
-            //    buildOptions.GerberFormatAfterDecimal = boardDoc.OutputOptions.GerberFormatAfterDecimal;
-            //    buildOptions.GerberUnits = boardDoc.OutputOptions.GerberUnits;
-            //    buildOptions.GerberPlotBoardOutlineOnAllLayers = boardDoc.OutputOptions.GerberPlotBoardOutlineOnAllLayers;
-            //    buildOptions.GerberCreateZipFile = boardDoc.OutputOptions.GerberCreateZipFile;
-            //    buildOptions.GerberVersion = boardDoc.OutputOptions.GerberVersion;
-
-            //    //ND Drills
-            //    buildOptions.NCDrillFormatBeforeDecimal = boardDoc.OutputOptions.NCDrillFormatBeforeDecimal;
-            //    buildOptions.NCDrillFormatAfterDecimal = boardDoc.OutputOptions.NCDrillFormatAfterDecimal;
-            //    buildOptions.NCDrillUnits = boardDoc.OutputOptions.NCDrillUnits;
-
-            //    buildOptions.Bom.lo
-            //}
         }
 
         void SaveBuildOptions(BoardDocument boardDoc)

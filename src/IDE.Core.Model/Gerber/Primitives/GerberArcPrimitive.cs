@@ -40,7 +40,7 @@ namespace IDE.Core.Gerber
             gerberWriter.MoveTo(StartPoint.X, StartPoint.Y);
             var center = GetArcCenter();
 
-            //this below doesn't work; because it is expected that coordinates to be top-left
+            //this below doesn't work; because it is expected that coordinates to be top-left, but Gerber coords are cartezian
             //var center = IDE.Core.GeometryExtensions.GetArcCenter(StartPoint, EndPoint, 0.5 * SizeDiameter, 0.5 * SizeDiameter, SweepDirection);
 
             var offset = center - StartPoint;

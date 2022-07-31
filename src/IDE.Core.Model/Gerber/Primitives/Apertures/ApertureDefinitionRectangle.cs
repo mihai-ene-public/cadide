@@ -15,11 +15,9 @@ namespace IDE.Core.Model.Gerber.Primitives.Apertures
 
         public override bool Equals(object obj)
         {
-            var ad = obj as ApertureDefinitionRectangle;
-            if (ad != null)
+            if (obj is ApertureDefinitionRectangle ad)
             {
-                return //ApertureType == ad.ApertureType &&
-                        Width == ad.Width && Height == ad.Height;
+                return Width == ad.Width && Height == ad.Height && HasSameApertureFunctionAs(ad);
 
             }
 

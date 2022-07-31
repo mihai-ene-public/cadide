@@ -429,18 +429,31 @@ namespace IDE.Core.Gerber
 
         #endregion AD
 
-        #region AM - Aperture Macro
 
-        //TODO: implement this as needed
-        //the thing is the AM is quite complex/complicated
+        public void WriteFileAttribute(string content)
+        {
+            WriteLine($"%TF{content}*%");
+        }
 
-        //    void AddApertureMacroRotatedRectangle()
-        //{
-        //   var str= $"%AMROTATEDPAD*21,1,0.0354,0.0276,0,0,$1*%";
-        //    str = $"%ADD14ROTATEDPAD,45*%";
-        //}
+        public void WriteApertureAttribute(string content)
+        {
+            WriteLine($"%TA{content}*%");
+        }
 
-        #endregion AM
+        public void WriteObjectAttribute(string content)
+        {
+            WriteLine($"%TO{content}*%");
+        }
+
+        public void DeleteAttribute(string attributeName)
+        {
+            WriteLine($"%TD{attributeName}*%");
+        }
+
+        public void DeleteAllAttributes()
+        {
+            WriteLine($"%TD*%");
+        }
 
         #region Method - EndOfProgram
         /// <summary>

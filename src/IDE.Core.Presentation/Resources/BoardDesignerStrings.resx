@@ -444,4 +444,10 @@
   <data name="ViaDefinitionRuleTitle" xml:space="preserve">
     <value>Via definition</value>
   </data>
+  <data name="WriteGerberMetadata" xml:space="preserve">
+    <value>Write Gerber attributes (GerberX2)</value>
+  </data>
+  <data name="WriteNetListAttributes" xml:space="preserve">
+    <value>Write net-list attributes (GerberX2)</value>
+  </data>
 </root>

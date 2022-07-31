@@ -25,7 +25,12 @@ namespace IDE.Core.Interfaces
 
         bool GerberCreateZipFile { get; }
 
+        bool GerberWriteGerberMetadata { get; }
+        bool GerberWriteNetListAttributes { get; }
+
         IList<ILayerDesignerItem> GerberPlotLayers { get; }
+
+       
         #endregion
 
     }
@@ -34,11 +39,5 @@ namespace IDE.Core.Interfaces
     {
         mm,
         inch
-    }
-
-    public enum GerberVersion
-    {
-        X1,
-        X2
     }
 }

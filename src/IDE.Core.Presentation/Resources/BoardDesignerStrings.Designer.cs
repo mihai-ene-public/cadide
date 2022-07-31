@@ -19,7 +19,7 @@ namespace IDE.Core.Presentation.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BoardDesignerStrings {
@@ -1038,6 +1038,24 @@ namespace IDE.Core.Presentation.Resources {
         public static string ViaDefinitionRuleTitle {
             get {
                 return ResourceManager.GetString("ViaDefinitionRuleTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write Gerber attributes (GerberX2).
+        /// </summary>
+        public static string WriteGerberMetadata {
+            get {
+                return ResourceManager.GetString("WriteGerberMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write net-list attributes (GerberX2).
+        /// </summary>
+        public static string WriteNetListAttributes {
+            get {
+                return ResourceManager.GetString("WriteNetListAttributes", resourceCulture);
             }
         }
     }

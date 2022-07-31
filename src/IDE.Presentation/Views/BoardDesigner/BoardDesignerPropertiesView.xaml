@@ -43,14 +43,6 @@
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
 
-            <ObjectDataProvider x:Key="boardOutputGerberVersionEnum"
-                                MethodName="GetValues"
-                                ObjectType="{x:Type System:Enum}">
-                <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="commonTypes:GerberVersion" />
-                </ObjectDataProvider.MethodParameters>
-            </ObjectDataProvider>
-
             <ObjectDataProvider x:Key="LayerStackupSpecEnum"
                                 MethodName="GetValues"
                                 ObjectType="{x:Type System:Enum}">

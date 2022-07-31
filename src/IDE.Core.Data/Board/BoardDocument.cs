@@ -219,7 +219,9 @@ namespace IDE.Core.Storage
         public bool GerberPlotBoardOutlineOnAllLayers { get; set; } = true;
         public bool GerberCreateZipFile { get; set; } = true;
 
-        public GerberVersion GerberVersion { get; set; } = GerberVersion.X1;
+        public bool GerberWriteGerberMetadata { get; set; }
+        public bool GerberWriteNetListAttributes { get; set; }
+
 
         #endregion
 

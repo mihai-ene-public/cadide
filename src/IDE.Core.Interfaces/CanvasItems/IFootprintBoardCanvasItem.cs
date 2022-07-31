@@ -12,5 +12,7 @@ namespace IDE.Core.Interfaces
         FootprintPlacement Placement { get; set; }
 
         bool ShowName { get; set; }
+
+        string PartName { get; }
     }
 }

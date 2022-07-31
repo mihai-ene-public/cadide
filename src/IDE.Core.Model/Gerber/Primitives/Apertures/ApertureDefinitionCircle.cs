@@ -13,11 +13,9 @@ namespace IDE.Core.Model.Gerber.Primitives.Apertures
 
         public override bool Equals(object obj)
         {
-            var ad = obj as ApertureDefinitionCircle;
-            if (ad != null)
+            if (obj is ApertureDefinitionCircle ad)
             {
-                return //ApertureType == ad.ApertureType && 
-                        Diameter == ad.Diameter;
+                return  Diameter == ad.Diameter && HasSameApertureFunctionAs(ad);
             }
 
             return false;

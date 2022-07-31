@@ -95,6 +95,34 @@ namespace IDE.Documents.Views
             }
         }
 
+        bool gerberWriteGerberMetadata;
+        public bool GerberWriteGerberMetadata
+        {
+            get
+            {
+                return gerberWriteGerberMetadata;
+            }
+            set
+            {
+                gerberWriteGerberMetadata = value;
+                OnPropertyChanged(nameof(GerberWriteGerberMetadata));
+            }
+        }
+
+        bool gerberWriteNetListAttributes;
+        public bool GerberWriteNetListAttributes
+        {
+            get
+            {
+                return gerberWriteNetListAttributes;
+            }
+            set
+            {
+                gerberWriteNetListAttributes = value;
+                OnPropertyChanged(nameof(GerberWriteNetListAttributes));
+            }
+        }
+
         List<LayerType> plotLayerTypes = new List<LayerType>
                                 {
                                      LayerType.Signal,
@@ -125,20 +153,6 @@ namespace IDE.Documents.Views
             {
                 gerberUnits = value;
                 OnPropertyChanged(nameof(GerberUnits));
-            }
-        }
-
-        GerberVersion gerberVersion;
-        public GerberVersion GerberVersion
-        {
-            get
-            {
-                return gerberVersion;
-            }
-            set
-            {
-                gerberVersion = value;
-                OnPropertyChanged(nameof(GerberVersion));
             }
         }
 
@@ -218,7 +232,8 @@ namespace IDE.Documents.Views
                 GerberUnits = boardDoc.OutputOptions.GerberUnits;
                 GerberPlotBoardOutlineOnAllLayers = boardDoc.OutputOptions.GerberPlotBoardOutlineOnAllLayers;
                 GerberCreateZipFile = boardDoc.OutputOptions.GerberCreateZipFile;
-                GerberVersion = boardDoc.OutputOptions.GerberVersion;
+                GerberWriteGerberMetadata = boardDoc.OutputOptions.GerberWriteGerberMetadata;
+                GerberWriteNetListAttributes = boardDoc.OutputOptions.GerberWriteNetListAttributes;
 
                 //ND Drills
                 NCDrillFormatBeforeDecimal = boardDoc.OutputOptions.NCDrillFormatBeforeDecimal;
@@ -252,7 +267,8 @@ namespace IDE.Documents.Views
             boardDoc.OutputOptions.GerberUnits = GerberUnits;
             boardDoc.OutputOptions.GerberPlotBoardOutlineOnAllLayers = GerberPlotBoardOutlineOnAllLayers;
             boardDoc.OutputOptions.GerberCreateZipFile = GerberCreateZipFile;
-            boardDoc.OutputOptions.GerberVersion = GerberVersion;
+            boardDoc.OutputOptions.GerberWriteGerberMetadata = GerberWriteGerberMetadata;
+            boardDoc.OutputOptions.GerberWriteNetListAttributes = GerberWriteNetListAttributes;
 
             //ND Drills
             boardDoc.OutputOptions.NCDrillFormatBeforeDecimal = NCDrillFormatBeforeDecimal;

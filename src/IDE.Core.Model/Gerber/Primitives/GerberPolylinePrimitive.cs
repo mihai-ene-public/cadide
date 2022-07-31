@@ -20,7 +20,6 @@ namespace IDE.Core.Gerber
         {
             if (Points.Count > 1)
             {
-
                 if (cachedApertures != null)
                     gerberWriter.SelectAperture(cachedApertures[0].Number);
                 gerberWriter.SetLevelPolarity(Polarity);

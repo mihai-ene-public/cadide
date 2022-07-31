@@ -8,7 +8,7 @@ using IDE.Core.Types.Attributes;
 
 namespace IDE.Core.Designers
 {
-    public class ViaCanvasItem : BoardCanvasItemViewModel, ISignalPrimitiveCanvasItem, IViaCanvasItem
+    public class ViaCanvasItem : BoardCanvasItemViewModel, IViaCanvasItem
     {
 
         public ViaCanvasItem()

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IDE.Core.Designers
 {
-    public class PadThtCanvasItem : PadSimpleCanvasItem
+    public class PadThtCanvasItem : PadSimpleCanvasItem, IPadThtCanvasItem
     {
         public PadThtCanvasItem()
             : base()

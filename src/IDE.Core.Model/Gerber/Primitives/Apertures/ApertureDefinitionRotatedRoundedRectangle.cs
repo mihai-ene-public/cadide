@@ -18,10 +18,13 @@ namespace IDE.Core.Model.Gerber.Primitives.Apertures
 
         public override bool Equals(object obj)
         {
-            var ad = obj as ApertureDefinitionRotatedRoundedRectangle;
-            if (ad != null)
+            if (obj is ApertureDefinitionRotatedRoundedRectangle ad)
             {
-                return Width == ad.Width && Height == ad.Height && ad.Rot == Rot && CornerRadius == ad.CornerRadius;
+                return Width == ad.Width 
+                    && Height == ad.Height 
+                    && ad.Rot == Rot 
+                    && CornerRadius == ad.CornerRadius
+                    && HasSameApertureFunctionAs(ad);
             }
 
             return false;
