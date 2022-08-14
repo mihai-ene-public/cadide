@@ -8,7 +8,7 @@ namespace IDE.Core.Gerber
 {
     public class GerberFigure : GerberPrimitive
     {
-      //  public Point StartPoint { get; set; }
+        //  public Point StartPoint { get; set; }
 
         public List<GerberPrimitive> FigureItems { get; set; } = new List<GerberPrimitive>();
 

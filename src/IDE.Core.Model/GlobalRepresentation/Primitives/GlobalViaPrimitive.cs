@@ -14,4 +14,5 @@ namespace IDE.Core.Model.GlobalRepresentation.Primitives
             PadDiameter += 2 * clearance;
         }
     }
+
 }

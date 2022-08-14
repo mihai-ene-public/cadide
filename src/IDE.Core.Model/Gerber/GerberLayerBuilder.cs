@@ -6,6 +6,7 @@ using IDE.Core.Model.Gerber.Primitives.Attributes;
 using IDE.Core.Model.GlobalRepresentation;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Types.Media;
+using System.Linq;
 
 namespace IDE.Core.Gerber
 {
@@ -41,7 +42,7 @@ namespace IDE.Core.Gerber
         private bool writeNetListAttributes = false;
 
         /*
-        //todo: future feature
+        //todo: future feature: obfuscate net names
         //we cannot do it here, we need to have same netnames accross all layers
         //best to obfuscate names in the global helper
         private bool obfuscateNetNames = false;
@@ -51,10 +52,8 @@ namespace IDE.Core.Gerber
 
         #endregion
 
-        public Task<BuildResult> Build(IBoardDesigner board, BoardGlobalLayerOutput layer, string gerberFilePath)
+        public virtual Task<BuildResult> Build(IBoardDesigner board, BoardGlobalLayerOutput layer, string gerberFilePath)
         {
-            // _board = board;
-
             LoadOptions(board);
 
             BuildFileAttributes(board, layer.Layer);
@@ -81,7 +80,7 @@ namespace IDE.Core.Gerber
             writeNetListAttributes = buildOptions.GerberWriteNetListAttributes;
         }
 
-        private void PrepareBoardOutline(IBoardDesigner board)
+        protected void PrepareBoardOutline(IBoardDesigner board)
         {
             var brdOutline = board.BoardOutline;
             //calculate gerber board origin
@@ -121,7 +120,7 @@ namespace IDE.Core.Gerber
             var itemsToAdd = new List<GlobalPrimitive>();
             if (layer.AddItems != null)
             {
-                if (drawBoardOutline)
+                if (drawBoardOutline && layer.BoardOutline != null)
                     itemsToAdd.Add(layer.BoardOutline);
 
                 //add poured polygons first (so that it won't clear wanted traces)
@@ -166,6 +165,7 @@ namespace IDE.Core.Gerber
         {
             foreach (var aperture in apertures)
             {
+                //write aperture attributes
                 if (writeGerberMetadata)
                 {
                     foreach (var apertureAttr in aperture.ApertureAttributes.Values)
@@ -189,12 +189,17 @@ namespace IDE.Core.Gerber
                     case ApertureDefinitionRotatedRoundedRectangle arr:
                         adCode = gw.AddApertureDefinitionRotatedRoundedRectangle(arr);
                         break;
+
+                    case ApertureDefinitionPolygon poly:
+                        adCode = gw.AddApertureDefinitionRegularPoly(poly.OuterDiameter, poly.NumberVertices, poly.Rot);
+                        break;
                 }
 
                 if (adCode != 0)
                 {
                     aperture.Number = adCode;
 
+                    //if we wrote attributes, delete them
                     if (writeGerberMetadata && aperture.ApertureAttributes.Count > 0)
                     {
                         gw.DeleteAllAttributes();
@@ -210,6 +215,16 @@ namespace IDE.Core.Gerber
             {
                 if (writeGerberMetadata)
                 {
+                    var currentStateObjectAttributes = gw.GraphicsState.ObjectAttributes.Keys;
+                    var thisPrimitiveObjectAttributes = GetObjectAttributeNames(gp);
+
+                    var objectAtributesSetChanged = thisPrimitiveObjectAttributes.Any(k => !currentStateObjectAttributes.Contains(k))
+                                                 || currentStateObjectAttributes.Any(k => !thisPrimitiveObjectAttributes.Contains(k));
+                    if (objectAtributesSetChanged)
+                    {
+                        gw.DeleteAllAttributes();
+                    }
+
                     foreach (var objAttr in gp.ObjectAttributes.Values)
                     {
                         gw.WriteObjectAttribute(objAttr.ToString());
@@ -220,7 +235,24 @@ namespace IDE.Core.Gerber
             }
         }
 
-        private void BuildFileAttributes(IBoardDesigner board, ILayerDesignerItem layer)
+        private IList<string> GetObjectAttributeNames(GerberPrimitive gp)
+        {
+            var attributeNames = new List<string>();
+            foreach (var objAttr in gp.ObjectAttributes.Values)
+            {
+                var content = objAttr.ToString();
+                var commaIndex = content.IndexOf(",");
+                if (commaIndex >= 0)
+                {
+                    var attributeName = content.Substring(0, commaIndex);
+                    attributeNames.Add(attributeName);
+                }
+            }
+
+            return attributeNames;
+        }
+
+        protected void BuildFileAttributes(IBoardDesigner board, ILayerDesignerItem layer)
         {
             fileAttributes[nameof(StandardFileAttributes.Part)] = new PartFileGerberAttribute { PartFileGerberAttributeValue = PartFileGerberAttributeValue.Single };
 
@@ -293,6 +325,38 @@ namespace IDE.Core.Gerber
                     fileFunctionAttribute.Value = FileFunctionProfileValue.NP;
                     break;
 
+                case LayerType.AssemblyDrawingTop:
+                    fileFunctionAttribute.FileFunctionType = FileFunctionType.AssemblyDrawing;
+                    fileFunctionAttribute.Value = FileFunctionTypeLayerSide.Top;
+                    break;
+
+                case LayerType.AssemblyDrawingBottom:
+                    fileFunctionAttribute.FileFunctionType = FileFunctionType.AssemblyDrawing;
+                    fileFunctionAttribute.Value = FileFunctionTypeLayerSide.Bot;
+                    break;
+
+                case LayerType.ComponentTop:
+                    {
+                        fileFunctionAttribute.FileFunctionType = FileFunctionType.Component;
+                        var compValue = new FileFunctionTypeCopperValue();
+                        var topCopperLayer = GetCopperLayers(board).FirstOrDefault(l => l.IsTopLayer);
+                        compValue.LayerNumber = GetCopperLayerNumber(board, topCopperLayer);
+                        compValue.CopperLayerSide = FileFunctionTypeCopperLayerSide.Top;
+                        fileFunctionAttribute.Value = compValue;
+                        break;
+                    }
+
+                case LayerType.ComponentBottom:
+                    {
+                        fileFunctionAttribute.FileFunctionType = FileFunctionType.Component;
+                        var compValue = new FileFunctionTypeCopperValue();
+                        var botCopperLayer = GetCopperLayers(board).FirstOrDefault(l => l.IsBottomLayer);
+                        compValue.LayerNumber = GetCopperLayerNumber(board, botCopperLayer);
+                        compValue.CopperLayerSide = FileFunctionTypeCopperLayerSide.Bot;
+                        fileFunctionAttribute.Value = compValue;
+                        break;
+                    }
+
                 default:
                     return null;
             }
@@ -300,10 +364,17 @@ namespace IDE.Core.Gerber
             return fileFunctionAttribute;
         }
 
-        private int GetCopperLayerNumber(IBoardDesigner board, ILayerDesignerItem layer)
+        private IList<ILayerDesignerItem> GetCopperLayers(IBoardDesigner board)
         {
             var layerTypes = new[] { LayerType.Plane, LayerType.Signal };
             var copperLayers = board.LayerItems.Where(l => layerTypes.Contains(l.LayerType)).ToList();
+
+            return copperLayers;
+        }
+
+        private int GetCopperLayerNumber(IBoardDesigner board, ILayerDesignerItem layer)
+        {
+            var copperLayers = GetCopperLayers(board);
 
             var layerIndex = copperLayers.IndexOf(layer);
             return layerIndex + 1;
@@ -312,8 +383,8 @@ namespace IDE.Core.Gerber
         private void AddToPlan(List<GerberPrimitive> buildPlanPrimitives, IList<GlobalPrimitive> itemsToAdd, Polarity polarity, ILayerDesignerItem layer)
         {
             //we transfer attributes only if enabled, if we add items and we are on a copper layer
-            var transferAttributes = writeGerberMetadata && polarity == Polarity.Dark
-                                   && ( layer.LayerType == LayerType.Signal || layer.LayerType == LayerType.Plane );
+            var transferAttributes = writeGerberMetadata && polarity == Polarity.Dark;
+            //&& ( layer.LayerType == LayerType.Signal || layer.LayerType == LayerType.Plane );
 
             foreach (var item in itemsToAdd)
             {
@@ -323,7 +394,7 @@ namespace IDE.Core.Gerber
 
                     if (transferAttributes)
                     {
-                        TransferGerberAttributes(item, gbrPrimitive);
+                        TransferGerberAttributes(item, gbrPrimitive, layer);
                     }
 
                     HandleApertures(gbrPrimitive);
@@ -370,13 +441,90 @@ namespace IDE.Core.Gerber
 
         }
 
-        private void TransferGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive)
+        private readonly Dictionary<AperFunctionType, LayerType[]> allowedAperFunctionTypesPerLayerTypes = new Dictionary<AperFunctionType, LayerType[]>
         {
-            TransferApertureGerberAttributes(globalPrimitive, gerberPrimitive);
-            TransferObjectGerberAttributes(globalPrimitive, gerberPrimitive);
+            //copper layers
+            { AperFunctionType.ComponentPad, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.SMDPad, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.ViaPad, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.BGAPad, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.ConnectorPad, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.Conductor, new[] {LayerType.Signal, LayerType.Plane } },
+            { AperFunctionType.NonConductor, new[] {LayerType.Signal, LayerType.Plane } },
+
+            //component layers
+             { AperFunctionType.ComponentMain, new[] {LayerType.ComponentTop, LayerType.ComponentBottom} },
+             { AperFunctionType.ComponentOutline, new[] {LayerType.ComponentTop, LayerType.ComponentBottom} },
+             { AperFunctionType.ComponentPin, new[] {LayerType.ComponentTop, LayerType.ComponentBottom} },
+
+            //all layers
+            {AperFunctionType.Profile, new[] {  LayerType.Signal,
+                         LayerType.Plane,
+                         LayerType.SolderMask,
+                         LayerType.PasteMask,
+                         LayerType.SilkScreen,
+                         LayerType.Mechanical,
+                         LayerType.Generic,
+                         LayerType.BoardOutline,
+                        LayerType.ComponentTop, LayerType.ComponentBottom,
+                        LayerType.AssemblyDrawingTop, LayerType.AssemblyDrawingBottom
+                            }
+            },
+
+             {AperFunctionType.Material, new[] {  LayerType.Signal,
+                         LayerType.Plane,
+                         LayerType.SolderMask,
+                         LayerType.PasteMask,
+                         LayerType.SilkScreen,
+                         LayerType.Mechanical,
+                         LayerType.Generic,
+                         LayerType.BoardOutline,
+                        LayerType.ComponentTop, LayerType.ComponentBottom,
+                        LayerType.AssemblyDrawingTop, LayerType.AssemblyDrawingBottom
+                            } },
+
+              {AperFunctionType.NonMaterial, new[] {  LayerType.Signal,
+                         LayerType.Plane,
+                         LayerType.SolderMask,
+                         LayerType.PasteMask,
+                         LayerType.SilkScreen,
+                         LayerType.Mechanical,
+                         LayerType.Generic,
+                         LayerType.BoardOutline,
+                        LayerType.ComponentTop, LayerType.ComponentBottom,
+                        LayerType.AssemblyDrawingTop, LayerType.AssemblyDrawingBottom
+                            } }
+        };
+
+        private readonly Dictionary<string, LayerType[]> allowedObjectAttributesPerLayerTypes = new Dictionary<string, LayerType[]>
+        {
+            //any copper layer or plated drill/rout file
+            { nameof(StandardObjectAttributes.Net), new[] { LayerType.Signal, LayerType.Plane } },
+
+            //any layer
+            { nameof(StandardObjectAttributes.PartName), new[] {LayerType.Signal,
+                         LayerType.Plane,
+                         LayerType.SolderMask,
+                         LayerType.PasteMask,
+                         LayerType.SilkScreen,
+                         LayerType.Mechanical,
+                         LayerType.Generic,
+                         LayerType.BoardOutline,
+                        LayerType.ComponentTop, LayerType.ComponentBottom,
+                        LayerType.AssemblyDrawingTop, LayerType.AssemblyDrawingBottom}
+            },
+
+            //outer copper layer or component layers
+            { nameof(StandardObjectAttributes.Pin), new[]{LayerType.Signal, LayerType.ComponentTop, LayerType.ComponentBottom} },
+        };
+
+        private void TransferGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive, ILayerDesignerItem layer)
+        {
+            TransferApertureGerberAttributes(globalPrimitive, gerberPrimitive, layer);
+            TransferObjectGerberAttributes(globalPrimitive, gerberPrimitive, layer);
         }
 
-        private void TransferApertureGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive)
+        private void TransferApertureGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive, ILayerDesignerItem layer)
         {
             //aperture function
             var roleFound = globalPrimitive.Tags.TryGetValue(nameof(GlobalStandardPrimitiveTag.Role), out var roleObject);
@@ -393,12 +541,30 @@ namespace IDE.Core.Gerber
                     { GlobalStandardPrimitiveRole.Track, AperFunctionType.Conductor },
                     { GlobalStandardPrimitiveRole.Text, AperFunctionType.NonConductor },
                     { GlobalStandardPrimitiveRole.BoardOutline, AperFunctionType.Profile },
+                    //component layers
+                    //{ GlobalStandardPrimitiveRole.PartPosition, AperFunctionType.ComponentMain },
+                    //{ GlobalStandardPrimitiveRole.PinPosition, AperFunctionType.ComponentPin },
+                    //{ GlobalStandardPrimitiveRole.ComponentOutlineBody, AperFunctionType.ComponentOutline },
+                    //{ GlobalStandardPrimitiveRole.ComponentOutlineLead2Lead, AperFunctionType.ComponentOutline },
+                    //{ GlobalStandardPrimitiveRole.ComponentOutlineFootprint, AperFunctionType.ComponentOutline },
+                    //{ GlobalStandardPrimitiveRole.ComponentOutlineCourtyard, AperFunctionType.ComponentOutline },
                 };
 
                 var functionTypeFound = mapping.TryGetValue(role, out var functionType);
 
                 if (functionTypeFound)
                 {
+                    //aperture function needs to be in allowed on this layer type
+                    if (!allowedAperFunctionTypesPerLayerTypes.TryGetValue(functionType, out var layerTypes))
+                    {
+                        return;
+                    }
+
+                    if (!layerTypes.Contains(layer.LayerType))
+                    {
+                        return;
+                    }
+
                     var apertureFunctionAttribute = new AperFunctionApertureGerberAttribute();
 
                     apertureFunctionAttribute.AperFunctionType = functionType;
@@ -426,9 +592,9 @@ namespace IDE.Core.Gerber
             }
         }
 
-        private void TransferObjectGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive)
+        private void TransferObjectGerberAttributes(GlobalPrimitive globalPrimitive, GerberPrimitive gerberPrimitive, ILayerDesignerItem layer)
         {
-            if (writeNetListAttributes)
+            if (writeNetListAttributes && IsObjectAttributeAllowedOnLayer(nameof(StandardObjectAttributes.Net), layer))
             {
                 var netName = GetDictionaryValue<string>(globalPrimitive.Tags, nameof(GlobalStandardPrimitiveTag.NetName));
                 if (!string.IsNullOrEmpty(netName))
@@ -438,30 +604,43 @@ namespace IDE.Core.Gerber
             }
 
             var partName = GetDictionaryValue<string>(globalPrimitive.Tags, nameof(GlobalStandardPrimitiveTag.PartName));
-            if (!string.IsNullOrEmpty(partName))
+            if (!string.IsNullOrEmpty(partName) && IsObjectAttributeAllowedOnLayer(nameof(StandardObjectAttributes.PartName), layer))
             {
                 gerberPrimitive.ObjectAttributes[nameof(StandardObjectAttributes.PartName)] = new PartNameObjectGerberAttribute { PartName = partName };
             }
 
-            var pinNumber = GetDictionaryValue<string>(globalPrimitive.Tags, nameof(GlobalStandardPrimitiveTag.PinNumber));
-            if (!string.IsNullOrEmpty(pinNumber) && !string.IsNullOrEmpty(partName))
+            if (IsObjectAttributeAllowedOnLayer(nameof(StandardObjectAttributes.Pin), layer))
             {
-                gerberPrimitive.ObjectAttributes[nameof(StandardObjectAttributes.Pin)] = new PinObjectGerberAttribute
+                var pinNumber = GetDictionaryValue<string>(globalPrimitive.Tags, nameof(GlobalStandardPrimitiveTag.PinNumber));
+                if (!string.IsNullOrEmpty(pinNumber) && !string.IsNullOrEmpty(partName))
                 {
-                    PartName = partName,
-                    PinNumber = pinNumber
-                };
+                    gerberPrimitive.ObjectAttributes[nameof(StandardObjectAttributes.Pin)] = new PinObjectGerberAttribute
+                    {
+                        PartName = partName,
+                        PinNumber = pinNumber
+                    };
+                }
             }
         }
 
-        private T GetDictionaryValue<T>(Dictionary<string, object> dictionary, string key) where T : class
+        private bool IsObjectAttributeAllowedOnLayer(string attributeName, ILayerDesignerItem layer)
+        {
+            if (allowedObjectAttributesPerLayerTypes.TryGetValue(attributeName, out var layerTypes))
+            {
+                return layerTypes.Contains(layer.LayerType);
+            }
+
+            return false;
+        }
+
+        private T GetDictionaryValue<T>(Dictionary<string, object> dictionary, string key)// where T : class, Enum
         {
             var keyFound = dictionary.TryGetValue(key, out var valueObj);
 
-            if (keyFound && valueObj != null)
-                return valueObj as T;
+            if (keyFound && valueObj is T)
+                return (T)valueObj;
 
-            return null;
+            return default(T);
         }
 
         int nextApertureId = 10;
@@ -488,6 +667,8 @@ namespace IDE.Core.Gerber
             return RoundGerberValue(boardOriginY - y);
         }
 
+        //todo: to gerber value that converts a value (ex: width) to units
+
         private double RoundGerberValue(double x)
         {
             return Math.Round(x, formatStatementDigitsAfterDecimal);
@@ -500,8 +681,13 @@ namespace IDE.Core.Gerber
 
         private double ToGerberRot(double rot)
         {
-            rot = Math.Round(rot, 2);
-            return -rot;
+            var retRot = 0.00d;
+            if (retRot != rot)
+            {
+                retRot = -Math.Round(rot, 2);
+            }
+
+            return retRot;
         }
 
         private GerberPrimitive GetGerberPrimitive(GlobalPrimitive item)
@@ -543,10 +729,15 @@ namespace IDE.Core.Gerber
 
                 case GlobalFigurePrimitive figure:
                     return GetFigurePrimitive(figure);
+
+                case GlobalPickAndPlacePrimitive pickAndPlacePrimitive:
+                    return GetPickAndPlacePrimitive(pickAndPlacePrimitive);
             }
 
             return null;
         }
+
+
 
         private GerberPrimitive GetLinePrimitive(GlobalLinePrimitive line)
         {
@@ -819,6 +1010,64 @@ namespace IDE.Core.Gerber
             }
 
             return figure;
+        }
+
+        private GerberPrimitive GetPickAndPlacePrimitive(GlobalPickAndPlacePrimitive item)
+        {
+            var pnp = new GerberPickAndPlacePrimitive
+            {
+                PartName = item.PartName,
+                FootprintName = item.FootprintName,
+                Rot = ToGerberRot(item.Rot),
+                CentroidPos = ToGerberPoint(item.Center),
+
+                Manufacturer = item.Manufacturer,
+                Mpn = item.Mpn,
+                SupplierName = item.SupplierName,
+                SupplierPartNumber = item.SupplierPartNumber,
+            };
+
+            if (item.Pin1Pos.HasValue)
+            {
+                pnp.Pin1Pos = ToGerberPoint(item.Pin1Pos.Value);
+            }
+
+            foreach (var partItem in item.Items)
+            {
+                if (partItem.Tags.TryGetValue(nameof(GlobalStandardPrimitiveTag.PinNumber), out var pinNumberValue)
+                    && partItem.Tags.TryGetValue(nameof(GlobalStandardPrimitiveTag.Role), out var roleValue))
+                {
+                    var role = (GlobalStandardPrimitiveRole)roleValue;
+                    switch (role)
+                    {
+                        case GlobalStandardPrimitiveRole.PadSmd:
+                            pnp.MountType = PickAndPlaceMountType.SMD;
+                            break;
+
+                        case GlobalStandardPrimitiveRole.PadTht:
+                            pnp.MountType = PickAndPlaceMountType.TH;
+                            break;
+                    }
+                }
+
+                var primitve = GetGerberPrimitive(partItem);
+                if (primitve != null)
+                {
+                    var role = GetDictionaryValue<GlobalStandardPrimitiveRole>(partItem.Tags, nameof(GlobalStandardPrimitiveTag.Role));
+                    switch (role)
+                    {
+                        case GlobalStandardPrimitiveRole.ComponentOutlineFootprint:
+                            pnp.FootprintItems.Add(primitve);
+                            break;
+
+                        case GlobalStandardPrimitiveRole.ComponentOutlineCourtyard:
+                            pnp.CourtyardItems.Add(primitve);
+                            break;
+                    }
+                }
+            }
+
+            return pnp;
         }
 
         private GerberPrimitive GetRegionPrimitive(GlobalRegionPrimitive item)

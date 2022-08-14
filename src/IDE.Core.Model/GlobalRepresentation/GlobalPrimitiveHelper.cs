@@ -82,7 +82,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                 placement = fp.Placement;
             var rot = GetWorldRotation(t, placement);
 
-            return new GlobalRectanglePrimitive
+            var rect = new GlobalRectanglePrimitive
             {
                 X = position.X,
                 Y = position.Y,
@@ -93,6 +93,14 @@ namespace IDE.Core.Model.GlobalRepresentation
                 BorderWidth = item.BorderWidth,
                 Rot = rot,
             };
+
+            var partName = GetPartName(item);
+            if (!string.IsNullOrEmpty(partName))
+            {
+                rect.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+            }
+
+            return rect;
         }
 
         private GlobalPrimitive GetCirclePrimitive(ICircleCanvasItem item)
@@ -100,7 +108,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             var t = item.GetTransform();
             var position = new XPoint(t.Value.OffsetX, t.Value.OffsetY);
 
-            return new GlobalCirclePrimitive
+            var circle = new GlobalCirclePrimitive
             {
                 X = position.X,
                 Y = position.Y,
@@ -108,6 +116,14 @@ namespace IDE.Core.Model.GlobalRepresentation
                 BorderWidth = item.BorderWidth,
                 IsFilled = item.IsFilled
             };
+
+            var partName = GetPartName(item);
+            if (!string.IsNullOrEmpty(partName))
+            {
+                circle.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+            }
+
+            return circle;
         }
 
         private GlobalPrimitive GetHolePrimitive(IHoleCanvasItem item)
@@ -159,7 +175,7 @@ namespace IDE.Core.Model.GlobalRepresentation
 
         private GlobalPrimitive GetViaPrimitive(IViaCanvasItem item)
         {
-            var via =  new GlobalViaPrimitive
+            var via = new GlobalViaPrimitive
             {
                 X = item.X,
                 Y = item.Y,
@@ -205,18 +221,24 @@ namespace IDE.Core.Model.GlobalRepresentation
             if (!string.IsNullOrEmpty(netName))
                 pad.Tags[nameof(GlobalStandardPrimitiveTag.NetName)] = netName;
 
-            if (item.ParentObject is IFootprintBoardCanvasItem footprint && footprint != null)
+            var partName = GetPartName(item);
+            if (!string.IsNullOrEmpty(partName))
             {
-                var partName = footprint.PartName;
-                if (!string.IsNullOrEmpty(partName))
-                {
-                    pad.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
-                    pad.Tags[nameof(GlobalStandardPrimitiveTag.PinNumber)] = item.Number;
-                }
+                pad.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+                pad.Tags[nameof(GlobalStandardPrimitiveTag.PinNumber)] = item.Number;
             }
             return pad;
         }
 
+        private string GetPartName(ISelectableItem item)
+        {
+            if (item.ParentObject is IFootprintBoardCanvasItem footprint && footprint != null)
+            {
+                return footprint.PartName;
+            }
+
+            return null;
+        }
 
         private GlobalPrimitive GetPolygonPrimitive(IPolygonBoardCanvasItem item)
         {
@@ -231,7 +253,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             }
 
             var t = item.GetTransform();
-            var poly =  new GlobalPolygonPrimitive
+            var poly = new GlobalPolygonPrimitive
             {
                 Points = item.PolygonPoints.Select(p => t.Transform(p)).ToList(),
                 BorderWidth = item.BorderWidth,
@@ -278,7 +300,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             ep = GetPointTransform(t, ep);
             center = GetPointTransform(t, center);
 
-            return new GlobalArcPrimitive
+            var arc = new GlobalArcPrimitive
             {
                 StartPoint = sp,
                 EndPoint = ep,
@@ -290,6 +312,14 @@ namespace IDE.Core.Model.GlobalRepresentation
                 IsMirrored = item.IsMirrored(),
                 SweepDirection = item.IsMirrored() ? (XSweepDirection)( 1 - (int)item.SweepDirection ) : item.SweepDirection
             };
+
+            var partName = GetPartName(item);
+            if (!string.IsNullOrEmpty(partName))
+            {
+                arc.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+            }
+
+            return arc;
         }
 
         private GlobalPrimitive GetTextPrimitive(ITextCanvasItem item)
@@ -401,12 +431,20 @@ namespace IDE.Core.Model.GlobalRepresentation
             sp = GetPointTransform(t, sp);
             ep = GetPointTransform(t, ep);
 
-            return new GlobalLinePrimitive
+            var line = new GlobalLinePrimitive
             {
                 StartPoint = sp,
                 EndPoint = ep,
                 Width = item.Width,
             };
+
+            var partName = GetPartName(item);
+            if (!string.IsNullOrEmpty(partName))
+            {
+                line.Tags[nameof(GlobalStandardPrimitiveTag.PartName)] = partName;
+            }
+
+            return line;
         }
 
         private XPoint GetPointTransform(XTransform transform, XPoint p)

@@ -43,6 +43,8 @@ namespace IDE.Core.Gerber
         //obj rotation (LR)
         //obj scaling (LS)
         //region mode(?)
+
+        public Dictionary<string, string> ObjectAttributes { get; set; } = new Dictionary<string, string>();
     }
 
     public class FormatStatement

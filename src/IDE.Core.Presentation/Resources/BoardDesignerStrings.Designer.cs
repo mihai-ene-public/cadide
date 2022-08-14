@@ -286,6 +286,24 @@ namespace IDE.Core.Presentation.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Gerber assembly drawings (GerberX3).
+        /// </summary>
+        public static string CreateGerberAssemblyDrawings {
+            get {
+                return ResourceManager.GetString("CreateGerberAssemblyDrawings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Gerber pick and place files (GerberX3).
+        /// </summary>
+        public static string CreateGerberPickAndPlaceFiles {
+            get {
+                return ResourceManager.GetString("CreateGerberPickAndPlaceFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create zip file for board.
         /// </summary>
         public static string CreateZipFileForBoard {

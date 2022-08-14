@@ -44,5 +44,6 @@ public enum StandardObjectAttributes
     /// <summary>
     /// component reference designator linked to an object
     /// </summary>
-    PartName
+    PartName,
+
 }

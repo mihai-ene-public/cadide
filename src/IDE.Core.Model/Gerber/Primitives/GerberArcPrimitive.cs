@@ -29,12 +29,18 @@ namespace IDE.Core.Gerber
         //arcs not rendered properly
         public override void WriteGerber(Gerber274XWriter gerberWriter)
         {
+            gerberWriter.SelectAperture(cachedApertures[0].Number);
+            gerberWriter.SetLevelPolarity(Polarity);
+
+            WriteGerberShape(gerberWriter);
+        }
+
+        internal override void WriteGerberShape(Gerber274XWriter gerberWriter)
+        {
             var circDirection = CircularDirection.Clockwise;
             if (SweepDirection == XSweepDirection.Counterclockwise)
                 circDirection = CircularDirection.CounterClockwise;
 
-            gerberWriter.SelectAperture(cachedApertures[0].Number);
-            gerberWriter.SetLevelPolarity(Polarity);
             gerberWriter.SetCircularInterpolation(circDirection);
             gerberWriter.SetCircularInterpolationMultiQuadrant();//?
             gerberWriter.MoveTo(StartPoint.X, StartPoint.Y);

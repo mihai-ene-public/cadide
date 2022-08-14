@@ -20,6 +20,9 @@ namespace IDE.Core.Build
             var folderOutput = Path.Combine(project.GetItemFolderFullPath(), "!Output");
             var boardName = Path.GetFileNameWithoutExtension(board.FilePath);
 
+            var createGerberAssemblyDrawings = board.BuildOptions.GerberCreateGerberAssemblyDrawings;
+            var createGerberPickAndPlaceFiles = board.BuildOptions.GerberCreateGerberPickAndPlaceFiles;
+
             //layer types: stackup: signal, plane;
             //             milling, silkscreen, soldermask, pasteMask 
             var validLayerTypes = new[] {  LayerType.Signal,
@@ -51,6 +54,43 @@ namespace IDE.Core.Build
                 if (gerberBuildResult.Success)
                 {
                     outputFiles.AddRange(gerberBuildResult.OutputFiles);
+                }
+            }
+
+            //gerber assembly drawings
+            if(createGerberAssemblyDrawings)
+            {
+                //todo: for assembly drawings, write .C attribute once before writing all primitives for the same part
+                var gerberAssyDrawingsSvc = new BoardAssemblyDrawingsGlobalOutputService();
+                var gerberDrawingLayers = gerberAssyDrawingsSvc.GetAssemblyDrawingsLayers(board, buildResult.Layers);
+
+                foreach (var adLayer in gerberDrawingLayers)
+                {
+                    var gerberLayerBuilder = new GerberLayerBuilder();
+                    var gerberPath = GetGerberFilePath(folderOutput, boardName, adLayer);
+                    var gerberBuildResult = await gerberLayerBuilder.Build(board, adLayer, gerberPath);
+                    if (gerberBuildResult.Success)
+                    {
+                        outputFiles.AddRange(gerberBuildResult.OutputFiles);
+                    }
+                }
+            }
+
+            //gerber pick and place files
+            if(createGerberPickAndPlaceFiles)
+            {
+                var brdAssemblyHelper = new BoardAssemblyHelper();
+                var pnpLayers=brdAssemblyHelper.GetAssemblyLayers(board, buildResult.Layers);
+
+                foreach (var pnpLayer in pnpLayers)
+                {
+                    var gerberLayerBuilder = new GerberLayerBuilder();
+                    var gerberPath = GetGerberFilePath(folderOutput, boardName, pnpLayer);
+                    var gerberBuildResult = await gerberLayerBuilder.Build(board, pnpLayer, gerberPath);
+                    if (gerberBuildResult.Success)
+                    {
+                        outputFiles.AddRange(gerberBuildResult.OutputFiles);
+                    }
                 }
             }
 

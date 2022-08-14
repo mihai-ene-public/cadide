@@ -123,6 +123,34 @@ namespace IDE.Documents.Views
             }
         }
 
+        bool gerberCreateGerberAssemblyDrawings;
+        public bool GerberCreateGerberAssemblyDrawings
+        {
+            get
+            {
+                return gerberCreateGerberAssemblyDrawings;
+            }
+            set
+            {
+                gerberCreateGerberAssemblyDrawings = value;
+                OnPropertyChanged(nameof(GerberCreateGerberAssemblyDrawings));
+            }
+        }
+
+        bool gerberCreateGerberPickAndPlaceFiles;
+        public bool GerberCreateGerberPickAndPlaceFiles
+        {
+            get
+            {
+                return gerberCreateGerberPickAndPlaceFiles;
+            }
+            set
+            {
+                gerberCreateGerberPickAndPlaceFiles = value;
+                OnPropertyChanged(nameof(GerberCreateGerberPickAndPlaceFiles));
+            }
+        }
+
         List<LayerType> plotLayerTypes = new List<LayerType>
                                 {
                                      LayerType.Signal,
@@ -234,6 +262,8 @@ namespace IDE.Documents.Views
                 GerberCreateZipFile = boardDoc.OutputOptions.GerberCreateZipFile;
                 GerberWriteGerberMetadata = boardDoc.OutputOptions.GerberWriteGerberMetadata;
                 GerberWriteNetListAttributes = boardDoc.OutputOptions.GerberWriteNetListAttributes;
+                GerberCreateGerberAssemblyDrawings = boardDoc.OutputOptions.GerberCreateGerberAssemblyDrawings;
+                GerberCreateGerberPickAndPlaceFiles = boardDoc.OutputOptions.GerberCreateGerberPickAndPlaceFiles;
 
                 //ND Drills
                 NCDrillFormatBeforeDecimal = boardDoc.OutputOptions.NCDrillFormatBeforeDecimal;
@@ -269,6 +299,8 @@ namespace IDE.Documents.Views
             boardDoc.OutputOptions.GerberCreateZipFile = GerberCreateZipFile;
             boardDoc.OutputOptions.GerberWriteGerberMetadata = GerberWriteGerberMetadata;
             boardDoc.OutputOptions.GerberWriteNetListAttributes = GerberWriteNetListAttributes;
+            boardDoc.OutputOptions.GerberCreateGerberAssemblyDrawings = GerberCreateGerberAssemblyDrawings;
+            boardDoc.OutputOptions.GerberCreateGerberPickAndPlaceFiles = GerberCreateGerberPickAndPlaceFiles;
 
             //ND Drills
             boardDoc.OutputOptions.NCDrillFormatBeforeDecimal = NCDrillFormatBeforeDecimal;

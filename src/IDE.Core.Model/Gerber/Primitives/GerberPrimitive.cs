@@ -48,5 +48,6 @@ namespace IDE.Core.Gerber
 
         public virtual void WriteGerber(Gerber274XWriter gerberWriter) { }
 
+        internal virtual void WriteGerberShape(Gerber274XWriter gerberWriter) { }
     }
 }

@@ -1,22 +1,21 @@
 ﻿using System.IO;
 
-namespace IDE.Core.Model.Gerber.Primitives.Apertures
+namespace IDE.Core.Model.Gerber.Primitives.Apertures;
+
+public class AMCommentPrimitive : ApertureMacroPrimitive
 {
-    public class AMCommentPrimitive : ApertureMacroPrimitive
+    public AMCommentPrimitive()
     {
-        public AMCommentPrimitive()
-        {
-            Code = 0;
-        }
-
-        public string Comment { get; set; }
-
-        public override void WriteTo(TextWriter writer)
-        {
-            writer.WriteLine($"{Code} {Comment}*");
-        }
+        Code = 0;
     }
 
+    public string Comment { get; set; }
 
-
+    public override void WriteTo(TextWriter writer)
+    {
+        writer.WriteLine($"{Code} {Comment}*");
+    }
 }
+
+
+

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Globalization;
 using IDE.Core.Model.Gerber.Primitives.Apertures;
+using IDE.Core.Types.Media;
 
 namespace IDE.Core.Gerber
 {
@@ -20,11 +21,6 @@ namespace IDE.Core.Gerber
     public class Gerber274XWriter : StreamWriter
     {
 
-        #region Constructor
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Gerber274XWriter"/> class.
-        /// </summary>
-        /// <param name="filePath">The filename of the file.</param>
         public Gerber274XWriter(string filePath) : base(filePath)
         {
         }
@@ -32,7 +28,6 @@ namespace IDE.Core.Gerber
         public Gerber274XWriter(Stream stream) : base(stream)
         {
         }
-        #endregion
 
         string dFormat = "00";
         //private string gFormat = "00";
@@ -42,6 +37,8 @@ namespace IDE.Core.Gerber
         GraphicsState graphicState = new GraphicsState();
 
         IFormatProvider formatProvider = CultureInfo.InvariantCulture;
+
+        public GraphicsState GraphicsState => graphicState;
 
         public override IFormatProvider FormatProvider => formatProvider;
 
@@ -330,7 +327,10 @@ namespace IDE.Core.Gerber
             return AddApertureDefinition(ApertureTypes.Obround, xSize, ySize);
         }
 
-        //TODO: polygon (P)
+        public int AddApertureDefinitionRegularPoly(double outerDiameter, int numberVertices, double rot)
+        {
+            return AddApertureDefinition(ApertureTypes.Polygon, outerDiameter, numberVertices, rot);
+        }
 
         public int AddApertureDefinitionRotatedRoundedRectangle(ApertureDefinitionRotatedRoundedRectangle aperture)//double width, double height, double rot, bool isRounded)
         {
@@ -442,16 +442,40 @@ namespace IDE.Core.Gerber
 
         public void WriteObjectAttribute(string content)
         {
+            if (string.IsNullOrEmpty(content))
+                return;
+            var commaIndex = content.IndexOf(",");
+            if (commaIndex >= 0)
+            {
+                var attributeName = content.Substring(0, commaIndex);
+                var attributeValue = content.Substring(commaIndex + 1);
+
+                var attributeFound = graphicState.ObjectAttributes.TryGetValue(attributeName, out var existingValue);
+                if (attributeFound && existingValue == attributeValue)
+                {
+                    return;
+                }
+
+                graphicState.ObjectAttributes[attributeName] = attributeValue;
+            }
+
             WriteLine($"%TO{content}*%");
         }
 
         public void DeleteAttribute(string attributeName)
         {
+            if(graphicState.ObjectAttributes.ContainsKey(attributeName))
+            {
+                graphicState.ObjectAttributes.Remove(attributeName);
+            }
+
             WriteLine($"%TD{attributeName}*%");
         }
 
         public void DeleteAllAttributes()
         {
+            graphicState.ObjectAttributes.Clear();
+
             WriteLine($"%TD*%");
         }
 

@@ -14,17 +14,13 @@ Alternative to 3D
 	MonoGame
 
 
-.AperFunction (GlobalPrimitive-GerberPrimitive)
-	PadTht - ComponentPad (only for actual pads, not thermals)
-	PadSmd - SMDPad (only for actual pads, not thermals)
-	Via - ViaPad (only for actual pads, not thermals)
-	Track - Conductor
-	Text - NonConductor (Text on copper layer)
-	BoardOutline - Profile
-Object:
-	NetName -> .N (Net)
-	PartName -> .C
-	Pin: PinNumber, PartName, [PinName] -> .P (Pin)
+Need a way to add mount type info for components: SMD, THT; or if it is to be assembled or not
+	- helps for assembly outputs
 
-	  UI options and binding to model
+For assembly drawings: where to draw the designator/part name
+
+Bugs for gerber output:
+
+	- show optimised aperture (regular rect) for pads without rounded corners, not aperture macro
+		- aperture circle for circle shape
 	

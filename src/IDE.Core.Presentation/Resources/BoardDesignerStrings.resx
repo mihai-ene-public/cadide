@@ -192,6 +192,12 @@
   <data name="ColumnsText" xml:space="preserve">
     <value>Columns</value>
   </data>
+  <data name="CreateGerberAssemblyDrawings" xml:space="preserve">
+    <value>Create Gerber assembly drawings (GerberX3)</value>
+  </data>
+  <data name="CreateGerberPickAndPlaceFiles" xml:space="preserve">
+    <value>Create Gerber pick and place files (GerberX3)</value>
+  </data>
   <data name="CreateZipFileForBoard" xml:space="preserve">
     <value>Create zip file for board</value>
   </data>

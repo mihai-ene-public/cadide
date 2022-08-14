@@ -27,6 +27,8 @@ namespace IDE.Core.Interfaces
 
         bool GerberWriteGerberMetadata { get; }
         bool GerberWriteNetListAttributes { get; }
+        bool GerberCreateGerberAssemblyDrawings { get; }
+        bool GerberCreateGerberPickAndPlaceFiles { get; }
 
         IList<ILayerDesignerItem> GerberPlotLayers { get; }
 

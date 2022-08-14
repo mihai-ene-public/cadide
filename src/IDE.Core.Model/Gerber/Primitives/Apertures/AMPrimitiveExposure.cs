@@ -1,11 +1,10 @@
-﻿namespace IDE.Core.Model.Gerber.Primitives.Apertures
+﻿namespace IDE.Core.Model.Gerber.Primitives.Apertures;
+
+public enum AMPrimitiveExposure
 {
-    public enum AMPrimitiveExposure
-    {
-        Off = 0,
-        On = 1
-    }
-
-
-
+    Off = 0,
+    On = 1
 }
+
+
+

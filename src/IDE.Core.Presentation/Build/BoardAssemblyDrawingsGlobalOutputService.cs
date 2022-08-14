@@ -10,6 +10,16 @@ namespace IDE.Core.Build
     {
         public async Task<string> Build(IBoardDesigner board, IList<BoardGlobalLayerOutput> allBuildLayers, string savePath)
         {
+            var pdfLayers = GetAssemblyDrawingsLayers(board, allBuildLayers);
+
+            var pdfOutput = new PdfBoardGlobalOutput();
+            var pdfPath = await pdfOutput.Build(board, pdfLayers, savePath);
+
+            return savePath;
+        }
+
+        public IList<BoardGlobalLayerOutput> GetAssemblyDrawingsLayers(IBoardDesigner board, IList<BoardGlobalLayerOutput> allBuildLayers)
+        {
             var validLayerTypes = new[] {
                                          LayerType.SilkScreen,
                                          LayerType.Mechanical,
@@ -23,7 +33,7 @@ namespace IDE.Core.Build
             var bottomLayers = layers.Where(l => l.Layer.IsBottomLayer).ToList();
 
             //todo: need to add abstraction of BoardProperties and BuildOptions
-            foreach (var layerPair in ((BoardDesignerFileViewModel)board).BoardProperties.LayerPairs)
+            foreach (var layerPair in ( (BoardDesignerFileViewModel)board ).BoardProperties.LayerPairs)
             {
                 var layerTop = layers.FirstOrDefault(l => l.Layer.LayerId == layerPair.LayerStart.LayerId);
                 var layerBottom = layers.FirstOrDefault(l => l.Layer.LayerId == layerPair.LayerEnd.LayerId);
@@ -39,20 +49,17 @@ namespace IDE.Core.Build
                 }
             }
 
-            var topLayer = BuildLayer(topLayers);
-            var bottomLayer = BuildLayer(bottomLayers);
+            var topLayer = BuildLayer(topLayers, true);
+            var bottomLayer = BuildLayer(bottomLayers, false);
 
-            var pdfLayers = new List<BoardGlobalLayerOutput>();
-            pdfLayers.Add(topLayer);
-            pdfLayers.Add(bottomLayer);
+            var drawingsLayers = new List<BoardGlobalLayerOutput>();
+            drawingsLayers.Add(topLayer);
+            drawingsLayers.Add(bottomLayer);
 
-            var pdfOutput = new PdfBoardGlobalOutput();
-            var pdfPath = await pdfOutput.Build(board, pdfLayers, savePath);
-
-            return savePath;
+            return drawingsLayers;
         }
 
-        private BoardGlobalLayerOutput BuildLayer(IList<BoardGlobalLayerOutput> srcLayers)
+        private BoardGlobalLayerOutput BuildLayer(IList<BoardGlobalLayerOutput> srcLayers, bool isTop)
         {
             //creates a merge of all items from all source Layers
 
@@ -60,9 +67,18 @@ namespace IDE.Core.Build
                         from item in layer.AddItems
                         select item;
 
+            var srcLayer = srcLayers[0].Layer;
+            var drawingLayer = new LayerDesignerItem(null)
+            {
+                LayerType = isTop ? LayerType.AssemblyDrawingTop : LayerType.AssemblyDrawingBottom,
+                GerberExtension = srcLayer.GerberExtension,
+                LayerName = $"assembly-drawings-{( isTop ? "Top" : "Bottom" )}",
+            };
+
             return new BoardGlobalLayerOutput
             {
-                Layer = srcLayers[0].Layer,//?
+                Layer = drawingLayer,
+                BoardOutline = srcLayers[0].BoardOutline,
                 AddItems = items.ToList()
             };
         }

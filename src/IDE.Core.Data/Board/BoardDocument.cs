@@ -222,6 +222,8 @@ namespace IDE.Core.Storage
         public bool GerberWriteGerberMetadata { get; set; }
         public bool GerberWriteNetListAttributes { get; set; }
 
+        public bool GerberCreateGerberAssemblyDrawings { get; set; }
+        public bool GerberCreateGerberPickAndPlaceFiles { get; set; }
 
         #endregion
 

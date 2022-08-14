@@ -22,6 +22,11 @@ namespace IDE.Core.Interfaces
         Keepout = 800,
         //DrillDrawing
         Generic = 900,
-        BoardOutline = 1000
+        BoardOutline = 1000,
+
+        ComponentTop = 2000,
+        ComponentBottom = 2001,
+        AssemblyDrawingTop = 3000,
+        AssemblyDrawingBottom = 3001,
     }
 }

@@ -35,9 +35,14 @@ namespace IDE.Core.Gerber
 
         public override void WriteGerber(Gerber274XWriter gerberWriter)
         {
-            if (cachedApertures != null)
-                gerberWriter.SelectAperture(cachedApertures[0].Number);
+            gerberWriter.SelectAperture(cachedApertures[0].Number);
             gerberWriter.SetLevelPolarity(Polarity);
+
+            WriteGerberShape(gerberWriter);
+        }
+
+        internal override void WriteGerberShape(Gerber274XWriter gerberWriter)
+        {
             gerberWriter.SetLinearInterpolation();
             gerberWriter.MoveTo(StartPoint.X, StartPoint.Y);
             gerberWriter.InterpolateTo(EndPoint.X, EndPoint.Y);

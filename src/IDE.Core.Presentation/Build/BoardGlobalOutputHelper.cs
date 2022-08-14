@@ -292,6 +292,11 @@ public class BoardGlobalOutputHelper
                                     outputLayers.Add(BuildGenericLayer(boardContext, layer, layerGroup));
                                     break;
                                 }
+                            case LayerType.BoardOutline:
+                                {
+                                    outputLayers.Add(BuildBoardOutlineLayer(boardContext, layer, layerGroup));
+                                    break;
+                                }
 
                             default:
                                 {
@@ -326,6 +331,17 @@ public class BoardGlobalOutputHelper
 
         if (itemsOnLayer != null)
             toAddItems.AddRange(itemsOnLayer);
+
+        return GetOutput(layer, toAddItems, toExcludeItems);
+    }
+
+    private BoardGlobalLayerOutput BuildBoardOutlineLayer(BoardContext boardContext, ILayerDesignerItem layer, IEnumerable<ICanvasItem> itemsOnLayer)
+    {
+        var toAddItems = new List<ICanvasItem>();
+        var toExcludeItems = new List<ICanvasItem>();
+
+        //for outline we use the board outline region calculated from board outline layer
+        //for this reason, the gerber primitives get duplicated in the Profile layer
 
         return GetOutput(layer, toAddItems, toExcludeItems);
     }

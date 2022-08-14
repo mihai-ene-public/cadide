@@ -32,5 +32,11 @@ public enum FileFunctionType
     Heatsinkmask,
     Peelablemask,
     Silvermask,
-    Tinmask
+    Tinmask,
+
+    //Drawing layers
+    AssemblyDrawing,
+
+    //component (assembly)
+    Component
 }

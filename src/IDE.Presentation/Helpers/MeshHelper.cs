@@ -31,63 +31,6 @@ namespace IDE.Core.Collision
     {
         public MeshHelper()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-        }
-        IGeometryHelper GeometryHelper;
-
-        public void ExtrudeGeometry(MeshBuilder meshBuilder, Geometry geometry, XVector3D textDirection, XPoint3D p0, XPoint3D p1, bool checkHoles = true)
-        {
-            if (geometry.IsEmpty()) return;
-
-            var outlineList = new List<List<XPoint[]>>();
-            GeometryHelper.AppendOutlines(geometry, outlineList);
-
-            // Build the polygon to mesh (using Triangle.NET to triangulate)
-            var polygon = new TriangleNet.Geometry.Polygon();
-            int marker = 0;
-
-            var holes = new List<XPoint[]>();
-
-            foreach (var outlines in outlineList)
-            {
-                var outerOutline = outlines.OrderBy(x => Geometry2DHelper.AreaOfSegment(x)).Last();
-
-                for (int i = 0; i < outlines.Count; i++)
-                {
-                    var outline = outlines[i];
-                    var isHole = false;
-
-                    if (checkHoles)
-                    {
-
-
-                        //isHole = outerOutline != outline &&  IsPointInPolygon(outerOutline, outline[0]);
-
-                        isHole = outerOutline != outline && outline.Any(o => IsPointInPolygon(outerOutline, o));
-
-                        //isHole = outlines.Any(o => OutlineContainsOtherOutline(o, outerOutline));
-                    }
-
-                    polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
-                    //register holes
-                    if (isHole)
-                        holes.Add(outline);
-                    //meshBuilder.AddExtrudedSegments(ToSegments(outline.Select(p => p.ToPoint())).ToList(), textDirection, p0, p1);
-                }
-
-                meshBuilder.AddExtrudedSegments(ToSegments(outerOutline).ToList(), textDirection.ToVector3(), p0.ToVector3(), p1.ToVector3());
-            }
-
-            foreach (var hole in holes)
-            {
-                var isInnerHole = holes.Where(hh => hh != hole).Any(hh => IsHoleInHole(hole, hh));
-                if (!isInnerHole)
-                {
-                    meshBuilder.AddExtrudedSegments(ToSegments(hole).ToList(), textDirection.ToVector3(), p0.ToVector3(), p1.ToVector3());
-                }
-            }
-
-            TriangulatePoly(meshBuilder, textDirection, p0, p1, polygon);
         }
 
         private void TriangulatePoly(MeshBuilder meshBuilder, XVector3D textDirection, XPoint3D p0, XPoint3D p1, TriangleNet.Geometry.Polygon polygon, bool reverse = false)
@@ -192,18 +135,10 @@ namespace IDE.Core.Collision
             }
         }
 
-
-        public void ExtrudeGeometry(MeshBuilder meshBuilder, Geometry geometry)
-        {
-            ExtrudeGeometry(meshBuilder, geometry, new XVector3D(1, 0, 0), new XPoint3D(0, 0, 0), new XPoint3D(0, 0, 1));
-        }
-
-        public SharpDX.Vector3 Project(Vertex v, XPoint3D p0, XVector3D x, XVector3D y, XVector3D z, double h)
+        private SharpDX.Vector3 Project(Vertex v, XPoint3D p0, XVector3D x, XVector3D y, XVector3D z, double h)
         {
             return ( p0 + x * v.X - y * v.Y + z * h ).ToVector3();
         }
-
-
 
         public bool IsPointInPolygon(IList<XPoint> polygon, XPoint testPoint)
         {
@@ -253,25 +188,6 @@ namespace IDE.Core.Collision
 
                 previous = point.ToVector2();
             }
-        }
-
-        public IEnumerable<IList<XPoint[]>> GetTextOutlines(string text, string fontName, FontStyle fontStyle, FontWeight fontWeight, double fontSize)
-        {
-            var ff = new FontFamily(fontName);
-            var tf = new Typeface(ff, fontStyle, fontWeight, FontStretches.Normal);
-            var formattedText = new FormattedText(
-                text,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                tf,
-                fontSize,
-                Brushes.Black,
-                pixelsPerDip: 1.0d);
-
-            var textGeometry = formattedText.BuildGeometry(new Point(0, 0));
-            var outlines = new List<List<XPoint[]>>();
-            GeometryHelper.AppendOutlines(textGeometry, outlines);
-            return outlines;
         }
 
         public IMeshModel BuildMeshFromItems2(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness)

@@ -19,5 +19,14 @@
         Track,
         Text,
         BoardOutline,
+
+        //component
+        //PartPosition,
+        //PinPosition,
+
+        ComponentOutlineBody,
+        ComponentOutlineLead2Lead,
+        ComponentOutlineFootprint,
+        ComponentOutlineCourtyard,
     }
 }
