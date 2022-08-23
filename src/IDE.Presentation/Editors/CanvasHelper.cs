@@ -12,8 +12,8 @@ namespace IDE.Core.Editors
     {
         public static IDrawingViewModel GetCanvasModelFromCurrentActiveDocument()
         {
-            var app = ServiceProvider.Resolve<IApplicationViewModel>();//ServiceProvider.GetService<IApplicationViewModel>();
-            if (app!=null)
+            var app = ServiceProvider.Resolve<IApplicationViewModel>();
+            if (app != null)
             {
                 var canvas = app.ActiveDocument as CanvasDesignerFileViewModel;
                 var canvasModel = canvas?.CanvasModel;

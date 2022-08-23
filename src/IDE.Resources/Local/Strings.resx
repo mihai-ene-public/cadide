@@ -129,6 +129,9 @@
   <data name="CmdAddFootprintHeader" xml:space="preserve">
     <value>Footprint...</value>
   </data>
+  <data name="CmdAddFootprintTooltip" xml:space="preserve">
+    <value>Import primitives from an existing footprint</value>
+  </data>
   <data name="CmdAddGroupFolderHeader" xml:space="preserve">
     <value>New Group Folder</value>
   </data>
@@ -162,11 +165,17 @@
   <data name="CmdAddSymbolHeader" xml:space="preserve">
     <value>Symbol...</value>
   </data>
+  <data name="CmdBoardCompileTooltip" xml:space="preserve">
+    <value>Check for errors (Compile)</value>
+  </data>
   <data name="CmdBuildHeader" xml:space="preserve">
     <value>Build</value>
   </data>
   <data name="CmdBuildTooltip" xml:space="preserve">
     <value>Build</value>
+  </data>
+  <data name="CmdCheckConnectionsTooltip" xml:space="preserve">
+    <value>Check connections</value>
   </data>
   <data name="CmdCompileHeader" xml:space="preserve">
     <value>Compile</value>
@@ -186,6 +195,15 @@
   <data name="CmdDeleteSchematicSheetTooltip" xml:space="preserve">
     <value>Delete sheet</value>
   </data>
+  <data name="CmdFootprintAssociate3DModelTooltip" xml:space="preserve">
+    <value>Associate 3D model with this footprint</value>
+  </data>
+  <data name="CmdFootprintRemove3DModelTooltip" xml:space="preserve">
+    <value>Remove selected 3D model from this footprint</value>
+  </data>
+  <data name="CmdImportDxfTooltip" xml:space="preserve">
+    <value>Import primitives from a DXF file (experimental). Lines and arcs supported only.</value>
+  </data>
   <data name="CmdImportSymbolText" xml:space="preserve">
     <value>Import symbol</value>
   </data>
@@ -194,6 +212,24 @@
   </data>
   <data name="CmdManageReferencesHeader" xml:space="preserve">
     <value>Manage References...</value>
+  </data>
+  <data name="CmdModelAddModelTooltip" xml:space="preserve">
+    <value>Imports primitives from an existing model</value>
+  </data>
+  <data name="CmdModelGroupItemsTooltip" xml:space="preserve">
+    <value>Create a group from selected items</value>
+  </data>
+  <data name="CmdModelImportModelTooltip" xml:space="preserve">
+    <value>Import a model</value>
+  </data>
+  <data name="CmdModelShowPackageGeneratorTooltip" xml:space="preserve">
+    <value>Define the model using a generator</value>
+  </data>
+  <data name="CmdModelShowParametricPackageTooltip" xml:space="preserve">
+    <value>Define the model using parameters</value>
+  </data>
+  <data name="CmdModelUngroupItemsTooltip" xml:space="preserve">
+    <value>Split a selected group to its items</value>
   </data>
   <data name="CmdMoveDownTooltip" xml:space="preserve">
     <value>Move down</value>
@@ -213,11 +249,35 @@
   <data name="CmdRenameSchematicSheetTooltip" xml:space="preserve">
     <value>Rename sheet</value>
   </data>
+  <data name="CmdRepositionSelectedComponentsTooltip" xml:space="preserve">
+    <value>Reposition selected components</value>
+  </data>
+  <data name="CmdRepourPolysTooltip" xml:space="preserve">
+    <value>Repour polygons</value>
+  </data>
+  <data name="CmdSchAddSymbolTooltip" xml:space="preserve">
+    <value>Imports primitives (without pins) from an existing symbol</value>
+  </data>
+  <data name="CmdSchCompileTooltip" xml:space="preserve">
+    <value>Check for errors (Compile)</value>
+  </data>
+  <data name="CmdSchShowSchematicPropertiesTooltip" xml:space="preserve">
+    <value>Show properties for this schematic</value>
+  </data>
+  <data name="CmdShow3DTooltip" xml:space="preserve">
+    <value>Show 3D view</value>
+  </data>
+  <data name="CmdShowBoardPropertiesTooltip" xml:space="preserve">
+    <value>Show board properties</value>
+  </data>
   <data name="CmdShowConfigurationManagerHeader" xml:space="preserve">
     <value>Configuration Manager</value>
   </data>
   <data name="CmdShowConfigurationManagerTooltip" xml:space="preserve">
     <value>Opens configuration manager</value>
+  </data>
+  <data name="CmdShowFootprintGeneratorTooltip" xml:space="preserve">
+    <value>Define the footprint using a generator</value>
   </data>
   <data name="CmdShowProjectDependenciesHeader" xml:space="preserve">
     <value>Project Dependencies</value>
@@ -230,6 +290,12 @@
   </data>
   <data name="CmdSolutionExplorerRefreshNodesTooltip" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="CmdUpdateBoardFromSchematicTooltip" xml:space="preserve">
+    <value>Update board from schematic</value>
+  </data>
+  <data name="CmdUpdateBoardOutlineTooltip" xml:space="preserve">
+    <value>Update board outline</value>
   </data>
   <data name="CmdUpdateReferencesHeader" xml:space="preserve">
     <value>Update References</value>
@@ -420,6 +486,9 @@
   <data name="SettingsBoardWalkAroundObstaclesLabel" xml:space="preserve">
     <value>Walkaround obstacles</value>
   </data>
+  <data name="SettingsComingSoon" xml:space="preserve">
+    <value>Coming soon</value>
+  </data>
   <data name="SettingsEnvGeneralAutoDetectFileIsChangedLabel" xml:space="preserve">
     <value>Auto detect file changes outside environment</value>
   </data>
@@ -435,11 +504,26 @@
   <data name="SettingsEnvGeneralNumberItemsVisibleInWindowMenuLabel" xml:space="preserve">
     <value>Number of items visible in window menu</value>
   </data>
+  <data name="SettingsReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SettingsResetAll" xml:space="preserve">
+    <value>Reset all</value>
+  </data>
+  <data name="SettingsResetAllTooltip" xml:space="preserve">
+    <value>Reset all settings</value>
+  </data>
+  <data name="SettingsResetTooltip" xml:space="preserve">
+    <value>Reset current setting</value>
+  </data>
   <data name="SettingsSchematicCanvasBackColorLabel" xml:space="preserve">
     <value>Canvas background color</value>
   </data>
   <data name="SettingsSchematicGridColorLabel" xml:space="preserve">
     <value>Grid color</value>
+  </data>
+  <data name="SettingsSelectNode" xml:space="preserve">
+    <value>Please select a setting node</value>
   </data>
   <data name="StartPageDownloadsPageText" xml:space="preserve">
     <value>Downloads page</value>

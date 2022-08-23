@@ -97,6 +97,15 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import primitives from an existing footprint.
+        /// </summary>
+        public static string CmdAddFootprintTooltip {
+            get {
+                return ResourceManager.GetString("CmdAddFootprintTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Group Folder.
         /// </summary>
         public static string CmdAddGroupFolderHeader {
@@ -196,6 +205,15 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for errors (Compile).
+        /// </summary>
+        public static string CmdBoardCompileTooltip {
+            get {
+                return ResourceManager.GetString("CmdBoardCompileTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build.
         /// </summary>
         public static string CmdBuildHeader {
@@ -210,6 +228,15 @@ namespace IDE.Resources.Local {
         public static string CmdBuildTooltip {
             get {
                 return ResourceManager.GetString("CmdBuildTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check connections.
+        /// </summary>
+        public static string CmdCheckConnectionsTooltip {
+            get {
+                return ResourceManager.GetString("CmdCheckConnectionsTooltip", resourceCulture);
             }
         }
         
@@ -268,6 +295,33 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate 3D model with this footprint.
+        /// </summary>
+        public static string CmdFootprintAssociate3DModelTooltip {
+            get {
+                return ResourceManager.GetString("CmdFootprintAssociate3DModelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove selected 3D model from this footprint.
+        /// </summary>
+        public static string CmdFootprintRemove3DModelTooltip {
+            get {
+                return ResourceManager.GetString("CmdFootprintRemove3DModelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import primitives from a DXF file (experimental). Lines and arcs supported only..
+        /// </summary>
+        public static string CmdImportDxfTooltip {
+            get {
+                return ResourceManager.GetString("CmdImportDxfTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import symbol.
         /// </summary>
         public static string CmdImportSymbolText {
@@ -291,6 +345,60 @@ namespace IDE.Resources.Local {
         public static string CmdManageReferencesHeader {
             get {
                 return ResourceManager.GetString("CmdManageReferencesHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imports primitives from an existing model.
+        /// </summary>
+        public static string CmdModelAddModelTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelAddModelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a group from selected items.
+        /// </summary>
+        public static string CmdModelGroupItemsTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelGroupItemsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import a model.
+        /// </summary>
+        public static string CmdModelImportModelTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelImportModelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the model using a generator.
+        /// </summary>
+        public static string CmdModelShowPackageGeneratorTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelShowPackageGeneratorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the model using parameters.
+        /// </summary>
+        public static string CmdModelShowParametricPackageTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelShowParametricPackageTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Split a selected group to its items.
+        /// </summary>
+        public static string CmdModelUngroupItemsTooltip {
+            get {
+                return ResourceManager.GetString("CmdModelUngroupItemsTooltip", resourceCulture);
             }
         }
         
@@ -349,6 +457,69 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reposition selected components.
+        /// </summary>
+        public static string CmdRepositionSelectedComponentsTooltip {
+            get {
+                return ResourceManager.GetString("CmdRepositionSelectedComponentsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repour polygons.
+        /// </summary>
+        public static string CmdRepourPolysTooltip {
+            get {
+                return ResourceManager.GetString("CmdRepourPolysTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imports primitives (without pins) from an existing symbol.
+        /// </summary>
+        public static string CmdSchAddSymbolTooltip {
+            get {
+                return ResourceManager.GetString("CmdSchAddSymbolTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for errors (Compile).
+        /// </summary>
+        public static string CmdSchCompileTooltip {
+            get {
+                return ResourceManager.GetString("CmdSchCompileTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show properties for this schematic.
+        /// </summary>
+        public static string CmdSchShowSchematicPropertiesTooltip {
+            get {
+                return ResourceManager.GetString("CmdSchShowSchematicPropertiesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show 3D view.
+        /// </summary>
+        public static string CmdShow3DTooltip {
+            get {
+                return ResourceManager.GetString("CmdShow3DTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show board properties.
+        /// </summary>
+        public static string CmdShowBoardPropertiesTooltip {
+            get {
+                return ResourceManager.GetString("CmdShowBoardPropertiesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration Manager.
         /// </summary>
         public static string CmdShowConfigurationManagerHeader {
@@ -363,6 +534,15 @@ namespace IDE.Resources.Local {
         public static string CmdShowConfigurationManagerTooltip {
             get {
                 return ResourceManager.GetString("CmdShowConfigurationManagerTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Define the footprint using a generator.
+        /// </summary>
+        public static string CmdShowFootprintGeneratorTooltip {
+            get {
+                return ResourceManager.GetString("CmdShowFootprintGeneratorTooltip", resourceCulture);
             }
         }
         
@@ -399,6 +579,24 @@ namespace IDE.Resources.Local {
         public static string CmdSolutionExplorerRefreshNodesTooltip {
             get {
                 return ResourceManager.GetString("CmdSolutionExplorerRefreshNodesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update board from schematic.
+        /// </summary>
+        public static string CmdUpdateBoardFromSchematicTooltip {
+            get {
+                return ResourceManager.GetString("CmdUpdateBoardFromSchematicTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update board outline.
+        /// </summary>
+        public static string CmdUpdateBoardOutlineTooltip {
+            get {
+                return ResourceManager.GetString("CmdUpdateBoardOutlineTooltip", resourceCulture);
             }
         }
         
@@ -970,6 +1168,15 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coming soon.
+        /// </summary>
+        public static string SettingsComingSoon {
+            get {
+                return ResourceManager.GetString("SettingsComingSoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto detect file changes outside environment.
         /// </summary>
         public static string SettingsEnvGeneralAutoDetectFileIsChangedLabel {
@@ -1015,6 +1222,42 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string SettingsReset {
+            get {
+                return ResourceManager.GetString("SettingsReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset all.
+        /// </summary>
+        public static string SettingsResetAll {
+            get {
+                return ResourceManager.GetString("SettingsResetAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset all settings.
+        /// </summary>
+        public static string SettingsResetAllTooltip {
+            get {
+                return ResourceManager.GetString("SettingsResetAllTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset current setting.
+        /// </summary>
+        public static string SettingsResetTooltip {
+            get {
+                return ResourceManager.GetString("SettingsResetTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Canvas background color.
         /// </summary>
         public static string SettingsSchematicCanvasBackColorLabel {
@@ -1029,6 +1272,15 @@ namespace IDE.Resources.Local {
         public static string SettingsSchematicGridColorLabel {
             get {
                 return ResourceManager.GetString("SettingsSchematicGridColorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a setting node.
+        /// </summary>
+        public static string SettingsSelectNode {
+            get {
+                return ResourceManager.GetString("SettingsSelectNode", resourceCulture);
             }
         }
         

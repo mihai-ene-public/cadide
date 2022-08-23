@@ -63,4 +63,9 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.fontawesome.com/icons/", "FontAwesome5")]
 [assembly: XmlnsDefinition("http://schemas.fontawesome.com/icons/", "FontAwesome5.Converters")]
 
+[assembly: XmlnsPrefix("http://xnocad.rgb/wpf", "ide")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.PropertyGrid")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.PropertyGrid.Editors")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Core.Converters")]
+
 

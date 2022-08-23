@@ -5,7 +5,7 @@
                   xmlns:behav="clr-namespace:IDE.Core.Behaviors"
                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                   xmlns:settings="clr-namespace:IDE.Core.Settings.Options;assembly=IDE.Core.Presentation"
-                  
+                  xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
                   xmlns:conv="clr-namespace:IDE.Core.Converters"
                   
                   xmlns:local="clr-namespace:IDE.Documents.Views"
@@ -99,7 +99,7 @@
                             Content="{Binding CurrentSetting, UpdateSourceTrigger=PropertyChanged}">
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type settings:SettingCategoryModel}">
-                        <TextBlock Text="Please select a setting node"
+                        <TextBlock Text="{x:Static resources:Strings.SettingsSelectNode}"
                                    FontSize="16"
                                    FontWeight="Bold"
                                    Foreground="Brown"
@@ -123,7 +123,7 @@
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:SchematicEditorPrimitiveDefaultsModel}">
-                        <TextBlock Text="Coming soon"
+                        <TextBlock Text="{x:Static resources:Strings.SettingsComingSoon}"
                                    FontSize="16"
                                    FontWeight="Bold"
                                    Foreground="Brown"
@@ -143,7 +143,7 @@
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:BoardEditorPrimitiveDefaultsModel}">
-                        <TextBlock Text="Coming soon"
+                        <TextBlock Text="{x:Static resources:Strings.SettingsComingSoon}"
                                    FontSize="16"
                                    FontWeight="Bold"
                                    Foreground="Brown"
@@ -170,7 +170,7 @@
                                   SharedSizeGroup="StandardButtons" />
             </Grid.ColumnDefinitions>
 
-            <Button Content="_OK"
+            <Button Content="OK"
                     Command="{Binding OKCommand}"
                     IsDefault="True"
                     Grid.Column="0"
@@ -179,7 +179,7 @@
                     MinHeight="24"
                     MinWidth="80" />
 
-            <Button Content="_Cancel"
+            <Button Content="Cancel"
                     Command="{Binding CancelCommand}"
                     IsCancel="True"
                     Grid.Column="1"
@@ -190,16 +190,16 @@
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
 
-            <Button Content="Reset"
-                    ToolTip="Reset current setting"
+            <Button Content="{x:Static resources:Strings.SettingsReset}"
+                    ToolTip="{x:Static resources:Strings.SettingsResetTooltip}"
                     Command="{Binding ResetCurrentSettingCommand}"
                     Padding="3"
                     Margin="6"
                     MinHeight="24"
                     MinWidth="80" />
 
-            <Button Content="Reset all"
-                    ToolTip="Reset all settings"
+            <Button Content="{x:Static resources:Strings.SettingsResetAll}"
+                    ToolTip="{x:Static resources:Strings.SettingsResetAllTooltip}"
                     Command="{Binding ResetAllSettingsCommand}"
                     Padding="3"
                     Margin="6"

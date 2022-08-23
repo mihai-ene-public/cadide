@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Xceed.Wpf.Toolkit.PropertyGrid;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using IDE.Controls.WPF.PropertyGrid;
+using IDE.Controls.WPF.PropertyGrid.Editors;
 
 namespace IDE.Core.Editors
 {

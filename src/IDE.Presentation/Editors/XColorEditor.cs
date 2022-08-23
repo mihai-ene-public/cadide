@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Data;
 using Xceed.Wpf.Toolkit;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using IDE.Controls.WPF.PropertyGrid.Editors;
+//using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace IDE.Core.Editors
 {

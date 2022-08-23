@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IDE.Documents.Views"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:ide="http://xnocad.rgb/wpf"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
-              xmlns:ctrls="clr-namespace:IDE.Controls"
-              xmlns:items="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
+             xmlns:ctrls="clr-namespace:IDE.Controls"
+             xmlns:items="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
              Background="Transparent"
              mc:Ignorable="d"
              d:DesignHeight="300"
@@ -16,30 +17,31 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid.xaml" />
+                <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid2.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type items:AxialParametricPackageMeshItem}">
-                <ctrls:AxialPackageDimensionsView/>
+                <ctrls:AxialPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:BGAParametricPackageMeshItem}">
-                <ctrls:BGAPackageDimensionsView/>
+                <ctrls:BGAPackageDimensionsView />
             </DataTemplate>
 
-           <DataTemplate DataType="{x:Type items:ChipParametricPackageMeshItem}">
-                <ctrls:ChipPackageDimensionsView/>
+            <DataTemplate DataType="{x:Type items:ChipParametricPackageMeshItem}">
+                <ctrls:ChipPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:CrystalSMDParametricPackageMeshItem}">
-                <ctrls:CrystalSMDPackageDimensionsView/>
+                <ctrls:CrystalSMDPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:DIPParametricPackageMeshItem}">
-                <ctrls:DIPPackageDimensionsView/>
+                <ctrls:DIPPackageDimensionsView />
             </DataTemplate>
 
-             <DataTemplate DataType="{x:Type items:DFNParametricPackageMeshItem}">
-                <ctrls:DFNPackageDimensionsView/>
+            <DataTemplate DataType="{x:Type items:DFNParametricPackageMeshItem}">
+                <ctrls:DFNPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:DPakParametricPackageMeshItem}">
@@ -47,27 +49,27 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:ECapParametricPackageMeshItem}">
-                <ctrls:ECapPackageDimensionsView/>
+                <ctrls:ECapPackageDimensionsView />
             </DataTemplate>
 
-           <DataTemplate DataType="{x:Type items:MelfParametricPackageMeshItem}">
-                <ctrls:MelfPackageDimensionsView/>
+            <DataTemplate DataType="{x:Type items:MelfParametricPackageMeshItem}">
+                <ctrls:MelfPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:PinHeaderStraightParametricPackageMeshItem}">
-                <ctrls:PinHeaderStraightPackageDimensionsView/>
+                <ctrls:PinHeaderStraightPackageDimensionsView />
             </DataTemplate>
 
-             <DataTemplate DataType="{x:Type items:QFNParametricPackageMeshItem}">
-                <ctrls:QFNPackageDimensionsView/>
+            <DataTemplate DataType="{x:Type items:QFNParametricPackageMeshItem}">
+                <ctrls:QFNPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:QFPParametricPackageMeshItem}">
-                <ctrls:QFPPackageDimensionsView/>
+                <ctrls:QFPPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:SODParametricPackageMeshItem}">
-                <ctrls:SODPackageDimensionsView/>
+                <ctrls:SODPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:SMAParametricPackageMeshItem}">
@@ -75,38 +77,38 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:SOICParametricPackageMeshItem}">
-                <ctrls:SOICPackageDimensionsView/>
+                <ctrls:SOICPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:SOT23ParametricPackageMeshItem}">
-                <ctrls:SOT23PackageDimensionsView/>
+                <ctrls:SOT23PackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:SOT223ParametricPackageMeshItem}">
-                <ctrls:SOT223PackageDimensionsView/>
+                <ctrls:SOT223PackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:RadialGenericRoundParametricPackageMeshItem}">
-                <ctrls:RadialGenericRoundPackageDimensionsView/>
+                <ctrls:RadialGenericRoundPackageDimensionsView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type items:RadialLEDParametricPackageMeshItem}">
-                <ctrls:RadialLEDPackageDimensionsView/>
+                <ctrls:RadialLEDPackageDimensionsView />
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0"
                         Visibility="{Binding SelectedObject.HasPreview, FallbackValue=Collapsed, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
                         Content="{Binding SelectedObject}"
-                         Height="130">
+                        Height="130">
         </ContentControl>
-        
-        <xctk:PropertyGrid Grid.Row="1"
+
+        <!--<xctk:PropertyGrid Grid.Row="1"
                            SelectedObject="{Binding SelectedObject, UpdateSourceTrigger=PropertyChanged}"
                            AutoGenerateProperties="True"
                            Background="Transparent"
@@ -114,8 +116,12 @@
                            ShowSearchBox="False"
                            ShowSortOptions="False"
                            BorderThickness="0">
-        </xctk:PropertyGrid>
+        </xctk:PropertyGrid>-->
 
-
+        <ide:PropertyGrid Grid.Row="1"
+                          SelectedObject="{Binding SelectedObject, UpdateSourceTrigger=PropertyChanged}"
+                          Background="Transparent"
+                          BorderThickness="0">
+        </ide:PropertyGrid>
     </Grid>
 </UserControl>

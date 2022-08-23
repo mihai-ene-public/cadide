@@ -67,6 +67,7 @@
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/UnitCombobox.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid.xaml" />
+        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid2.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/MessageBox.xaml" />
 
