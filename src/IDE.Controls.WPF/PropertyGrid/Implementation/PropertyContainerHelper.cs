@@ -306,8 +306,7 @@ internal class PropertyContainerHelper
 
     private void OnChildrenPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (IsItemOrderingProperty(e.PropertyName)
-          )
+        if (IsItemOrderingProperty(e.PropertyName))
         {
             // Refreshing the view while Containers are generated will throw an exception
             if (ChildrenItemsControl.ItemContainerGenerator.Status != GeneratorStatus.GeneratingContainers

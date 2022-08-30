@@ -232,7 +232,7 @@ internal class DescriptorPropertyDefinition : DependencyObject
 
     protected int ComputeDisplayOrder()
     {
-        return (int)ComputeDisplayOrderForItem(PropertyDescriptor);
+        return ComputeDisplayOrderForItem(PropertyDescriptor);
     }
 
     private string ComputeDisplayName()
@@ -261,14 +261,13 @@ internal class DescriptorPropertyDefinition : DependencyObject
                 : pd.Description;
     }
 
-    internal object ComputeDisplayOrderForItem(object item)
+    internal int ComputeDisplayOrderForItem(object item)
     {
         var displayAttribute = PropertyDescriptor.GetAttribute<DisplayAttribute>();
         if (displayAttribute != null)
         {
             var order = displayAttribute.GetOrder();
-            if (order.HasValue)
-                return order;
+            return order.GetValueOrDefault();
         }
 
         // Max Value. Properties with no order will be displayed last.

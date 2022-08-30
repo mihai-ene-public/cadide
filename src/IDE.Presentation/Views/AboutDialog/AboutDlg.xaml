@@ -16,7 +16,6 @@
                   behav:RemoveIcon.Remove="true"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                   mc:Ignorable="d">
     <Grid Margin="9,3">
         <Grid.RowDefinitions>
@@ -37,32 +36,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0"
-                        Grid.Row="0"
-                        Margin="18,3,3,3">
-                <Button>
-                    Normal
-                </Button>
-                <xctk:WatermarkTextBox x:Name="_txtFilter"
-                                            Background="Transparent"
-                                            Text="{Binding SearchItemsFilter, Delay=800, UpdateSourceTrigger=PropertyChanged}"
-                                            Watermark="Search items"
-                                            BorderThickness="1">
-
-                </xctk:WatermarkTextBox>
-                
-                <TextBlock Grid.Column="1"
-                           FontSize="20"
-                           Margin="3"
-                           VerticalAlignment="Top"
-                           Text="{Binding AppTitle, Mode=OneTime}" />
-                <TextBlock Margin="3,10,3,3"
-                           Text="{Binding SubTitle, Mode=OneTime}" />
-                <hyp:WebHyperlink Margin="3"
-                                  VerticalAlignment="Bottom"
-                                  NavigateUri="{Binding AppUrl,Mode=OneTime}"
-                                  Text="{x:Static strings:AboutDialogStrings.AppUrlDisplayString}" />
-            </StackPanel>
+            <!--<StackPanel>
+                <Button Click="Button_Click">Show message</Button>
+            </StackPanel>-->
             <Grid Margin="3,20,3,3"
                   Grid.Row="2"
                   Grid.ColumnSpan="2">

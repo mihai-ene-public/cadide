@@ -1,9 +1,8 @@
 ﻿using IDE.Core.Converters;
 using System.Windows;
 using System.Windows.Data;
-using Xceed.Wpf.Toolkit;
 using IDE.Controls.WPF.PropertyGrid.Editors;
-//using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using IDE.Controls.WPF;
 
 namespace IDE.Core.Editors
 {
@@ -14,7 +13,6 @@ namespace IDE.Core.Editors
             var c = new PropertyGridEditorColorPicker();
             c.BorderThickness = new Thickness();
             c.DisplayColorAndName = true;
-
             return c;
         }
 

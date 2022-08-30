@@ -8,8 +8,6 @@ using System.Windows.Data;
 namespace IDE.Controls.WPF.Core.Converters;
 public class InverseBoolConverter : IValueConverter
 {
-    #region IValueConverter Members
-
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
         return !(bool)value;
@@ -19,7 +17,5 @@ public class InverseBoolConverter : IValueConverter
     {
         throw new NotImplementedException();
     }
-
-    #endregion
 }
 

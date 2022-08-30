@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:ide="http://xnocad.rgb/wpf"
              xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
@@ -19,7 +19,7 @@
 
         <TextBlock Margin="0,10,0,0"
                    Text="{x:Static strings:BoardDesignerStrings.Preview3DSolderMaskColor}"/>
-        <xctk:ColorPicker SelectedColor="{Binding SolderMaskColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+        <ide:ColorPicker SelectedColor="{Binding SolderMaskColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Center"
                           ShowDropDownButton="False"
@@ -29,7 +29,7 @@
 
         <TextBlock Margin="0,10,0,0"
                    Text="{x:Static strings:BoardDesignerStrings.Preview3DSilkscreenColor}"/>
-        <xctk:ColorPicker SelectedColor="{Binding SilkScreenColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+        <ide:ColorPicker SelectedColor="{Binding SilkScreenColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Center"
                           ShowDropDownButton="False"

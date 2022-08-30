@@ -6,9 +6,8 @@
                   xmlns:mui="http://firstfloorsoftware.com/ModernUI"
                   xmlns:local="clr-namespace:IDE.Documents.Views"
                   xmlns:docViews="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
-                  xmlns:s="clr-namespace:IDE.Core.StyleSelectors"
-                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                   xmlns:fa="http://schemas.fontawesome.com/icons/"
+                  xmlns:ide="http://xnocad.rgb/wpf"
+                  xmlns:fa="http://schemas.fontawesome.com/icons/"
                   mc:Ignorable="d"
                   Title="Item Select Dialog"
                   WindowStartupLocation="CenterScreen"
@@ -26,51 +25,51 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="ClearFilterButtonStyle"
-         TargetType="{x:Type Button}">
+                   TargetType="{x:Type Button}">
                 <Setter Property="Background"
-            Value="Transparent" />
+                        Value="Transparent" />
                 <Setter Property="BorderBrush"
-            Value="Transparent" />
+                        Value="Transparent" />
                 <Setter Property="BorderThickness"
-            Value="1" />
+                        Value="1" />
                 <Setter Property="Height"
-            Value="22" />
+                        Value="22" />
                 <Setter Property="HorizontalContentAlignment"
-            Value="Center" />
+                        Value="Center" />
                 <Setter Property="ToolTipService.InitialShowDelay"
-            Value="900" />
+                        Value="900" />
                 <Setter Property="ToolTipService.ShowDuration"
-            Value="20000" />
+                        Value="20000" />
                 <Setter Property="ToolTipService.BetweenShowDelay"
-            Value="0" />
+                        Value="0" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid SnapsToDevicePixels="True">
                                 <Border x:Name="OuterBorder"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Background="{TemplateBinding Background}"
-                    CornerRadius="2" />
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="2" />
                                 <Border x:Name="MiddleBorder"
-                    BorderBrush="Transparent"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Background="Transparent"
-                    CornerRadius="2">
+                                        BorderBrush="Transparent"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="Transparent"
+                                        CornerRadius="2">
                                     <Border x:Name="InnerBorder"
-                      BorderBrush="Transparent"
-                      BorderThickness="{TemplateBinding BorderThickness}"
-                      Background="Transparent"
-                      CornerRadius="2"
-                      Padding="{TemplateBinding Padding}">
+                                            BorderBrush="Transparent"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="Transparent"
+                                            CornerRadius="2"
+                                            Padding="{TemplateBinding Padding}">
                                         <StackPanel x:Name="StackPanel"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                                             <ContentPresenter x:Name="Content"
-                                    Content="{TemplateBinding Content}"
-                                    Margin="1"
-                                    RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                                                              Content="{TemplateBinding Content}"
+                                                              Margin="1"
+                                                              RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                              VerticalAlignment="Center"
+                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                                         </StackPanel>
                                     </Border>
                                 </Border>
@@ -90,13 +89,13 @@
                                 </Trigger>-->
 
                                 <Trigger Property="IsEnabled"
-                     Value="False">
+                                         Value="False">
                                     <Setter Property="Opacity"
-                      TargetName="Content"
-                      Value="0.5" />
+                                            TargetName="Content"
+                                            Value="0.5" />
                                     <Setter Property="TextElement.Foreground"
-                      TargetName="OuterBorder"
-                      Value="#FF9E9E9E" />
+                                            TargetName="OuterBorder"
+                                            Value="#FF9E9E9E" />
                                 </Trigger>
 
                                 <!--<Trigger Property="IsPressed"
@@ -150,19 +149,18 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <xctk:WatermarkTextBox x:Name="_txtFilter"
-                                            Background="Transparent"
-                                            Text="{Binding SearchItemsFilter, Delay=800, UpdateSourceTrigger=PropertyChanged}"
-                                            Watermark="Search items"
-                                            BorderThickness="1">
+                <ide:WatermarkTextBox x:Name="_txtFilter"
+                                       Background="Transparent"
+                                       Text="{Binding SearchItemsFilter, Delay=800, UpdateSourceTrigger=PropertyChanged}"
+                                       Watermark="Search items"
+                                       BorderThickness="1">
 
-                </xctk:WatermarkTextBox>
+                </ide:WatermarkTextBox>
 
                 <Button Grid.Column="1"
-                            Command="{Binding SearchItemsFilterCommand}"
-                            Style="{StaticResource ClearFilterButtonStyle}"
-                            HorizontalAlignment="Left"
-                        >
+                        Command="{Binding SearchItemsFilterCommand}"
+                        Style="{StaticResource ClearFilterButtonStyle}"
+                        HorizontalAlignment="Left">
                     <fa:FontAwesome Icon="Solid_Times"
                                     FontSize="16"
                                     Foreground="{DynamicResource TextBrush}" />
@@ -207,7 +205,7 @@
 
         <GridSplitter Grid.Row="0"
                       Width="3"
-                      HorizontalAlignment="Right"/>
+                      HorizontalAlignment="Right" />
 
         <ContentControl Grid.Row="0"
                         Grid.Column="1"
@@ -215,11 +213,11 @@
                         Content="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type docViews:LibraryItemDisplay}">
-                    <local:LibraryItemDisplayView/>
+                    <local:LibraryItemDisplayView />
                 </DataTemplate>
 
                 <DataTemplate DataType="{x:Type docViews:ComponentItemDisplay}">
-                    <local:ComponentItemDisplayView/>
+                    <local:ComponentItemDisplayView />
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

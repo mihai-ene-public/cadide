@@ -62,49 +62,6 @@
     <None Remove="FontAwesome\Fonts\Font Awesome 5 Brands-Regular-400.otf" />
     <None Remove="FontAwesome\Fonts\Font Awesome 5 Free-Regular-400.otf" />
     <None Remove="FontAwesome\Fonts\Font Awesome 5 Free-Solid-900.otf" />
-    <None Remove="WPFToolkit\CollectionControl\Images\Delete16.png" />
-    <None Remove="WPFToolkit\CollectionControl\Images\Duplicate.png" />
-    <None Remove="WPFToolkit\MessageBox\Icons\Error48.png" />
-    <None Remove="WPFToolkit\MessageBox\Icons\Information48.png" />
-    <None Remove="WPFToolkit\MessageBox\Icons\Question48.png" />
-    <None Remove="WPFToolkit\MessageBox\Icons\Warning48.png" />
-    <None Remove="WPFToolkit\MultiLineTextEditor\Images\Notes16.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\AdvancedProperties11.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Categorize16.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\ClearFilter16.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Database11.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Inheritance11.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Local11.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Resource11.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\SortAscending16.png" />
-    <None Remove="WPFToolkit\PropertyGrid\Images\Style11.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_pressed.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_rounded_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_rounded_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_rounded_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_rounded_pressed.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_toolwindow_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_toolwindow_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_toolwindow_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\close_toolwindow_pressed.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\maximize_disabled.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\maximize_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\maximize_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\maximize_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\maximize_pressed.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\minimize_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\minimize_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\minimize_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\minimize_pressed.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\resize_grip.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\restore_disabled.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\restore_hover.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\restore_inactive.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\restore_normal.png" />
-    <None Remove="WPFToolkit\Themes\Generic\Images\restore_pressed.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs" Link="Properties\GlobalAssemblyInfo.cs" />
@@ -167,48 +124,10 @@
     <Resource Include="FontAwesome\Fonts\Font Awesome 5 Brands-Regular-400.otf" />
     <Resource Include="FontAwesome\Fonts\Font Awesome 5 Free-Regular-400.otf" />
     <Resource Include="FontAwesome\Fonts\Font Awesome 5 Free-Solid-900.otf" />
-    <Resource Include="WPFToolkit\CollectionControl\Images\Delete16.png" />
-    <Resource Include="WPFToolkit\CollectionControl\Images\Duplicate.png" />
-    <Resource Include="WPFToolkit\MessageBox\Icons\Error48.png" />
-    <Resource Include="WPFToolkit\MessageBox\Icons\Information48.png" />
-    <Resource Include="WPFToolkit\MessageBox\Icons\Question48.png" />
-    <Resource Include="WPFToolkit\MessageBox\Icons\Warning48.png" />
-    <Resource Include="WPFToolkit\MultiLineTextEditor\Images\Notes16.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\AdvancedProperties11.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Categorize16.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\ClearFilter16.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Database11.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Inheritance11.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Local11.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Resource11.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\SortAscending16.png" />
-    <Resource Include="WPFToolkit\PropertyGrid\Images\Style11.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_pressed.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_rounded_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_rounded_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_rounded_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_rounded_pressed.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_toolwindow_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_toolwindow_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_toolwindow_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\close_toolwindow_pressed.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\maximize_disabled.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\maximize_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\maximize_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\maximize_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\maximize_pressed.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\minimize_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\minimize_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\minimize_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\minimize_pressed.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\resize_grip.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\restore_disabled.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\restore_hover.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\restore_inactive.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\restore_normal.png" />
-    <Resource Include="WPFToolkit\Themes\Generic\Images\restore_pressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Generic\Glyphs.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 </Project>

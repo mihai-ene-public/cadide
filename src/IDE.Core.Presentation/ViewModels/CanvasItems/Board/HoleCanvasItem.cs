@@ -16,6 +16,20 @@ namespace IDE.Core.Designers
             Drill = 0.6;
         }
 
+        private DrillType drillType;
+
+        [MarksDirty]
+        [Display(Order = 1)]
+        public DrillType DrillType
+        {
+            get { return drillType; }
+            set
+            {
+                drillType = value;
+                OnPropertyChanged(nameof(DrillType));
+            }
+        }
+
         double drill;
 
         [Editor(EditorNames.SizeMilimetersUnitsEditor, EditorNames.SizeMilimetersUnitsEditor)]
@@ -50,32 +64,6 @@ namespace IDE.Core.Designers
                 OnPropertyChanged(nameof(Rect));
             }
         }
-
-        double rot;
-
-        [Display(Order = 8)]
-        [MarksDirty]
-        public double Rot
-        {
-            get { return rot; }
-            set
-            {
-                rot = (int)value % 360;
-                OnPropertyChanged(nameof(Rot));
-            }
-        }
-
-        #endregion
-
-        [Browsable(false)]
-        public double Radius
-        {
-            get
-            {
-                return Drill / 2;
-            }
-        }
-
 
         double x;
 
@@ -117,6 +105,34 @@ namespace IDE.Core.Designers
             }
         }
 
+        double rot;
+
+        [Display(Order = 5)]
+        [MarksDirty]
+        public double Rot
+        {
+            get { return rot; }
+            set
+            {
+                rot = (int)value % 360;
+                OnPropertyChanged(nameof(Rot));
+            }
+        }
+
+        #endregion
+
+        [Browsable(false)]
+        public double Radius
+        {
+            get
+            {
+                return Drill / 2;
+            }
+        }
+
+
+        
+
         [Browsable(false)]
         public XPoint Center
         {
@@ -129,6 +145,7 @@ namespace IDE.Core.Designers
         bool isPlated;
 
         [MarksDirty]
+        [Display(Order = 6)]
         public bool IsPlated
         {
             get { return isPlated; }
@@ -139,18 +156,7 @@ namespace IDE.Core.Designers
             }
         }
 
-        private DrillType drillType;
-
-        [MarksDirty]
-        public DrillType DrillType
-        {
-            get { return drillType; }
-            set
-            {
-                drillType = value;
-                OnPropertyChanged(nameof(DrillType));
-            }
-        }
+        
 
         [Browsable(false)]
         public XRect Rect

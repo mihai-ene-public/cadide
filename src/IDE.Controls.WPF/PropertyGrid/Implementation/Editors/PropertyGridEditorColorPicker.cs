@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Xceed.Wpf.Toolkit;
 
 namespace IDE.Controls.WPF.PropertyGrid.Editors;
 

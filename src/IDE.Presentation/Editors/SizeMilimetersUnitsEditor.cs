@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-//using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Windows.Media;
 using IDE.Core.ViewModels;
 using IDE.Core.Interfaces;

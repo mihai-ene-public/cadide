@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Windows.Controls;
-using Xceed.Wpf.Toolkit;
 using IDE.Controls.WPF.Core.Extensions;
 
 namespace IDE.Controls.WPF.PropertyGrid.Editors;

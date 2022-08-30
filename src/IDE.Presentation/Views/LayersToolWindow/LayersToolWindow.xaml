@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IDE.Documents.Views"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:ide="http://xnocad.rgb/wpf"
              xmlns:ctrls="clr-namespace:IDE.Controls"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
-
              mc:Ignorable="d"
              Background="Transparent"
              d:DesignHeight="300"
@@ -23,12 +22,11 @@
         <StackPanel Orientation="Horizontal"
                     Margin="0,5">
             <ToggleButton IsChecked="{Binding LayeredDocument.MaskUnselectedLayer, UpdateSourceTrigger=PropertyChanged}"
-                          ToolTip="{x:Static strings:Strings.LayersToolWindow_MaskUnselectedLayers}"
-                          >
+                          ToolTip="{x:Static strings:Strings.LayersToolWindow_MaskUnselectedLayers}">
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <fa:FontAwesome Name="PART_Path"
-                                        Icon="Solid_WindowMaximize" 
+                                        Icon="Solid_WindowMaximize"
                                         FontSize="16"
                                         Foreground="DarkGray" />
 
@@ -47,12 +45,11 @@
             <ToggleButton Margin="5,0,0,0"
                           IsChecked="{Binding LayeredDocument.HideUnselectedLayer, UpdateSourceTrigger=PropertyChanged}"
                           ToolTip="{x:Static strings:Strings.LayersToolWindow_HideUnselectedLayers}"
-                          Padding="0"
-                          >
+                          Padding="0">
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <fa:FontAwesome Name="PART_Path"
-                                        Icon="Solid_WindowMinimize" 
+                                        Icon="Solid_WindowMinimize"
                                         FontSize="16"
                                         Foreground="DarkGray" />
 
@@ -95,8 +92,7 @@
 
                         <ToggleButton Grid.Column="0"
                                       IsChecked="{Binding IsSetVisible, UpdateSourceTrigger=PropertyChanged}"
-                                      VerticalAlignment="Center"
-                                       >
+                                      VerticalAlignment="Center">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                                     <fa:FontAwesome Icon="Solid_Eye"
@@ -105,7 +101,7 @@
                                                     Foreground="{DynamicResource TextBrush}" />
                                     <ControlTemplate.Triggers>
                                         <DataTrigger  Binding="{Binding IsSetVisible}"
-                                          Value="False">
+                                                      Value="False">
                                             <Setter TargetName="PART_Eye"
                                                     Property="Opacity"
                                                     Value="0.5" />
@@ -116,24 +112,24 @@
 
                         </ToggleButton>
 
-                        <xctk:ColorPicker Grid.Column="1"
-                                          SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Center"
-                                          ShowDropDownButton="False"
-                                          BorderBrush="Transparent"
-                                          Width="22" />
+                        <ide:ColorPicker Grid.Column="1"
+                                         SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         ShowDropDownButton="False"
+                                         BorderBrush="Transparent"
+                                         Width="22" />
 
                         <ctrls:EditableLabel Grid.Column="2"
                                              Text="{Binding LayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       DisplayText="{Binding LayerName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                       FontSize="12"
-                                       FontFamily="Segoe UI"
-                                       Focusable="True"
-                                       IsReadOnly="False"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"
-                                       ToolTipService.ShowOnDisabled="True" />
+                                             DisplayText="{Binding LayerName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             FontSize="12"
+                                             FontFamily="Segoe UI"
+                                             Focusable="True"
+                                             IsReadOnly="False"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Left"
+                                             ToolTipService.ShowOnDisabled="True" />
 
                         <TextBlock Grid.Column="3"
                                    VerticalAlignment="Center"

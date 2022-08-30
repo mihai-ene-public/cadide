@@ -5,11 +5,11 @@
         <ResourceDictionary Source="../Brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="{x:Type ToolTip}">
-        <!--<Setter Property="Background"
-                Value="#FF000000" />-->
-        <!--<Setter Property="Background"
-                Value="#FFFFFF00" />-->
+    <!--<Style TargetType="{x:Type ToolTip}">
+        <Setter Property="Background"
+                Value="#333" />
+        --><!--<Setter Property="Background"
+                Value="#FFFFFF00" />--><!--
         <Setter Property="Foreground"
                 Value="#FFFFFFFF" />
         <Setter Property="FontFamily"
@@ -39,7 +39,7 @@
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1"
                                                      StartPoint="0.5,0">
-                                    <!-- Background gradient of tooltip -->
+                                    --><!-- Background gradient of tooltip --><!--
                                     <GradientStop Color="#FF000000"
                                                   Offset="0.004" />
                                     <GradientStop Color="#FF232323"
@@ -55,6 +55,56 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>-->
+
+    <Style TargetType="{x:Type ToolTip}">
+        <Setter Property="Background"
+                Value="#999" />
+        <Setter Property="Foreground"
+                Value="#FFFFFFFF" />
+        <Setter Property="FontFamily"
+                Value="Trebuchet MS" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Padding"
+                Value="3,0,3,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToolTip}">
+                    <Border x:Name="Root"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="#19000000"
+                            CornerRadius="3">
+                        <Border Margin="1"
+                                BorderBrush="#FF767676"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="4">
+                            <Border.Resources>
+                                <Storyboard x:Key="Visible State" />
+                                <Storyboard x:Key="Normal State" />
+                            </Border.Resources>
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.5,1"
+                                                     StartPoint="0.5,0">
+                                    <GradientStop Color="#111"
+                                                  Offset="0.004" />
+                                    <GradientStop Color="#444"
+                                                  Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Cursor="{TemplateBinding Cursor}"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
 
 </ResourceDictionary>

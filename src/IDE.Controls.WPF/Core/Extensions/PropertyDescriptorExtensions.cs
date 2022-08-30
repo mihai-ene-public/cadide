@@ -14,14 +14,3 @@ internal static class PropertyDescriptorExtensions
     }
 
 }
-
-internal static class PropertyChangedExtensions
-{
-    internal static void OnPropertyChanged(this INotifyPropertyChanged sender, PropertyChangedEventHandler handler, string propertyName)
-    {
-        if (handler != null)
-        {
-            handler(sender, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-}

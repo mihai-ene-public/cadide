@@ -16,8 +16,7 @@ public class PropertyItemCollection : ReadOnlyObservableCollection<PropertyItem>
 
     static PropertyItemCollection()
     {
-        PropertyItem p = null;
-        DisplayNamePropertyName = nameof(p.DisplayName);
+        DisplayNamePropertyName = nameof(PropertyItem.DisplayName);
     }
 
     public PropertyItemCollection(ObservableCollection<PropertyItem> editableCollection)
@@ -48,16 +47,26 @@ public class PropertyItemCollection : ReadOnlyObservableCollection<PropertyItem>
             throw new ArgumentNullException(nameof(newItems));
 
         _preventNotification = true;
-        using (GetDefaultView().DeferRefresh())
+        var view = GetDefaultView();
+        using (view.DeferRefresh())
         {
+            view.SortDescriptions.Clear();
             EditableCollection.Clear();
             foreach (var item in newItems)
             {
                 EditableCollection.Add(item);
             }
+
+            SortBy(nameof(PropertyItem.PropertyOrder), ListSortDirection.Ascending);
+            SortBy(nameof(PropertyItem.DisplayName), ListSortDirection.Ascending);
         }
         _preventNotification = false;
         OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    }
+
+    private void SortBy(string name, ListSortDirection sortDirection)
+    {
+        GetDefaultView().SortDescriptions.Add(new SortDescription(name, sortDirection));
     }
 
     internal void RefreshView()

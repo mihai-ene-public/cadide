@@ -16,7 +16,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid.xaml" />
                 <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid2.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

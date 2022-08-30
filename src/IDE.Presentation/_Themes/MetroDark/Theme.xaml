@@ -25,9 +25,8 @@
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TextBox.xaml" />
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ToolTip.xaml" />
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/TreeView.xaml" />
-        <!--<ResourceDictionary Source="/Xceed.Wpf.AvalonDock.Themes.Expression;component/DarkTheme.xaml" />-->
+
         <ResourceDictionary Source="/IDE.Controls.WPF;component/AvalonDock/DarkTheme.xaml" />
-        <ResourceDictionary Source="/IDE.Controls.WPF;component/WPFToolkit/Themes/Generic.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Edi.ModernUI.Dark.xaml" />
 
@@ -61,15 +60,11 @@
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/DocumentViewer.xaml" />
 
-        <!--<ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/EdiAvalonEdit.xaml" />-->
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/PinableListView.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/EdiControls/UnitCombobox.xaml" />
 
-        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid.xaml" />
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/PropertyGrid2.xaml" />
-
-        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/MessageBox.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Controls/HelixViewport3DX.xaml" />
 

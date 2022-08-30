@@ -1,9 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:AvalonEdit="clr-namespace:ICSharpCode.AvalonEdit;assembly=ICSharpCode.AvalonEdit"
-                    xmlns:editing="clr-namespace:ICSharpCode.AvalonEdit.Editing;assembly=ICSharpCode.AvalonEdit">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Brushes.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
-</ResourceDictionary>

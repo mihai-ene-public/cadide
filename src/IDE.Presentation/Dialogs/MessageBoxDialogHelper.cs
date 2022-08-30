@@ -1,29 +1,28 @@
-﻿using xctk = Xceed.Wpf.Toolkit;
-using System.Windows;
+﻿using System.Windows;
 using IDE.Core.Interfaces;
+using IDE.Documents.Views;
 
-namespace IDE.Core.Utilities
+namespace IDE.Core.Utilities;
+
+public class MessageBoxDialogHelper : IMessageBoxDialogHelper
 {
-    public class MessageBoxDialogHelper : IMessageBoxDialogHelper
+    public XMessageBoxResult Show(string messageBoxText)
     {
-        public XMessageBoxResult Show(string messageBoxText)
-        {
-            return (XMessageBoxResult)xctk.MessageBox.Show(messageBoxText);
-        }
+        return (XMessageBoxResult)MessageBoxDialog.Show(messageBoxText);
+    }
 
-        public XMessageBoxResult Show(string messageBoxText, string caption)
-        {
-            return (XMessageBoxResult)xctk.MessageBox.Show(messageBoxText, caption);
-        }
+    public XMessageBoxResult Show(string messageBoxText, string caption)
+    {
+        return (XMessageBoxResult)MessageBoxDialog.Show(messageBoxText, caption);
+    }
 
-        public XMessageBoxResult Show(string messageBoxText, string caption, XMessageBoxButton button)
-        {
-            return (XMessageBoxResult)xctk.MessageBox.Show(messageBoxText, caption, (MessageBoxButton)button);
-        }
+    public XMessageBoxResult Show(string messageBoxText, string caption, XMessageBoxButton button)
+    {
+        return (XMessageBoxResult)MessageBoxDialog.Show(messageBoxText, caption, (MessageBoxButton)button);
+    }
 
-        public XMessageBoxResult Show(string messageBoxText, string caption, XMessageBoxButton button, XMessageBoxImage icon)
-        {
-            return (XMessageBoxResult)xctk.MessageBox.Show(messageBoxText, caption, (MessageBoxButton)button, MessageBoxImage.None);
-        }
+    public XMessageBoxResult Show(string messageBoxText, string caption, XMessageBoxButton button, XMessageBoxImage icon)
+    {
+        return (XMessageBoxResult)MessageBoxDialog.Show(messageBoxText, caption, (MessageBoxButton)button, (MessageBoxImage)icon);
     }
 }

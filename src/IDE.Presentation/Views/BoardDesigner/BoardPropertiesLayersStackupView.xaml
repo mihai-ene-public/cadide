@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:ide="http://xnocad.rgb/wpf"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:IDE.Documents.Views;assembly=IDE.Core.Presentation"
@@ -195,7 +195,7 @@
                                         Width="100">
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <xctk:ColorPicker SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
+                            <ide:ColorPicker SelectedColor="{Binding LayerColor, Converter={x:Static conv:XColorToColorConverter.Instance}, UpdateSourceTrigger=PropertyChanged, FallbackValue=White}"
                                               HorizontalAlignment="Center"
                                               ShowDropDownButton="False"
                                               BorderBrush="WhiteSmoke"

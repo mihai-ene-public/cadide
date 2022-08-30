@@ -1,5 +1,4 @@
-﻿using Xceed.Wpf.Toolkit;
-
+﻿
 namespace IDE.Controls.WPF.PropertyGrid.Editors;
 
 public class ColorEditor : TypeEditor<ColorPicker>

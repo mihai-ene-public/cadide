@@ -12,20 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace IDE.Documents.Views
 {
-    /// <summary>
-    /// Interaction logic for PropertiesWindowView.xaml
-    /// </summary>
+
     public partial class PropertiesWindowView : UserControl
     {
         public PropertiesWindowView()
         {
             InitializeComponent();
-
-           // Xceed.Wpf.Toolkit.PropertyGrid.PropertyGrid p;p.SelectedObje
         }
 
        

@@ -9,13 +9,22 @@ namespace IDE.Core.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var thickness = (Thickness) value;
-            return thickness.Left;
+            double thickness = 1.0;
+
+            if (value != null)
+                thickness = ( (Thickness)value ).Top;
+
+            return thickness;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            double thickness = 1.0;
+
+            if (value != null)
+                thickness = (double)value;
+
+            return new Thickness(thickness);
         }
     }
 }
