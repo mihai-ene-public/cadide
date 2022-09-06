@@ -45,7 +45,7 @@ public class ActiveCompiler : IActiveCompiler
 
                     var result = await _fileCompiler.Compile(file);
 
-                    if (_errorsToolWindow != null)
+                    if (result != null && _errorsToolWindow != null)
                     {
                         listErrors.AddRange(result.Errors);
                     }

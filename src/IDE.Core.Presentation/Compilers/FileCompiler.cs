@@ -53,6 +53,6 @@ public class FileCompiler : IFileCompiler
                 }
         }
 
-        throw new NotImplementedException();
+        return null;
     }
 }

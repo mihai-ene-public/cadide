@@ -23,7 +23,6 @@ namespace IDE.Core.Designers
             board = pBoard;
             canvas = pBoard.CanvasModel;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-            //Parent = canvas;
             ZIndex = 5000;//topmost
             CanEdit = false;
         }
@@ -44,27 +43,6 @@ namespace IDE.Core.Designers
         public bool IsCompletelyRouted =>// Branches.Count <= 1;
                                         Lines.Count == 0;
 
-        /// <summary>
-        /// rebuild branches in this graph for the current Net
-        /// </summary>
-        public void Build_Old(bool showUnConnectedLines)
-        {
-
-            Branches.Clear();
-
-            var branchPairs = net.GetAllNetItems().Select(s => new ItemBranchPair
-            {
-                Item = s
-            }).ToList();
-
-            BuildBranches(branchPairs);
-
-            BuildLooseJoints();
-
-            Branches.RemoveAll(b => b.Items.Count == 0);
-
-            BuildLines(showUnConnectedLines);
-        }
 
         RTree<SignalTreeNodeItem> tree;
         List<SignalTreeNodeItem> treeItems = new List<SignalTreeNodeItem>();
@@ -73,11 +51,9 @@ namespace IDE.Core.Designers
         {
             RegisterTree();
 
-
             branchConnections.Clear();
+
             //start from a pad and walk the connection
-
-
             foreach (var pad in net.Pads)
             {
                 var items = new List<SignalTreeNodeItem>();
@@ -117,7 +93,6 @@ namespace IDE.Core.Designers
                     Envelope = Envelope.FromRect(rect)
                 };
 
-                //tree.Add(treeItem.Envelope, treeItem);
                 tree.Insert(treeItem);
                 treeItems.Add(treeItem);
             }

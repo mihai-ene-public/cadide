@@ -440,8 +440,11 @@ public class SolutionCompiler : ISolutionCompiler
                 var file = await _application.OpenDocumentAsync(slnNode, true);
 
                 var result = await _fileCompiler.Compile(file);
-                compileResults.Add(result);
 
+                if (result != null)
+                {
+                    compileResults.Add(result);
+                }
             }
             catch (Exception ex)
             {

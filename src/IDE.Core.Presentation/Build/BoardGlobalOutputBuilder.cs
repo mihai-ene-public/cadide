@@ -125,6 +125,10 @@ namespace IDE.Core.Build
             }
 
             //pdf
+            /* This portion of code was for home board manufacturing
+             * Most of the Gerber viewers can print real size and also can mirrror a layer
+             * We keep this commented code below for a while in case we want to create pdf for more fancy stuff (printing with colors, based on settings for primitives, layers)
+             * *****************
             var pdfOutput = new PdfBoardGlobalOutput();
             var pdfLayers = buildResult.Layers.Where(l => l.Layer.LayerType == LayerType.Signal);
             var pdfSavePath = Path.Combine(folderOutput, $"{boardName}.pdf");
@@ -134,6 +138,7 @@ namespace IDE.Core.Build
             {
                 outputFiles.AddRange(pdfResult.OutputFiles);
             }
+            */
 
             //bom
             var csvPath = GetCsvFilePath(folderOutput, boardName);
