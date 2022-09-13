@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Windows;
-using FirstFloor.ModernUI.Windows.Controls;
 using IDE.Core.Interfaces;
+using IDE.Controls.WPF.Windows;
 
 namespace IDE.Core.Dialogs
 {

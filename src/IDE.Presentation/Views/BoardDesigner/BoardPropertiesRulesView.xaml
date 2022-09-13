@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:IDE.Core.Behaviors"
              xmlns:designers="clr-namespace:IDE.Core.Designers;assembly=IDE.Core.Presentation"
              xmlns:conv="clr-namespace:IDE.Core.Converters"

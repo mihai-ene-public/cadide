@@ -59,7 +59,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Grid Width="15"
                           Height="13">
-                        <Path Visibility="Collapsed"
+                        <!--<Path Visibility="Collapsed"
                               HorizontalAlignment="Left"
                               Margin="1,1,1,1"
                               x:Name="IsExpandedPath"
@@ -71,9 +71,9 @@
                               x:Name="ExpandPath"
                               VerticalAlignment="Center"
                               Fill="Red"
-                              Data="M 4 0 L 8 4 L 4 8 Z" />
+                              Data="M 4 0 L 8 4 L 4 8 Z" />-->
                     </Grid>
-                    <ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
                         <Trigger Property="IsChecked"
                                  Value="True">
                             <Setter Property="Visibility"
@@ -83,7 +83,7 @@
                                     Value="Collapsed"
                                     TargetName="ExpandPath" />
                         </Trigger>
-                    </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

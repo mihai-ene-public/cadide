@@ -37,13 +37,6 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="System.Management" Version="4.6.0" />
-		<PackageReference Include="System.Security.Cryptography.Xml" Version="4.6.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Reference Include="System.ComponentModel.Annotations">
-			<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.ComponentModel.Annotations.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources\AboutDialogStrings.Designer.cs">

@@ -46,12 +46,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FirstFloor.ModernUI">
-      <HintPath>..\_REFERENCES\Mui\FirstFloor.ModernUI.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="PCB-icon.ico" />
   </ItemGroup>
   <ItemGroup>

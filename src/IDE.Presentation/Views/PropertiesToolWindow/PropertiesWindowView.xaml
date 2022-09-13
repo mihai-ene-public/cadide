@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IDE.Documents.Views"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:ide="http://xnocad.rgb/wpf"
              xmlns:conv="clr-namespace:IDE.Core.Converters"
              xmlns:ctrls="clr-namespace:IDE.Controls"
@@ -106,16 +105,6 @@
                         Content="{Binding SelectedObject}"
                         Height="130">
         </ContentControl>
-
-        <!--<xctk:PropertyGrid Grid.Row="1"
-                           SelectedObject="{Binding SelectedObject, UpdateSourceTrigger=PropertyChanged}"
-                           AutoGenerateProperties="True"
-                           Background="Transparent"
-                           ShowPreview="False"
-                           ShowSearchBox="False"
-                           ShowSortOptions="False"
-                           BorderThickness="0">
-        </xctk:PropertyGrid>-->
 
         <ide:PropertyGrid Grid.Row="1"
                           SelectedObject="{Binding SelectedObject, UpdateSourceTrigger=PropertyChanged}"

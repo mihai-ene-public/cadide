@@ -1,19 +1,18 @@
-﻿<mui:ModernWindow x:Class="IDE.Documents.Views.NewItemWindow"
+﻿<ide:ModernWindow x:Class="IDE.Documents.Views.NewItemWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:local="clr-namespace:IDE.Documents.Views"
-                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:ide="http://xnocad.rgb/wpf"
                   xmlns:conv="clr-namespace:IDE.Core.Converters"
-                   xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+                  xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
                   mc:Ignorable="d"
                   WindowStartupLocation="CenterScreen"
                   ShowInTaskbar="false"
                   Title="{x:Static resources:Strings.NewItemDialogNewProject}"
                   MinWidth="300"
                   Style="{DynamicResource EmptyDialog}"
-                 
                   Height="600"
                   Width="800">
     <Grid>
@@ -60,7 +59,8 @@
                   SelectedItem="{Binding SelectedTemplate, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,5">
                         <!--<TextBlock Text="A"
                                    FontSize="20"
                                    Margin="5"
@@ -69,13 +69,12 @@
                                Height="16"
                                Source="{Binding TemplateType, Converter={x:Static conv:TemplateTypeToImageConverter.Instance}}"
                                Margin="5,0"
-                               VerticalAlignment="Center"/>
-                        
+                               VerticalAlignment="Center" />
+
                         <TextBlock Text="{Binding Name}"
                                    Margin="10,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="16"
-                                   />
+                                   FontSize="16" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -178,4 +177,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</mui:ModernWindow>
+</ide:ModernWindow>

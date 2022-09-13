@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using FirstFloor.ModernUI.Windows.Controls;
 using FontAwesome5;
 using IDE.Core.Resources;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
+using IDE.Controls.WPF.Windows;
 
 namespace IDE.Documents.Views;
 

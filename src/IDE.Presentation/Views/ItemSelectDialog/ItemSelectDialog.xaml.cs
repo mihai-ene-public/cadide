@@ -1,7 +1,7 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
-using IDE.Core;
+﻿using IDE.Core;
 using IDE.Core.Interfaces;
 using IDE.Core.Utilities;
+using IDE.Controls.WPF.Windows;
 using IDE.Core.ViewModels;
 using System;
 using System.Collections.Generic;

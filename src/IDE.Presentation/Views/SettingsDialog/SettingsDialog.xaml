@@ -1,13 +1,12 @@
-﻿<mui:ModernWindow x:Class="IDE.Documents.Views.SettingsDialog"
+﻿<ide:ModernWindow x:Class="IDE.Documents.Views.SettingsDialog"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:ide="http://xnocad.rgb/wpf"
                   xmlns:behav="clr-namespace:IDE.Core.Behaviors"
-                   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                   xmlns:settings="clr-namespace:IDE.Core.Settings.Options;assembly=IDE.Core.Presentation"
                   xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
                   xmlns:conv="clr-namespace:IDE.Core.Converters"
-                  
                   xmlns:local="clr-namespace:IDE.Documents.Views"
                   WindowStartupLocation="CenterOwner"
                   ShowInTaskbar="false"
@@ -19,19 +18,19 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   mc:Ignorable="d">
-    <mui:ModernWindow.Resources>
+    <ide:ModernWindow.Resources>
 
         <Style x:Key="title_Style"
-                   TargetType="TextBlock"
-                   BasedOn="{StaticResource {x:Type TextBlock}}">
+               TargetType="TextBlock"
+               BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize"
-                        Value="24" />
+                    Value="24" />
             <Setter Property="FontWeight"
-                        Value="Bold" />
+                    Value="Bold" />
         </Style>
 
 
-    </mui:ModernWindow.Resources>
+    </ide:ModernWindow.Resources>
     <Grid Margin="9,3">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -48,8 +47,7 @@
             <TreeView Name="treeSettings"
                       Margin="0,10,0,0"
                       Grid.Column="0"
-                      ItemsSource="{Binding Settings}"
-                       >
+                      ItemsSource="{Binding Settings}">
                 <i:Interaction.Behaviors>
                     <behav:BindableSelectedItemBehavior SelectedItem="{Binding CurrentSetting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </i:Interaction.Behaviors>
@@ -107,19 +105,19 @@
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:EnvironmentGeneralSettingModel}">
-                        <local:EnvironmentGeneralSettingsView/>
+                        <local:EnvironmentGeneralSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:EnvironmentKeyboardSettingModel}">
-                        <local:EnvironmentKeyboardSettingsView/>
+                        <local:EnvironmentKeyboardSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:EnvironmentFolderLibsSettingModel}">
-                        <local:EnvironmentFolderLibsSettingsView/>
+                        <local:EnvironmentFolderLibsSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:SchematicEditorColorsSettingModel}">
-                        <local:SchematicEditorColorsSettingsView/>
+                        <local:SchematicEditorColorsSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:SchematicEditorPrimitiveDefaultsModel}">
@@ -131,15 +129,15 @@
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:BoardEditorGeneralSettingModel}">
-                        <local:BoardEditorGeneralSettingsView/>
+                        <local:BoardEditorGeneralSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:BoardEditorColorsSettingModel}">
-                        <local:BoardEditorColorsSettingsView/>
+                        <local:BoardEditorColorsSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:BoardEditorRoutingSettingModel}">
-                        <local:BoardEditorRoutingSettingsView/>
+                        <local:BoardEditorRoutingSettingsView />
                     </DataTemplate>
 
                     <DataTemplate DataType="{x:Type settings:BoardEditorPrimitiveDefaultsModel}">
@@ -188,7 +186,8 @@
                     MinHeight="24"
                     MinWidth="80" />
         </Grid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
 
             <Button Content="{x:Static resources:Strings.SettingsReset}"
                     ToolTip="{x:Static resources:Strings.SettingsResetTooltip}"
@@ -207,4 +206,4 @@
                     MinWidth="80" />
         </StackPanel>
     </Grid>
-</mui:ModernWindow>
+</ide:ModernWindow>

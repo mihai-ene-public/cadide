@@ -1,13 +1,13 @@
-﻿<mui:ModernWindow x:Class="IDE.Presentation.Views.ReplacePartDialog.ReplacePartDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:IDE.Presentation.Views.ReplacePartDialog"
-             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+﻿<ide:ModernWindow x:Class="IDE.Presentation.Views.ReplacePartDialog.ReplacePartDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:IDE.Presentation.Views.ReplacePartDialog"
+                  xmlns:ide="http://xnocad.rgb/wpf"
                   xmlns:views="clr-namespace:IDE.Documents.Views"
-             mc:Ignorable="d" 
-             Style="{DynamicResource EmptyDialog}"
+                  mc:Ignorable="d"
+                  Style="{DynamicResource EmptyDialog}"
                   xmlns:behav="clr-namespace:IDE.Core.Behaviors"
                   behav:DialogCloser.DialogResult="{Binding WindowCloseResult}"
                   Height="600"
@@ -25,18 +25,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" 
+            <TextBlock Grid.Row="0"
                        Grid.Column="0"
                        Margin="10,0"
-                       Text="New part"/>
+                       Text="New part" />
 
-            <TextBlock Grid.Row="0" 
+            <TextBlock Grid.Row="0"
                        Grid.Column="1"
                        Margin="10,0"
-                       Text="Old part"/>
+                       Text="Old part" />
             <views:PreviewCanvasItemView Grid.Row="1"
                                          Grid.Column="0"
                                          Margin="10"
@@ -47,10 +47,10 @@
                                          Margin="10"
                                          DataContext="{Binding Symbol.Preview,UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Row="2" 
+            <TextBlock Grid.Row="2"
                        Grid.Column="0"
                        Margin="10,20,0,0"
-                       Text="Pin mappings"/>
+                       Text="Pin mappings" />
             <DataGrid ItemsSource="{Binding Footprint.Connects}"
                       AutoGenerateColumns="False"
                       Grid.Row="3"
@@ -104,4 +104,4 @@
         </Grid>
     </Grid>
 
-</mui:ModernWindow>
+</ide:ModernWindow>

@@ -42,6 +42,7 @@
 		<PackageReference Include="HelixToolkit" Version="2.16.1" />
 		<!--<PackageReference Include="HelixToolkit.SharpDX.Core" Version="2.16.1" />-->
 		<PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.16.1" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
 		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
 		<PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
@@ -52,18 +53,6 @@
 
 
 	<ItemGroup>
-		<Reference Include="FirstFloor.ModernUI">
-			<HintPath>..\_REFERENCES\Mui\FirstFloor.ModernUI.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Expression.Interactions">
-			<HintPath>..\_REFERENCES\Microsoft.Expression.Interactions.dll</HintPath>
-		</Reference>
-		<Reference Include="Microsoft.Windows.Shell">
-			<HintPath>..\_REFERENCES\Mui\Microsoft.Windows.Shell.dll</HintPath>
-		</Reference>
-		<Reference Include="System.Windows.Interactivity">
-			<HintPath>..\_REFERENCES\System.Windows.Interactivity.dll</HintPath>
-		</Reference>
 		<Reference Include="Triangle">
 			<HintPath>..\_REFERENCES\Triangle.dll</HintPath>
 		</Reference>

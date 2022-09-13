@@ -18,8 +18,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
-using FirstFloor.ModernUI.Windows.Controls;
 using IDE.Core.Interfaces;
+using IDE.Controls.WPF.Windows;
 
 namespace IDE.Documents.Views
 {

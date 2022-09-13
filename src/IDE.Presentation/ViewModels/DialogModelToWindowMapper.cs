@@ -35,7 +35,6 @@ namespace IDE.Core.ViewModels
             AddMapping(typeof(ItemSelectDialogViewModel), typeof(ItemSelectDialog));
             AddMapping(typeof(NewItemWindowViewModel), typeof(NewItemWindow));
             AddMapping(typeof(SettingsDialogViewModel), typeof(SettingsDialog));
-            AddMapping(typeof(FootprintSimpleWizardViewModel), typeof(FootprintSimpleWizardWindow));
         }
 
         public IWindow GetWindow(IDialogViewModel viewModel)

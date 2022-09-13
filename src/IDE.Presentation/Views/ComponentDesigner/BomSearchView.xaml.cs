@@ -14,13 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using IDE.Core.Utilities;
+using IDE.Controls.WPF.Windows;
 
 namespace IDE.Documents.Views
 {
     /// <summary>
     /// Interaction logic for BomSearchView.xaml
     /// </summary>
-    public partial class BomSearchView : FirstFloor.ModernUI.Windows.Controls.ModernWindow, IWindow
+    public partial class BomSearchView : ModernWindow, IWindow
     {
         public BomSearchView()
         {

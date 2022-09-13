@@ -2,7 +2,6 @@ namespace IDE.App.Views.Shell
 {
     using System;
     using IDE.Core.Events;
-    using FirstFloor.ModernUI.Windows.Controls;
     using Core.ViewModels;
     using IDE.Core.Utilities;
     using IDE.Core.Interfaces;
@@ -14,6 +13,7 @@ namespace IDE.App.Views.Shell
     using System.IO;
     using System.Windows.Threading;
     using Xceed.Wpf.AvalonDock.Layout.Serialization;
+    using IDE.Controls.WPF.Windows;
 
     public partial class MainWindow : ModernWindow, ILayoutableWindow
     {

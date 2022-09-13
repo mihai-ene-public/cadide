@@ -5,12 +5,11 @@
                     xmlns:ctrls="clr-namespace:IDE.Controls"
                     xmlns:avalonDockControls="http://schemas.xceed.com/wpf/xaml/avalondock"
                     xmlns:avalonDockProperties="Xceed.Wpf.AvalonDock.Properties;assembly=IDE.Controls.WPF"
-                    xmlns:xceed="http://schemas.xceed.com/wpf/xaml/avalondock">
+                    >
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Brushes.xaml" />
         <ResourceDictionary Source="/IDE.Controls.WPF;component/AvalonDock/DarkTheme.xaml" />
-        <!--<ResourceDictionary Source="/Xceed.Wpf.AvalonDock.Themes.Expression;component/DarkTheme.xaml" />-->
     </ResourceDictionary.MergedDictionaries>
         <Style x:Key="FileHyperlinkDefault"
            TargetType="{x:Type ctrls:FileHyperlink}"
@@ -18,89 +17,9 @@
 
     <!-- THESE WERE ADDED LAST: REMOVE IN CASE THE THEMING IS SCREWED-->
 
-    <!--<Style 
-           TargetType="{x:Type ContextMenu}">
-        <Setter Property="SnapsToDevicePixels"
-                Value="True" />
-        <Setter Property="RenderOptions.ClearTypeHint"
-                Value="Enabled" />
-        <Setter Property="TextOptions.TextFormattingMode"
-                Value="Ideal" />
-        <Setter Property="Background"
-                Value="{DynamicResource MenuBackground}" />
-        <Setter Property="BorderThickness"
-                Value="1" />
-        <Setter Property="BorderBrush"
-                Value="{DynamicResource ContextMenuBorderBrush}" />
-        <Setter Property="OverridesDefaultStyle"
-                Value="True" />
-        <Setter Property="Grid.IsSharedSizeScope"
-                Value="True" />
-        <Setter Property="HasDropShadow"
-                Value="True" />
-        <Setter Property="FontFamily"
-                Value="{DynamicResource {x:Static SystemFonts.MenuFontFamilyKey}}" />
-        <Setter Property="FontSize"
-                Value="{DynamicResource ContextMenuFontSize}" />
-        <Setter Property="FontStyle"
-                Value="{DynamicResource {x:Static SystemFonts.MenuFontStyleKey}}" />
-        <Setter Property="FontWeight"
-                Value="{DynamicResource {x:Static SystemFonts.MenuFontWeightKey}}" />
-        <Setter Property="Foreground"
-                Value="{DynamicResource MenuTextBrush}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border x:Name="LayoutRoot"
-                            Background="Transparent">
-                        <Border x:Name="Border"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Background="{TemplateBinding Background}"
-                                Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
-                            <ScrollViewer x:Name="SubMenuScrollViewer"
-                                          CanContentScroll="True"
-                                          Background="{DynamicResource MenuBackground}">
-                                <ItemsPresenter x:Name="ItemsPresenter"
-                                                KeyboardNavigation.DirectionalNavigation="Cycle"
-                                                Grid.IsSharedSizeScope="True"
-                                                Margin="0"
-                                                
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                KeyboardNavigation.TabNavigation="Cycle" />
-                            </ScrollViewer>
-                        </Border>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="HasDropShadow"
-                                 Value="True">
-                            <Setter TargetName="LayoutRoot"
-                                    Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect Color="{DynamicResource MenuShadowColor}"
-                                                      BlurRadius="4"
-                                                      ShadowDepth="2"
-                                                      Direction="315"
-                                                      Opacity="0.3" />
-                                </Setter.Value>
-                            </Setter>
-                            <Setter TargetName="LayoutRoot"
-                                    Property="Padding"
-                                    Value="0,0,6,6" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
     <Geometry x:Key="RightArrow">M 0,0 L 4,3.5 L 0,7 Z</Geometry>
 
     <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
-
-   
 
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}"
            TargetType="{x:Type Separator}">

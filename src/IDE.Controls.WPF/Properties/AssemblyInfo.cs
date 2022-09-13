@@ -54,5 +54,6 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Core.Converters")]
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF")]
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Primitives")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Windows")]
 
 

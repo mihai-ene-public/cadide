@@ -1,20 +1,16 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
+﻿using IDE.Controls.WPF.Windows;
 using IDE.Core.Interfaces;
-using System.Windows;
 
-namespace IDE.Documents.Views
+namespace IDE.Documents.Views;
+
+public partial class SettingsDialog : ModernWindow, IWindow
 {
-  
-
-    public partial class SettingsDialog : ModernWindow, IWindow
+    /// <summary>
+    /// Class constructor
+    /// </summary>
+    public SettingsDialog()
     {
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public SettingsDialog()
-        {
-            InitializeComponent();
-        }
-
+        InitializeComponent();
     }
+
 }

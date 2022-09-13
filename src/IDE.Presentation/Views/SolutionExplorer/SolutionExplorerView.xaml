@@ -9,7 +9,7 @@
              xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
              xmlns:ctrls="clr-namespace:IDE.Controls"
              xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:utils="clr-namespace:IDE.Core.Utilities"
              xmlns:fa="http://schemas.fontawesome.com/icons/"
              mc:Ignorable="d"
@@ -55,9 +55,8 @@
                  VerticalAlignment="Stretch"
                  ToolBarTray.IsLocked="True"
                  SnapsToDevicePixels="True"
-                
                  behav:HideToolbarOverflowButton.HideGrip="True">
-            
+
             <!-- refresh is collapsed because we have a serious bug: after refresh then delete in item inside a folder, the entire folder is DELETED!!!-->
             <Button Command="{Binding RefreshNodesCommand}"
                     Visibility="Collapsed"
@@ -128,7 +127,7 @@
                             <MenuItem Header="{x:Static resources:Strings.CmdAddGroupFolderHeader}"
                                       Command="{x:Static cmd:AppCommand.AddGroupFolderCommand}"
                                       CommandParameter="{Binding}" />
-                           
+
                             <!-- Virtual Solution Folder-->
                             <MenuItem Header="{x:Static resources:Strings.CmdAddFolderHeader}"
                                       Command="{x:Static cmd:AppCommand.AddFolderCommand}"
@@ -187,8 +186,8 @@
 
                         <Separator />
                         <MenuItem Header="{x:Static resources:Strings.CmdManageReferencesHeader}"
-                                      Command="{x:Static cmd:AppCommand.ManageReferencesCommand}"
-                                      CommandParameter="{Binding}" />
+                                  Command="{x:Static cmd:AppCommand.ManageReferencesCommand}"
+                                  CommandParameter="{Binding}" />
                         <Separator />
                         <MenuItem Header="{x:Static resources:Strings.CmdShowPropertiesHeader}"
                                   Command="{x:Static cmd:AppCommand.ShowPropertiesCommand}"
@@ -199,8 +198,8 @@
 
                 <!-- This is to have a full selection of the tree item-->
                 <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <!--BasedOn="{StaticResource {x:Type TreeViewItem}}-->
+                    <Style TargetType="{x:Type TreeViewItem}"
+                           BasedOn="{StaticResource {x:Type TreeViewItem}}">
 
                         <Setter Property="behav:MouseDoubleClickBehavior.Command"
                                 Value="{x:Static cmd:AppCommand.OpenItemCommand}" />
@@ -230,7 +229,7 @@
                             <DataTrigger Binding="{Binding IsCut}"
                                          Value="true">
                                 <Setter Property="Opacity"
-                                        Value="0.7"/>
+                                        Value="0.7" />
                             </DataTrigger>
                         </Style.Triggers>
 
@@ -261,7 +260,7 @@
                                            ToolTipService.ShowOnDisabled="True"
                                            Margin="5, 0, 0, 0" />
                             <!---->
-                        <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
+                            <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
 
                         </StackPanel>
                     </HierarchicalDataTemplate>

@@ -1,7 +1,7 @@
-<mui:ModernWindow x:Class="IDE.Dialogs.About.AboutDlg"
+<ide:ModernWindow x:Class="IDE.Dialogs.About.AboutDlg"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+                  xmlns:ide="http://xnocad.rgb/wpf"
                   xmlns:behav="clr-namespace:IDE.Core.Behaviors"
                   xmlns:hyp="clr-namespace:IDE.Controls"
                   xmlns:strings="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
@@ -94,4 +94,4 @@
                     MinWidth="80" />
         </Grid>
     </Grid>
-</mui:ModernWindow >
+</ide:ModernWindow >
