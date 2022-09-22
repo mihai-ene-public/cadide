@@ -31,7 +31,8 @@
         <ResourceDictionary Source="/IDE.Controls.WPF;component/ModernUI/ModernUI.Dark.xaml" />
 
 
-        <ResourceDictionary Source="/IDE.Controls.WPF;component/AvalonDock/DarkTheme.xaml" />
+        <ResourceDictionary Source="/IDE.Controls.WPF;component/Docking/DarkBrushes.xaml" />
+        <ResourceDictionary Source="/IDE.Controls.WPF;component/Docking/Theme.xaml" />
 
         <ResourceDictionary Source="/IDE.Presentation;component/_Themes/MetroDark/Edi.ModernUI.Dark.xaml" />
 

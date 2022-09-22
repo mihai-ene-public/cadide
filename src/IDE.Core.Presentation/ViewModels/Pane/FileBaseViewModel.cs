@@ -339,9 +339,6 @@ namespace IDE.Core.ViewModels
 
         ICommand closeCommand;
 
-        /// <summary>
-        /// This command closes a single file. The binding for this is in the AvalonDock LayoutPanel Style.
-        /// </summary>
         public virtual ICommand CloseCommand
         {
             get

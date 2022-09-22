@@ -176,7 +176,7 @@
     //	#region EditorStateProperties
     //	/// <summary>
     //	/// Get/set editor carret position
-    //	/// for CTRL-TAB Support http://avalondock.codeplex.com/workitem/15079
+    //	/// for CTRL-TAB Support 
     //	/// </summary>
     //	public int TextEditorCaretOffset
     //	{
@@ -197,7 +197,7 @@
 
     //	/// <summary>
     //	/// Get/set editor start of selection
-    //	/// for CTRL-TAB Support http://avalondock.codeplex.com/workitem/15079
+    //	/// for CTRL-TAB Support 
     //	/// </summary>
     //	public int TextEditorSelectionStart
     //	{
@@ -218,7 +218,7 @@
 
     //	/// <summary>
     //	/// Get/set editor length of selection
-    //	/// for CTRL-TAB Support http://avalondock.codeplex.com/workitem/15079
+    //	/// for CTRL-TAB Support
     //	/// </summary>
     //	public int TextEditorSelectionLength
     //	{

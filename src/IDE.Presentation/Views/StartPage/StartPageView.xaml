@@ -17,7 +17,7 @@
              KeyboardNavigation.IsTabStop="True"
              Name="StartPageViewObject"
              behav:KeyboardFocus.On="{Binding ElementName=StartPageViewObject}">
-    <!-- The KeyboardFocus attached property is necessary to support CTRL+TAB in AvalonDock -->
+    <!-- The KeyboardFocus attached property is necessary to support CTRL+TAB -->
     <UserControl.Resources>
         <BitmapImage UriSource="pack://application:,,,/IDE.Resources;component/Images/PCB-icon.png"
                      x:Key="Logo" />

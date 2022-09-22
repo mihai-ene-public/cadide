@@ -167,7 +167,7 @@ namespace IDE.Core.ViewModels
         #endregion
 
         /// <summary>
-        /// data source for collection of documents managed in the the document manager (of AvalonDock).
+        /// data source for collection of documents managed in the the document manager
         /// </summary>
         public IList<IFileBaseViewModel> Files
         {

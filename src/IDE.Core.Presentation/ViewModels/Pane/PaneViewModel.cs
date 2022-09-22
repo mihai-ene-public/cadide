@@ -1,12 +1,7 @@
-﻿namespace IDE.Core.ViewModels
-{
-   
-    using System;
+﻿namespace IDE.Core.ViewModels;
 
-    /// <summary>
-    /// AvalonDock base class viewm-model to support document pane views
-    /// </summary>
-    public class PaneViewModel : BaseViewModel
+
+public class PaneViewModel : BaseViewModel
 	{
 		public PaneViewModel()
 		{ }
@@ -88,4 +83,3 @@
 
 		#endregion
 	}
-}

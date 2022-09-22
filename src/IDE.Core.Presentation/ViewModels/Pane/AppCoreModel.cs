@@ -5,9 +5,6 @@
 
     public class AppCoreModel : IAppCoreModel
     {
-        /// <summary>
-        /// Gets the file name of the layout file that is useful for AvalonDock.
-        /// </summary>
         public string LayoutFileName
         {
             get

@@ -37,13 +37,6 @@ using System.Windows.Markup;
                                       // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsPrefix("http://schemas.xceed.com/wpf/xaml/avalondock", "xcad")]
-[assembly: XmlnsDefinition("http://schemas.xceed.com/wpf/xaml/avalondock", "Xceed.Wpf.AvalonDock")]
-[assembly: XmlnsDefinition("http://schemas.xceed.com/wpf/xaml/avalondock", "Xceed.Wpf.AvalonDock.Controls")]
-[assembly: XmlnsDefinition("http://schemas.xceed.com/wpf/xaml/avalondock", "Xceed.Wpf.AvalonDock.Converters")]
-[assembly: XmlnsDefinition("http://schemas.xceed.com/wpf/xaml/avalondock", "Xceed.Wpf.AvalonDock.Layout")]
-[assembly: XmlnsDefinition("http://schemas.xceed.com/wpf/xaml/avalondock", "Xceed.Wpf.AvalonDock.Themes")]
-
 [assembly: XmlnsPrefix("http://schemas.fontawesome.com/icons/", "fa5")]
 [assembly: XmlnsDefinition("http://schemas.fontawesome.com/icons/", "FontAwesome5")]
 [assembly: XmlnsDefinition("http://schemas.fontawesome.com/icons/", "FontAwesome5.Converters")]
@@ -55,5 +48,11 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF")]
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Primitives")]
 [assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Windows")]
+
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Docking")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Docking.Controls")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Docking.Converters")]
+[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Docking.Layout")]
+//[assembly: XmlnsDefinition("http://xnocad.rgb/wpf", "IDE.Controls.WPF.Docking.Themes")]
 
 

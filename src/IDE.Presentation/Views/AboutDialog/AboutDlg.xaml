@@ -10,7 +10,7 @@
                   WindowStartupLocation="CenterOwner"
                   ShowInTaskbar="false"
                   Width="600"
-                  Height="450"
+                  Height="300"
                   Style="{DynamicResource EmptyDialog}"
                   behav:DialogCloser.DialogResult="{Binding WindowCloseResult}"
                   behav:RemoveIcon.Remove="true"

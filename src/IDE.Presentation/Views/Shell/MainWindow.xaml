@@ -5,11 +5,9 @@
                   xmlns:view="clr-namespace:IDE.App.Views.Shell"
                   xmlns:behav="clr-namespace:IDE.Core.Behaviors"
                   xmlns:conv="clr-namespace:IDE.Core.Converters"
-                  xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
                   Title="{Binding ApplicationTitle}"
                   Icon="pack://application:,,,/IDE;component/pcb-icon.ico"
                   xmlns:cmdLabel="clr-namespace:IDE.Core.Presentation.Resources;assembly=IDE.Core.Presentation"
-                  xmlns:cmd="clr-namespace:IDE.Core.Commands;assembly=IDE.Core.Presentation"
                   behav:DialogCloser.DialogResult="{Binding DialogCloseResult}"
                   behav:WindowMaximized.IsNotMaximized="{Binding IsNotMaximized,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   WindowStartupLocation="CenterScreen"
@@ -28,7 +26,7 @@
 
                 <DataTemplate x:Key="AvalonDock_DocumentHeader">
                     <DataTemplate.Resources>
-                        <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                        <ide:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
                     </DataTemplate.Resources>
                     <StackPanel Orientation="Horizontal">
@@ -68,7 +66,7 @@
                           SnapsToDevicePixels="True"
                           Margin="3,0" />-->
 
-        <avalonDock:DockingManager Grid.Row="1"
+        <ide:DockingManager Grid.Row="1"
                                    AnchorablesSource="{Binding Tools}"
                                    x:Name="dockingManager"
                                    DocumentsSource="{Binding Files}"
@@ -76,10 +74,10 @@
                                    DocumentHeaderTemplate="{StaticResource AvalonDock_DocumentHeader}"
                                    AllowDrop="True"
                                    >
-            <avalonDock:DockingManager.DocumentContextMenu>
-                <ContextMenu xmlns:AvalondockConv="clr-namespace:Xceed.Wpf.AvalonDock.Converters;assembly=IDE.Controls.WPF">
+            <ide:DockingManager.DocumentContextMenu>
+                <ContextMenu>
                     <ContextMenu.Resources>
-                        <AvalondockConv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                        <ide:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
                     </ContextMenu.Resources>
 
                     <MenuItem Header="{x:Static cmdLabel:Strings.STR_AppCommand_OpenContainingFolder}"
@@ -117,18 +115,18 @@
                               Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     </MenuItem>
                 </ContextMenu>
-            </avalonDock:DockingManager.DocumentContextMenu>
+            </ide:DockingManager.DocumentContextMenu>
 
-            <avalonDock:LayoutRoot>
-                <avalonDock:LayoutPanel Orientation="Horizontal">
-                    <avalonDock:LayoutDocumentPaneGroup>
-                        <avalonDock:LayoutDocumentPane>
-                        </avalonDock:LayoutDocumentPane>
-                    </avalonDock:LayoutDocumentPaneGroup>
-                </avalonDock:LayoutPanel>
-            </avalonDock:LayoutRoot>
+            <ide:LayoutRoot>
+                <ide:LayoutPanel Orientation="Horizontal">
+                    <ide:LayoutDocumentPaneGroup>
+                        <ide:LayoutDocumentPane>
+                        </ide:LayoutDocumentPane>
+                    </ide:LayoutDocumentPaneGroup>
+                </ide:LayoutPanel>
+            </ide:LayoutRoot>
 
-        </avalonDock:DockingManager>
+        </ide:DockingManager>
 
 
     </Grid>

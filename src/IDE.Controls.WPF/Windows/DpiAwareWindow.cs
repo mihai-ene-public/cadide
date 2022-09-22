@@ -16,6 +16,7 @@ namespace IDE.Controls.WPF.Windows;
 /// </summary>
 public abstract class DpiAwareWindow : Window
 {
+    /*
     /// <summary>
     /// Occurs when the system or monitor DPI for this window has changed.
     /// </summary>
@@ -72,7 +73,7 @@ public abstract class DpiAwareWindow : Window
 
     private void OnSourceInitialized(object sender, EventArgs e)
     {
-        source = (HwndSource)HwndSource.FromVisual(this);
+        source = (HwndSource)PresentationSource.FromVisual(this);
 
         // calculate the DPI used by WPF; this is the same as the system DPI
         var matrix = source.CompositionTarget.TransformToDevice;
@@ -81,50 +82,51 @@ public abstract class DpiAwareWindow : Window
 
         if (isPerMonitorDpiAware)
         {
-            source.AddHook(WndProc);
+            //source.AddHook(WndProc);
 
             RefreshMonitorDpi();
         }
     }
 
-    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-    {
-        if (msg == NativeMethods.WM_DPICHANGED)
-        {
-            // Marshal the value in the lParam into a Rect.
-            var newDisplayRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
+    //private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    //{
+    //    return IntPtr.Zero;
+    //    if (msg == NativeMethods.WM_DPICHANGED)
+    //    {
+    //        // Marshal the value in the lParam into a Rect.
+    //        var newDisplayRect = (RECT)Marshal.PtrToStructure(lParam, typeof(RECT));
 
-            // Set the Window's position & size.
-            var matrix = source.CompositionTarget.TransformFromDevice;
-            var ul = matrix.Transform(new Vector(newDisplayRect.left, newDisplayRect.top));
-            var hw = matrix.Transform(new Vector(newDisplayRect.right - newDisplayRect.left, newDisplayRect.bottom - newDisplayRect.top));
-            Left = ul.X;
-            Top = ul.Y;
-            UpdateWindowSize(hw.X, hw.Y);
+    //        // Set the Window's position & size.
+    //        var matrix = source.CompositionTarget.TransformFromDevice;
+    //        var ul = matrix.Transform(new Vector(newDisplayRect.left, newDisplayRect.top));
+    //        var hw = matrix.Transform(new Vector(newDisplayRect.right - newDisplayRect.left, newDisplayRect.bottom - newDisplayRect.top));
+    //        Left = ul.X;
+    //        Top = ul.Y;
+    //        UpdateWindowSize(hw.X, hw.Y);
 
-            // Remember the current DPI settings.
-            var oldDpiX = dpiInfo.MonitorDpiX;
-            var oldDpiY = dpiInfo.MonitorDpiY;
+    //        // Remember the current DPI settings.
+    //        var oldDpiX = dpiInfo.MonitorDpiX;
+    //        var oldDpiY = dpiInfo.MonitorDpiY;
 
-            // Get the new DPI settings from wParam
-            var dpiX = (double)( wParam.ToInt32() >> 16 );
-            var dpiY = (double)( wParam.ToInt32() & 0x0000FFFF );
+    //        // Get the new DPI settings from wParam
+    //        var dpiX = (double)( wParam.ToInt32() >> 16 );
+    //        var dpiY = (double)( wParam.ToInt32() & 0x0000FFFF );
 
-            if (oldDpiX != dpiX || oldDpiY != dpiY)
-            {
-                dpiInfo.UpdateMonitorDpi(dpiX, dpiY);
+    //        if (oldDpiX != dpiX || oldDpiY != dpiY)
+    //        {
+    //            dpiInfo.UpdateMonitorDpi(dpiX, dpiY);
 
-                // update layout scale
-                UpdateLayoutTransform();
+    //            // update layout scale
+    //            UpdateLayoutTransform();
 
-                // raise DpiChanged event
-                OnDpiChanged(EventArgs.Empty);
-            }
+    //            // raise DpiChanged event
+    //            OnDpiChanged(EventArgs.Empty);
+    //        }
 
-            handled = true;
-        }
-        return IntPtr.Zero;
-    }
+    //        handled = true;
+    //    }
+    //    return IntPtr.Zero;
+    //}
 
     private void UpdateLayoutTransform()
     {
@@ -206,5 +208,6 @@ public abstract class DpiAwareWindow : Window
             handler(this, e);
         }
     }
+    */
 }
 

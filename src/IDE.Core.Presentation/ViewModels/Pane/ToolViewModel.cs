@@ -2,9 +2,6 @@
 {
     using IDE.Core.Interfaces;
 
-    /// <summary>
-    /// AvalonDock base class viewmmodel to support tool window views.
-    /// </summary>
     public abstract class ToolViewModel : PaneViewModel, IToolWindow
     {
         private bool isVisible = false;
