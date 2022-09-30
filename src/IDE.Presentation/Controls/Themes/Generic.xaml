@@ -9,7 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/IDE.Presentation;component/Controls/ItemPicker/ItemPicker.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- Define color of watermark in WatermarkTextBox name space -->
+    <!-- Define color of watermark in AdvancedTextBox name space -->
     <SolidColorBrush x:Key="brushWatermarkForeground"
                      Color="#AA000033" />
     <SolidColorBrush x:Key="brushWatermarkBackground"

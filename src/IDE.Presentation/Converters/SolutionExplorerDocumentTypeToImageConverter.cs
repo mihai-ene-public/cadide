@@ -1,14 +1,19 @@
-﻿using IDE.Core.Resources;
+﻿using FontAwesome5;
+using IDE.Core.Interfaces;
+using IDE.Core.Resources;
 using IDE.Core.ViewModels;
+using IDE.Documents.Views;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace IDE.Core.Converters
 {
@@ -28,27 +33,35 @@ namespace IDE.Core.Converters
             }
         }
 
-        Dictionary<string, DrawingImage> cachedImages = new Dictionary<string, DrawingImage>();
+        Dictionary<string, ImageSource> cachedImages = new Dictionary<string, ImageSource>();
 
-        DrawingImage GetDrawingImage(string name)
+        private ImageSource GetDrawingImage(string name)
         {
             if (cachedImages.ContainsKey(name))
                 return cachedImages[name];
 
-
-
-            var image= ResourceLocator.GetResource<DrawingImage>(
+            var image = ResourceLocator.GetResource<DrawingImage>(
                                       "IDE.Presentation",
                                       "_Themes/MetroIcons/Icons.xaml",
-                                      name) as DrawingImage;
+                                      name);
             cachedImages.Add(name, image);
 
             return image;
         }
+        private ImageSource GetImageSource(EFontAwesomeIcon icon, Brush brush)
+        {
+            var name = icon.ToString();
+            if (cachedImages.ContainsKey(name))
+                return cachedImages[name];
+
+            var image = ImageAwesome.CreateImageSource(icon, brush);
+            cachedImages.Add(name, image);
+
+            return image;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
-            //return Binding.DoNothing;
 
             if (value is SolutionRootNodeModel)
             {
@@ -61,50 +74,46 @@ namespace IDE.Core.Converters
             else if (value is ProjectSchematicNodeModel)
             {
                 return GetDrawingImage("filetype.schematic");
-                //resourceUri = "Images/documents/schematic.png";
             }
             else if (value is ProjectBoardNodeModel)
             {
                 return GetDrawingImage("filetype.board");
-                //resourceUri = "Images/documents/pcb.png";
             }
             else if (value is ProjectFolderNodeModel)
             {
                 return GetDrawingImage("filetype.folder");
-                //resourceUri = "Images/documents/folder.png";
             }
             else if (value is ProjectSymbolNodeModel)
             {
                 return GetDrawingImage("filetype.symbol");
-                //resourceUri = "Images/documents/symbol.png";
             }
             else if (value is ProjectFootprintNodeModel)
             {
                 return GetDrawingImage("filetype.footprint");
-                //resourceUri = "Images/documents/footprint.png";
             }
             else if (value is ProjectComponentNodeModel)
             {
                 return GetDrawingImage("filetype.component");
-                // resourceUri = "Images/documents/component.png";
             }
             else if (value is ProjectModelNodeModel)
+            {
                 return GetDrawingImage("filetype.model");
-
-            var icon = new BitmapImage();
-            try
-            {
-                var resourceUri = "Images/document.png";
-                icon.BeginInit();
-                icon.UriSource = new Uri(string.Format(CultureInfo.InvariantCulture, "pack://application:,,,/{0};component/{1}", "IDE.Resources", resourceUri));
-                icon.EndInit();
             }
-            catch
+            else if (value is ISolutionExplorerNodeModel slnNodeModel)
             {
-                return Binding.DoNothing;
+                var fileExtension = Path.GetExtension(slnNodeModel.FileName);
+                switch (fileExtension)
+                {
+                    case ".txt":
+                        return GetImageSource(EFontAwesomeIcon.Regular_FileAlt, Brushes.White);
+
+                    case ".pdf":
+                        return GetImageSource(EFontAwesomeIcon.Regular_FilePdf, Brushes.Brown);
+                }
             }
 
-            return icon;
+            return GetImageSource(EFontAwesomeIcon.Regular_Circle, Brushes.White);
+            //return Binding.DoNothing;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

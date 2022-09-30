@@ -125,7 +125,7 @@
                                               TextOptions.TextRenderingMode="ClearType"
                                               Text="{Binding Text, Mode=TwoWay}"
                                               DisplayText="{Binding Text}"
-                                              ShrinkFontSizeWhenEditingBy="2"
+                                              ShrinkFontSizeWhenEditingBy="0"
                                               Focusable="True"
                                               IsReadOnly="False"
                                               IsEditing="{Binding IsEditing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

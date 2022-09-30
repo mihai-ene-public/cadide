@@ -1,29 +1,17 @@
+using IDE.Core.Controls;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+
 namespace IDE.Controls
 {
-    using IDE.Core.Controls;
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
 
-    /// <summary>
-    /// EditBox is a custom cotrol that can switch between two modes: 
-    /// editing and normal. When it is in editing mode, the content is
-    /// displayed in a TextBox that provides editing capbabilities. When 
-    /// the EditBox is in normal, its content is displayed in a TextBlock
-    /// that is not editable.
-    /// 
-    /// This control is designed to be used in an item that is part of a
-    /// ItemsControl collection (ListView, GridView, ListBox, TreeView).
-    /// 
-    /// This code used part of ATC Avalon Team's work
-    /// (http://blogs.msdn.com/atc_avalon_team/archive/2006/03/14/550934.aspx)
-    /// </summary>
     [TemplatePart(Name = "PART_TextBlockPart", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_MeasureTextBlock", Type = typeof(TextBlock))]
     public class EditBox : Control
@@ -144,36 +132,34 @@ namespace IDE.Controls
         /// <summary>
         /// This object is used to secure thread safe methods by using the lock statement
         /// </summary>
-        private readonly object mlockObject = new object();
+        private readonly object _lockObject = new object();
 
         /// <summary>
         /// This is the adorner that is visible when the
         /// <seealso cref="EditBox"/> is in editing mode.
         /// </summary>
-        private EditBoxAdorner mAdorner;
+        private EditBoxAdorner _Adorner;
 
         /// <summary>
         /// A TextBox in the visual tree
         /// </summary>
-        private TextBox mTextBox;
+        private TextBox _TextBox;
 
         /// <summary>
         /// This refers to the <seealso cref="ItemsControl"/> (TreeView/listView/ListBox)
         /// control that contains the EditBox
         /// </summary>
-        private ItemsControl mParentItemsControl;
+        private ItemsControl _ParentItemsControl;
 
-        private TextBlock mPART_MeasureTextBlock;
-        private TextBlock mPART_TextBlock;
-
-        //private SimpleNotificationWindow mTip;
+        private TextBlock _PART_MeasureTextBlock;
+        private TextBlock _PART_TextBlock;
 
         /// <summary>
         /// This field points to a viewmodel that keeps the command binding and event triggering
         /// to base the notifications on. This enables the viewmodel to send events (notifications)
         /// for processing to the view.
         /// </summary>
-        private IEditBox mViewModel;
+        private IEditBox _ViewModel;
 
         //private bool mDestroyNotificationOnFocusChange = false;
         #endregion fields
@@ -193,11 +179,11 @@ namespace IDE.Controls
         /// </summary>
         public EditBox()
         {
-            this.mTextBox = null;
+            _TextBox = null;
 
-            this.DataContextChanged += this.OnDataContextChanged;
+            DataContextChanged += OnDataContextChanged;
 
-            this.Unloaded += OnEditBox_Unloaded;
+            Unloaded += OnEditBox_Unloaded;
         }
         #endregion constructor
 
@@ -228,8 +214,8 @@ namespace IDE.Controls
         /// </summary>
         public string DisplayText
         {
-            private get { return (string)this.GetValue(DisplayTextProperty); }
-            set { this.SetValue(DisplayTextProperty, value); }
+            private get { return (string)GetValue(DisplayTextProperty); }
+            set { SetValue(DisplayTextProperty, value); }
         }
 
         /// <summary>
@@ -264,8 +250,8 @@ namespace IDE.Controls
 
                 SetValue(EditBox.IsEditingProperty, value);
 
-                if (this.mAdorner != null)
-                    this.mAdorner.UpdateVisibilty(value);
+                if (_Adorner != null)
+                    _Adorner.UpdateVisibilty(value);
             }
         }
 
@@ -361,12 +347,12 @@ namespace IDE.Controls
         {
             base.OnApplyTemplate();
 
-            this.mPART_TextBlock = this.GetTemplateChild("PART_TextBlock") as TextBlock;
+            _PART_TextBlock = GetTemplateChild("PART_TextBlock") as TextBlock;
 
-            this.mPART_MeasureTextBlock = this.GetTemplateChild("PART_MeasureTextBlock") as TextBlock;
+            _PART_MeasureTextBlock = GetTemplateChild("PART_MeasureTextBlock") as TextBlock;
 
             // No TextBlock element -> no adorning element -> no adorener!
-            if (this.mPART_MeasureTextBlock == null || this.mPART_TextBlock == null)
+            if (_PART_MeasureTextBlock == null || _PART_TextBlock == null)
                 return;
 
             // Doing this here instead of in XAML makes the XAML easier to overview and apply correctly
@@ -376,9 +362,9 @@ namespace IDE.Controls
             binding.Source = this;
             binding.Mode = BindingMode.OneWay;
             binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            this.mPART_TextBlock.SetBinding(TextBlock.TextProperty, binding);
+            _PART_TextBlock.SetBinding(TextBlock.TextProperty, binding);
 
-            this.mPART_TextBlock.MouseDown += TextBlock_LeftMouseDown;
+            _PART_TextBlock.MouseDown += TextBlock_LeftMouseDown;
 
             ApplyEditingStatus();
         }
@@ -386,7 +372,7 @@ namespace IDE.Controls
         {
             try
             {
-                dynamic model = mViewModel;
+                dynamic model = _ViewModel;
                 var isEditing = (bool)model.IsEditing;
                 if (isEditing)
                     OnSwitchToEditingMode();
@@ -401,13 +387,13 @@ namespace IDE.Controls
         /// <param name="e"></param>
         private void OnEditBox_Unloaded(object sender, EventArgs e)
         {
-            // this.DestroyTip();
+            // DestroyTip();
 
             // Free event hook-up bewteen view and viewmodel
-            if (this.mViewModel != null)
+            if (_ViewModel != null)
             {
-                //this.mViewModel.ShowNotificationMessage -= ViewModel_ShowNotificationMessage;
-                // this.mViewModel.RequestEdit -= this.ViewModel_RequestEdit;//?
+                //mViewModel.ShowNotificationMessage -= ViewModel_ShowNotificationMessage;
+                // mViewModel.RequestEdit -= ViewModel_RequestEdit;//?
             }
         }
 
@@ -420,19 +406,19 @@ namespace IDE.Controls
         /// <param name="e"></param>
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.mViewModel != null)
+            if (_ViewModel != null)
             {
-                // this.mViewModel.ShowNotificationMessage -= ViewModel_ShowNotificationMessage;
-                this.mViewModel.RequestEdit -= ViewModel_RequestEdit;
+                // mViewModel.ShowNotificationMessage -= ViewModel_ShowNotificationMessage;
+                _ViewModel.RequestEdit -= ViewModel_RequestEdit;
             }
 
-            this.mViewModel = e.NewValue as IEditBox;
+            _ViewModel = e.NewValue as IEditBox;
 
-            if (this.mViewModel != null)
+            if (_ViewModel != null)
             {
                 // Link to show notification pop-up message event
-                // this.mViewModel.ShowNotificationMessage += ViewModel_ShowNotificationMessage;
-                this.mViewModel.RequestEdit += ViewModel_RequestEdit;
+                // mViewModel.ShowNotificationMessage += ViewModel_ShowNotificationMessage;
+                _ViewModel.RequestEdit += ViewModel_RequestEdit;
             }
 
         }
@@ -444,20 +430,20 @@ namespace IDE.Controls
         /// <param name="e"></param>
         private void TextBlock_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.IsEditableOnDoubleClick == false)
+            if (IsEditableOnDoubleClick == false)
                 return;
 
             if (e.ChangedButton != MouseButton.Left)
                 return;
 
             double timeBetweenClicks = (DateTime.Now - mLastClicked).TotalMilliseconds;
-            this.mLastClicked = DateTime.Now;
+            mLastClicked = DateTime.Now;
 
             if (timeBetweenClicks > MinimumClickTime && timeBetweenClicks < MaximumClickTime)
             {
-                this.OnSwitchToEditingMode();
+                OnSwitchToEditingMode();
 
-                //var t = this.mTextBox as TextBox;
+                //var t = mTextBox as TextBox;
 
                 //if (t != null)
                 //    t.SelectAll();
@@ -474,11 +460,11 @@ namespace IDE.Controls
         /// <param name="e"></param>
         private void ViewModel_RequestEdit(object sender, RequestEdit e)
         {
-            if (this.IsEditing == false)
+            if (IsEditing == false)
             {
-                this.OnSwitchToEditingMode();
+                OnSwitchToEditingMode();
 
-                //var t = this.mTextBox as TextBox;
+                //var t = mTextBox as TextBox;
 
                 //if (t != null)
                 //    t.SelectAll();
@@ -497,17 +483,17 @@ namespace IDE.Controls
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Nothing to process if this dependency property is not set
-            if (string.IsNullOrEmpty(this.InvalidInputCharacters) == true)
+            if (string.IsNullOrEmpty(InvalidInputCharacters) == true)
                 return;
 
             if (e == null)
                 return;
 
-            lock (this.mlockObject)
+            lock (_lockObject)
             {
-                if (this.IsEditing == true)
+                if (IsEditing == true)
                 {
-                    foreach (char item in this.InvalidInputCharacters.ToCharArray())
+                    foreach (char item in InvalidInputCharacters.ToCharArray())
                     {
                         if (string.Compare(e.Text, item.ToString(), false) == 0)
                         {
@@ -543,20 +529,20 @@ namespace IDE.Controls
         /// </summary>
         private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            lock (mlockObject)
+            lock (_lockObject)
             {
                 if (e.Key == Key.Escape)
                 {
-                    this.OnSwitchToNormalMode();
+                    OnSwitchToNormalMode();
                     e.Handled = true;
 
                     return;
                 }
 
                 // Cancel editing mode (editing string is OK'ed)
-                if (this.IsEditing == true && (e.Key == Key.Enter || e.Key == Key.F2))
+                if (IsEditing == true && (e.Key == Key.Enter || e.Key == Key.F2))
                 {
-                    this.OnSwitchToNormalMode(false);
+                    OnSwitchToNormalMode(false);
                     e.Handled = true;
 
                     return;
@@ -570,7 +556,7 @@ namespace IDE.Controls
         /// </summary>
         private void OnTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            this.OnSwitchToNormalMode();
+            OnSwitchToNormalMode();
         }
 
         /// <summary>
@@ -580,7 +566,7 @@ namespace IDE.Controls
         /// <param name="e"></param>
         private void OnLostFocus(object sender, RoutedEventArgs e)
         {
-            this.OnSwitchToNormalMode();
+            OnSwitchToNormalMode();
         }
         #endregion textbox events
 
@@ -590,8 +576,8 @@ namespace IDE.Controls
         /// </summary>
         private void OnScrollViewerChanged(object sender, RoutedEventArgs args)
         {
-            //if (this.IsEditing && Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
-            //    this.OnSwitchToNormalMode();
+            //if (IsEditing && Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
+            //    OnSwitchToNormalMode();
         }
 
         /// <summary>
@@ -600,40 +586,40 @@ namespace IDE.Controls
         /// <param name="bCancelEdit"></param>
         private void OnSwitchToNormalMode(bool bCancelEdit = true)
         {
-            lock (mlockObject)
+            lock (_lockObject)
             {
-                //if (this.mDestroyNotificationOnFocusChange == false)
-                //    this.DestroyTip();
+                //if (mDestroyNotificationOnFocusChange == false)
+                //    DestroyTip();
 
-                if (this.IsEditing == true)
+                if (IsEditing == true)
                 {
                     string sNewName = string.Empty;
 
-                    if (this.mTextBox != null)
-                        sNewName = this.mTextBox.Text;
+                    if (_TextBox != null)
+                        sNewName = _TextBox.Text;
 
                     if (bCancelEdit == false)
                     {
-                        if (this.mTextBox != null)
+                        if (_TextBox != null)
                         {
                             // Tell the ViewModel (if any) that we'd like to rename this item
-                            if (this.RenameCommand != null)
+                            if (RenameCommand != null)
                             {
-                                var tuple = new Tuple<string, object>(sNewName, this.DataContext);
-                                this.RenameCommand.Execute(tuple);
+                                var tuple = new Tuple<string, object>(sNewName, DataContext);
+                                RenameCommand.Execute(tuple);
                             }
                         }
                     }
                     else
                     {
-                        if (this.mTextBox != null)
-                            this.mTextBox.Text = this.Text;
+                        if (_TextBox != null)
+                            _TextBox.Text = Text;
                     }
 
-                    this.IsEditing = false;
-                    this.mPART_TextBlock.Focus();
-                    this.mPART_TextBlock.Visibility = System.Windows.Visibility.Visible;
-                    this.mPART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
+                    IsEditing = false;
+                    _PART_TextBlock.Focus();
+                    _PART_TextBlock.Visibility = System.Windows.Visibility.Visible;
+                    _PART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
         }
@@ -643,27 +629,27 @@ namespace IDE.Controls
         /// </summary>
         private void OnSwitchToEditingMode()
         {
-            lock (this.mlockObject)
+            lock (_lockObject)
             {
                 try
                 {
 
-                    if (this.IsReadOnly == false && this.IsEditing == false)
+                    if (IsReadOnly == false && IsEditing == false)
                     {
-                        if (this.mPART_MeasureTextBlock != null && this.mPART_TextBlock != null)
+                        if (_PART_MeasureTextBlock != null && _PART_TextBlock != null)
                         {
-                            if (this.mTextBox == null)
-                                this.HookItemsControlEvents();
+                            if (_TextBox == null)
+                                HookItemsControlEvents();
 
-                            this.mPART_TextBlock.Visibility = System.Windows.Visibility.Hidden;
-                            this.mPART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
+                            _PART_TextBlock.Visibility = Visibility.Hidden;
+                            _PART_MeasureTextBlock.Visibility = Visibility.Hidden;
 
-                            this.mTextBox.Text = this.mPART_TextBlock.Text;
+                            _TextBox.Text = _PART_TextBlock.Text;
                         }
 
-                        this.IsEditing = true;
+                        IsEditing = true;
 
-                        mTextBox?.SelectAll();
+                        _TextBox?.SelectAll();
                     }
                 }
                 finally
@@ -686,50 +672,45 @@ namespace IDE.Controls
         /// </summary>
         private void HookItemsControlEvents()
         {
-            if (this.mPART_MeasureTextBlock == null)
+            if (_PART_MeasureTextBlock == null)
                 return;
 
-            this.mTextBox = new TextBox();
+            _TextBox = new TextBox();
 
-            this.mAdorner = new EditBoxAdorner(this.mPART_MeasureTextBlock, this.mTextBox, this);
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(this.mPART_MeasureTextBlock);
-            layer.Add(this.mAdorner);
+            _Adorner = new EditBoxAdorner(_PART_MeasureTextBlock, _TextBox, this);
+            var layer = AdornerLayer.GetAdornerLayer(_PART_MeasureTextBlock);
+            layer.Add(_Adorner);
 
-            this.mTextBox.PreviewTextInput += OnPreviewTextInput;
-            this.mTextBox.KeyDown += new KeyEventHandler(this.OnTextBoxKeyDown);
-            this.mTextBox.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(this.OnTextBoxLostKeyboardFocus);
+            _TextBox.PreviewTextInput += OnPreviewTextInput;
+            _TextBox.KeyDown += OnTextBoxKeyDown;
+            _TextBox.LostKeyboardFocus += OnTextBoxLostKeyboardFocus;
 
-            this.mTextBox.LostFocus += new RoutedEventHandler(this.OnLostFocus);
+            _TextBox.LostFocus += OnLostFocus;
 
-            this.mParentItemsControl = this.GetDpObjectFromVisualTree(this, typeof(ItemsControl)) as ItemsControl;
-            Debug.Assert(this.mParentItemsControl != null, "DEBUG ISSUE: No FolderTreeView found.");
+            _ParentItemsControl = GetDpObjectFromVisualTree(this, typeof(ItemsControl)) as ItemsControl;
+            Debug.Assert(_ParentItemsControl != null, "DEBUG ISSUE: No itemscontrol found.");
 
-            if (this.mParentItemsControl != null)
+            if (_ParentItemsControl != null)
             {
                 // Handle events on parent control and determine whether to switch to Normal mode or stay in editing mode
-                this.mParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(this.OnScrollViewerChanged));
-                this.mParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => this.OnSwitchToNormalMode()), true);
+                _ParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(OnScrollViewerChanged));
+                _ParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => OnSwitchToNormalMode()), true);
 
-                this.mParentItemsControl.MouseDown += new MouseButtonEventHandler((s, e) => this.OnSwitchToNormalMode());
-               // this.mParentItemsControl.SizeChanged += new SizeChangedEventHandler((s, e) => this.OnSwitchToNormalMode());
+                _ParentItemsControl.MouseDown += new MouseButtonEventHandler((s, e) => OnSwitchToNormalMode());
 
                 // Restrict text box to visible area of scrollviewer
-                this.ParentScrollViewer = this.GetDpObjectFromVisualTree(this.mParentItemsControl, typeof(ScrollViewer)) as ScrollViewer;
+                ParentScrollViewer = GetDpObjectFromVisualTree(_ParentItemsControl, typeof(ScrollViewer)) as ScrollViewer;
 
-                if (this.ParentScrollViewer == null)
-                    this.ParentScrollViewer = FindVisualChild<ScrollViewer>(this.mParentItemsControl);
+                if (ParentScrollViewer == null)
+                    ParentScrollViewer = FindVisualChild<ScrollViewer>(_ParentItemsControl);
 
-                Debug.Assert(this.ParentScrollViewer != null, "DEBUG ISSUE: No ScrollViewer found.");
+                Debug.Assert(ParentScrollViewer != null, "DEBUG ISSUE: No ScrollViewer found.");
 
-                if (this.ParentScrollViewer != null)
-                    this.mTextBox.MaxWidth = this.ParentScrollViewer.ViewportWidth;
+                if (ParentScrollViewer != null)
+                    _TextBox.MaxWidth = ParentScrollViewer.ViewportWidth;
             }
         }
 
-        /// <summary>
-        /// Walk visual tree to find the first DependencyObject of a specific type.
-        /// (This method works for finding a ScrollViewer within a TreeView).
-        /// </summary>
         private DependencyObject GetDpObjectFromVisualTree(DependencyObject startObject, Type type)
         {
             // Walk the visual tree to get the parent(ItemsControl)
@@ -746,26 +727,18 @@ namespace IDE.Controls
             return parent;
         }
 
-        /// <summary>
-        /// Walk visual tree to find the first DependencyObject of a specific type.
-        /// (This method works for finding a ScrollViewer within a TreeView).
-        /// Source: http://stackoverflow.com/questions/3963341/get-reference-to-my-wpf-listboxs-scrollviewer-in-c
-        /// </summary>
-        /// <typeparam name="childItem"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        private static childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject
+        private static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
 
-                if (child != null && child is childItem)
-                    return (childItem)child;
+                if (child != null && child is T)
+                    return (T)child;
 
                 else
                 {
-                    childItem childOfChild = FindVisualChild<childItem>(child);
+                    var childOfChild = FindVisualChild<T>(child);
 
                     if (childOfChild != null)
                         return childOfChild;

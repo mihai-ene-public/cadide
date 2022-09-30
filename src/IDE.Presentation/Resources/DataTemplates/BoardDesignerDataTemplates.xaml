@@ -7,9 +7,7 @@
                     xmlns:ctrls="clr-namespace:IDE.Core.Controls"
                     xmlns:controls="clr-namespace:IDE.Controls"
                     xmlns:utils="clr-namespace:IDE.Core.Utilities"
-                    xmlns:ctrls2="clr-namespace:IDE.Controls"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+                    xmlns:ctrls2="clr-namespace:IDE.Controls">
 
     <SolidColorBrush x:Key="isSelectedBrush"
                      Color="#FFFF6A00" />

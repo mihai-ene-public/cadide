@@ -106,6 +106,7 @@ namespace IDE
 
         void RegisterEditorModels()
         {
+            _documentTypeManager.RegisterDocumentType("Text Editor", "Text files", "Text file", "txt", typeof(ISimpleTextDocument));
             _documentTypeManager.RegisterDocumentType("Symbol Editor", "Symbol files", "Symbol file", "symbol", typeof(ISymbolDesignerViewModel));
             _documentTypeManager.RegisterDocumentType("Model Editor", "Model files", "Model file", "model", typeof(IMeshDesigner));
             _documentTypeManager.RegisterDocumentType("Component Editor", "Component files", "Component file", "component", typeof(IComponentDesigner));

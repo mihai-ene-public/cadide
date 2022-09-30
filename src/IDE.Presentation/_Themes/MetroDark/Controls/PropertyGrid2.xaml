@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Slider.xaml" />
         <ResourceDictionary Source="PropertyGrid.ColorPicker.xaml" />
-        <ResourceDictionary Source="PropertyGrid.WatermarkTextBox.xaml" />
+        <ResourceDictionary Source="PropertyGrid.AdvancedTextBox.xaml" />
         <ResourceDictionary Source="Tooltip.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -45,7 +45,7 @@
 
     <!-- PropertyGrid TextBox Editors -->
     <Style TargetType="{x:Type ide:PropertyGridEditorTextBox}"
-           BasedOn="{StaticResource WatermarkTextBox}">
+           BasedOn="{StaticResource AdvancedTextBox}">
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>

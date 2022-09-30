@@ -2,7 +2,7 @@
 
 namespace IDE.Controls.WPF.PropertyGrid.Editors;
 
-public class PropertyGridEditorTextBox : WatermarkTextBox
+public class PropertyGridEditorTextBox : AdvancedTextBox
 {
     static PropertyGridEditorTextBox()
     {

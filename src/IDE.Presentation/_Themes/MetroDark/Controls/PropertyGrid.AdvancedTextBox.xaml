@@ -47,8 +47,8 @@
                         Focusable="False" />
     </DataTemplate>
 
-    <Style x:Key="WatermarkTextBox"
-           TargetType="{x:Type ide:WatermarkTextBox}">
+    <Style x:Key="AdvancedTextBox"
+           TargetType="{x:Type ide:AdvancedTextBox}">
         <Setter Property="Foreground"
                 Value="{DynamicResource TextBrush}" />
         <Setter Property="Background"
@@ -71,7 +71,7 @@
                 Value="{StaticResource DefaultWatermarkTemplate}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ide:WatermarkTextBox}">
+                <ControlTemplate TargetType="{x:Type ide:AdvancedTextBox}">
                     <Grid>
 
                         <Border x:Name="Border"
@@ -156,7 +156,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ide:WatermarkTextBox}"
-           BasedOn="{StaticResource WatermarkTextBox}" />
+    <Style TargetType="{x:Type ide:AdvancedTextBox}"
+           BasedOn="{StaticResource AdvancedTextBox}" />
 
 </ResourceDictionary>

@@ -8,11 +8,10 @@
 
     public class DocumentTypeManager : IDocumentTypeManager
     {
-        private readonly SortableObservableCollection<IDocumentType> documentTypes = null;
+        private readonly SortableObservableCollection<IDocumentType> documentTypes = new SortableObservableCollection<IDocumentType>();
 
         public DocumentTypeManager()
         {
-            documentTypes = new SortableObservableCollection<IDocumentType>(new List<IDocumentType>());
         }
 
         public IList<IDocumentType> DocumentTypes
@@ -61,14 +60,6 @@
             var ret = documentTypes.FirstOrDefault(d => d.FileExtension == fileExtension);
 
             return ret;
-        }
-
-        public IDocumentType FindDocumentTypeByKey(string typeOfDoc)
-        {
-            if (string.IsNullOrEmpty(typeOfDoc) == true)
-                return null;
-
-            return documentTypes.FirstOrDefault(d => d.Key == typeOfDoc);
         }
 
         /// <summary>

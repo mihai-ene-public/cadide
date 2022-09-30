@@ -116,7 +116,7 @@
                                typeof(string), typeof(EditableLabel), new PropertyMetadata(null));
         #endregion InvalidCharacters dependency properties
 
-       
+
         #endregion dependency properties
 
         public EditableLabel()
@@ -124,6 +124,7 @@
             HorizontalAlignment = HorizontalAlignment.Left;
             VerticalAlignment = VerticalAlignment.Center;
             VerticalContentAlignment = VerticalAlignment.Center;
+            //HorizontalContentAlignment = HorizontalAlignment.Center;
             //Foreground = Brushes.Black;
             InitComponents();
 
@@ -143,7 +144,6 @@
                 VerticalAlignment = VerticalAlignment.Center,
                 MinWidth = 10,
                 Foreground = Foreground
-                //Text = Text
             };
 
             editTextBox = new TextBox
@@ -152,8 +152,8 @@
                 VerticalContentAlignment = VerticalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(0),
-                Margin = new Thickness(-6, -6, 0, 0),
-                Background = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0)),//new SolidColorBrush(Color.FromArgb(127, 25, 25, 25)),
+                Margin = new Thickness(-6, -6, -6, -6),//todo: binding
+                Background = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0)),
                 BorderThickness = new Thickness(0)
             };
 
@@ -234,29 +234,19 @@
 
         private void EditTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!editTextBox.IsKeyboardFocusWithin && (e.OriginalSource == editTextBox || e.Source == editTextBox))
+            if (!editTextBox.IsKeyboardFocusWithin && ( e.OriginalSource == editTextBox || e.Source == editTextBox ))
             {
                 e.Handled = true;
                 editTextBox.Focus();
             }
         }
 
-        /// <summary>
-        /// This object is used to secure thread safe methods by using the lock statement
-        /// </summary>
         private readonly object lockObject = new object();
 
-        /// <summary>
-        /// A TextBox in the visual tree
-        /// </summary>
         private TextBox editTextBox;
 
         TextBlock displaytextBlock;
 
-        /// <summary>
-        /// This refers to the <seealso cref="ItemsControl"/> (TreeView/listView/ListBox)
-        /// control that contains the EditableLabel
-        /// </summary>
         private ItemsControl mParentItemsControl;
 
         #region properties
@@ -310,8 +300,8 @@
         /// </summary>
         public string DisplayText
         {
-            private get { return (string)this.GetValue(DisplayTextProperty); }
-            set { this.SetValue(DisplayTextProperty, value); }
+            private get { return (string)GetValue(DisplayTextProperty); }
+            set { SetValue(DisplayTextProperty, value); }
         }
 
         /// <summary>
@@ -345,9 +335,16 @@
             }
         }
 
+        public static readonly DependencyProperty IsEditableOnDoubleClickProperty =
+           DependencyProperty.Register("IsEditableOnDoubleClick", typeof(bool), typeof(EditableLabel), new PropertyMetadata(true));
+        public bool IsEditableOnDoubleClick
+        {
+            get { return (bool)GetValue(IsEditableOnDoubleClickProperty); }
+            set { SetValue(IsEditableOnDoubleClickProperty, value); }
+        }
 
         #region InvalidCharacters dependency properties
-        
+
 
         /// <summary>
         /// Gets/sets the string dependency property that contains the characters
@@ -383,7 +380,7 @@
         }
         #endregion InvalidCharacters dependency properties
 
-       
+
         #endregion properties
 
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
@@ -391,7 +388,8 @@
             if (IsEditing)
                 return;
 
-            IsEditing = true;
+            if (IsEditableOnDoubleClick)
+                IsEditing = true;
         }
 
 
@@ -405,7 +403,7 @@
         private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Nothing to process if this dependency property is not set
-            if (string.IsNullOrEmpty(this.InvalidInputCharacters))
+            if (string.IsNullOrEmpty(InvalidInputCharacters))
                 return;
 
             if (e == null)
@@ -415,7 +413,7 @@
             {
                 if (IsEditing)
                 {
-                    foreach (char item in this.InvalidInputCharacters.ToCharArray())
+                    foreach (char item in InvalidInputCharacters.ToCharArray())
                     {
                         if (string.Compare(e.Text, item.ToString(), false) == 0)
                         {
@@ -437,7 +435,10 @@
         {
             var vm = (EditableLabel)d;
 
-            vm.Text = (string)e.NewValue;
+            if (vm.IsEditing)
+            {
+                vm.Text = (string)e.NewValue;
+            }
         }
 
         /// <summary>
@@ -459,7 +460,7 @@
                 // Cancel editing mode (editing string is OK'ed)
                 if (IsEditing)
                 {
-                    if ((e.Key == Key.Enter || e.Key == Key.F2) && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+                    if (( e.Key == Key.Enter || e.Key == Key.F2 ) && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                     {
                         AcceptEdit();
                         e.Handled = true;
@@ -498,10 +499,7 @@
         #endregion textbox events
 
         bool bCancelEdit = true;
-        /// <summary>
-        /// Sets IsEditing to false when the ViewItem that contains an EditBox changes its size
-        /// </summary>
-        /// <param name="bCancelEdit"></param>
+
         private void OnSwitchToNormalMode()
         {
             lock (lockObject)
@@ -518,7 +516,7 @@
                 else
                 {
                     if (editTextBox != null)
-                        editTextBox.Text = this.Text;
+                        editTextBox.Text = Text;
                 }
 
                 Content = displaytextBlock;
@@ -574,8 +572,9 @@
             {
                 HookItemsControlEvents();
 
-                editTextBox.Width = Width + 16;
-                editTextBox.Height = displaytextBlock.ActualHeight;
+                editTextBox.Width = Width + 8;
+                //editTextBox.Width = displaytextBlock.ActualWidth;
+                //editTextBox.Height = displaytextBlock.ActualHeight;
                 editTextBox.FontSize = displaytextBlock.FontSize - ShrinkFontSizeWhenEditingBy;
                 SetValue(Canvas.ZIndexProperty, 5000);
 
@@ -597,28 +596,28 @@
         private void HookItemsControlEvents()
         {
 
-            this.mParentItemsControl = this.FindParent<ItemsControl>();
-            Debug.Assert(this.mParentItemsControl != null, "DEBUG ISSUE: No FolderTreeView found.");
+            mParentItemsControl = this.FindParent<ItemsControl>();
+            Debug.Assert(mParentItemsControl != null, "DEBUG ISSUE: No FolderTreeView found.");
 
-            if (this.mParentItemsControl != null)
+            if (mParentItemsControl != null)
             {
                 // Handle events on parent control and determine whether to switch to Normal mode or stay in editing mode
-                //this.mParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(this.OnScrollViewerChanged));
-                this.mParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => CancelEdit()), true);
+                //mParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(OnScrollViewerChanged));
+                mParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => CancelEdit()), true);
 
-                this.mParentItemsControl.MouseDown += (s, e) => CancelEdit();
-                this.mParentItemsControl.SizeChanged += (s, e) => CancelEdit();
+                mParentItemsControl.MouseDown += (s, e) => CancelEdit();
+                //mParentItemsControl.SizeChanged += (s, e) => CancelEdit();
 
                 // Restrict text box to visible area of scrollviewer
-                this.ParentScrollViewer = mParentItemsControl.FindParent<ScrollViewer>();
+                ParentScrollViewer = mParentItemsControl.FindParent<ScrollViewer>();
 
-                if (this.ParentScrollViewer == null)
-                    this.ParentScrollViewer = mParentItemsControl.FindChild<ScrollViewer>();
+                if (ParentScrollViewer == null)
+                    ParentScrollViewer = mParentItemsControl.FindChild<ScrollViewer>();
 
-                Debug.Assert(this.ParentScrollViewer != null, "DEBUG ISSUE: No ScrollViewer found.");
+                Debug.Assert(ParentScrollViewer != null, "DEBUG ISSUE: No ScrollViewer found.");
 
-                if (this.ParentScrollViewer != null)
-                    editTextBox.MaxWidth = this.ParentScrollViewer.ViewportWidth;
+                if (ParentScrollViewer != null)
+                    editTextBox.MaxWidth = ParentScrollViewer.ViewportWidth;
             }
         }
 

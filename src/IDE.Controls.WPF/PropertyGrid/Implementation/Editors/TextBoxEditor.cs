@@ -4,9 +4,9 @@ using IDE.Controls.WPF.Core.Extensions;
 
 namespace IDE.Controls.WPF.PropertyGrid.Editors;
 
-public class TextBoxEditor : TypeEditor<WatermarkTextBox>
+public class TextBoxEditor : TypeEditor<AdvancedTextBox>
 {
-    protected override WatermarkTextBox CreateEditor()
+    protected override AdvancedTextBox CreateEditor()
     {
         return new PropertyGridEditorTextBox();
     }

@@ -148,13 +148,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <ide:WatermarkTextBox x:Name="_txtFilter"
+                <ide:AdvancedTextBox x:Name="_txtFilter"
                                        Background="Transparent"
                                        Text="{Binding SearchItemsFilter, Delay=800, UpdateSourceTrigger=PropertyChanged}"
                                        Watermark="Search items"
                                        BorderThickness="1">
 
-                </ide:WatermarkTextBox>
+                </ide:AdvancedTextBox>
 
                 <Button Grid.Column="1"
                         Command="{Binding SearchItemsFilterCommand}"

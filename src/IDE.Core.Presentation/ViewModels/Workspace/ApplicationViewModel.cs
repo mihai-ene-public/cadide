@@ -225,26 +225,13 @@ namespace IDE.Core.ViewModels
         #region methods
 
 
-
-
-        IFileBaseViewModel CreateDefaultDocViewModel()
+        void IntegrateDocument(IFileBaseViewModel docFile)
         {
-            return new SimpleTextDocumentViewModel();
-        }
+            if (docFile == null)
+                return;
 
-        void IntegrateDocument(object docFile)
-        {
-            if (docFile is IToolWindow tool)
-            {
-                tool.CanHide = true;
-                tool.IsVisible = true;
-            }
-            else if (docFile is IFileBaseViewModel fileViewModel)
-            {
-                files.Add(fileViewModel);
-
-                SetActiveFileBaseDocument(fileViewModel);
-            }
+            files.Add(docFile);
+            SetActiveFileBaseDocument(docFile);
         }
 
         public object ContentViewModelFromID(string content_id)
@@ -339,7 +326,6 @@ namespace IDE.Core.ViewModels
             var docFile = _serviceProvider.GetService<ISolutionExplorerToolWindow>();
             await docFile.OpenFile(filePath);
 
-            //IntegrateDocument(docFile, filePath);
             docFile.CanHide = true;
             docFile.IsVisible = true;
             _recentFiles.AddNewEntryIntoMRU(filePath);
@@ -351,7 +337,7 @@ namespace IDE.Core.ViewModels
 
         public async Task<IFileBaseViewModel> Open(ISolutionExplorerNodeModel item, string filePath)
         {
-            // Verify whether file is already open in editor, and if so, show it
+            // if file is already open, make it active
             var fileViewModel = Files.FirstOrDefault(fm => fm.FilePath == filePath);
 
             if (fileViewModel != null) // File is already open so show it to the user
@@ -362,7 +348,10 @@ namespace IDE.Core.ViewModels
 
             fileViewModel = await OpenDocumentAsync(item);
 
-            IntegrateDocument(fileViewModel);
+            if (fileViewModel != null)
+            {
+                IntegrateDocument(fileViewModel);
+            }
 
             return fileViewModel;
         }
@@ -383,8 +372,9 @@ namespace IDE.Core.ViewModels
             }
             else
             {
-                // try to load a standard text file from the file system as a fallback method
-                fileViewModel = CreateDefaultDocViewModel();
+                // open the file with default associated viewer
+                ProcessStarter.Start(filePath);
+                return null;
             }
 
             fileViewModel.LoadedForCompiler = loadedForCompiler;
@@ -762,8 +752,8 @@ namespace IDE.Core.ViewModels
 
                     var solutionNode = container.CreateSolutionExplorerNodeModel(fileExtension);
 
-                    container.AddChild(solutionNode);
                     solutionNode.Load(fileName);
+                    container.AddChild(solutionNode);
 
                     await Open(solutionNode, fileName);
                 }

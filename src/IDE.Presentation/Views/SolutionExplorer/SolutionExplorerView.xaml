@@ -241,12 +241,12 @@
                                     Margin="3"
                                     ContextMenu="{StaticResource treeContextMenu}">
 
-                            <Image Width="12"
-                                   Height="12"
+                            <Image Width="14"
+                                   Height="14"
                                    Source="{Binding Converter={x:Static conv:SolutionExplorerDocumentTypeToImageConverter.Instance},Mode=OneWay, Delay=100, IsAsync=True}"
                                    VerticalAlignment="Center" />
 
-                            <ctrls:EditBox Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            <!--<ctrls:EditBox Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            DisplayText="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            ToolTip="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsEditableOnDoubleClick="True"
@@ -258,7 +258,21 @@
                                            IsReadOnly="{Binding IsReadOnly}"
                                            RenameCommand="{Binding RenameCommand}"
                                            ToolTipService.ShowOnDisabled="True"
-                                           Margin="5, 0, 0, 0" />
+                                           Margin="5, 0, 0, 0" />-->
+                            <ctrls:EditableLabel Text="{Binding Name, Mode=TwoWay}"
+                                                 DisplayText="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 ToolTip="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 FontSize="12"
+                                                 FontFamily="Segoe UI"
+                                                 ShrinkFontSizeWhenEditingBy="0"
+                                                 IsEditableOnDoubleClick="False"
+                                                 IsEditing="{Binding IsEditing,Mode=TwoWay}"
+                                                 Focusable="True"
+                                                 IsReadOnly="{Binding IsReadOnly}"
+                                                 VerticalAlignment="Center"
+                                                 HorizontalAlignment="Left"
+                                                 ToolTipService.ShowOnDisabled="True"
+                                                 Margin="5, 0, 0, 0" />
                             <!---->
                             <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
 
