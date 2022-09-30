@@ -583,7 +583,9 @@ namespace IDE.Documents.Views
                 selectedLayerGroup = value;
 
                 if (selectedLayerGroup != null)
-                    SelectedLayer = selectedLayerGroup.Layers.FirstOrDefault();
+                {
+                    SelectedLayer = selectedLayerGroup.Layers.FirstOrDefault(l => l.LayerType == LayerType.Signal);
+                }
 
                 OnPropertyChanged(nameof(SelectedLayerGroup));
             }
