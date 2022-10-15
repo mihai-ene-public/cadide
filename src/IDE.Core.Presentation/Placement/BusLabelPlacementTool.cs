@@ -1,5 +1,7 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
+using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public BusLabelPlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
 
         BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
 
@@ -37,6 +39,7 @@ namespace IDE.Core.Presentation.Placement
             var mp = CanvasModel.SnapToGrid(mousePosition);
 
             var item = GetItem();
+            var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
 
             switch (PlacementStatus)
             {
@@ -50,7 +53,7 @@ namespace IDE.Core.Presentation.Placement
                     foreach (var busWire in busWires)
                     {
 
-                        var intersects = GeometryHelper.ItemIntersectsPoint(busWire, mp, 0.5);
+                        var intersects = GeometryHelper.Intersects(busWire, circle);
                         if (!intersects)
                             continue;
 

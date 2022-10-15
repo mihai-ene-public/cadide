@@ -29,10 +29,11 @@
                                                    string description,
                                                    string fileFilterName,
                                                    string fileExtension,
-                                                   Type typeOfDocument
+                                                   Type editorDocumentType,
+                                                   Type documentType
                                                  )
         {
-            var newFileType = new DocumentType(Key, description, fileFilterName, fileExtension, typeOfDocument);
+            var newFileType = new DocumentType(Key, description, fileFilterName, fileExtension, editorDocumentType, documentType);
 
             documentTypes.Add(newFileType);
             documentTypes.Sort(i => i.FileFilterName, System.ComponentModel.ListSortDirection.Ascending);

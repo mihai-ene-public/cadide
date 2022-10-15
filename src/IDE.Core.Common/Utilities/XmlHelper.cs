@@ -42,6 +42,16 @@ namespace IDE.Core
             }
         }
 
+        public static object Load(string filePath, Type objectType)
+        {
+            var ser = new XmlSerializer(objectType);
+            using (var sr = new StreamReader(filePath))
+            {
+                var p = ser.Deserialize(sr);
+                return p;
+            }
+        }
+
         //////////////////////////////////
         public static object GetObjectFromXml(Stream stream, Type type)
         {

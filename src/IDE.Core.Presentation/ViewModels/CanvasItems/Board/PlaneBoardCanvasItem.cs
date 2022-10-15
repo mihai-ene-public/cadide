@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Common;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
@@ -124,9 +125,10 @@ namespace IDE.Core.Designers
             }
         }
 
-        IGeometry regionGeometry;
+        IGeometryOutline regionGeometry;
+
         [Browsable(false)]
-        public IGeometry RegionGeometry
+        public IGeometryOutline RegionGeometry
         {
             get { return regionGeometry; }
             set
@@ -145,17 +147,16 @@ namespace IDE.Core.Designers
 
             if (isEditing)
             {
-                var proc = ServiceProvider.Resolve<IPlaneGeometryPourProcessor>();
+                var proc = ServiceProvider.Resolve<IPlaneGeometryOutlinePourProcessor>();
                 var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
 
-                await Task.Run(() => proc.GetGeometry(this, thisBoard))
-                    .ContinueWith(t =>
-                    {
-                        dispatcher.RunOnDispatcher(() =>
-                        RegionGeometry = new GeometryWrapper(t.Result));
-                    });
+                var geometry = proc.GetGeometry(this, thisBoard);
+
+                dispatcher.RunOnDispatcher(() =>
+                         RegionGeometry = geometry);
             }
 
+            await Task.CompletedTask;
         }
 
         public override XRect GetBoundingRectangle()

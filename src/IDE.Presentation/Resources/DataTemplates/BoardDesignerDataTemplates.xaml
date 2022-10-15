@@ -1489,7 +1489,7 @@
                         <Path x:Name="PART_Plane"
                               Fill="Transparent"
                               Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                              Data="{Binding RegionGeometry, Converter={x:Static conv:IGeometryToGeometryConverter.Instance}, IsAsync=True}">
+                              Data="{Binding RegionGeometry, Converter={x:Static conv:IGeometryOutlineToGeometryConverter.Instance}, IsAsync=True}">
                         </Path>
                     </Canvas>
 

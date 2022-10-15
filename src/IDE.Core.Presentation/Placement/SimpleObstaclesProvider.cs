@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.PlacementRouting;
 using IDE.Core.Spatial2D;
 using IDE.Core.Types.Media;
@@ -10,7 +11,7 @@ namespace IDE.Core.Presentation.Placement
     {
         public SimpleObstaclesProvider()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
         public SimpleObstaclesProvider(IDrawingViewModel drawingViewModel) : this()
@@ -20,7 +21,7 @@ namespace IDE.Core.Presentation.Placement
 
         protected IDrawingViewModel canvasModel;
 
-        protected IGeometryHelper GeometryHelper;
+        protected IGeometryOutlineHelper GeometryHelper;
 
         RTree<ObstacleItem> tree;
 
@@ -33,10 +34,8 @@ namespace IDE.Core.Presentation.Placement
                 var t = item.GetTransform();
 
                 var geometry = GeometryHelper.GetGeometry(item, applyTransform: true);
-                //if (!geometry.IsEmpty())
-                //    geometry.Transform = t.ToMatrixTransform();
 
-                var rect = GeometryHelper.GetGeometryBounds(geometry);
+                var rect = geometry.GetBounds();
                 rect = t.TransformBounds(rect);//?
 
                 var obs = new ObstacleItem

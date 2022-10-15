@@ -32,11 +32,7 @@ namespace IDE.Documents.Views
             : base()
         {
 
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-            meshHelper = ServiceProvider.Resolve<IMeshHelper>();
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-
-
 
             DocumentKey = "Footprint Editor";
             Description = "Footprint files";
@@ -151,8 +147,6 @@ namespace IDE.Documents.Views
 
         #region Fields
 
-        IGeometryHelper GeometryHelper;
-        IMeshHelper meshHelper;
 
         Footprint footprintDocument;
 
@@ -832,27 +826,14 @@ namespace IDE.Documents.Views
             DesignerViewMode = DesignerViewMode.ViewMode3D;
         }
 
-
-
-
-        async Task ShowLayersGeometries()
+        private async Task ShowLayersGeometries()
         {
-            //var boardPreviewHelper = new Footprint3DPreviewHelper(_dispatcher);
-            //var model = await boardPreviewHelper.GeneratePreview(this);
-
             var boardPreviewHelper = new Board3DPreviewGlobalHelper(_dispatcher);
             var model = await boardPreviewHelper.GeneratePreview(this);
 
             model.Items = modelsDictionary.Keys.Cast<ISelectableItem>().ToList();
 
-
             BoardPreview3DViewModel = model;
-
-        }
-
-        void RefreshModels()
-        {
-
         }
 
         Dictionary<GroupMeshItem, ModelDocument> modelsDictionary = new Dictionary<GroupMeshItem, ModelDocument>();

@@ -5,27 +5,26 @@ using IDE.Core.Interfaces;
 using IDE.Core.Common;
 using IDE.Core.Types.Media;
 using System.ComponentModel.DataAnnotations;
+using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Designers;
 
 public abstract class BaseCanvasItem : BaseViewModel
                                      , IBaseCanvasItem
 {
-
-
     public BaseCanvasItem()
     {
         IsPlaced = false;
         canEdit = true;
     }
 
-    private IGeometryHelper geometryHelper;
-    protected IGeometryHelper GeometryHelper
+    private IGeometryOutlineHelper geometryHelper;
+    protected IGeometryOutlineHelper GeometryHelper
     {
         get
         {
             if (geometryHelper == null)
-                geometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+                geometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
 
             return geometryHelper;
         }

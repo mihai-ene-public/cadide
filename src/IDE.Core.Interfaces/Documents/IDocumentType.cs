@@ -22,18 +22,6 @@
 		/// </summary>
 		string FileFilterName { get; }
 
-		///// <summary>
-		///// Gets the file open method that can be used to read a document of this type from disk.
-		///// </summary>
-		//FileOpenDelegate FileOpenMethod { get; }
-
-		///// <summary>
-		///// Gets the file new method that can be used to read a document of this type from disk.
-		///// This property can be null indicating that this type of document cannot be created
-		///// with this module (this document type can only be read and viewed from disk).
-		///// </summary>
-		//CreateNewDocumentDelegate CreateDocumentMethod { get; }
-
 		/// <summary>
 		/// Gets the key of this document type.
 		/// </summary>
@@ -44,16 +32,15 @@
 		/// </summary>
 		string Description { get; }
 
-		///// <summary>
-		///// Gets the sort priority to determine a sort criteria when sorting this
-		///// document type against other types in a list of supported document types.
-		///// </summary>
-		//int SortPriority { get; }
-
 		/// <summary>
 		/// Gets the actual type of the viewmodel class that implements this document type.
 		/// </summary>
-		Type ClassType { get; }
+		Type DocumentEditorClassType { get; }
+
+        /// <summary>
+        /// Document type. Should be a type that inherits LibraryItem 
+        /// </summary>
+		Type DocumentClassType { get; }
 
         //Type TypeOfProjectBaseFileRef { get; }
 

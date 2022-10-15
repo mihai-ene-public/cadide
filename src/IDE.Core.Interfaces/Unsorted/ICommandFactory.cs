@@ -4,31 +4,6 @@ using System.Windows.Input;
 
 namespace IDE.Core.Interfaces
 {
-    public interface IGeometry//<T>
-    {
-        object Geometry { get; }
-    }
-
-    public interface IDispatcherHelper
-    {
-        void RunOnDispatcher(Action action);
-    }
-
-    public class ImageData
-    {
-        public int PixelWidth { get; set; }
-
-        public int PixelHeight { get; set; }
-
-        public byte[] Bits { get; set; }
-
-        public byte[] MaskBits { get; set; }
-    }
-    public interface IBitmapImageHelper
-    {
-        ImageData GetImageData(byte[] imageBytes);
-    }
-
     public interface ICommandFactory
     {
         ICommand CreateCommand(Action<object> execute);

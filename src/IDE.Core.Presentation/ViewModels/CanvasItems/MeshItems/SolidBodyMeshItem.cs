@@ -10,6 +10,7 @@ using IDE.Core.Types.Media3D;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
+using IDE.Core.Presentation.Meshes;
 
 namespace IDE.Core.Designers
 {
@@ -17,12 +18,9 @@ namespace IDE.Core.Designers
     {
         public SolidBodyMeshItem()
         {
-            meshHelper = ServiceProvider.Resolve<IMeshHelper>();
-
             FillColor = XColors.WhiteSmoke;
 
             PropertyChanged += SolidBodyMeshItem_PropertyChanged;
-
         }
 
         private void SolidBodyMeshItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -34,8 +32,6 @@ namespace IDE.Core.Designers
                     break;
             }
         }
-
-        IMeshHelper meshHelper;
 
         double x;
 
@@ -206,8 +202,26 @@ namespace IDE.Core.Designers
             PadNumber = r.PadNumber;
             FillColor = XColor.FromHexString(r.FillColor);
 
-            var meshHelper = ServiceProvider.Resolve<IMeshHelper>();
-            Model = meshHelper.GetMeshModelFromCData(r.ModelCData);
+            //var meshHelper = ServiceProvider.Resolve<IMeshHelper>();
+            //Model = meshHelper.GetMeshModelFromCData(r.ModelCData);
+
+            var model = new MeshModel();
+            var mesh = new Mesh()
+            {
+                Model = model,
+                Color = FillColor,
+
+            };
+            if (r.MeshGeometry != null)
+            {
+                mesh.Positions = r.MeshGeometry.Positions;
+                mesh.Normals = r.MeshGeometry.Normals;
+                mesh.Indices = r.MeshGeometry.Indices;
+                mesh.TextureCoordinates = r.MeshGeometry.TextureCoordinates;
+            }
+            model.Meshes.Add(mesh);
+
+            Model = model;
         }
 
         public override IPrimitive SaveToPrimitive()
@@ -223,21 +237,29 @@ namespace IDE.Core.Designers
             r.FillColor = FillColor.ToHexString();
             r.PadNumber = PadNumber;
 
-            var meshHelper = ServiceProvider.Resolve<IMeshHelper>();
-            r.ModelCData = meshHelper.GetCDataFromMeshModel(Model);
+            //var meshHelper = ServiceProvider.Resolve<IMeshHelper>();
+            //r.ModelCData = meshHelper.GetCDataFromMeshModel(Model);
+            var mesh = model.Meshes[0];
+            r.MeshGeometry = new MeshGeometryData
+            {
+                Positions = mesh.Positions,
+                Normals = mesh.Normals,
+                Indices = mesh.Indices,
+                TextureCoordinates = mesh.TextureCoordinates
+            };
 
             return r;
         }
 
         public override void MirrorX()
         {
-            var r = (rotationX + 180) % 360;
+            var r = ( rotationX + 180 ) % 360;
             RotationX = r;
         }
 
         public override void MirrorY()
         {
-            var r = (rotationY + 180) % 360;
+            var r = ( rotationY + 180 ) % 360;
             RotationY = r;
         }
 

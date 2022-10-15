@@ -49,17 +49,13 @@ namespace IDE
             services.AddSingleton<IRecentFilesViewModel, RecentFilesModel>();
 
             services.AddTransient<IDebounceDispatcher, DebounceDispatcher>();
-            services.AddSingleton<IGeometryHelper, GeometryHelper>();
             services.AddSingleton<IGeometryOutlineHelper, GeometryOutlineHelper>();
 
-            services.AddTransient<IPolygonGeometryPourProcessor, PolygonGeometryPourProcessor>();
-            services.AddTransient<IPlaneGeometryPourProcessor, PlaneGeometryPourProcessor>();
-
             services.AddTransient<IPolygonGeometryOutlinePourProcessor, PolygonGeometryOutlinePourProcessor>();
+            services.AddTransient<IPlaneGeometryOutlinePourProcessor, PlaneGeometryOutlinePourProcessor>();
 
             services.AddSingleton<IMeshHelper, MeshHelper>();
             services.AddTransient<IModelImporter, GenericModelImporter>();
-
 
             services.AddTransient<IDispatcherHelper, DispatcherHelper>();
             services.AddTransient<IClipboardAdapter, ClipboardAdapter>();
@@ -127,7 +123,7 @@ namespace IDE
             services.AddSingleton<ILayersToolWindow, LayersToolWindowViewModel>();
             services.AddSingleton<IDocumentOverviewToolWindow, DocumentOverviewViewModel>();
             services.AddSingleton<IErrorsToolWindow, ErrorsToolWindowViewModel>();
-            services.AddSingleton<IOutputToolWindow, OutputViewModel>();
+            services.AddSingleton<IOutputToolWindow, OutputToolWindow>();
             services.AddSingleton<ISolutionExplorerToolWindow, SolutionExplorerViewModel>();
         }
 
@@ -137,6 +133,7 @@ namespace IDE
             services.AddSingleton<IFileCompiler, FileCompiler>();
 
             services.AddTransient<ISolutionCompiler, SolutionCompiler>();
+            services.AddTransient<ISolutionBuilder, SolutionBuilder>();
             services.AddTransient<IFileCompiler, FileCompiler>();
 
             services.AddTransient<ISchematicRulesCompiler, SchematicRulesCompiler>();

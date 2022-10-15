@@ -57,14 +57,6 @@
         string FileName { get; }
 
         /// <summary>
-        /// Get/set whether a given file path is a real existing path or not.
-        /// 
-        /// This is used to identify files that have never been saved and can
-        /// those not be remembered in an MRU etc...
-        /// </summary>
-        bool IsFilePathReal { get; }
-
-        /// <summary>
         /// Get whether edited data can be saved or not.
         /// A type of document does not have a save
         /// data implementation if this property returns false.
@@ -74,14 +66,6 @@
 
         ICommand CloseCommand { get; }
 
-        /// <summary>
-        /// Gets/sets a property to indicate whether this
-        /// file was changed externally (by another editor) or not.
-        /// 
-        /// Setter can be used to override re-loading (keep current content)
-        /// at the time of detection.
-        /// </summary>
-        bool WasChangedExternally { get; }
 
         bool LoadedForCompiler { get; set; }
 
@@ -126,13 +110,6 @@
 
         void ApplySettings();
 
-        /// <summary>
-		/// Set a file specific value to determine whether file
-		/// watching is enabled/disabled for this file.
-		/// </summary>
-		/// <param name="IsEnabled"></param>
-		/// <returns></returns>
-		bool EnableDocumentFileWatcher(bool IsEnabled);
 
         /// <summary>
         /// returns a list of tool windows that needs to be visible when this document is active

@@ -37,7 +37,6 @@ namespace IDE.Core.ViewModels
             clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
             _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
 
-            documentModel = new DocumentModel();
             PropertyChanged += FileBaseViewModel_PropertyChanged;
         }
         protected IClipboardAdapter clipBoard;
@@ -72,8 +71,6 @@ namespace IDE.Core.ViewModels
         ICommand copyFullPathtoClipboard = null;
 
         protected string documentTypeKey = string.Empty;
-
-        protected IDocumentModel documentModel = null;
 
         protected string defaultFileType = "sch";
         protected string defaultFileName = "Schema";
@@ -116,22 +113,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        /// <summary>
-        /// Get/set whether a given file path is a real existing path or not.
-        /// 
-        /// This is used to identify files that have never been saved and can
-        /// those not be remembered in an MRU etc...
-        /// </summary>
-        public bool IsFilePathReal
-        {
-            get
-            {
-                if (documentModel != null)
-                    return documentModel.IsReal;
-
-                return false;
-            }
-        }
 
         #region Title
         /// <summary>
@@ -141,7 +122,7 @@ namespace IDE.Core.ViewModels
         {
             get
             {
-                return FileName + (IsDirty ? "*" : string.Empty);
+                return FileName + ( IsDirty ? "*" : string.Empty );
             }
         }
         #endregion
@@ -372,7 +353,7 @@ namespace IDE.Core.ViewModels
                 //if (openContainingFolderCommand == null)
                 //    openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand());
 
-                return openContainingFolderCommand ?? (openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand()));
+                return openContainingFolderCommand ?? ( openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand()) );
             }
         }
 
@@ -395,32 +376,6 @@ namespace IDE.Core.ViewModels
 
         #endregion commands
 
-        /// <summary>
-        /// Gets/sets a property to indicate whether this
-        /// file was changed externally (by another editor) or not.
-        /// 
-        /// Setter can be used to override re-loading (keep current content)
-        /// at the time of detection.
-        /// </summary>
-        public bool WasChangedExternally
-        {
-            get
-            {
-                if (documentModel == null)
-                    return false;
-
-                return documentModel.WasChangedExternally;
-            }
-
-            private set
-            {
-                if (documentModel == null)
-                    return;
-
-                if (documentModel.WasChangedExternally != value)
-                    documentModel.WasChangedExternally = value;
-            }
-        }
         #endregion properties
 
         #region methods
@@ -510,38 +465,30 @@ namespace IDE.Core.ViewModels
             try
             {
                 var isReal = File.Exists(openFilePath);
-                documentModel.SetFileNamePath(openFilePath, isReal);
 
-                if (IsFilePathReal)
+                if (!File.Exists(openFilePath))
+                    throw new FileNotFoundException(openFilePath);
+
+                FilePath = openFilePath;
+                ContentId = filePath;
+
+                try
                 {
-                    documentModel.SetIsReal(IsFilePathReal);
-                    FilePath = openFilePath;
-                    ContentId = filePath;
-                    //IsDirty = false; // Mark document loaded from persistence as unedited copy (display without dirty mark '*' in name)
+                    await LoadDocumentInternal(openFilePath);
 
-                    try
-                    {
-                        await LoadDocumentInternal(openFilePath);
+                    ApplySettings();
 
-                        // Set the correct actualy state of the model into the viewmodel
-                        // to either allow editing or continue to block editing depending on what the model says
-
-                        ApplySettings();
-
-                        State = DocumentState.IsEditing;
-                    }
-                    catch (Exception ex)                 // File may be blocked by another process
-                    {                    // Try read-only shared method and set file access to read-only
-
-                        throw new Exception(Strings.STR_FILE_OPEN_ERROR_MSG_CAPTION, ex);
-                    }
-                    finally
-                    {
-                        IsDirty = false;
-                    }
+                    State = DocumentState.IsEditing;
                 }
-                else
-                    throw new FileNotFoundException(openFilePath);   // File does not exist
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    IsDirty = false;
+                }
+
             }
             catch (Exception exp)
             {
@@ -557,7 +504,7 @@ namespace IDE.Core.ViewModels
 
         protected virtual Task AfterLoadDocumentInternal()
         {
-            return Task.Run(() => EnableDocumentFileWatcher(true));
+            return Task.CompletedTask;
         }
 
         ///// <summary>
@@ -599,7 +546,6 @@ namespace IDE.Core.ViewModels
                 // Set new file name in viewmodel and model
                 FilePath = filePath;
                 ContentId = filePath;
-                documentModel.SetFileNamePath(filePath, true);
 
                 IsDirty = false;
 
@@ -646,8 +592,6 @@ namespace IDE.Core.ViewModels
         /// </summary>
         public virtual async Task ReOpen()
         {
-            WasChangedExternally = false;
-
             await OpenFileAsync(FilePath);
         }
 
@@ -745,7 +689,7 @@ namespace IDE.Core.ViewModels
             }
             catch (System.Exception ex)
             {
-                MessageDialog.Show(string.Format(CultureInfo.CurrentCulture, "{0}\n'{1}'.", ex.Message, (FilePath == null ? string.Empty : FilePath)),
+                MessageDialog.Show(string.Format(CultureInfo.CurrentCulture, "{0}\n'{1}'.", ex.Message, ( FilePath == null ? string.Empty : FilePath )),
                                                 Strings.STR_FILE_FINDING_CAPTION
                                                 );
             }
@@ -764,30 +708,13 @@ namespace IDE.Core.ViewModels
 
             return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
                             this.defaultFileName,
-                            (iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString()),
+                            ( iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString() ),
                             defaultFileType);
         }
 
-        /// <summary>
-        /// Set a file specific value to determine whether file
-        /// watching is enabled/disabled for this file.
-        /// </summary>
-        /// <param name="IsEnabled"></param>
-        /// <returns></returns>
-        public bool EnableDocumentFileWatcher(bool IsEnabled)
-        {
-            // Activate file watcher for this document
-            return documentModel.EnableDocumentFileWatcher(true);
-        }
 
         public override void Dispose()
         {
-            if (documentModel != null)
-            {
-                documentModel.Dispose();
-                documentModel = null;
-            }
-
             base.Dispose();
         }
 

@@ -42,7 +42,6 @@ namespace IDE.Core.ViewModels
         string filePath;
         bool isDirty = false;
         string defaultFileType = SolutionDocument.SolutionExtension;
-        protected IDocumentModel documentModel;
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
@@ -423,20 +422,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-
-
-
-        public bool IsFilePathReal
-        {
-            get
-            {
-                if (documentModel != null)
-                    return documentModel.IsReal;
-
-                return false;
-            }
-        }
-
         public bool CanSaveData
         {
             get
@@ -445,92 +430,10 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        //public ICommand CloseCommand
-        //{
-        //    get
-        //    {
-        //        if (closeCommand == null)
-        //        {
-        //            closeCommand = CreateCommand(p => OnClose(),
-        //                                            p => CanClose());
-        //        }
-
-        //        return closeCommand;
-        //    }
-        //}
-
-        //protected virtual void OnClose()
-        //{
-        //    if (DocumentEvent != null)
-        //        DocumentEvent(this, new FileBaseEvent(FileEventType.CloseDocument));
-        //}
-
-        public bool WasChangedExternally
-        {
-            get
-            {
-                if (documentModel == null)
-                    return false;
-
-                return documentModel.WasChangedExternally;
-            }
-
-            private set
-            {
-                if (documentModel == null)
-                    return;
-
-                if (documentModel.WasChangedExternally != value)
-                    documentModel.WasChangedExternally = value;
-            }
-        }
-
         public async Task ReOpen()
         {
-            WasChangedExternally = false;
             await LoadFileAsync2(FilePath);
         }
-
-        /* LoadFileAsync(string path)
-        void LoadFileAsync(string path)
-        {
-            if (mAsyncProcessor != null)
-            {
-                if (MessageDialog.Show(
-                        "An operation is currently in progress. Would you like to cancel the current process?",
-                        "Processing...",
-                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    mAsyncProcessor.Cancel();
-                }
-            }
-
-            mAsyncProcessor = new FileLoader();
-
-            mAsyncProcessor.ProcessingResultEvent += FileLoaderLoadResultEvent;
-
-            State = DocumentState.IsLoading;
-
-            mAsyncProcessor.ExecuteAsynchronously(
-                () =>//action
-                        {
-                            try
-                            {
-                                var output = ServiceProvider.GetService<IOutput>();
-                                output?.AppendLine($"Loading {Path.GetFileName(path)}");
-
-                                OpenFileInternal(path);
-                            }
-                            finally
-                            {
-                                // Set this to invalid if viewmodel still things its loading...
-                                if (State == DocumentState.IsLoading)
-                                    State = DocumentState.IsInvalid;
-                            }
-                        },
-             async: true);
-        }
-        */
 
         async Task LoadFileAsync2(string path)
         {
@@ -575,13 +478,6 @@ namespace IDE.Core.ViewModels
                 if (!isReal)
                     throw new FileNotFoundException(filePath);
 
-                if (documentModel == null)
-                    documentModel = new DocumentModel();
-                documentModel.SetFileNamePath(filePath, isReal);
-
-                //if (IsFilePathReal)
-                //{
-                //    documentModel.SetIsReal(IsFilePathReal);
                 FilePath = filePath;
                 ContentId = this.filePath;
                 IsDirty = false; // Mark document loaded from persistence as unedited copy (display without dirty mark '*' in name)
@@ -742,25 +638,8 @@ namespace IDE.Core.ViewModels
 
         public override void Dispose()
         {
-            if (documentModel != null)
-            {
-                documentModel.Dispose();
-                documentModel = null;
-            }
-
             base.Dispose();
         }
-
-        //public void RegisterDocumentType(IDocumentTypeManager docTypeManager)
-        //{
-        //    var docType = docTypeManager.RegisterDocumentType(DocumentKey,
-        //                                                      Description,
-        //                                                      FileFilterName,
-        //                                                      SolutionDocument.SolutionExtension,
-        //                                                      typeof(SolutionExplorerViewModel)
-        //                                                      );
-
-        //}
 
         public async Task OpenFile(string filePath)
         {
@@ -777,12 +656,6 @@ namespace IDE.Core.ViewModels
                 //cleanup
                 Solutions.Clear();
                 SelectedNodes.Clear();
-
-                if (documentModel != null)
-                {
-                    documentModel.Dispose();
-                    documentModel = null;
-                }
 
             }
             catch

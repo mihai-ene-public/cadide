@@ -11,15 +11,9 @@ namespace IDE.Core.Designers
     /// </summary>
     class TrackHelper
     {
-        public TrackHelper(IBoardDesigner brd)
+        public TrackHelper()
         {
-            board = brd;
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
         }
-
-        IBoardDesigner board;
-
-        IGeometryHelper GeometryHelper;
 
         public List<XPoint> trackPoints = new List<XPoint>();
 

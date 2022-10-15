@@ -1,5 +1,6 @@
 ﻿namespace IDE.Documents.Views
 {
+    using CommunityToolkit.Mvvm.Messaging;
     using Core.ViewModels;
     using IDE.Core;
     using IDE.Core.Interfaces;
@@ -11,7 +12,7 @@
     /// Implementation is based on Output Tool Window from Gemini project:
     /// https://github.com/tgjones/gemini
     /// </summary>
-    public class OutputViewModel : ToolViewModel, IOutputToolWindow
+    public class OutputToolWindow : ToolViewModel, IOutputToolWindow
     {
         #region fields
       //  private readonly OutputWriter outputWriter;
@@ -20,28 +21,18 @@
         public const string ToolContentId = "<OutputToolWindow>";
         #endregion fields
 
-        #region constructors
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public OutputViewModel()
-         : base("Output")
+        public OutputToolWindow(): base("Output")
         {
-            //outputWriter = new OutputWriter(this);
-
             textModel = new StringBuilder();
 
-            ContentId = OutputViewModel.ToolContentId;
+            ContentId = ToolContentId;
+
+            StrongReferenceMessenger.Default.Register<IOutputToolWindow, string>(this, (vm, message) => AppendLine(message));
         }
-        #endregion constructors
 
         #region properties
       
 
-        ///// <summary>
-        ///// Implements the <seealso cref="IOutput"/> interface.
-        ///// </summary>
-        //public TextWriter Writer { get { return outputWriter; } }
 
         public string Text
         {

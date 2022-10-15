@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -13,10 +14,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public BusWirePlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
 
         BusWireCanvasItem GetItem() => canvasItem as BusWireCanvasItem;
 
@@ -181,12 +182,12 @@ namespace IDE.Core.Presentation.Placement
         void HandleLinePoint(XPoint linePointMM)
         {
             var item = GetItem();
-
+            var circle = new CircleCanvasItem { Diameter = item.Width, X = linePointMM.X, Y = linePointMM.Y };
             var busItems = CanvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
 
             foreach (var busItem in busItems)
             {
-                var intersects = GeometryHelper.ItemIntersectsPoint(busItem, linePointMM, item.Width);
+                var intersects = GeometryHelper.Intersects(busItem, circle);
                 if (!intersects)
                     continue;
 

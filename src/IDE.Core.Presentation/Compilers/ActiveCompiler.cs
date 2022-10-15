@@ -1,4 +1,5 @@
-﻿using IDE.Core.Errors;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using IDE.Core.Errors;
 using IDE.Core.Interfaces;
 using IDE.Core.Utilities;
 using System;
@@ -16,15 +17,8 @@ public class ActiveCompiler : IActiveCompiler
 {
     public ActiveCompiler(IFileCompiler fileCompiler)
     {
-        _dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-        _errorsToolWindow = ServiceProvider.GetToolWindow<IErrorsToolWindow>();
         _fileCompiler = fileCompiler;
     }
-
-
-    private readonly IErrorsToolWindow _errorsToolWindow;
-
-    private readonly IDispatcherHelper _dispatcher;
 
     private readonly IFileCompiler _fileCompiler;
 
@@ -41,29 +35,28 @@ public class ActiveCompiler : IActiveCompiler
             {
                 try
                 {
-                    var listErrors = new List<IErrorMessage>();
+                    StrongReferenceMessenger.Default.Send(new ClearErrorsMessage());
 
                     var result = await _fileCompiler.Compile(file);
 
-                    if (result != null && _errorsToolWindow != null)
+                    if (result != null)
                     {
-                        listErrors.AddRange(result.Errors);
+                        if (result.Errors.Count > 0)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                StrongReferenceMessenger.Default.Send(error);
+                            }
+
+                            StrongReferenceMessenger.Default.Send(new ActivateErrorsToolWindow
+                            {
+                                IsActive = true,
+                                IsVisible = true,
+                            });
+                        }
+
                     }
 
-                    _dispatcher.RunOnDispatcher(() =>
-                    {
-                        _errorsToolWindow?.Clear();
-                        foreach (var err in listErrors)
-                        {
-                            _errorsToolWindow.AddErrorMessage(err);
-                        }
-
-                        if (_errorsToolWindow.Errors.Count > 0)
-                        {
-                            _errorsToolWindow.IsVisible = true;
-                            _errorsToolWindow.IsActive = true;
-                        }
-                    });
                 }
                 finally
                 {

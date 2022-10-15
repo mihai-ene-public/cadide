@@ -1,8 +1,10 @@
-﻿using IDE.Core.Commands;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using IDE.Core.Commands;
 using IDE.Core.Interfaces;
 using IDE.Core.Utilities;
 using IDE.Core.ViewModels;
 using IDE.Documents.Views;
+using SixLabors.ImageSharp.Drawing.Processing;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -14,6 +16,13 @@ namespace IDE.Core.Errors
         public ErrorsToolWindowViewModel()
             : base("Errors")
         {
+            StrongReferenceMessenger.Default.Register<IErrorsToolWindow, IErrorMessage>(this, (vm, message) => AddErrorMessage(message));
+            StrongReferenceMessenger.Default.Register<IErrorsToolWindow, ClearErrorsMessage>(this, (vm, message) => Clear());
+            StrongReferenceMessenger.Default.Register<IErrorsToolWindow, ActivateErrorsToolWindow>(this, (vm, message) =>
+            {
+                IsVisible = message.IsVisible;
+                IsActive = message.IsActive;
+            });
         }
 
         ObservableCollection<IErrorMessage> errors = new ObservableCollection<IErrorMessage>();

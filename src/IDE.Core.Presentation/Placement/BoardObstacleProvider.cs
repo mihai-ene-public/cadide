@@ -104,11 +104,9 @@ namespace IDE.Core.Presentation.Placement
                 var t = obstacle.CanvasItem.GetTransform();
 
                 var geometry = GeometryHelper.GetGeometry(obstacle.CanvasItem, applyTransform: true);
-                //if (!geometry.IsEmpty())
-                //    geometry.Transform = t.ToMatrixTransform();
                 obstacle.Geometry = geometry;
 
-                var bounds = GeometryHelper.GetGeometryBounds(geometry);
+                var bounds = geometry.GetBounds();
                 obstacle.Envelope = Envelope.FromRect(bounds);
 
                 //tree.Add(Core.RTree.Rectangle.FromRect(bounds), obstacle);

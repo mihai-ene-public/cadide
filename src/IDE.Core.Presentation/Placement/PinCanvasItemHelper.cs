@@ -12,17 +12,12 @@ namespace IDE.Core.Presentation.Placement
 
         public PinCanvasItemHelper(IDrawingViewModel canvasModel)
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-
-
             pins = from part in canvasModel.Items.OfType<SchematicSymbolCanvasItem>()
                    from p in part.Pins
                    select p;
         }
 
         IEnumerable<PinCanvasItem> pins;
-
-        IGeometryHelper GeometryHelper;
 
         public List<PinCanvasItem> GetPinsCollision(XPoint point, double diameter)
         {

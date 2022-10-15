@@ -14,14 +14,16 @@
                             string description,
                             string fileFilterName,
                             string fileExtension,
-                            Type classType
+                            Type documentEditorClassType,
+                            Type documentClassType
                             )
         {
             Key = key;
             Description = description;
             FileFilterName = fileFilterName;
             FileExtension = fileExtension;
-            ClassType = classType;
+            DocumentEditorClassType = documentEditorClassType;
+            DocumentClassType = documentClassType;
             FileTypeExtensions = null;
         }
         #endregion constructors
@@ -57,7 +59,9 @@
         /// <summary>
         /// Gets the actual type of the viewmodel class that implements this document type.
         /// </summary>
-        public Type ClassType { get; private set; }
+        public Type DocumentEditorClassType { get; private set; }
+
+        public Type DocumentClassType { get; private set; }
 
 
         #endregion properties

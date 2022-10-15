@@ -26,5 +26,17 @@ namespace IDE.Core.Common.Geometries
 
             return transformedOutline;
         }
+
+        public override XRect GetBounds()
+        {
+            var rect = new XRect();
+            for(int i = 0; i < Outlines.Count; i++)
+            {
+                var bounds= Outlines[i].GetBounds();
+                rect.Union(bounds);
+            }
+
+            return rect;
+        }
     }
 }

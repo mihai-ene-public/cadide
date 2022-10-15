@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Common;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Builders;
 using IDE.Core.Presentation.Compilers;
 using IDE.Core.Storage;
 using System;
@@ -53,6 +54,11 @@ namespace IDE.Core.ViewModels
         {
             return ServiceProvider.Resolve<ISolutionCompiler>();
         }
+        private ISolutionBuilder GetSolutionBuilder()
+        {
+            return ServiceProvider.Resolve<ISolutionBuilder>();
+        }
+
         public async override Task Compile()
         {
             var compiler = GetSolutionCompiler();
@@ -61,7 +67,7 @@ namespace IDE.Core.ViewModels
 
         public async override Task Build()
         {
-            var compiler = GetSolutionCompiler();
+            var compiler = GetSolutionBuilder();
             await compiler.BuildProject(this);
         }
 

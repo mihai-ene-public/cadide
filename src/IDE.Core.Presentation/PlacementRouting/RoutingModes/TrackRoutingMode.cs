@@ -11,13 +11,8 @@ namespace IDE.Core.Presentation.PlacementRouting
 
         public TrackRoutingMode()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
         }
 
-        // Dictionary<ILayerDesignerItem, RTree<ObstacleItem>> trees;
-        //RTree<ObstacleItem> tree = new RTree<ObstacleItem>();
-        //  List<ObstacleItem> obstacles = new List<ObstacleItem>();
-        protected IGeometryHelper GeometryHelper;
 
         protected BoardObstacleProvider obstaclesProvider;
 
@@ -37,7 +32,6 @@ namespace IDE.Core.Presentation.PlacementRouting
             set { canvasModel = value; }
         }
 
-        public IGeometryHelper GetGeometryHelper() => GeometryHelper;
 
         protected/*static*/ RoutingBehavior currentRoutingBehavior;
         protected/*static*/ List<RoutingBehavior> supportedRoutingBehaviors = new List<RoutingBehavior>();

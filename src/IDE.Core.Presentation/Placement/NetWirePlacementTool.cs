@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -13,10 +14,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public NetWirePlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
 
         NetWireCanvasItem GetItem() => canvasItem as NetWireCanvasItem;
 
@@ -198,6 +199,7 @@ namespace IDE.Core.Presentation.Placement
             //check if we intersect a point of this wire with other net segments
             #region Wire with other net segments
 
+            var circle = new CircleCanvasItem { Diameter = item.Width, X = linePointMM.X, Y = linePointMM.Y };
             var intersectedWires = new List<NetWireCanvasItem>();
             var addJunction = false;
             var netElements = CanvasModel.Items.OfType<NetSegmentCanvasItem>().Where(ns => ns != item && ns.IsPlaced).ToList();
@@ -213,7 +215,7 @@ namespace IDE.Core.Presentation.Placement
                     if (geom != null)
                     {
 
-                        var intersects = GeometryHelper.ItemIntersectsPoint(geom, linePointMM, item.Width);
+                        var intersects = GeometryHelper.Intersects(geom, circle);
                         if (!intersects)
                             continue;
 
@@ -347,12 +349,12 @@ namespace IDE.Core.Presentation.Placement
         private bool TestBusHit(ref XPoint point)
         {
             var item = GetItem();
-
+            var circle = new CircleCanvasItem { Diameter = item.Width, X = point.X, Y = point.Y };
             var busItems = CanvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
 
             foreach (var busItem in busItems)
             {
-                var intersects = GeometryHelper.ItemIntersectsPoint(busItem, point, item.Width);
+                var intersects = GeometryHelper.Intersects(busItem, circle);
                 if (!intersects)
                     continue;
 

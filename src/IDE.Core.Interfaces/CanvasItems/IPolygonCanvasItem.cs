@@ -45,7 +45,7 @@ namespace IDE.Core.Interfaces
         IExcludeItems,
         IRepourGeometry
     {
-        IGeometry PolygonGeometry { get; }
+        IGeometryOutline PolygonGeometry { get; }
         int DrawOrder { get; set; }
     }
     public interface ISingleLayerBoardCanvasItem : ISelectableItem
@@ -87,19 +87,14 @@ namespace IDE.Core.Interfaces
         public double Clearance { get; private set; }
     }
 
-    public interface IPolygonGeometryPourProcessor
-    {
-        object GetGeometry(ISelectableItem thisItem, IBoardDesigner board);
-    }
-
     public interface IPolygonGeometryOutlinePourProcessor
     {
         IGeometryOutline GetGeometry(ISelectableItem thisItem, IBoardDesigner board);
     }
 
-    public interface IPlaneGeometryPourProcessor
+    public interface IPlaneGeometryOutlinePourProcessor
     {
-        object GetGeometry(ISelectableItem thisItem, IBoardDesigner board);
+        IGeometryOutline GetGeometry(ISelectableItem thisItem, IBoardDesigner board);
     }
 
     public enum PolygonType

@@ -7,15 +7,7 @@ namespace IDE.Core.Interfaces
 {
     public interface IMeshHelper
     {
-        IMeshModel BuildMeshFromItems2(IEnumerable<ICanvasItem> unionItems, IEnumerable<ICanvasItem> extractItems, double start, double thickness);
-
         IMeshModel BuildMeshFromShapes(IEnumerable<IShape> unionItems, IEnumerable<IShape> extractItems, double thickness);
-
-        bool IsPointInPolygon(IList<XPoint> polygon, XPoint testPoint);
-
-        IMeshModel GetMeshModelFromCData(XmlCDataSection cData);
-
-        XmlCDataSection GetCDataFromMeshModel(IMeshModel model);
 
         IMeshModel CreateTube(IList<XPoint3D> xpath, double diameter, int thetaDiv, bool capped);
 

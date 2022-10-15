@@ -16,6 +16,7 @@ using System.Windows.Media;
 
 namespace IDE.Core.Collision
 {
+    /*
     //this should be on the model layer, but since we have Geometry class which is WPF and DirectX Windows,we throw it on the presentation
 
     public class GeometryHelper : IGeometryHelper
@@ -24,17 +25,17 @@ namespace IDE.Core.Collision
 
         const double defaultTolerance = 0.01;//5e-3;
 
-        public XRect GetGeometryBounds(ICanvasItem item)
-        {
-            var g = GetGeometryInternal(item);
-            return g.Bounds.ToXRect();
-        }
+        //public XRect GetGeometryBounds(ICanvasItem item)
+        //{
+        //    var g = GetGeometryInternal(item);
+        //    return g.Bounds.ToXRect();
+        //}
 
-        public XRect GetGeometryBounds(object geometry)
-        {
-            var g = (Geometry)geometry;
-            return g.Bounds.ToXRect();
-        }
+        //public XRect GetGeometryBounds(object geometry)
+        //{
+        //    var g = (Geometry)geometry;
+        //    return g.Bounds.ToXRect();
+        //}
 
         public Geometry GetLineGeometry(ILineCanvasItem line, double tolerance = defaultTolerance)
         {
@@ -313,47 +314,47 @@ namespace IDE.Core.Collision
             return textGeometry;
         }
 
-        public void GetTextOutlines(ITextCanvasItem text, List<List<XPoint[]>> outlines)
-        {
-            var textGeometry = GetTextGeometry(text);
-            AppendOutlinesInternal(textGeometry, outlines);
-        }
+        //public void GetTextOutlines(ITextCanvasItem text, List<List<XPoint[]>> outlines)
+        //{
+        //    var textGeometry = GetTextGeometry(text);
+        //    AppendOutlinesInternal(textGeometry, outlines);
+        //}
 
-        public void GetTextOutlines(IGlobalTextPrimitive text, List<List<XPoint[]>> outlines)
-        {
-            var textGeometry = GetTextGeometry(text.Text, text.FontFamily, text.FontSize, text.Bold, text.Italic);
-            AppendOutlinesInternal(textGeometry, outlines);
-        }
+        //public void GetTextOutlines(IGlobalTextPrimitive text, List<List<XPoint[]>> outlines)
+        //{
+        //    var textGeometry = GetTextGeometry(text.Text, text.FontFamily, text.FontSize, text.Bold, text.Italic);
+        //    AppendOutlinesInternal(textGeometry, outlines);
+        //}
 
-        public void AppendOutlinesInternal(Geometry geometry, List<List<XPoint[]>> outlines, double tolerance = defaultTolerance)
-        {
-            var group = geometry as GeometryGroup;
-            if (group != null)
-            {
-                foreach (var g in group.Children)
-                {
-                    AppendOutlinesInternal(g, outlines);
-                }
+        //public void AppendOutlinesInternal(Geometry geometry, List<List<XPoint[]>> outlines, double tolerance = defaultTolerance)
+        //{
+        //    var group = geometry as GeometryGroup;
+        //    if (group != null)
+        //    {
+        //        foreach (var g in group.Children)
+        //        {
+        //            AppendOutlinesInternal(g, outlines);
+        //        }
 
-                return;
-            }
+        //        return;
+        //    }
 
-            //var pathGeometry = (geometry is PathGeometry) ? geometry as PathGeometry : geometry.GetOutlinedPathGeometry();
-            var pathGeometry = geometry.GetFlattenedPathGeometry(tolerance, ToleranceType.Absolute);
-            if (pathGeometry != null)
-            {
-                var figures = pathGeometry.Figures.Select(figure => ToPolyLine(figure)).ToList();
-                outlines.Add(figures);
-                return;
-            }
+        //    //var pathGeometry = (geometry is PathGeometry) ? geometry as PathGeometry : geometry.GetOutlinedPathGeometry();
+        //    var pathGeometry = geometry.GetFlattenedPathGeometry(tolerance, ToleranceType.Absolute);
+        //    if (pathGeometry != null)
+        //    {
+        //        var figures = pathGeometry.Figures.Select(figure => ToPolyLine(figure)).ToList();
+        //        outlines.Add(figures);
+        //        return;
+        //    }
 
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
 
-        public void AppendOutlines(object geometry, List<List<XPoint[]>> outlines)
-        {
-            AppendOutlinesInternal((Geometry)geometry, outlines);
-        }
+        //public void AppendOutlines(object geometry, List<List<XPoint[]>> outlines)
+        //{
+        //    AppendOutlinesInternal((Geometry)geometry, outlines);
+        //}
 
         public Geometry GetTextGeometry(ITextMonoLineCanvasItem text, double tolerance = defaultTolerance)
         {
@@ -462,16 +463,16 @@ namespace IDE.Core.Collision
         }
 
 
-        public object GetGeometry(ICanvasItem item, double tolerance = defaultTolerance, bool applyTransform = false)
-        {
-            var g = GetGeometryInternal(item, tolerance);
-            if (applyTransform && !g.IsEmpty() && item is ISelectableItem s)
-            {
-                g.Transform = s.GetTransform().ToMatrixTransform();
-            }
+        //public object GetGeometry(ICanvasItem item, double tolerance = defaultTolerance, bool applyTransform = false)
+        //{
+        //    var g = GetGeometryInternal(item, tolerance);
+        //    if (applyTransform && !g.IsEmpty() && item is ISelectableItem s)
+        //    {
+        //        g.Transform = s.GetTransform().ToMatrixTransform();
+        //    }
 
-            return g;
-        }
+        //    return g;
+        //}
 
         internal Geometry GetGeometryInternal(ICanvasItem item, double tolerance = defaultTolerance)
         {
@@ -521,27 +522,27 @@ namespace IDE.Core.Collision
 
 
 
-        public Geometry GetIntersection(ICanvasItem item1, ICanvasItem item2)
-        {
-            var geometry1 = GetGeometryInternal(item1);
-            var geometry2 = GetGeometryInternal(item2);
+        //public Geometry GetIntersection(ICanvasItem item1, ICanvasItem item2)
+        //{
+        //    var geometry1 = GetGeometryInternal(item1);
+        //    var geometry2 = GetGeometryInternal(item2);
 
-            var intersection = Geometry.Combine(geometry1, geometry2, GeometryCombineMode.Intersect, null);
-            return intersection;
-        }
+        //    var intersection = Geometry.Combine(geometry1, geometry2, GeometryCombineMode.Intersect, null);
+        //    return intersection;
+        //}
 
-        public Geometry GetIntersectionInternal(Geometry geometry, ICanvasItem item)
-        {
-            var geometry2 = GetGeometryInternal(item);
+        //public Geometry GetIntersectionInternal(Geometry geometry, ICanvasItem item)
+        //{
+        //    var geometry2 = GetGeometryInternal(item);
 
-            var intersection = Geometry.Combine(geometry, geometry2, GeometryCombineMode.Intersect, null);
-            return intersection;
-        }
+        //    var intersection = Geometry.Combine(geometry, geometry2, GeometryCombineMode.Intersect, null);
+        //    return intersection;
+        //}
 
-        public object GetIntersection(object geometry, ICanvasItem item)
-        {
-            return GetIntersectionInternal((Geometry)geometry, item);
-        }
+        //public object GetIntersection(object geometry, ICanvasItem item)
+        //{
+        //    return GetIntersectionInternal((Geometry)geometry, item);
+        //}
 
         internal Geometry GetIntersectionInternal(Geometry geometry1, Geometry geometry2)
         {
@@ -549,35 +550,35 @@ namespace IDE.Core.Collision
             return intersection;
         }
 
-        public object GetIntersection(object geometry1, object geometry2)
-        {
-            return GetIntersectionInternal((Geometry)geometry1, (Geometry)geometry2);
-        }
+        //public object GetIntersection(object geometry1, object geometry2)
+        //{
+        //    return GetIntersectionInternal((Geometry)geometry1, (Geometry)geometry2);
+        //}
 
-        public bool ItemIntersectsPoint(ICanvasItem item, XPoint point, double pointDiameter)
-        {
-            var pointGeom = new EllipseGeometry(point.ToPoint(), pointDiameter / 2, pointDiameter / 2);
-            return Intersects(pointGeom, item);
-        }
+        //public bool ItemIntersectsPoint(ICanvasItem item, XPoint point, double pointDiameter)
+        //{
+        //    var pointGeom = new EllipseGeometry(point.ToPoint(), pointDiameter / 2, pointDiameter / 2);
+        //    return Intersects(pointGeom, item);
+        //}
 
-        public bool ItemIntersectsRectangle(ICanvasItem item, XRect rect)
-        {
-            var itemBounds = ( (ISelectableItem)item ).GetBoundingRectangle();
+        //public bool ItemIntersectsRectangle(ICanvasItem item, XRect rect)
+        //{
+        //    var itemBounds = ( (ISelectableItem)item ).GetBoundingRectangle();
 
-            if (rect.IntersectsWith(itemBounds))
-            {
-                var geometry2 = GetGeometryInternal(item);
-                if (geometry2.IsEmpty())
-                    return true;
+        //    if (rect.IntersectsWith(itemBounds))
+        //    {
+        //        var geometry2 = GetGeometryInternal(item);
+        //        if (geometry2.IsEmpty())
+        //            return true;
 
-                var rectGeom = new RectangleGeometry(rect.ToRect());
-                geometry2.Transform = ( (ISelectableItem)item ).GetTransform().ToMatrixTransform();
+        //        var rectGeom = new RectangleGeometry(rect.ToRect());
+        //        geometry2.Transform = ( (ISelectableItem)item ).GetTransform().ToMatrixTransform();
 
-                return Intersects(rectGeom, geometry2);
-            }
+        //        return Intersects(rectGeom, geometry2);
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public bool Intersects(Geometry geometry1, Geometry geometry2, double tolerance = defaultTolerance)
         {
@@ -630,23 +631,23 @@ namespace IDE.Core.Collision
 
 
 
-        public List<XPoint> GetIntersectionPoints(Geometry g1, Geometry g2)
-        {
-            var points = new List<XPoint>();
-            if (g1.Bounds.IntersectsWith(g2.Bounds))
-            {
-                var cg = GetIntersectionInternal(g1, g2);
-                var pg = cg.GetFlattenedPathGeometry();
+        //public List<XPoint> GetIntersectionPoints(Geometry g1, Geometry g2)
+        //{
+        //    var points = new List<XPoint>();
+        //    if (g1.Bounds.IntersectsWith(g2.Bounds))
+        //    {
+        //        var cg = GetIntersectionInternal(g1, g2);
+        //        var pg = cg.GetFlattenedPathGeometry();
 
-                // Point[] result = new Point[pg.Figures.Count];
-                for (int i = 0; i < pg.Figures.Count; i++)
-                {
-                    var f = pg.Figures[i];
-                    points.AddRange(ToPolyLine(f));
-                }
-            }
-            return points;
-        }
+        //        // Point[] result = new Point[pg.Figures.Count];
+        //        for (int i = 0; i < pg.Figures.Count; i++)
+        //        {
+        //            var f = pg.Figures[i];
+        //            points.AddRange(ToPolyLine(f));
+        //        }
+        //    }
+        //    return points;
+        //}
 
         public XPoint[] ToPolyLine(PathFigure figure)
         {
@@ -719,81 +720,83 @@ namespace IDE.Core.Collision
             }
         }
 
-        public List<XPoint> GetOutlinePointsInternal(Geometry geometry)
-        {
-            var points = new List<XPoint>();
-            var og = geometry.GetFlattenedPathGeometry(0.05, ToleranceType.Absolute);
+        //public List<XPoint> GetOutlinePointsInternal(Geometry geometry)
+        //{
+        //    var points = new List<XPoint>();
+        //    var og = geometry.GetFlattenedPathGeometry(0.05, ToleranceType.Absolute);
 
-            for (int i = 0; i < og.Figures.Count; i++)
-            {
-                var f = og.Figures[i];
-                points.AddRange(ToPolyLine(f));
-            }
-            return points;
-        }
+        //    for (int i = 0; i < og.Figures.Count; i++)
+        //    {
+        //        var f = og.Figures[i];
+        //        points.AddRange(ToPolyLine(f));
+        //    }
+        //    return points;
+        //}
 
-        public IList<XPoint> GetOutlinePoints(object geometry)
-        {
-            return GetOutlinePointsInternal((Geometry)geometry);
-        }
+        //public IList<XPoint> GetOutlinePoints(object geometry)
+        //{
+        //    return GetOutlinePointsInternal((Geometry)geometry);
+        //}
 
-        public CanvasLocation CheckClearance(ICanvasItem item1, ICanvasItem item2, double clearance)
-        {
-            var g1 = GetGeometryItem(item1);
-            //we substract a small value so that it will not intersect and allow for a fixed clearance
-            var g1Min = g1.GetWidenedPathGeometry(new Pen(Brushes.Transparent, clearance), 1e-3, ToleranceType.Absolute);
+        //public CanvasLocation CheckClearance(ICanvasItem item1, ICanvasItem item2, double clearance)
+        //{
+        //    var g1 = GetGeometryItem(item1);
+        //    //we substract a small value so that it will not intersect and allow for a fixed clearance
+        //    var g1Min = g1.GetWidenedPathGeometry(new Pen(Brushes.Transparent, clearance), 1e-3, ToleranceType.Absolute);
 
-            var g2 = GetGeometryItem(item2);
+        //    var g2 = GetGeometryItem(item2);
 
-            //check min clearance
-            if (Intersects(g1Min, g2))
-            {
-                //  result.Message = $"Minimum clearance violation between {item1} and {item2}";
-                var intersection = GetIntersectionInternal(g1Min, g2);
-                var bounds = intersection.Bounds;
-                var location = new CanvasLocation
-                {
-                    Geometry = new GeometryWrapper(intersection),
-                    Location = bounds.ToXRect()// new XRect(bounds.X, bounds.Y, bounds.Width, bounds.Height)
-                };
-                return location;
-            }
+        //    //check min clearance
+        //    if (Intersects(g1Min, g2))
+        //    {
+        //        //  result.Message = $"Minimum clearance violation between {item1} and {item2}";
+        //        var intersection = GetIntersectionInternal(g1Min, g2);
+        //        var bounds = intersection.Bounds;
+        //        var location = new CanvasLocation
+        //        {
+        //            Geometry = new GeometryWrapper(intersection),
+        //            Location = bounds.ToXRect()// new XRect(bounds.X, bounds.Y, bounds.Width, bounds.Height)
+        //        };
+        //        return location;
+        //    }
 
 
-            return null;
-        }
+        //    return null;
+        //}
 
-        protected Geometry GetGeometryItem(ICanvasItem item)
-        {
-            if (item is PolygonBoardCanvasItem poly)
-            {
-                var pg = poly.PolygonGeometry.Geometry as Geometry;
-                if (pg == null || pg.IsEmpty())
-                    return Geometry.Empty;
-                var g = pg.Clone();
+        //protected Geometry GetGeometryItem(ICanvasItem item)
+        //{
+        //    if (item is PolygonBoardCanvasItem poly)
+        //    {
+        //        var pg = poly.PolygonGeometry.Geometry as Geometry;
+        //        if (pg == null || pg.IsEmpty())
+        //            return Geometry.Empty;
+        //        var g = pg.Clone();
 
-                var t = poly.GetTransform() as XTransformGroup;
+        //        var t = poly.GetTransform() as XTransformGroup;
 
-                if (t != null)
-                {
-                    //poly.PolygonGeometry is in DPI
-                    var s = 1.0d / MilimetersToDpiHelper.MillimetersToDpiTransformFactor;
-                    t.Children.Add(new XScaleTransform(s, s));
-                }
-                g.Transform = ToMatrixTransform(t);
+        //        if (t != null)
+        //        {
+        //            //poly.PolygonGeometry is in DPI
+        //            var s = 1.0d / MilimetersToDpiHelper.MillimetersToDpiTransformFactor;
+        //            t.Children.Add(new XScaleTransform(s, s));
+        //        }
+        //        g.Transform = ToMatrixTransform(t);
 
-                return g;
-            }
+        //        return g;
+        //    }
 
-            var itemGeometry = (Geometry)GetGeometry(item, applyTransform: true);
-            // itemGeometry.Transform = ((ISelectableItem)item).GetTransform().ToMatrixTransform();
-            return itemGeometry;
-        }
+        //    var itemGeometry = (Geometry)GetGeometry(item, applyTransform: true);
+        //    // itemGeometry.Transform = ((ISelectableItem)item).GetTransform().ToMatrixTransform();
+        //    return itemGeometry;
+        //}
 
-        Transform ToMatrixTransform(XTransform t)
-        {
-            var m = t.Value;
-            return new MatrixTransform(m.M11, m.M12, m.M21, m.M22, m.OffsetX, m.OffsetY);
-        }
+        //Transform ToMatrixTransform(XTransform t)
+        //{
+        //    var m = t.Value;
+        //    return new MatrixTransform(m.M11, m.M12, m.M21, m.M22, m.OffsetX, m.OffsetY);
+        //}
     }
+
+    */
 }

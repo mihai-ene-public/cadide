@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
+using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Presentation.PlacementRouting
 {
@@ -12,8 +13,10 @@ namespace IDE.Core.Presentation.PlacementRouting
 
         public SingleTrackRoutingMode()
         {
-
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
+
+        private readonly IGeometryOutlineHelper GeometryHelper;
 
         public override void PlacementMouseUp(XPoint mousePosition)
         {

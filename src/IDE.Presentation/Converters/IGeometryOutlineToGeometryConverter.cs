@@ -43,15 +43,13 @@
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var g = value as IGeometry;
-            if (g != null && g.Geometry is IGeometryOutline geometryOutline)
+            if (value is IGeometryOutline geometryOutline)
             {
                 var paths = new List<IList<XPoint>>();
 
                 LoadPaths(geometryOutline, paths);
 
                 var poly = new PathGeometry();
-                //poly.FillRule = FillRule.Nonzero;
 
                 foreach (var path in paths)
                 {

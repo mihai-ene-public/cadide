@@ -31,9 +31,6 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
 
             ServiceProvider.RegisterResolver(t =>
             {
-                if (t == typeof(IGeometryHelper))
-                    return new GeometryHelper();
-
                 if (t == typeof(IDebounceDispatcher))
                     return debounceMock.Object;
 

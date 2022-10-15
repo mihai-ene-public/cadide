@@ -1,6 +1,7 @@
 ﻿using IDE.Core.Converters;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Utilities;
 using System;
 using System.Collections.Generic;
@@ -116,7 +117,7 @@ namespace IDE.Core.Adorners
         {
             if (_netWireEndPointCollisionHelper == null)
             {
-                var geometryHelper = ServiceProvider.Resolve<IGeometryHelper>(); ;
+                var geometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
                 _netWireEndPointCollisionHelper = new NetWireEndPointCollisionHelper(netWire, canvasModel, geometryHelper);
             }
         }

@@ -14,6 +14,7 @@ using IDE.Core.Types.Attributes;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Model.GlobalRepresentation;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
+using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Designers
 {
@@ -263,15 +264,10 @@ namespace IDE.Core.Designers
             }
         }
 
-        //[Browsable(false)]
-        //public PolygonBoardCanvasItem This
-        //{
-        //    get { return this; }
-        //}
+        IGeometryOutline polygonGeometry;
 
-        IGeometry polygonGeometry;
         [Browsable(false)]
-        public IGeometry PolygonGeometry
+        public IGeometryOutline PolygonGeometry
         {
             get { return polygonGeometry; }
             set
@@ -301,18 +297,13 @@ namespace IDE.Core.Designers
 
                 var thisBoard = LayerDocument as IBoardDesigner;
 
-                //var proc = ServiceProvider.Resolve<IPolygonGeometryOutlinePourProcessor>();
                 var proc = new GlobalPrimitivePourProcessor();
                 var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-                //await Task.Run(() => proc.GetGeometry(this, thisBoard))
-                //    .ContinueWith(t =>
-                //    {
-                //        dispatcher.RunOnDispatcher(() =>
-                //        PolygonGeometry = new GeometryWrapper(t.Result));
-                //    });
+
                 var globalPrimitive = proc.GetPrimitive(this) as GlobalPouredPolygonPrimitive;
                 dispatcher.RunOnDispatcher(() =>
-                       PolygonGeometry = new GeometryWrapper(( globalPrimitive.FinalGeometry )));
+                       PolygonGeometry = globalPrimitive.FinalGeometry
+                       );
 
                 sw.Stop();
                 Debug.WriteLine($"Geometry generated: {sw.ElapsedMilliseconds} ms");

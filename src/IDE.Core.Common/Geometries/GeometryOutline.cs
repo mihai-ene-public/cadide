@@ -42,6 +42,18 @@ namespace IDE.Core.Common.Geometries
             return transformedOutline;
         }
 
+        public virtual XRect GetBounds()
+        {
+            var rect = new XRect();
+            var outline = GetOutline();
+            foreach (var p in outline)
+            {
+                rect.Union(p);
+            }
+
+            return rect;
+        }
+
         public List<XPoint> ApplyTransform(XTransform transform)
         {
             Transform = transform;

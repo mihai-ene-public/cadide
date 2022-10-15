@@ -1,5 +1,7 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
+using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public NetLabelPlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
         NetLabelCanvasItem GetItem() => canvasItem as NetLabelCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)
@@ -36,6 +38,7 @@ namespace IDE.Core.Presentation.Placement
             var mp = CanvasModel.SnapToGrid(mousePosition);
 
             var item = GetItem();
+            var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
 
             switch (PlacementStatus)
             {
@@ -52,7 +55,7 @@ namespace IDE.Core.Presentation.Placement
                         //if (intersection.IsEmpty())
                         //    continue;
 
-                        var intersects = GeometryHelper.ItemIntersectsPoint(netWire, mp, 0.5);
+                        var intersects = GeometryHelper.Intersects(netWire, circle);
                         if (!intersects)
                             continue;
 

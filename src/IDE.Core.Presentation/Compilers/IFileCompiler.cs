@@ -7,14 +7,3 @@ public interface IFileCompiler
 {
     Task<CompilerResult> Compile(IFileBaseViewModel file);
 }
-
-public interface ISolutionCompiler
-{
-    Task CompileSolution(ISolutionRootNodeModel solution);
-
-    Task BuildSolution(ISolutionRootNodeModel solution);
-
-    Task CompileProject(ISolutionProjectNodeModel project);
-
-    Task BuildProject(ISolutionProjectNodeModel project);
-}

@@ -1,4 +1,5 @@
-﻿using IDE.Core.Interfaces;
+﻿using IDE.Core.Common.Geometries;
+using IDE.Core.Interfaces;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Spatial2D;
 using IDE.Core.Storage;
@@ -17,18 +18,14 @@ namespace IDE.Core.Designers
     /// </summary>
     public class BoardNetGraph : BaseCanvasItem, IBoardNetGraph
     {
-        public BoardNetGraph(BoardNetDesignerItem pNet, IBoardDesigner pBoard)
+        public BoardNetGraph(BoardNetDesignerItem pNet)
         {
             net = pNet;
-            board = pBoard;
-            canvas = pBoard.CanvasModel;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
             ZIndex = 5000;//topmost
             CanEdit = false;
         }
         IDispatcherHelper dispatcher;
-        IBoardDesigner board;
-        IDrawingViewModel canvas;
 
         BoardNetDesignerItem net;
         public IBoardNetDesignerItem Net => net;
@@ -84,7 +81,7 @@ namespace IDE.Core.Designers
             {
 
                 var geom = GeometryHelper.GetGeometry(item, applyTransform: true);
-                var rect = GeometryHelper.GetGeometryBounds(geom);
+                var rect = geom.GetBounds();
 
                 var treeItem = new SignalTreeNodeItem
                 {
@@ -235,7 +232,7 @@ namespace IDE.Core.Designers
                         otherBP.CreateLink();
 
                     if (BelongsToSameLayer(thisBP, otherBP)
-                        && GeometryHelper.Intersects(thisBP.ItemGeometry, otherBP.ItemGeometry))
+                        && GeometryOutline.Intersects(thisBP.ItemGeometry, otherBP.ItemGeometry))
                     {
                         //items are on the same branch
 

@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Placement;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -13,7 +14,7 @@ namespace IDE.Core.Presentation.Utilities
     public class NetWireEndPointCollisionHelper
     {
 
-        public NetWireEndPointCollisionHelper(NetWireCanvasItem netWire, IDrawingViewModel canvasModel, IGeometryHelper geometryHelper)
+        public NetWireEndPointCollisionHelper(NetWireCanvasItem netWire, IDrawingViewModel canvasModel, IGeometryOutlineHelper geometryHelper)
         {
             _netWire = netWire;
             _canvasModel = canvasModel;
@@ -22,7 +23,7 @@ namespace IDE.Core.Presentation.Utilities
 
         private readonly NetWireCanvasItem _netWire;
         private readonly IDrawingViewModel _canvasModel;
-        private readonly IGeometryHelper _geometryHelper;
+        private readonly IGeometryOutlineHelper _geometryHelper;
 
         INetManager GetNetManager()
         {
@@ -43,10 +44,11 @@ namespace IDE.Core.Presentation.Utilities
         {
 
             var busItems = _canvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
+            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y };
 
             foreach (var busItem in busItems)
             {
-                var intersects = _geometryHelper.ItemIntersectsPoint(busItem, point, _netWire.Width);
+                var intersects = _geometryHelper.Intersects(busItem, circle);
                 if (!intersects)
                     continue;
 
@@ -106,6 +108,7 @@ namespace IDE.Core.Presentation.Utilities
 
         private bool TestOtherNetSegments(XPoint point)
         {
+            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y };
             var intersectedWires = new List<NetWireCanvasItem>();
             var addJunction = false;
             var netElements = _canvasModel.Items.OfType<NetSegmentCanvasItem>().Where(ns => ns != _netWire && ns.IsPlaced).ToList();
@@ -119,7 +122,7 @@ namespace IDE.Core.Presentation.Utilities
                 {
                     if (geom != null)
                     {
-                        var intersects = _geometryHelper.ItemIntersectsPoint(geom, point, _netWire.Width);
+                        var intersects = _geometryHelper.Intersects(geom, circle);
                         if (!intersects)
                             continue;
 

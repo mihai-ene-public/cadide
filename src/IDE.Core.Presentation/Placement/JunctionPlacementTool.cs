@@ -2,6 +2,7 @@
 using System.Linq;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
@@ -10,10 +11,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public JunctionPlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
         JunctionCanvasItem GetItem() => canvasItem as JunctionCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)

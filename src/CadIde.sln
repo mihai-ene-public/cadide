@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Services", "3-Services", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Presentation", "4-Presentation", "{3545C759-3BDE-4AB1-8A7B-ACFFDC6A96B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDE.Console", "IDE.Console\IDE.Console.csproj", "{F9F6880B-0458-4125-8D75-37E00B42CF6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -407,6 +409,26 @@ Global
 		{E7E187DD-EEEA-4596-8505-480B9B826EF5}.Release|x64.Build.0 = Release|Any CPU
 		{E7E187DD-EEEA-4596-8505-480B9B826EF5}.Release|x86.ActiveCfg = Release|Any CPU
 		{E7E187DD-EEEA-4596-8505-480B9B826EF5}.Release|x86.Build.0 = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Mixed.ActiveCfg = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Mixed.Build.0 = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|x64.Build.0 = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Mixed.ActiveCfg = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Mixed.Build.0 = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|x64.ActiveCfg = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|x64.Build.0 = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -429,9 +451,10 @@ Global
 		{C29320BA-470F-46D4-AFFD-2D3B3A6E2040} = {8E363EDF-2B7D-467D-A35B-36892B35C959}
 		{3B955C40-0BBC-4682-80B1-B43A7DAEE7EC} = {C1469740-DA14-4449-9208-64EF5AE2856E}
 		{E7E187DD-EEEA-4596-8505-480B9B826EF5} = {8E363EDF-2B7D-467D-A35B-36892B35C959}
+		{F9F6880B-0458-4125-8D75-37E00B42CF6F} = {3545C759-3BDE-4AB1-8A7B-ACFFDC6A96B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = en-US
 		SolutionGuid = {5B06FD82-AA10-40E9-9392-03FA5CB97720}
+		RESX_NeutralResourcesLanguage = en-US
 	EndGlobalSection
 EndGlobal

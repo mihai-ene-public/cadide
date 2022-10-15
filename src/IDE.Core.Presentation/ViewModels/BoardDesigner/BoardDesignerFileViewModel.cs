@@ -37,7 +37,7 @@ namespace IDE.Documents.Views
     public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
                                             , IBoardDesigner
     {
-        public BoardDesignerFileViewModel(IObjectFinder objectFinder)
+        public BoardDesignerFileViewModel(IObjectFinder objectFinder, IActiveCompiler activeCompiler)
             : base()
         {
             DocumentKey = "Board Editor";
@@ -47,6 +47,9 @@ namespace IDE.Documents.Views
             documentTypeKey = DocumentKey;
             defaultFileType = "board";
             defaultFileName = "Board";
+
+            _activeCompiler = activeCompiler;
+            _objectFinder = objectFinder;
 
             BoardViewMode = BoardViewMode.Board;
 
@@ -68,8 +71,7 @@ namespace IDE.Documents.Views
 
             dirtyPropertiesProvider = ServiceProvider.Resolve<IDirtyMarkerTypePropertiesMapper>();
             _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
-            _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
-            _objectFinder = objectFinder;
+           
         }
 
         private readonly IDirtyMarkerTypePropertiesMapper dirtyPropertiesProvider;
@@ -1086,7 +1088,7 @@ namespace IDE.Documents.Views
                 {
                     if (net.Id == 0) continue;
 
-                    var conn = new BoardNetGraph((BoardNetDesignerItem)net, this);
+                    var conn = new BoardNetGraph((BoardNetDesignerItem)net);
 
                     newConnections.Add(conn);
                     Connections.Add(conn);

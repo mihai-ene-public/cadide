@@ -12,5 +12,6 @@ namespace IDE.Core.Interfaces.Geometries
         
         List<XPoint> GetOutline();
 
+        XRect GetBounds();
     }
 }

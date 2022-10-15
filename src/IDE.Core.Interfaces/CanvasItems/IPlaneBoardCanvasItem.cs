@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDE.Core.Interfaces.Geometries;
 
+namespace IDE.Core.Interfaces;
 
-namespace IDE.Core.Interfaces
+public interface IPlaneBoardCanvasItem : ISignalPrimitiveCanvasItem, IGenerateThermals, IExcludeItems, IRepourGeometry
 {
-    public interface IPlaneBoardCanvasItem : ISignalPrimitiveCanvasItem, IGenerateThermals, IExcludeItems, IRepourGeometry
-    {
-        IGeometry RegionGeometry { get; }
-    }
+    IGeometryOutline RegionGeometry { get; }
+}
 
-    public interface IRepourGeometry
-    {
-        Task RepourPolygonAsync();
-    }
+public interface IRepourGeometry
+{
+    Task RepourPolygonAsync();
 }

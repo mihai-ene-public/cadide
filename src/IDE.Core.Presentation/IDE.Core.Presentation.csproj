@@ -35,8 +35,15 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="Triangle">
+			<HintPath>..\_REFERENCES\Triangle.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Update="Resources\AboutDialogStrings.Designer.cs">

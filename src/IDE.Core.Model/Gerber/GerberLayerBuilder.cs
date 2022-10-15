@@ -7,6 +7,9 @@ using IDE.Core.Model.GlobalRepresentation;
 using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Types.Media;
 using System.Linq;
+using IDE.Core.Interfaces.Geometries;
+using IDE.Core.Common.Geometries;
+using SixLabors.ImageSharp.Drawing;
 
 namespace IDE.Core.Gerber
 {
@@ -14,12 +17,10 @@ namespace IDE.Core.Gerber
     {
         public GerberLayerBuilder()
         {
-            _geometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
-            _meshHelper = ServiceProvider.Resolve<IMeshHelper>();
+            _geometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper _geometryHelper;
-        private readonly IMeshHelper _meshHelper;
+        private readonly IGeometryOutlineHelper _geometryHelper;
 
         private double boardOriginX;
         private double boardOriginY;
@@ -931,18 +932,35 @@ namespace IDE.Core.Gerber
 
         private GerberPrimitive GetTextPrimitive(GlobalTextPrimitive text)
         {
-            var transform = new XTransformGroup();
-            transform.Children.Add(new XRotateTransform(text.Rot));
-            transform.Children.Add(new XTranslateTransform(text.X, text.Y));
+            //var transform = new XTransformGroup();
+            //transform.Children.Add(new XRotateTransform(text.Rot));
+            //transform.Children.Add(new XTranslateTransform(text.X, text.Y));
 
             var figure = new GerberFigure();
 
-            var outlineList = new List<List<XPoint[]>>();
-            _geometryHelper.GetTextOutlines(text, outlineList);
+            var outlineList = new List<List<XPoint>>();
+            // _geometryHelper.GetTextOutlines(text, outlineList);
+            var g = _geometryHelper.GetShapeGeometry(text);
+            if (g is GeometryOutlines geometryOutlines)
+            {
+                for (int i = 0; i < geometryOutlines.Outlines.Count; i++)
+                {
+                    var outline = geometryOutlines.GetOutlinePoints(i);
+                    if (outline.Count > 0)
+                    {
+                        //close the outline
+                        if (outline[0] != outline[outline.Count - 1])
+                            outline.Add(outline[0]);
+
+                        outlineList.Add(outline);
+                    }
+                }
+            }
 
             var darkRegions = new List<GerberRegionPrimitive>();
             var clearRegions = new List<GerberRegionPrimitive>();
 
+            /*
             foreach (var outlines in outlineList)
             {
                 var outerOutline = outlines.OrderBy(x => Geometry2DHelper.AreaOfSegment(x)).Last();
@@ -950,7 +968,7 @@ namespace IDE.Core.Gerber
                 for (int i = 0; i < outlines.Count; i++)
                 {
                     var outline = outlines[i];
-                    var isHole = i != outlines.Count - 1 && _meshHelper.IsPointInPolygon(outerOutline, outline[0]);
+                    var isHole = i != outlines.Count - 1 && Geometry2DHelper.IsPointInPolygon(outerOutline, outline[0]);
 
                     var polyRegion = GetRegionFromPoints(outline.Select(p => transform.Transform(new XPoint(p.X, p.Y))).ToArray());
                     if (isHole)
@@ -962,6 +980,25 @@ namespace IDE.Core.Gerber
                     {
                         darkRegions.Add(polyRegion);
                     }
+                }
+            }
+            */
+
+            for (int i = 0; i < outlineList.Count; i++)
+            {
+                var thisOutline = outlineList[i];
+
+                var isHole = outlineList.Any(o => o != thisOutline && Geometry2DHelper.IsPointInPolygon(o, thisOutline[0]));
+
+                var polyRegion = GetRegionFromPoints(thisOutline.ToArray());
+                if (isHole)
+                {
+                    polyRegion.Polarity = Polarity.Clear;
+                    clearRegions.Add(polyRegion);
+                }
+                else
+                {
+                    darkRegions.Add(polyRegion);
                 }
             }
 

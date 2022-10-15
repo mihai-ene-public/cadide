@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Types.Media;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace IDE.Core.Presentation.Placement
     {
         public ViaPlacementTool()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
 
         ViaCanvasItem GetItem() => canvasItem as ViaCanvasItem;
 

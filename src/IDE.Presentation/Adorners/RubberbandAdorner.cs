@@ -11,6 +11,7 @@ using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 using IDE.Core.Presentation.Utilities;
 using System.Linq;
+using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Adorners
 {
@@ -33,10 +34,10 @@ namespace IDE.Core.Adorners
 
             canvasModel = designerCanvas.DataContext as IDrawingViewModel;
 
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        private readonly IGeometryHelper GeometryHelper;
+        private readonly IGeometryOutlineHelper GeometryHelper;
         private readonly IDrawingViewModel canvasModel;
 
         double GetPenThickness()
@@ -46,30 +47,12 @@ namespace IDE.Core.Adorners
             if (drawingCanvas != null)
                 thickness = thickness / drawingCanvas.Scale;
 
-            //var ps = PresentationSource.FromVisual(AdornedElement);
-            //if (ps != null)
-            //{
-            //    var ct = ps.CompositionTarget;
-            //    if (ct != null)
-            //    {
-            //        var m = ct.TransformToDevice;
-            //        double dpiXFactor = 1 / m.M11;
-            //        var dpiY = 1 / m.M22;
-            //        thickness = thickness * dpiFactor;
-            //    }
-
-            //}
-
-
-
             return thickness;
         }
 
         private Point GetMousePosition()
         {
-            //var thisOrigin = canvasModel.Origin.ToPoint();
             var mp = Mouse.GetPosition(this);
-           //mp.Offset(-thisOrigin.X, -thisOrigin.Y);
 
             return mp;
         }

@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 
@@ -8,11 +9,11 @@ namespace IDE.Core.Designers
     {
         public AbstractBoardRule()
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
             Id = LibraryItem.GetNextId();
         }
 
-        protected IGeometryHelper GeometryHelper;
+        protected IGeometryOutlineHelper GeometryHelper;
 
         public const double ClearanceTolerance = 1e-3;
 

@@ -10,7 +10,7 @@ using System.Windows.Media;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("XNoCAD")]
-[assembly: AssemblyDescription("An integraded environment for PCBs.")]
+[assembly: AssemblyDescription("An integrated environment for PCBs.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("XNoCAD")]

@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Spatial2D;
 using IDE.Core.Types.Media;
 using System;
@@ -234,7 +235,7 @@ namespace IDE.Core.Presentation.PlacementRouting
         // public BaseCanvasItem CanvasItem { get; set; }
         public ISelectableItem CanvasItem { get; set; }
 
-        public object Geometry { get; set; }
+        public IGeometryOutline Geometry { get; set; }
         public Envelope Envelope { get; set; }
     }
 

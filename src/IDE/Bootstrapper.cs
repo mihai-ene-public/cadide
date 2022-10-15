@@ -1,4 +1,5 @@
 ﻿using IDE.App.Views.Shell;
+using IDE.Core.Documents;
 using IDE.Core.Interfaces;
 using IDE.Core.Presentation.Infrastructure;
 using IDE.Core.Settings;
@@ -106,14 +107,14 @@ namespace IDE
 
         void RegisterEditorModels()
         {
-            _documentTypeManager.RegisterDocumentType("Text Editor", "Text files", "Text file", "txt", typeof(ISimpleTextDocument));
-            _documentTypeManager.RegisterDocumentType("Symbol Editor", "Symbol files", "Symbol file", "symbol", typeof(ISymbolDesignerViewModel));
-            _documentTypeManager.RegisterDocumentType("Model Editor", "Model files", "Model file", "model", typeof(IMeshDesigner));
-            _documentTypeManager.RegisterDocumentType("Component Editor", "Component files", "Component file", "component", typeof(IComponentDesigner));
-            _documentTypeManager.RegisterDocumentType("Footprint Editor", "Footprint files", "Footprint file", "footprint", typeof(IFootprintDesigner));
-            _documentTypeManager.RegisterDocumentType("Schematic Editor", "Schematic files", "Schematic file", "schematic", typeof(ISchematicDesigner));
-            _documentTypeManager.RegisterDocumentType("Board Editor", "Board files", "Board file", "board", typeof(IBoardDesigner));
-            _documentTypeManager.RegisterDocumentType("Solution", "Solution files", "Solution file", "solution", typeof(ISolutionExplorerToolWindow));
+            _documentTypeManager.RegisterDocumentType("Text Editor", "Text files", "Text file", "txt", typeof(ISimpleTextDocument), null);
+            _documentTypeManager.RegisterDocumentType("Symbol Editor", "Symbol files", "Symbol file", "symbol", typeof(ISymbolDesignerViewModel), typeof(Symbol));
+            _documentTypeManager.RegisterDocumentType("Model Editor", "Model files", "Model file", "model", typeof(IMeshDesigner), typeof(ModelDocument));
+            _documentTypeManager.RegisterDocumentType("Component Editor", "Component files", "Component file", "component", typeof(IComponentDesigner), typeof(ComponentDocument));
+            _documentTypeManager.RegisterDocumentType("Footprint Editor", "Footprint files", "Footprint file", "footprint", typeof(IFootprintDesigner), typeof(Footprint));
+            _documentTypeManager.RegisterDocumentType("Schematic Editor", "Schematic files", "Schematic file", "schematic", typeof(ISchematicDesigner), typeof(SchematicDocument));
+            _documentTypeManager.RegisterDocumentType("Board Editor", "Board files", "Board file", "board", typeof(IBoardDesigner), typeof(BoardDocument));
+            _documentTypeManager.RegisterDocumentType("Solution", "Solution files", "Solution file", "solution", typeof(ISolutionExplorerToolWindow), null);
         }
 
 

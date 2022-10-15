@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Interfaces;
+using IDE.Core.Interfaces.Geometries;
 
 namespace IDE.Core.Designers
 {
@@ -6,19 +7,18 @@ namespace IDE.Core.Designers
     {
         public ISignalPrimitiveCanvasItem Item { get; set; }
 
-        object itemGeometry;
+        IGeometryOutline itemGeometry;
         /// <summary>
         /// geometry of the item; must have the transform as is placed on board
         /// </summary>
-        public object ItemGeometry
+        public IGeometryOutline ItemGeometry
         {
             get
             {
                 if (itemGeometry == null)
                 {
-                    var GeometryHelper = ServiceProvider.Resolve<IGeometryHelper>();
+                    var GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
                     itemGeometry = GeometryHelper.GetGeometry(Item, applyTransform: true);
-                    //itemGeometry.Transform = Item.GetTransform().ToMatrixTransform();
                 }
 
 

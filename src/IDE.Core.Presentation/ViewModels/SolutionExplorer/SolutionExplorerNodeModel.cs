@@ -402,7 +402,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         //todo: we should review this approach
 
         var oldItemPath = GetItemFullPath();
-        
+
         if (string.IsNullOrEmpty(oldItemPath))
             return;
 
@@ -417,7 +417,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
             var solFolder = Path.GetDirectoryName(SolutionManager.SolutionFilePath);
             //var pd = (ProjectDocument)Document;
             pd.FilePath = Path.Combine(oldItemFolder, fileName);
-            (this as SolutionProjectNodeModel).FileItem.RelativePath = DirectoryName.GetRelativePath(solFolder, pd.FilePath);
+            ( this as SolutionProjectNodeModel ).FileItem.RelativePath = DirectoryName.GetRelativePath(solFolder, pd.FilePath);
             FileName = fileName;
             //todo we should rename the project folder
 
@@ -474,7 +474,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         if (Document is SolutionDocument)
             return SolutionManager.SolutionFilePath;
         if (Document is ProjectDocument)
-            return (Document as ProjectDocument).FilePath;
+            return ( Document as ProjectDocument ).FilePath;
 
         // ProjectBaseFile f;f.
 
@@ -489,7 +489,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         {
             if (parent.Document is ProjectDocument)
             {
-                filePath = Path.Combine(Path.GetDirectoryName((parent.Document as ProjectDocument).FilePath),
+                filePath = Path.Combine(Path.GetDirectoryName(( parent.Document as ProjectDocument ).FilePath),
                                         filePath);
 
                 return filePath;
@@ -540,11 +540,20 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
 
     public void AddChild(ISolutionExplorerNodeModel child)
     {
-        dispatcherHelper.RunOnDispatcher(() =>
+        if (dispatcherHelper == null)
         {
             Children.Add(child);
             child.ParentNode = this;
-        });
+        }
+        else
+        {
+            dispatcherHelper.RunOnDispatcher(() =>
+                    {
+                        Children.Add(child);
+                        child.ParentNode = this;
+                    });
+        }
+
     }
 
     public void AddChildren(IEnumerable<ISolutionExplorerNodeModel> children)

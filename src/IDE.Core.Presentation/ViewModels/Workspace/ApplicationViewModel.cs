@@ -360,15 +360,14 @@ namespace IDE.Core.ViewModels
         {
             IFileBaseViewModel fileViewModel = null;
             var filePath = item.GetItemFullPath();
-            IDocumentModel dm = new DocumentModel();
-            dm.SetFileNamePath(filePath, true);
 
+            var fileExtension = Path.GetExtension(filePath);
             // 1st try to find a document type handler based on the supplied extension
-            var docType = _documentTypeManager.FindDocumentTypeByExtension(dm.FileExtension);
+            var docType = _documentTypeManager.FindDocumentTypeByExtension(fileExtension);
 
             if (docType != null)
             {
-                fileViewModel = _serviceProvider.GetService(docType.ClassType) as IFileBaseViewModel;
+                fileViewModel = _serviceProvider.GetService(docType.DocumentEditorClassType) as IFileBaseViewModel;
             }
             else
             {
