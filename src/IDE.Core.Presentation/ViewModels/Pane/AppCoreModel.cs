@@ -25,16 +25,7 @@
             }
         }
 
-        /// <summary>
-        /// Get a path to the directory where the user store his documents
-        /// </summary>
-        public string MyDocumentsUserDir
-        {
-            get
-            {
-                return AppHelpers.MyDocumentsUserDir;
-            }
-        }
+
 
         /// <summary>
         /// Get the name of the executing assembly (usually name of *.exe file)

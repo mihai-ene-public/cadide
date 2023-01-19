@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
@@ -37,6 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="IxMilia.Dxf" Version="0.8.0" />
+		<PackageReference Include="IxMilia.Dxf" Version="0.8.3" />
 	</ItemGroup>
 </Project>

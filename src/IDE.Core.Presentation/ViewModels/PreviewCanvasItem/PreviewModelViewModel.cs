@@ -7,7 +7,7 @@ namespace IDE.Documents.Views
 {
     public class PreviewModelViewModel : PreviewLibraryItemViewModel
     {
-        public override void PreviewDocument(LibraryItem libraryItem, ISolutionProjectNodeModel projectModel)
+        public override void PreviewDocument(LibraryItem libraryItem)
         {
            if(libraryItem is ModelDocument model)
                     PreviewModelDocument(model);

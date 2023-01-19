@@ -38,7 +38,7 @@ namespace IDE.Core.Storage
         public double RotationZ { get; set; }
 
         [XmlAttribute("modelId")]
-        public long ModelId { get; set; }
+        public string ModelId { get; set; }
 
         /// <summary>
         /// item name is given by the filename. Used for display mainly.

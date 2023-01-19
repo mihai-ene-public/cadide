@@ -30,7 +30,7 @@ namespace IDE.Core.Designers
         }
 
         [Browsable(false)]
-        public long FootprintInstanceId
+        public string FootprintInstanceId
         {
             get
             {
@@ -38,7 +38,7 @@ namespace IDE.Core.Designers
                 if (fpt != null)
                     return fpt.FootprintPrimitive.Id;
 
-                return -1;
+                return null;
             }
         }
 

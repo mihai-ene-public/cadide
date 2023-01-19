@@ -12,18 +12,16 @@ namespace IDE.Documents.Views
     public class BoardLoader
     {
         private readonly IDispatcherHelper dispatcher;
-        private readonly ISolutionProjectNodeModel project;
 
-        public BoardLoader(IDispatcherHelper _dispatcher, ISolutionProjectNodeModel _project)
+        public BoardLoader(IDispatcherHelper _dispatcher)
         {
             dispatcher = _dispatcher;
-            project = _project;
         }
 
         public void Load(BoardDocument boardDocument, IBoardDesigner board)
         {
             //assign a new id if needed
-            if (boardDocument.Id == 0)
+            if (string.IsNullOrEmpty(boardDocument.Id))
             {
                 boardDocument.Id = LibraryItem.GetNextId();
             }
@@ -72,7 +70,6 @@ namespace IDE.Documents.Views
                 {
                     var canvasItem = new FootprintBoardCanvasItem()
                     {
-                        ProjectModel = project,
                         BoardModel = board,
                     };
 
@@ -97,7 +94,7 @@ namespace IDE.Documents.Views
 
                 //the logic with "Undefined" net was removed starting with v1.12
                 //we keep this for a while
-                if (brdNet.NetId != 0)
+                if (!string.IsNullOrEmpty(brdNet.NetId))
                 {
                     brdNetItem = new BoardNetDesignerItem(board)
                     {
@@ -107,7 +104,7 @@ namespace IDE.Documents.Views
                     };
                     board.NetList.Add(brdNetItem);
                 }
-                    
+
 
                 //pads
                 if (brdNet.Pads != null)
@@ -345,7 +342,7 @@ namespace IDE.Documents.Views
             //add groups first
             board.Rules.AddRange(rules.OfType<GroupRule>().Select(c => c.CreateRuleItem()));
             //rest of rules
-            board.Rules.AddRange(rules.Where(c => !(c is GroupRule)).Select(c => c.CreateRuleItem()));
+            board.Rules.AddRange(rules.Where(c => !( c is GroupRule )).Select(c => c.CreateRuleItem()));
         }
 
     }

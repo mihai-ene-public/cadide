@@ -20,7 +20,7 @@ namespace IDE.Documents.Views
             ((CanvasGrid)canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new MilUnit(50);
         }
 
-        public override void PreviewDocument(LibraryItem libraryItem, ISolutionProjectNodeModel projectModel)
+        public override void PreviewDocument(LibraryItem libraryItem)
         {
            if(libraryItem is Symbol symbol)
                 PreviewSymbolDocument(symbol);

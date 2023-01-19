@@ -134,6 +134,9 @@
                 </StackPanel>
             </TabItem>
 
+            <TabItem Header="{x:Static resources:Strings.ProjectPropertiesPackageHeader}">
+                <local:PackagePropertiesView DataContext="{Binding PackageProperties}" />
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

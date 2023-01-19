@@ -7,73 +7,112 @@ using IDE.Core.Interfaces;
 using IDE.Core;
 using System.Collections.Generic;
 
-namespace IDE.Documents.Views
+namespace IDE.Documents.Views;
+
+public class SolutionProjectPropertiesViewModel : FileBaseViewModel, ISolutionProjectPropertiesDocument
 {
-    public class SolutionProjectPropertiesViewModel : FileBaseViewModel, ISolutionProjectPropertiesDocument
+    public SolutionProjectPropertiesViewModel()
+        : base(null)
     {
-        public SolutionProjectPropertiesViewModel()
-            : base(null)
+        IsDirty = false;
+    }
+
+
+    public ObservableCollection<PropertyDisplay> Properties { get; set; } = new ObservableCollection<PropertyDisplay>();
+
+    public PackagePropertiesViewModel PackageProperties { get; set; } = new PackagePropertiesViewModel();
+
+    public override bool CanClose()
+    {
+        return true;
+    }
+
+    public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
+    {
+        return new List<IDocumentToolWindow>();
+    }
+
+    protected override Task LoadDocumentInternal(string filePath)
+    {
+        var project = XmlHelper.Load<ProjectDocument>(filePath);
+
+        var properties = new List<PropertyDisplay>();
+
+        if (project.Properties.Properties != null)
         {
-            //Project = project;
-            IsDirty = false;
 
-            //var p = new SolutionProjectPropertiesViewModel(project)
-            //=p.OpenFile
-        }
-
-        public ProjectDocument Project { get; set; }
-
-        public ObservableCollection<PropertyDisplay> Properties { get; set; } = new ObservableCollection<PropertyDisplay>();
-
-        public override bool CanClose()
-        {
-            return true;
-        }
-
-        public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
-        {
-            return new List<IDocumentToolWindow>();
-        }
-
-        protected override Task LoadDocumentInternal(string filePath)
-        {
-            return Task.Run(() =>
-            {
-                Properties.Clear();
-                if (Project.Properties.Properties != null)
-                    Properties.AddRange(Project.Properties.Properties.Select(p => new PropertyDisplay
-                    {
-                        Name = p.Name,
-                        Value = p.Value,
-                        PropertyType = p.Type
-                    }));
-
-                //todo: add back this
-                //Project.Properties.PropertyChanged += (s, e) => { IsDirty = true; };
-
-                foreach (var p in Properties)
-                {
-                    p.PropertyChanged += (s, e) => { IsDirty = true; };
-                }
-
-                //todo on item added or remove and PropertyChanged
-
-                //force save
-                //IsDirty = true;
-            });
-        }
-
-        protected override void SaveDocumentInternal(string filePath)
-        {
-            Project.Properties.Properties = Properties.Select(p => new Property
+            properties.AddRange(project.Properties.Properties.Select(p => new PropertyDisplay
             {
                 Name = p.Name,
                 Value = p.Value,
-                Type = p.PropertyType
-            }).ToList();
+                PropertyType = p.Type
+            }));
 
-            Project.Save();
+            foreach (var p in properties)
+            {
+                p.PropertyChanged += (s, e) => { IsDirty = true; };
+            }
         }
 
+        Properties = new ObservableCollection<PropertyDisplay>(properties);
+
+        PackageProperties.LoadFrom(project.Package);
+
+        return Task.CompletedTask;
+    }
+
+    protected override void SaveDocumentInternal(string filePath)
+    {
+        var project = XmlHelper.Load<ProjectDocument>(filePath);
+        project.Properties.Properties = Properties.Select(p => new Property
+        {
+            Name = p.Name,
+            Value = p.Value,
+            Type = p.PropertyType
+        }).ToList();
+
+        project.Package = PackageProperties.ToPackageMetadata();
+
+        XmlHelper.Save(project, filePath);
+    }
+
+}
+
+public class SolutionPropertiesViewModel : FileBaseViewModel
+{
+    public SolutionPropertiesViewModel()
+       : base(null)
+    {
+        IsDirty = false;
+    }
+
+    public PackagePropertiesViewModel PackageProperties { get; set; } = new PackagePropertiesViewModel();
+
+    public override bool CanClose()
+    {
+        return true;
+    }
+
+    public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
+    {
+        return new List<IDocumentToolWindow>();
+    }
+
+    protected override Task LoadDocumentInternal(string filePath)
+    {
+        var solution = XmlHelper.Load<SolutionDocument>(filePath);
+
+        PackageProperties.LoadFrom(solution.Package);
+
+        return Task.CompletedTask;
+    }
+
+    protected override void SaveDocumentInternal(string filePath)
+    {
+        var solution = XmlHelper.Load<SolutionDocument>(filePath);
+
+        solution.Package = PackageProperties.ToPackageMetadata();
+
+        XmlHelper.Save(solution, filePath);
     }
 }

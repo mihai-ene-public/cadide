@@ -9,7 +9,7 @@ namespace IDE.Core.Designers;
 /// </summary>
 public class SchematicNet : BaseViewModel, ISchematicNet
 {
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     string name;
     public string Name
@@ -24,7 +24,7 @@ public class SchematicNet : BaseViewModel, ISchematicNet
         }
     }
 
-    public long ClassId { get; set; }
+    public string ClassId { get; set; }
 
     bool isHighlighted;
     public bool IsHighlighted

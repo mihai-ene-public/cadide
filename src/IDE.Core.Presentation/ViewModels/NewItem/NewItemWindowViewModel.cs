@@ -304,13 +304,21 @@ namespace IDE.Documents.Views
                 if (IsSolution)
                 {
                     //create the solution
-                    SolutionManager.CreateNewSolution(projName);
+                    //SolutionManager.CreateNewSolution(projName);
+                    var solution = new SolutionDocument();
+                    solution.Children = new List<ProjectBaseFileRef>
+                    {
+                         new SolutionProjectItem
+                         {
+                             RelativePath = $@"{projName}/{projName}{ProjectDocument.ProjectExtension}"
+                         },
+                    };
 
                     Directory.CreateDirectory(projLocation);
                     var solPathFile = Path.Combine(projLocation, solName + "." + SolutionDocument.SolutionExtension);
 
                     //todo: check if we already have a solution in this folder
-                    SolutionManager.Instance.SaveSolution(solPathFile);
+                    XmlHelper.Save(solution, solPathFile);
                     SelectedItemFilePath = solPathFile;
                 }
 

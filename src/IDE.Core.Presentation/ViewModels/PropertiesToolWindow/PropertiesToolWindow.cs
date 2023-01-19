@@ -1,4 +1,7 @@
-﻿using IDE.Core.Interfaces;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Messages;
+using IDE.Documents.Views;
 
 namespace IDE.Core.ViewModels
 {
@@ -8,6 +11,12 @@ namespace IDE.Core.ViewModels
             : base("Properties")
         {
 
+
+            StrongReferenceMessenger.Default.Register<IPropertiesToolWindow, SolutionClosedMessage>(this,
+                (vm, message) =>
+                {
+                    IsVisible = false;
+                });
         }
 
         object selectedObject;

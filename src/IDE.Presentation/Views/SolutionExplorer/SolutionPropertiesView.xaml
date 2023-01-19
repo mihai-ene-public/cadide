@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="IDE.Documents.Views.SolutionPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:resources="clr-namespace:IDE.Resources.Local;assembly=IDE.Resources"
+             xmlns:local="clr-namespace:IDE.Documents.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <TabControl TabStripPlacement="Left">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}"
+                       BasedOn="{StaticResource {x:Type TabItem}}">
+
+                    <Setter Property="Padding"
+                            Value="3" />
+                    <Setter Property="Width"
+                            Value="150" />
+
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle Width="2"
+                                               HorizontalAlignment="Left"
+                                               Margin="0,0,5,0"
+                                               Fill="Gray" />
+                                    <ContentPresenter Grid.Column="1"
+                                                      Content="{TemplateBinding Content}" />
+                                </Grid>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="{x:Static resources:Strings.ProjectPropertiesPackageHeader}">
+                <local:PackagePropertiesView DataContext="{Binding PackageProperties}" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

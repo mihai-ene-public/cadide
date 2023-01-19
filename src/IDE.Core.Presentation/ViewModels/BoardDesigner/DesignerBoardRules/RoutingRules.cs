@@ -731,7 +731,7 @@ namespace IDE.Core.Designers
 
     public class BoardObjectData
     {
-        public long ObjectId { get; set; }
+        public string ObjectId { get; set; }
 
         public string ObjectName { get; set; }
 
@@ -834,10 +834,10 @@ namespace IDE.Core.Designers
                 switch (objType)
                 {
                     case RuleFilterObjectType.DrillPair:
-                        var dpId = 1;
+
                         list.AddRange(board.DrillPairs.Select(dp => new BoardObjectData
                         {
-                            ObjectId = dpId++,
+                            ObjectId = LibraryItem.GetNextId(),
                             ObjectName = dp.ToString()
                         }));
                         break;
@@ -955,8 +955,7 @@ namespace IDE.Core.Designers
                         if (si != null && si.Signal != null)
                         {
                             //todo: must solve for groupId
-                            var groupId = -1;
-                            return groupId == ruleFilterObject.ObjectId;
+                            return null == ruleFilterObject.ObjectId;
                         }
 
                         break;

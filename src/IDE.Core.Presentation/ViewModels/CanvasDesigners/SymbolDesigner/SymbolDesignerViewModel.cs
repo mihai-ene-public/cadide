@@ -104,14 +104,6 @@ namespace IDE.Documents.Views
             });
         }
 
-        public override object Document
-        {
-            get
-            {
-                return symbolDocument;
-            }
-        }
-
         IList canSelectList;
         public override IList CanSelectList
         {
@@ -196,9 +188,9 @@ namespace IDE.Documents.Views
                           canvasModel.CancelPlacement();
 
 
-                          var itemSelectDlg = new ItemSelectDialogViewModel();
-                          itemSelectDlg.TemplateType = TemplateType.Symbol;
-                          itemSelectDlg.ProjectModel = ParentProject;
+                          var projectInfo = GetCurrentProjectInfo();
+
+                          var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
                           if (itemSelectDlg.ShowDialog() == true)
                           {
                               var symbol = itemSelectDlg.SelectedItem.Document as Symbol;
@@ -235,7 +227,7 @@ namespace IDE.Documents.Views
 
         protected override void SaveDocumentInternal(string filePath)
         {
-            //remove the currently adding item si that it won't be saved
+            //remove the currently adding item so that it won't be saved
             ISelectableItem placeObjects = null;
             if (canvasModel.IsPlacingItem())
             {
@@ -243,6 +235,11 @@ namespace IDE.Documents.Views
                 canvasModel.RemoveItem(placeObjects);
             }
 
+            //assign a new id if needed
+            if (string.IsNullOrEmpty(symbolDocument.Id))
+            {
+                symbolDocument.Id = LibraryItem.GetNextId();
+            }
             symbolDocument.Name = Path.GetFileNameWithoutExtension(filePath);
             symbolDocument.Items = canvasModel.Items.Cast<BaseCanvasItem>().Select(d => (SchematicPrimitive)d.SaveToPrimitive()).ToList();
 
@@ -258,26 +255,18 @@ namespace IDE.Documents.Views
 
         protected override Task LoadDocumentInternal(string filePath)
         {
-            return Task.Run(() =>
+            symbolDocument = XmlHelper.Load<Symbol>(filePath);
+
+            if (symbolDocument.Items != null)
             {
-                symbolDocument = XmlHelper.Load<Symbol>(filePath);
-
-                //assign a new id if needed
-                if (symbolDocument.Id == 0)
+                foreach (var primitive in symbolDocument.Items)
                 {
-                    symbolDocument.Id = LibraryItem.GetNextId();
-                    IsDirty = true;
+                    var canvasItem = primitive.CreateDesignerItem();
+                    canvasModel.AddItem(canvasItem);
                 }
+            }
 
-                if (symbolDocument.Items != null)
-                {
-                    foreach (var primitive in symbolDocument.Items)
-                    {
-                        var canvasItem = primitive.CreateDesignerItem();
-                        canvasModel.AddItem(canvasItem);
-                    }
-                }
-            });
+            return Task.CompletedTask;
         }
 
         protected override async Task AfterLoadDocumentInternal()

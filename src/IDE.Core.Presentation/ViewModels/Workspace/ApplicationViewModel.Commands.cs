@@ -104,6 +104,20 @@
                                        },
                                        p => p is SolutionProjectNodeModel || p is SolutionRootNodeModel));
 
+            bindings.Add(new CommandBindingData(AppCommand.PackCommand,
+                                      async p =>
+                                      {
+                                          await RunPack(p as SolutionExplorerNodeModel);
+                                      },
+                                      p => p is SolutionProjectNodeModel || p is SolutionRootNodeModel));
+
+            bindings.Add(new CommandBindingData(AppCommand.RestorePackagesCommand,
+                          async p =>
+                          {
+                              await RestorePackages(p as SolutionExplorerNodeModel);
+                          },
+                          p => p is SolutionProjectNodeModel || p is SolutionRootNodeModel));
+
             #region Add reference to project
 
             bindings.Add(new CommandBindingData(AppCommand.ManageReferencesCommand,
@@ -119,6 +133,13 @@
                                            }
                                        },
                                        p => p is SolutionProjectNodeModel || p is ProjectReferencesNodeModel));
+
+            bindings.Add(new CommandBindingData(AppCommand.ShowPackageManagerCommand,
+                                       p =>
+                                       {
+                                           ShowPackageManager(p as SolutionExplorerNodeModel);
+                                       },
+                                      p => p is SolutionProjectNodeModel || p is ProjectReferencesNodeModel));
 
             #endregion
 
@@ -200,7 +221,7 @@
                                            p =>
                                            {
                                                var container = p as FilesContainerNodeModel;
-                                               return container != null && container.ProjectNode.Project.OutputType == ProjectOutputType.Board;
+                                               return container != null && container.ProjectNode.ProjectOutputType == ProjectOutputType.Board;
                                            }));
 
             #endregion Add Schematic Command
@@ -215,7 +236,7 @@
                                            p =>
                                            {
                                                var container = p as FilesContainerNodeModel;
-                                               return container != null && container.ProjectNode.Project.OutputType == ProjectOutputType.Board;
+                                               return container != null && container.ProjectNode.ProjectOutputType == ProjectOutputType.Board;
                                            }));
 
             #endregion Add Board Command
@@ -268,7 +289,7 @@
                                            {
                                                await ShowProperties(p as SolutionExplorerNodeModel);
                                            },
-                                           p => p is SolutionProjectNodeModel));
+                                           p => p is SolutionProjectNodeModel || p is SolutionRootNodeModel));
 
 
             bindings.Add(new CommandBindingData(AppCommand.ImportEagleCommand,

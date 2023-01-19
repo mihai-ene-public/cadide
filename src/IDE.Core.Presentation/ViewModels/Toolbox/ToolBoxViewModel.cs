@@ -17,9 +17,6 @@ namespace IDE.Documents.Views
 
 
         DrawingViewModel canvasModel;
-        public ISolutionProjectNodeModel CurrentProject => canvasModel.FileDocument.ProjectNode;
-
-        //ToolBoxItem placedObject;
 
         ICommand placeObjectCommand;
         public ICommand PlaceObjectCommand

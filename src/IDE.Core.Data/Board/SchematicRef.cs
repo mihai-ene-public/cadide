@@ -16,7 +16,7 @@ namespace IDE.Core.Storage
     public class SchematicRef
     {
         [XmlAttribute("schematicId")]
-        public long schematicId { get; set; }
+        public string schematicId { get; set; }
 
         /// <summary>
         /// path relative to the project

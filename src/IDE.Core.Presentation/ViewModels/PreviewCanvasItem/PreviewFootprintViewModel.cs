@@ -23,7 +23,7 @@ namespace IDE.Documents.Views
             ((CanvasGrid)canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new MillimeterUnit(0.1);
         }
 
-        public override void PreviewDocument(LibraryItem libraryItem, ISolutionProjectNodeModel projectModel)
+        public override void PreviewDocument(LibraryItem libraryItem)
         {
             if (libraryItem is Footprint footprint)
                 PreviewFootprintDocument(footprint);

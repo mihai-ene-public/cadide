@@ -11,8 +11,6 @@ namespace IDE.Core.Interfaces
     {
         string Name { get; set; }
 
-        object Document { get; set; }
-
         bool IsExpanded { get; set; }
 
         string FileName { get; set; }
@@ -23,9 +21,12 @@ namespace IDE.Core.Interfaces
 
         ISolutionProjectNodeModel ProjectNode { get; }
 
+        ISolutionRootNodeModel SolutionNode { get; }
+
         string GetItemFullPath();
 
         string GetItemFolderFullPath();
-        void Load(string p);
+
+        void Load(string filePath);
     }
 }

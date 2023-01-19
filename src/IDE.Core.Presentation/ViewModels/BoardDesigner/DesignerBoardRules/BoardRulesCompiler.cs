@@ -2,6 +2,7 @@
 using IDE.Core.Interfaces.Compilers;
 using IDE.Core.Presentation.Compilers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -190,7 +191,8 @@ namespace IDE.Core.Designers
 
         private IErrorMessage GetViolation(RuleCheckResult result, IBoardDesigner board)
         {
-            var projectName = board.ProjectNode.Name;
+            var pi = board.GetCurrentProjectInfo();
+            var projectName = Path.GetFileNameWithoutExtension(pi.ProjectPath);
             return BuildErrorMessage(result.Message, projectName, board, result.Location?.Location);
         }
 

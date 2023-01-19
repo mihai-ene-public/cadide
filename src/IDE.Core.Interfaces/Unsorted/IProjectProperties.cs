@@ -16,9 +16,9 @@ namespace IDE.Core.Interfaces
         string Description { get; set; }
         string Product { get; set; }
 
-        List<Property> Properties { get; set; }
 
         string Title { get; set; }
         string Version { get; set; }
+        List<Property> Properties { get; set; }
     }
 }

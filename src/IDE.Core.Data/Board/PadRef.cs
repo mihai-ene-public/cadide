@@ -12,7 +12,7 @@ namespace IDE.Core.Storage
     {
 
         [XmlAttribute("footprintInstanceId")]
-        public long FootprintInstanceId { get; set; }
+        public string FootprintInstanceId { get; set; }
 
         [XmlAttribute("padNumber")]
         public string PadNumber { get; set; }

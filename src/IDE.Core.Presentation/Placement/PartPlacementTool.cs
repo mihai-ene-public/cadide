@@ -13,9 +13,8 @@ namespace IDE.Core.Presentation.Placement
 
         public override bool Show()
         {
-            var itemSelectDlg = new ItemSelectDialogViewModel();
-            itemSelectDlg.TemplateType = TemplateType.Component;
-            itemSelectDlg.ProjectModel = CurrentProject;
+            var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Component, CanvasModel.FileDocument.GetCurrentProjectInfo());
+
             if (itemSelectDlg.ShowDialog() == true)
             {
                 var componentItemDisplay = itemSelectDlg.SelectedItem;
@@ -34,7 +33,6 @@ namespace IDE.Core.Presentation.Placement
             var partInstance = canvasItem as SchematicSymbolCanvasItem;
             var placedComponent = dialogSelectedItem as ComponentItemDisplay;
 
-            partInstance.ProjectModel = CurrentProject;
             var compDoc = placedComponent.Document as ComponentDocument;
 
             if (!string.IsNullOrEmpty(compDoc.Comment))
@@ -50,6 +48,8 @@ namespace IDE.Core.Presentation.Placement
                                               .Select(p => p.PartName).ToList();
 
             var partName = partInstance.GetNextPartName(namedParts, compDoc.Prefix);
+
+            partInstance._Project = CanvasModel.FileDocument.GetCurrentProjectInfo();
 
             partInstance.Part = new Part
             {
@@ -100,7 +100,7 @@ namespace IDE.Core.Presentation.Placement
 
                     //create another
                     var newItem = (SchematicSymbolCanvasItem)canvasItem.Clone();
-                    newItem.ProjectModel = item.ProjectModel;
+
                     //same part by default
                     newItem.Part = item.Part;
 

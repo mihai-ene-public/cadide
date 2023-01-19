@@ -40,7 +40,7 @@ namespace IDE.Core.Storage
         /// the reference to the symbol
         /// </summary>
         [XmlAttribute("symbolId")]
-        public long symbolId { get; set; }
+        public string symbolId { get; set; }
         
         /// <summary>
         /// name of the symbol

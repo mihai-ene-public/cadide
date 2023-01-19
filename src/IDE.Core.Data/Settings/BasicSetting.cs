@@ -16,7 +16,7 @@ namespace IDE.Core.Settings
     public abstract class BasicSettingNode : ISettingData
     {
         [XmlAttribute("name")]
-        public string Name { get; set; }
+        public string SystemName { get; set; }
 
     }
 }

@@ -26,6 +26,8 @@ using IDE.Core.Presentation.ObjectFinding;
 using Microsoft.Extensions.Caching.Memory;
 using IDE.Core.Interfaces.Compilers;
 using IDE.Core.Presentation.Placement;
+using IDE.Core.Common.FileSystem;
+using IDE.Core.Presentation.Packaging;
 
 namespace IDE
 {
@@ -84,9 +86,24 @@ namespace IDE
 
             services.AddTransient<IMemoryCache, MemoryCache>(f => new MemoryCache(new MemoryCacheOptions()));
             services.AddSingleton<ISolutionRepository, SolutionRepository>();
+
             services.AddSingleton(typeof(IObjectRepository<>), typeof(ObjectRepository<>));
+            services.AddSingleton<IObjectRepository, ObjectRepository>();
+
+            services.AddSingleton<ILibraryRepository, LibraryRepository>();
+            
             services.AddSingleton(typeof(IObjectFinder<>), typeof(ObjectFinder<>));
             services.AddSingleton<IObjectFinder, ObjectFinder>();
+
+            services.AddSingleton<IFileSystemProvider, FileSystemProvider>();
+
+            services.AddTransient<PackageManagerDialogViewModel>();
+            services.AddSingleton<IPackageManager, PackageManager>();
+            services.AddSingleton<IPackageSourceRepository, PackageSourceSettingsRepository>();
+            services.AddSingleton<IPackageRepositoryFactory, PackageRepositoryFactory>();
+            services.AddSingleton<IGithubPackageRepository, GithubPackageRepository>();
+            services.AddSingleton<IFolderPackageRepository, FolderPackageRepository>();
+
 
             services.AddSingleton<IServiceCollection>(services);
             services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();
@@ -150,6 +167,7 @@ namespace IDE
         {
             services.AddTransient<IBoardBuilder, BoardBuilder>();
             services.AddTransient<ISchematicBuilder, SchematicBuilder>();
+            services.AddTransient<ISolutionPackageBuilder, SolutionPackageBuilder>();
         }
 
         private static void AddPlacementTools(IServiceCollection services)

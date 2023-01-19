@@ -12,10 +12,10 @@ namespace IDE.Core.Storage
     public class Instance : SchematicPrimitive//todo this should higher than a primitive (something that inherits from Primitive)
     {
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [XmlAttribute("partId")]
-        public long PartId { get; set; }
+        public string PartId { get; set; }
 
         [XmlAttribute("gateId")]
         public long GateId { get; set; }

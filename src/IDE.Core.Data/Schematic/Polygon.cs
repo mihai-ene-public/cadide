@@ -45,55 +45,5 @@ namespace IDE.Core.Storage
         [XmlAttribute("fillColor")]
         public string FillColor { get; set; }
 
-
-        //[XmlAttribute()]
-        //public int layer
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public double spacing
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public polygonPour pour
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public double isolate
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public bool orphans
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public bool thermals
-        //{
-        //    get; set;
-        //}
-
-
-        //[XmlAttribute()]
-        //public int rank
-        //{
-        //    get; set;
-        //}
-
-
     }
 }

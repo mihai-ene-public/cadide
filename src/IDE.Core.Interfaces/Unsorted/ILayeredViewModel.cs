@@ -27,8 +27,6 @@ namespace IDE.Core.Interfaces
 
         bool MaskUnselectedLayer { get; set; }
 
-
-
         bool HideUnselectedLayer { get; set; }
     }
 

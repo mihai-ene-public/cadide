@@ -32,7 +32,7 @@ namespace IDE.Core.Editors
                 {
 
                     var signals = brd.NetList.OrderBy(n => n.Name).ToList();
-                    signals.Insert(0, new BoardNetDesignerItem(brd) { Id = -1, Name = "< None >" });
+                    signals.Insert(0, new BoardNetDesignerItem(brd) { Id = null, Name = "< None >" });
                     comboBox.ItemsSource = signals;
 
                     vis = Visibility.Visible;

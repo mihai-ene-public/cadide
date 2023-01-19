@@ -111,7 +111,7 @@ namespace IDE.Documents.Views
 
             foreach (var p in parts)
             {
-                var bomItem = p.GetBomItem(schematicModel.ProjectNode);
+                var bomItem = p.GetBomItem(schematicModel.GetCurrentProjectInfo());
                 BomItems.Add(bomItem);
             }
         }
@@ -145,10 +145,10 @@ namespace IDE.Documents.Views
             var items = new List<PartBomItemDisplay>();
             var brd = (BoardDesignerFileViewModel)board;
 
-            var project = board.ProjectNode;
+            var project = board.GetCurrentProjectInfo();
 
             var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-            var schematic = objectFinder.FindObject<SchematicDocument>(project.Project, null, brd.BoardProperties.SchematicReference.schematicId);
+            var schematic = objectFinder.FindObject<SchematicDocument>(project, null, brd.BoardProperties.SchematicReference.schematicId);
 
             var schParts = GetPartsWithGates(schematic);
 
@@ -328,18 +328,18 @@ namespace IDE.Documents.Views
 
     public static class PartExtensions
     {
-        public static ComponentDocument GetComponent(this Part part, ISolutionProjectNodeModel project)
+        public static ComponentDocument GetComponent(this Part part, ProjectInfo project)
         {
             var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-            var comp = objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, part.ComponentId);
+            var comp = objectFinder.FindObject<ComponentDocument>(project, part.ComponentLibrary, part.ComponentId);
 
             return comp;
         }
 
-        public static ComponentDocument GetComponent(this BoardComponentInstance part, ISolutionProjectNodeModel project)
+        public static ComponentDocument GetComponent(this BoardComponentInstance part, ProjectInfo project)
         {
             var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-            var comp = objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, part.ComponentId);
+            var comp = objectFinder.FindObject<ComponentDocument>(project, part.ComponentLibrary, part.ComponentId);
 
             return comp;
         }
@@ -367,7 +367,7 @@ namespace IDE.Documents.Views
             }
         }
 
-        public static PartBomItemDisplay GetBomItem(this Part part, ISolutionProjectNodeModel project)
+        public static PartBomItemDisplay GetBomItem(this Part part, ProjectInfo project)
         {
             var newBomItem = new PartBomItemDisplay { PartName = part.Name };
 
@@ -381,7 +381,7 @@ namespace IDE.Documents.Views
             return newBomItem;
         }
 
-        public static PartBomItemDisplay GetBomItem(this BoardComponentInstance part, ISolutionProjectNodeModel project)
+        public static PartBomItemDisplay GetBomItem(this BoardComponentInstance part, ProjectInfo project)
         {
             var newBomItem = new PartBomItemDisplay { PartName = part.PartName };
 

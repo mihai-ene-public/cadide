@@ -1,4 +1,5 @@
-﻿using IDE.Core.Interfaces;
+﻿using IDE.Core.Data.Packages;
+using IDE.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,7 @@ namespace IDE.Core.Storage
         [XmlElement("GroupFolder", typeof(GroupFolderItem))]
         public List<ProjectBaseFileRef> Children { get; set; } = new List<ProjectBaseFileRef>();
 
+        [XmlElement("package")]
+        public PackageMetadata Package { get; set; }
     }
 }

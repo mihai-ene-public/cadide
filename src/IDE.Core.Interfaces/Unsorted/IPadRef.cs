@@ -1,15 +1,7 @@
-﻿namespace IDE.Core.Interfaces
+﻿namespace IDE.Core.Interfaces;
+
+public interface IPadRef
 {
-    public interface IPadRef
-    {
-        long FootprintInstanceId { get; set; }
-        string PadNumber { get; set; }
-    }
-
-    //public interface IPadRefDesignerItem : ISignalPrimitiveCanvasItem
-    //{
-    //    IPadRef Pad { get; set; }
-
-    //    IPadCanvasItem PadDesignerItem { get; }
-    //}
+    string FootprintInstanceId { get; set; }
+    string PadNumber { get; set; }
 }

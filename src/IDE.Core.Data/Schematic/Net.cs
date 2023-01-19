@@ -10,14 +10,14 @@ namespace IDE.Core.Storage
     public class Net
     {
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [XmlAttribute("name")]
         public string Name { get; set; }
 
 
         [XmlAttribute("classId")]
-        public long ClassId { get; set; }
+        public string ClassId { get; set; }
 
         [XmlElement("junction", typeof(Junction))]
         [XmlElement("label", typeof(NetLabel))]

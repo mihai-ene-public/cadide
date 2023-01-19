@@ -20,6 +20,7 @@ using IDE.Core.Types.Media;
 using IDE.Core.Presentation.Utilities;
 using System.Collections;
 using IDE.Core.Presentation.Compilers;
+using IDE.Core.Presentation.Solution;
 
 namespace IDE.Core.ViewModels
 {
@@ -28,7 +29,7 @@ namespace IDE.Core.ViewModels
     {
         #region ctor
 
-        public SchematicDesignerViewModel()
+        public SchematicDesignerViewModel(ISolutionRepository solutionRepository)
             : base()
         {
             DocumentKey = "SchemaEditor";
@@ -61,10 +62,12 @@ namespace IDE.Core.ViewModels
 
             _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
             _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
+            _solutionRepository = solutionRepository;
         }
 
         private readonly ISettingsManager _settingsManager;
         private readonly IActiveCompiler _activeCompiler;
+        private readonly ISolutionRepository _solutionRepository;
 
         CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
 
@@ -73,14 +76,6 @@ namespace IDE.Core.ViewModels
 
         public INetManager NetManager => netManager;
         public IBusManager BusManager => busManager;
-
-        public override object Document
-        {
-            get
-            {
-                return schematicDocument;
-            }
-        }
 
         bool highlightChangeBusy;
         void ApplicationModel_HighlightChanged(object sender, EventArgs e)
@@ -389,17 +384,16 @@ namespace IDE.Core.ViewModels
                         //remove the object if we had one placing
                         canvasModel.CancelPlacement();
 
+                        var projectInfo = GetCurrentProjectInfo();
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Symbol;
-                        itemSelectDlg.ProjectModel = ParentProject;
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             var symbol = itemSelectDlg.SelectedItem.Document as Symbol;
 
                             if (symbol.Items != null)
                             {
-                                var canvasItems = symbol.Items.Where(sItem => !(sItem is Pin)).Select(c => c.CreateDesignerItem()).ToList();
+                                var canvasItems = symbol.Items.Where(sItem => !( sItem is Pin )).Select(c => c.CreateDesignerItem()).ToList();
 
                                 var group = new VolatileGroupCanvasItem
                                 {
@@ -438,17 +432,17 @@ namespace IDE.Core.ViewModels
 
         private void ReplaceSelectedParts()
         {
-            var itemSelectDlg = new ItemSelectDialogViewModel();
-            itemSelectDlg.TemplateType = TemplateType.Component;
-            itemSelectDlg.ProjectModel = ProjectNode;
-            if (itemSelectDlg.ShowDialog() == true)
-            {
-                var componentItemDisplay = itemSelectDlg.SelectedItem;
-                if (componentItemDisplay != null)
-                {
+            //var itemSelectDlg = new ItemSelectDialogViewModel();
+            //itemSelectDlg.TemplateType = TemplateType.Component;
+            //itemSelectDlg.ProjectModel = ProjectNode;
+            //if (itemSelectDlg.ShowDialog() == true)
+            //{
+            //    var componentItemDisplay = itemSelectDlg.SelectedItem;
+            //    if (componentItemDisplay != null)
+            //    {
 
-                }
-            }
+            //    }
+            //}
         }
 
         private bool ReplaceSelectedPartsCommandCanExecute()
@@ -960,8 +954,10 @@ namespace IDE.Core.ViewModels
             {
                 schematicDocument = XmlHelper.Load<SchematicDocument>(filePath);
 
+                var project = GetCurrentProjectInfo();
+
                 //assign a new id if needed
-                if (schematicDocument.Id == 0)
+                if (string.IsNullOrEmpty(schematicDocument.Id))
                 {
                     schematicDocument.Id = LibraryItem.GetNextId();
                     IsDirty = true;
@@ -1049,8 +1045,7 @@ namespace IDE.Core.ViewModels
                                 var part = schematicDocument.Parts.FirstOrDefault(p => p.Id == instance.PartId);
                                 if (part != null)
                                 {
-                                    var symbolItem = new SchematicSymbolCanvasItem();
-                                    symbolItem.ProjectModel = (SolutionProjectNodeModel)ParentProject;
+                                    var symbolItem = new SchematicSymbolCanvasItem() { _Project = project };
                                     symbolItem.Part = part;
                                     symbolItem.LoadFromPrimitive(instance);
                                     sheetItem.Items.Add(symbolItem);

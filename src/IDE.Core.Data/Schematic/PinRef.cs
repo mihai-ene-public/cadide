@@ -13,7 +13,7 @@ namespace IDE.Core.Storage
     {
 
         [XmlAttribute("partGateId")]
-        public long PartInstanceId { get; set; }
+        public string PartInstanceId { get; set; }
 
         /// <summary>
         /// pin number

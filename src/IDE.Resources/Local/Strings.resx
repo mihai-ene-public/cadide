@@ -240,6 +240,9 @@
   <data name="CmdOpenContainingFolderHeader" xml:space="preserve">
     <value>Open Folder in File Explorer</value>
   </data>
+  <data name="CmdPackHeader" xml:space="preserve">
+    <value>Pack</value>
+  </data>
   <data name="CmdPasteHeader" xml:space="preserve">
     <value>Paste</value>
   </data>
@@ -254,6 +257,9 @@
   </data>
   <data name="CmdRepourPolysTooltip" xml:space="preserve">
     <value>Repour polygons</value>
+  </data>
+  <data name="CmdRestorePacksHeader" xml:space="preserve">
+    <value>Restore packages</value>
   </data>
   <data name="CmdSchAddSymbolTooltip" xml:space="preserve">
     <value>Imports primitives (without pins) from an existing symbol</value>
@@ -278,6 +284,9 @@
   </data>
   <data name="CmdShowFootprintGeneratorTooltip" xml:space="preserve">
     <value>Define the footprint using a generator</value>
+  </data>
+  <data name="CmdShowPackageManagerHeader" xml:space="preserve">
+    <value>Manage packages...</value>
   </data>
   <data name="CmdShowProjectDependenciesHeader" xml:space="preserve">
     <value>Project Dependencies</value>
@@ -402,6 +411,27 @@
   <data name="OpenFolderInFileExplorer" xml:space="preserve">
     <value>Open folder in File Explorer</value>
   </data>
+  <data name="PacakgePropertiesAuthorsLabel" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="PacakgePropertiesDescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="PacakgePropertiesIconLabel" xml:space="preserve">
+    <value>Package Icon</value>
+  </data>
+  <data name="PacakgePropertiesIdLabel" xml:space="preserve">
+    <value>Package Id</value>
+  </data>
+  <data name="PacakgePropertiesProjectUrlLabel" xml:space="preserve">
+    <value>Project Url</value>
+  </data>
+  <data name="PacakgePropertiesTagsLabel" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="PacakgePropertiesVersionLabel" xml:space="preserve">
+    <value>Package Version</value>
+  </data>
   <data name="ProjectPropertiesBuildHeader" xml:space="preserve">
     <value>Build</value>
   </data>
@@ -422,6 +452,9 @@
   </data>
   <data name="ProjectPropertiesOutputFolderLabel" xml:space="preserve">
     <value>Output folder</value>
+  </data>
+  <data name="ProjectPropertiesPackageHeader" xml:space="preserve">
+    <value>Package</value>
   </data>
   <data name="ProjectPropertiesProductLabel" xml:space="preserve">
     <value>Product</value>

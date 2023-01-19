@@ -10,14 +10,30 @@ namespace IDE.Core.Presentation.Solution
 {
     public interface ISolutionRepository
     {
-        IList<IProjectDocument> GetSolutionProjects(string solutionFilePath);
+        ProjectDocument LoadProjectDocument(string filePath);
 
-        IList<ISolutionProjectNodeModel> GetProjectsFromSolution(string solutionFilePath);
+        void SaveProjectDocument(ProjectDocument project, string filePath);
 
-        void LoadSolutionProjects(ISolutionRootNodeModel solution, IList<ISolutionProjectNodeModel> solutionProjects);
+        IList<ProjectInfo> GetSolutionProjects(string solutionFilePath);
 
-        Task<IFileBaseViewModel> OpenDocumentAsync(ISolutionExplorerNodeModel item);
+        IList<string> GetProjectsFromSolution(string solutionFilePath);
+
+        void SolutionRemoveProject(string solutionFilePath, string projectName);
+
+        void RenameProject(string solutionFilePath, string oldFilePath, string newFilePath);
+
+        Task<IFileBaseViewModel> OpenDocumentAsync(string filePath);
 
         Task<LibraryItem> LoadLibraryItemAsync(string filePath);
+
+        SolutionProjectItem AddProjectToSolution(string solutionFilePath, string projectFilePath);
+
+        void ProjectSetNewReferences(string projectFilePath, IList<IProjectDocumentReference> references);
+
+        void ProjectRemoveReference(string projectFilePath, string referenceName);
+
+        string GetProjectFilePath(string filePath);
+
+        string GetSolutionFilePath(string filePath);
     }
 }

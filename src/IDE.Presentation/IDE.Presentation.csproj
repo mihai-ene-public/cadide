@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>false</UseWindowsForms>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -39,9 +39,8 @@
 	<ItemGroup>
 		<PackageReference Include="AvalonEdit" Version="6.0.1" />
 		<PackageReference Include="Cyotek.Drawing.BitmapFont" Version="2.0.0" />
-		<PackageReference Include="HelixToolkit" Version="2.16.1" />
-		<!--<PackageReference Include="HelixToolkit.SharpDX.Core" Version="2.16.1" />-->
-		<PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.16.1" />
+		<!--<PackageReference Include="HelixToolkit" Version="2.16.1" />-->
+		<PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.23.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
 		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />

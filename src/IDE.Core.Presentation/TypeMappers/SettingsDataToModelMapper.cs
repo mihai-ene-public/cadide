@@ -19,11 +19,15 @@ namespace IDE.Core.ViewModels
             AddMapping(typeof(BoardEditorColorsSetting), typeof(BoardEditorColorsSettingModel));
             AddMapping(typeof(BoardEditorRoutingSetting), typeof(BoardEditorRoutingSettingModel));
             AddMapping(typeof(BoardEditorPrimitiveDefaults), typeof(BoardEditorPrimitiveDefaultsModel));
+
             AddMapping(typeof(EnvironmentFolderLibsSettingData), typeof(EnvironmentFolderLibsSettingModel));
             AddMapping(typeof(EnvironmentGeneralSetting), typeof(EnvironmentGeneralSettingModel));
             AddMapping(typeof(EnvironmentKeyboardSetting), typeof(EnvironmentKeyboardSettingModel));
+            
             AddMapping(typeof(SchematicEditorColorsSetting), typeof(SchematicEditorColorsSettingModel));
             AddMapping(typeof(SchematicEditorPrimitiveDefaults), typeof(SchematicEditorPrimitiveDefaultsModel));
+
+            AddMapping(typeof(PackageManagerSettings), typeof(PackageManagerSettingsModel));
             //AddMapping(typeof(ComponentEditorBOMSetting), typeof(ComponentEditorBOMSettingModel));
             AddMapping(typeof(SettingCategory), typeof(SettingCategoryModel));
         }

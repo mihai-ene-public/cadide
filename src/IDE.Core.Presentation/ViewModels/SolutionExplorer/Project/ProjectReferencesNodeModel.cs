@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using IDE.Core.Interfaces;
+using IDE.Core.Storage;
 
 namespace IDE.Core.ViewModels
 {
@@ -20,21 +21,13 @@ namespace IDE.Core.ViewModels
         {
             Children.Clear();
 
-            var refs = ProjectNode.Project.References.Select(r => new ProjectReferenceNodeModel { Document = r });
+            base.Load(filePath);
+
+            var projectDoc = XmlHelper.Load<ProjectDocument>(filePath);
+            var refs = projectDoc.References.Select(r => new ProjectReferenceNodeModel { FileName = r.ToString() });
             AddChildren(refs);
 
-            UpdateReferences();
         }
 
-        void UpdateReferences()
-        {
-            //if "References" folder does not exist, we need to update refeernces because it was just loaded from a template
-            var referencesFolder = Path.Combine(ProjectNode.GetItemFolderFullPath(), "References");
-            if (Directory.Exists(referencesFolder))
-                return;
-
-            var h = new ProjectReferencesHelper();
-            h.UpdateReferences(Children);
-        }
     }
 }

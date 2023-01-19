@@ -185,24 +185,6 @@ namespace IDE.Documents.Views
             }
         }
 
-        #region ParentProject
-
-        public ISolutionProjectNodeModel ParentProject
-        {
-            get
-            {
-                var itemNode = Item as SolutionExplorerNodeModel;
-                if (itemNode == null)
-                    return null;
-                var project = itemNode.ProjectNode;
-                if (project == null)
-                    throw new Exception("This component does not belong to any project");
-
-                return project;
-            }
-        }
-
-        #endregion ParentProject
 
         ICommand zoomToFitCommand;
 

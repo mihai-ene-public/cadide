@@ -5,26 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDE.Core.Interfaces
+namespace IDE.Core.Interfaces;
+
+public interface IProjectDocument
 {
-    public interface IProjectDocument
-    {
-        ProjectOutputType OutputType { get; set; }
+    ProjectOutputType OutputType { get; set; }
 
-        ProjectProperties Properties { get; set; }
+    ProjectProperties Properties { get; set; }
 
-        List<ProjectDocumentReference> References { get; set; }
-
-        string FilePath { get; set; }
+    List<ProjectDocumentReference> References { get; set; }
+}
 
 
+public interface IProjectDocumentReference
+{
 
-        void Save();
-    }
+}
 
-  
-    public interface IProjectDocumentReference
-    {
-
-    }
+public class ProjectInfo
+{
+    public IProjectDocument Project { get; set; }
+    public string ProjectPath { get; set; }
 }

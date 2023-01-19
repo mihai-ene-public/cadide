@@ -18,7 +18,9 @@ namespace IDE.Documents.Views
             canvasModel = new DrawingViewModel(null, dispatcher);
         }
 
-        protected readonly DrawingViewModel canvasModel;//= new DrawingViewModel(null);
+        protected readonly DrawingViewModel canvasModel;
+        protected ProjectInfo _project;
+
         public DrawingViewModel CanvasModel
         {
             get
@@ -31,8 +33,11 @@ namespace IDE.Documents.Views
         {
             canvasModel.Items = primitives;
         }
-
-        public abstract void PreviewDocument(LibraryItem libraryItem, ISolutionProjectNodeModel projectModel);
+        internal void SetProject(ProjectInfo project)
+        {
+            _project = project;
+        }
+        public abstract void PreviewDocument(LibraryItem libraryItem);
 
         public void ZoomToFit()
         {

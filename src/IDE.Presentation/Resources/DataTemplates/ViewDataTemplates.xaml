@@ -73,9 +73,9 @@
     <DataTemplate DataType="{x:Type docs:SolutionProjectPropertiesViewModel}">
         <local:SolutionProjectPropertiesView />
     </DataTemplate>
-    <!--<DataTemplate DataType="{x:Type docs:FontDesignerViewModel}">
-        <local:FontDesignerView />
-    </DataTemplate>-->
+    <DataTemplate DataType="{x:Type docs:SolutionPropertiesViewModel}">
+        <local:SolutionPropertiesView />
+    </DataTemplate>
     <DataTemplate DataType="{x:Type models:SelectionFilterToolViewModel}">
         <local:SelectionFilterToolView />
     </DataTemplate>

@@ -11,42 +11,32 @@ using System.Threading.Tasks;
 
 namespace IDE.Core.PDF
 {
-    public class PdfSchematicOutput
-    {
-        public double DocumentWidth { get; set; } = 297.0d;
-        public double DocumentHeight { get; set; } = 210.0d;
+    //public class PdfSchematicOutput
+    //{
+    //    public double DocumentWidth { get; set; } = 297.0d;
+    //    public double DocumentHeight { get; set; } = 210.0d;
 
-        public List<string> OutputFiles { get; private set; } = new List<string>();
+    //    public List<string> OutputFiles { get; private set; } = new List<string>();
 
-        public async Task Build(IFileBaseViewModel schematic, IList<ISheetDesignerItem> sheets)
-        {
-            if (schematic == null)
-                return;
-            var project = schematic.ProjectNode;
-            if (project == null)
-                return;
-            var savePath = Path.Combine(project.GetItemFolderFullPath(), "!Output");//folder
-            Directory.CreateDirectory(savePath);
-            var schName = Path.GetFileNameWithoutExtension(schematic.FilePath);
-            savePath = Path.Combine(savePath, $"{schName}{GetExtension("pdf")}");
+    //    public async Task Build(IFileBaseViewModel schematic, IList<ISheetDesignerItem> sheets, string outputFolder)
+    //    {
+    //        if (schematic == null)
+    //            return;
 
-            var pdf = new PdfDocument();
-            foreach (var sheet in sheets)
-            {
-                var page = new PdfSchematicPage(pdf, sheet, DocumentWidth, DocumentHeight);
-                await page.BuildPage();
-            }
-            pdf.Save(savePath);
+    //        var schName = Path.GetFileNameWithoutExtension(schematic.FilePath);
+    //        var savePath = Path.Combine(outputFolder, $"{schName}.pdf");
 
-            OutputFiles.Clear();
-            OutputFiles.Add(savePath);
-        }
+    //        var pdf = new PdfDocument();
+    //        foreach (var sheet in sheets)
+    //        {
+    //            var page = new PdfSchematicPage(pdf, sheet, DocumentWidth, DocumentHeight);
+    //            await page.BuildPage();
+    //        }
+    //        pdf.Save(savePath);
 
-        string GetExtension(string extension)
-        {
-            if (extension.StartsWith("."))
-                return extension;
-            return "." + extension.ToUpper();
-        }
-    }
+    //        OutputFiles.Clear();
+    //        OutputFiles.Add(savePath);
+    //    }
+
+    //}
 }

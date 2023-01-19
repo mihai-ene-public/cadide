@@ -48,10 +48,10 @@ namespace IDE.Core.Common
             else return new List<ISelectableItem>();
         }
 
-        public static ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(this IProjectFileRef fileItem)
+        public static ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(this IProjectFileRef fileItem, string solutionFolder)
         {
             var mapper = ServiceProvider.Resolve<ISolutionExplorerNodeMapper>();
-            var item = mapper.CreateSolutionExplorerNodeModel(fileItem);
+            var item = mapper.CreateSolutionExplorerNodeModel(fileItem, solutionFolder);
 
             return item;
         }

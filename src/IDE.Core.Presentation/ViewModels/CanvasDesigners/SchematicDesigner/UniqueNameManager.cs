@@ -38,20 +38,20 @@ namespace IDE.Core.ViewModels
             {
                 elements.Add(element);
             }
-            else
-            {
-                if (searchNet.Id <= element.Id)
-                {
-                    //searchNet is older
-                    return searchNet;
-                }
-                else
-                {
-                    //remove the existing and newer, but add the older one
-                    elements.Remove(searchNet);
-                    elements.Add(element);
-                }
-            }
+            //else
+            //{
+            //    if (searchNet.Id <= element.Id)
+            //    {
+            //        //searchNet is older
+            //        return searchNet;
+            //    }
+            //    else
+            //    {
+            //        //remove the existing and newer, but add the older one
+            //        elements.Remove(searchNet);
+            //        elements.Add(element);
+            //    }
+            //}
 
             return element;
         }

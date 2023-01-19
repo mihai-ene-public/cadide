@@ -159,7 +159,7 @@ namespace IDE.Core.Designers
         {
             get
             {
-                return signal != null && !string.IsNullOrEmpty(signal.Name) && signal.Id != 0;
+                return signal != null && !string.IsNullOrEmpty(signal.Name) && !string.IsNullOrEmpty(signal.Id);
             }
         }
 

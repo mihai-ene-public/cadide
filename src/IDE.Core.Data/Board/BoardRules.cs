@@ -21,7 +21,7 @@ namespace IDE.Core.Storage
         }
 
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [XmlAttribute("name")]
         public string Name { get; set; }
@@ -631,9 +631,9 @@ public class ManufacturingMinAnnularRingRule : BoardRule
             }
         }
 
-        long objectId;
+        string objectId;
         [XmlAttribute("objectId")]
-        public long ObjectId
+        public string ObjectId
         {
             get { return objectId; }
             set

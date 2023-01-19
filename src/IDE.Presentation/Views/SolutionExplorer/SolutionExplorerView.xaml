@@ -113,6 +113,14 @@
                         <MenuItem Header="{x:Static resources:Strings.CmdBuildHeader}"
                                   Command="{x:Static cmd:AppCommand.BuildCommand}"
                                   CommandParameter="{Binding}" />
+                        <MenuItem Header="{x:Static resources:Strings.CmdPackHeader}"
+                                  Command="{x:Static cmd:AppCommand.PackCommand}"
+                                  CommandParameter="{Binding}" />
+
+                        <MenuItem Header="{x:Static resources:Strings.CmdRestorePacksHeader}"
+                                  Command="{x:Static cmd:AppCommand.RestorePackagesCommand}"
+                                  CommandParameter="{Binding}" />
+                        
                         <MenuItem Header="{x:Static resources:Strings.CmdShowConfigurationManagerHeader}"
                                   Command="{x:Static cmd:AppCommand.OpenConfigurationManagerCommand}"
                                   CommandParameter="{Binding}" />
@@ -181,12 +189,14 @@
                         <MenuItem Header="{x:Static resources:Strings.CmdRenameHeader}"
                                   Command="{Binding BeginRenameCommand}"
                                   InputGestureText="F2" />
-                        <MenuItem Header="{x:Static resources:Strings.CmdUpdateReferencesHeader}"
-                                  Command="{Binding Data.UpdateSelectedReferencesCommand, Source={StaticResource windowProxy}}" />
 
                         <Separator />
                         <MenuItem Header="{x:Static resources:Strings.CmdManageReferencesHeader}"
                                   Command="{x:Static cmd:AppCommand.ManageReferencesCommand}"
+                                  CommandParameter="{Binding}" />
+
+                        <MenuItem Header="{x:Static resources:Strings.CmdShowPackageManagerHeader}"
+                                  Command="{x:Static cmd:AppCommand.ShowPackageManagerCommand}"
                                   CommandParameter="{Binding}" />
                         <Separator />
                         <MenuItem Header="{x:Static resources:Strings.CmdShowPropertiesHeader}"

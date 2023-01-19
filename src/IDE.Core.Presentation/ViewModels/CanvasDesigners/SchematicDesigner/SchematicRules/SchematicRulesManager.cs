@@ -4,6 +4,7 @@ using IDE.Core.Storage;
 using IDE.Core.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,9 @@ namespace IDE.Core.Designers
             var errors = new List<IErrorMessage>();
 
             await Task.CompletedTask;
+
+            var pi = schematic.GetCurrentProjectInfo();
+            var projectName = Path.GetFileNameWithoutExtension(pi.ProjectPath);
 
             try
             {
@@ -96,7 +100,7 @@ namespace IDE.Core.Designers
 
                         foreach (var violation in ruleViolations)
                         {
-                            errors.Add(GetViolation(violation, schematic));
+                            errors.Add(GetViolation(violation, schematic, projectName));
                         }
                     }
                 }
@@ -146,9 +150,8 @@ namespace IDE.Core.Designers
             return nets;
         }
 
-        private IErrorMessage GetViolation(SchematicRuleCheckResult result, ISchematicDesigner schematic)
+        private IErrorMessage GetViolation(SchematicRuleCheckResult result, ISchematicDesigner schematic, string projectName)
         {
-            var projectName = schematic.ProjectNode.Name;
             switch (result.CheckResponse)
             {
                 case SchematicRuleResponse.Error:

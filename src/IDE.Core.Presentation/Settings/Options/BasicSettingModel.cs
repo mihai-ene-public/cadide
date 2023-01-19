@@ -11,7 +11,10 @@ namespace IDE.Core.Settings.Options
     {
         public virtual bool IsVisible => true;
 
-        public string Name { get; set; }
+        public string Name => GetDisplayName();
+
+        protected abstract string GetDisplayName();
+
         public abstract ISettingData ToData();
 
         public abstract void LoadFromData(ISettingData settingData);
@@ -66,9 +69,9 @@ namespace IDE.Core.Settings.Options
     //        ApiKey = null;
     //    }
 
-       
 
-       
+
+
 
     //    public override ISettingData ToData()
     //    {

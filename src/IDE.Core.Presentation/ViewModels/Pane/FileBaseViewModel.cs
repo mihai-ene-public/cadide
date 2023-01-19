@@ -16,11 +16,12 @@ namespace IDE.Core.ViewModels
     using System.Linq;
     using System.Threading.Tasks;
     using IDE.Core.Types.Media;
+    using IDE.Core.Presentation.Solution;
+    using CommunityToolkit.Mvvm.Messaging;
 
     /// <summary>
     /// Base class that shares common properties, methods, and intefaces
     /// among viewmodels that represent documents
-    /// (text file edits, Start Page, Program Settings).
     /// </summary>
     public abstract class FileBaseViewModel : PaneViewModel, IFileBaseViewModel
     {
@@ -30,18 +31,46 @@ namespace IDE.Core.ViewModels
             : this()
         {
             documentTypeKey = docTypeKey;
+
+            StrongReferenceMessenger.Default.Register<IFileBaseViewModel, FilePathChangedMessage>(this,
+               (vm, message) =>
+               {
+                   var oldItemPath = FilePath;
+
+                   if (oldItemPath == message.OldFilePath)
+                   {
+                       FilePath = message.NewFilePath;
+                   }
+               });
+
+            StrongReferenceMessenger.Default.Register<IFileBaseViewModel, FolderPathChangedMessage>(this,
+              (vm, message) =>
+              {
+                  var oldItemPath = FilePath;
+
+                  if (PathHelper.FolderPathContainsFile(message.OldFolderPath, oldItemPath))
+                  {
+                      var oldFileFolder = Path.GetDirectoryName(oldItemPath);
+                      var oldFileRelativePath = Path.GetRelativePath(message.OldFolderPath, oldItemPath);
+                      FilePath = Path.Combine(message.NewFolderPath, oldFileRelativePath);
+                  }
+              });
         }
 
         protected FileBaseViewModel()
         {
-            clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
+            _clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
             _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
+            _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
 
             PropertyChanged += FileBaseViewModel_PropertyChanged;
         }
-        protected IClipboardAdapter clipBoard;
+        protected readonly IClipboardAdapter _clipBoard;
 
         protected readonly IApplicationViewModel _applicationViewModel;
+        protected readonly ISolutionRepository _solutionRepository;
+
+
 
         async void FileBaseViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -80,31 +109,10 @@ namespace IDE.Core.ViewModels
         protected string FileFilterName;// = "Schematic file";
         protected string DefaultFilter;// = "schematic";
 
-        //FileLoader fileLoader;
-
-        // protected bool loadAsync = false;
-
         #endregion Fields
 
-        #region events
-        ///// <summary>
-        ///// This event is fired when a document tells the framework that is wants to be closed.
-        ///// The framework can then close it and clean-up whatever is left to clean-up.
-        ///// </summary>
-        //public virtual event EventHandler<FileBaseEvent> DocumentEvent;
-
-        ///// <summary>
-        ///// Supports asynchrone processing by implementing a result event when processing is done.
-        ///// </summary>
-        //public event EventHandler<ProcessResultEvent> ProcessingResultEvent;
-        #endregion events
-
         #region properties
-        /// <summary>
-        /// Gets the key that is associated with the type of this document.
-        /// This key is relevant for the framework to implement the correct
-        /// file open/save filter settings etc...
-        /// </summary>
+
         public string DocumentTypeKey
         {
             get
@@ -122,7 +130,7 @@ namespace IDE.Core.ViewModels
         {
             get
             {
-                return FileName + ( IsDirty ? "*" : string.Empty );
+                return FileName + (IsDirty ? "*" : string.Empty);
             }
         }
         #endregion
@@ -159,61 +167,6 @@ namespace IDE.Core.ViewModels
                 }
             }
         }
-
-        public ISolutionProjectNodeModel ProjectNode
-        {
-            get
-            {
-                var sn = Item as SolutionExplorerNodeModel;
-                if (sn != null)
-                    return sn.ProjectNode;
-                return null;
-            }
-        }
-
-        INotifyPropertyChanged item;
-        public INotifyPropertyChanged Item
-        {
-            get { return item; }
-            set
-            {
-                if (item != null)
-                    item.PropertyChanged -= Item_PropertyChanged;
-
-                item = value;
-
-                if (item != null)
-                    item.PropertyChanged += Item_PropertyChanged;
-            }
-        }
-
-        public virtual object Document { get { return null; } }
-
-        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (Item == null) return;
-
-            if (e.PropertyName == "Name")
-            {
-                try
-                {
-                    var oldItemPath = FilePath;
-                    var oldItemFolder = Path.GetDirectoryName(oldItemPath);
-                    var oldExtension = Path.GetExtension(oldItemPath);
-
-                    //since we have the object of a class in a higher dll we have to use reflection
-                    var name = Item.GetType().GetProperty("Name", typeof(string)).GetValue(Item) as string;
-
-                    //keep the old extension
-                    var newFileName = Path.GetFileNameWithoutExtension(name) + oldExtension;
-
-                    FilePath = Path.Combine(oldItemFolder, newFileName);
-                }
-                catch { }
-            }
-        }
-
-
 
         protected string filePath;
 
@@ -350,10 +303,7 @@ namespace IDE.Core.ViewModels
         {
             get
             {
-                //if (openContainingFolderCommand == null)
-                //    openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand());
-
-                return openContainingFolderCommand ?? ( openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand()) );
+                return openContainingFolderCommand ?? (openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand()));
             }
         }
 
@@ -423,43 +373,6 @@ namespace IDE.Core.ViewModels
             await AfterLoadDocumentInternal();
         }
 
-        //private void LoadFileAsync(string path)
-        //{
-        //    if (fileLoader != null)
-        //    {
-
-        //        if (MessageDialog.Show(
-        //                "An operation is currently in progress. Would you like to cancel the current process?",
-        //                "Processing...",
-        //                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-        //        {
-        //            fileLoader.Cancel();
-        //        }
-        //    }
-
-        //    fileLoader = new FileLoader();
-
-        //    fileLoader.ProcessingResultEvent += FileLoaderLoadResultEvent;
-
-        //    State = DocumentState.IsLoading;
-
-        //    fileLoader.ExecuteAsynchronously(() =>
-        //    {
-        //        try
-        //        {
-        //            OpenFileInternal(path);
-        //        }
-        //        finally
-        //        {
-        //            // Set this to invalid if viewmodel still things its loading...
-        //            if (State == DocumentState.IsLoading)
-        //                State = DocumentState.IsInvalid;
-        //        }
-        //    },
-        //                                   loadAsync);
-
-        //}
-
         async Task OpenFileInternal(string openFilePath)
         {
             try
@@ -507,36 +420,6 @@ namespace IDE.Core.ViewModels
             return Task.CompletedTask;
         }
 
-        ///// <summary>
-        ///// Method is executed when the background process finishes and returns here
-        ///// because it was cancelled or is done processing.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void FileLoaderLoadResultEvent(object sender, ResultEvent e)
-        //{
-        //    fileLoader.ProcessingResultEvent -= FileLoaderLoadResultEvent;
-        //    fileLoader = null;
-
-        //    CommandManager.InvalidateRequerySuggested();
-
-        //    // close documents automatically without message when re-loading on startup
-        //    if (State == DocumentState.IsInvalid && CloseOnErrorWithoutMessage == true)
-        //    {
-        //        OnClose();
-        //        return;
-        //    }
-
-        //    //// Continue processing in parent of this viewmodel if there is any such requested
-        //    //OnFileProcessingResultEvent(e, TypeOfResult.FileLoad);
-        //}
-
-        ///// <summary>
-        ///// Save this document as.
-        ///// </summary>
-        ///// <returns></returns>
-        //public abstract bool SaveFile(string filePath);
-
         public bool SaveFile(string filePath)
         {
             try
@@ -554,17 +437,8 @@ namespace IDE.Core.ViewModels
             catch { throw; }
         }
 
-        //protected virtual void BeforeSaveInternal()
-        //{
-
-        //}
-
         protected virtual void SaveDocumentInternal(string filePath)
         { }
-
-        //protected virtual void AfterSaveInternal() { }
-
-
 
         /// <summary>
         /// Return the path of the file representation (if any).
@@ -586,6 +460,18 @@ namespace IDE.Core.ViewModels
 
         #endregion abstract methods
 
+        public ProjectInfo GetCurrentProjectInfo()
+        {
+            var projectPath = _solutionRepository.GetProjectFilePath(filePath);
+            var project = _solutionRepository.LoadProjectDocument(projectPath);
+
+            return new ProjectInfo
+            {
+                Project = project,
+                ProjectPath = projectPath,
+            };
+        }
+
         /// <summary>
         /// Is executed when the user wants to refresh/re-load
         /// the current content with the currently stored inforamtion.
@@ -595,25 +481,6 @@ namespace IDE.Core.ViewModels
             await OpenFileAsync(FilePath);
         }
 
-        /// <summary>
-        /// Search for most inner exceptions and return it to caller.
-        /// </summary>
-        /// <param name="exp"></param>
-        /// <param name="caption"></param>
-        /// <returns></returns>
-        public Exception GetInnerMostException(Exception exp)
-        {
-            if (exp != null)
-            {
-                while (exp.InnerException != null)
-                    exp = exp.InnerException;
-            }
-
-            if (exp != null)
-                return exp;
-
-            return null;
-        }
 
         /// <summary>
         /// Get a path that does not represent this document that indicates
@@ -625,19 +492,7 @@ namespace IDE.Core.ViewModels
             return FilePath;
         }
 
-        ///// <summary>
-        ///// This method is executed to tell the surrounding framework to close the document.
-        ///// </summary>
-        //protected virtual void OnClose()
-        //{
-        //    if (DocumentEvent != null)
-        //        DocumentEvent(this, new FileBaseEvent(FileEventType.CloseDocument));
-        //}
 
-        /// <summary>
-        /// Indicate whether document can be closed or not.
-        /// </summary>
-        /// <returns></returns>
         public virtual bool CanClose()
         {
             if (State == DocumentState.IsLoading)
@@ -650,7 +505,7 @@ namespace IDE.Core.ViewModels
         {
             try
             {
-                clipBoard.SetText(FilePath);
+                _clipBoard.SetText(FilePath);
             }
             catch
             {
@@ -689,7 +544,7 @@ namespace IDE.Core.ViewModels
             }
             catch (System.Exception ex)
             {
-                MessageDialog.Show(string.Format(CultureInfo.CurrentCulture, "{0}\n'{1}'.", ex.Message, ( FilePath == null ? string.Empty : FilePath )),
+                MessageDialog.Show(string.Format(CultureInfo.CurrentCulture, "{0}\n'{1}'.", ex.Message, (FilePath == null ? string.Empty : FilePath)),
                                                 Strings.STR_FILE_FINDING_CAPTION
                                                 );
             }
@@ -707,8 +562,8 @@ namespace IDE.Core.ViewModels
                 defaultFileType = newDefaultFileExtension;
 
             return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
-                            this.defaultFileName,
-                            ( iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString() ),
+                            defaultFileName,
+                            (iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString()),
                             defaultFileType);
         }
 

@@ -75,7 +75,7 @@ namespace IDE.Core.Designers
         }
 
         [Browsable(false)]
-        public long PartInstanceId
+        public string PartInstanceId
         {
             get
             {
@@ -83,7 +83,7 @@ namespace IDE.Core.Designers
                 if (part != null)
                     return part.SymbolPrimitive.Id;
 
-                return -1;
+                return null;
             }
         }
 

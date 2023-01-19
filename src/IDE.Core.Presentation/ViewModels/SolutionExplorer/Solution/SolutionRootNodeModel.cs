@@ -1,67 +1,42 @@
 ﻿using IDE.Core.Storage;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using IDE.Core.Interfaces;
 using IDE.Core.Common;
-using IDE.Core.Presentation.Compilers;
-using IDE.Core.Presentation.Builders;
 
-namespace IDE.Core.ViewModels
+namespace IDE.Core.ViewModels;
+
+
+/// <summary>
+/// root solution node. It contains SolutionDocument as Document
+/// </summary>
+public class SolutionRootNodeModel : SolutionExplorerNodeModel, ISolutionRootNodeModel
 {
 
-    /// <summary>
-    /// root solution node. It contains SolutionDocument as Document
-    /// </summary>
-    public class SolutionRootNodeModel : SolutionExplorerNodeModel, ISolutionRootNodeModel
+    protected override string GetNameInternal()
     {
+        return Path.GetFileNameWithoutExtension(FileName);
+    }
 
-        public ISolutionDocument Solution { get { return Document as SolutionDocument; } }
+    public override void Load(string filePath)
+    {
+        Children.Clear();
 
-        protected override string GetNameInternal()
+        base.Load(filePath);
+
+        //load solution file from disk
+        var solution = XmlHelper.Load<SolutionDocument>(filePath);
+
+        if (solution.Children != null)
         {
-            return Path.GetFileNameWithoutExtension(SolutionManager.SolutionFilePath);//SolutionDocument.FilePath);
-        }
+            var solutionFolder = Path.GetDirectoryName(filePath);
 
-        public override void Load(string filePath)
-        {
-            Children.Clear();
-
-            //load solution file from disk
-            var solution = SolutionManager.LoadSolution(filePath);//SolutionDocument.Load(filePath);
-            Document = solution;
-
-            if (solution.Children != null)
+            foreach (var child in solution.Children.AsParallel())
             {
-                foreach (var child in solution.Children.AsParallel())
-                {
 
-                    var nodeModel = child.CreateSolutionExplorerNodeModel();
-                    AddChild(nodeModel);
-                }
+                var nodeModel = child.CreateSolutionExplorerNodeModel(solutionFolder);
+                AddChild(nodeModel);
             }
         }
-
-        private ISolutionCompiler GetSolutionCompiler()
-        {
-            return ServiceProvider.Resolve<ISolutionCompiler>();
-        }
-
-        private ISolutionBuilder GetSolutionBuilder()
-        {
-            return ServiceProvider.Resolve<ISolutionBuilder>();
-        }
-
-        public async override Task Compile()
-        {
-            var compiler = GetSolutionCompiler();
-            await compiler.CompileSolution(this);
-        }
-
-        public async override Task Build()
-        {
-            var compiler = GetSolutionBuilder();
-            await compiler.BuildSolution(this);
-        }
     }
+
 }

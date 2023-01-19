@@ -4,11 +4,8 @@ namespace IDE.Core.Presentation.Builders;
 
 public interface ISolutionBuilder
 {
-    Task BuildSolution(ISolutionRootNodeModel solution);
+    Task<IList<string>> BuildSolution(string solutionFilePath);
 
-    Task BuildSolution(string solutionFilePath);
-
-    Task BuildProject(ISolutionProjectNodeModel project);
-    Task BuildProject(string filePath);
+    Task<IList<string>> BuildProject(string filePath);
 
 }

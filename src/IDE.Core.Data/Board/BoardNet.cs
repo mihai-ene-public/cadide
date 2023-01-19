@@ -13,15 +13,13 @@ namespace IDE.Core.Storage
         /// Id of net from the schematic (lowest id?)
         /// </summary>
         [XmlAttribute("id")]
-        public long NetId { get; set; }
+        public string NetId { get; set; }
 
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-
-
         [XmlAttribute("classId")]
-        public long ClassId { get; set; }
+        public string ClassId { get; set; }
 
         /// <summary>
         /// in this net all pads must be connected together (net list)

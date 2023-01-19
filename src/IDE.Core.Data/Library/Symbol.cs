@@ -10,13 +10,10 @@ namespace IDE.Core.Storage
     [XmlRoot("symbol")]
     public class Symbol : LibraryItem
     {
-
         public Symbol()
         {
             Items = new List<SchematicPrimitive>();
         }
-
-
 
         [XmlElement("description")]
         public Description Description { get; set; }
@@ -24,8 +21,6 @@ namespace IDE.Core.Storage
         [XmlElement("circle", typeof(Circle))]
         [XmlElement("ellipse", typeof(Ellipse))]
         [XmlElement("image", typeof(ImagePrimitive))]
-        //[XmlElement("dimension", typeof(Dimension))]
-        //[XmlElement("frame", typeof(Frame))]
         [XmlElement("pin", typeof(Pin))]
         [XmlElement("poly", typeof(Polygon))]
         [XmlElement("rect", typeof(Rectangle))]

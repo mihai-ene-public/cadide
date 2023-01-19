@@ -14,10 +14,8 @@ namespace IDE.Core.Build
 {
     public class BoardGlobalOutputBuilder
     {
-        public async Task<BuildResult> Build(IBoardDesigner board)
+        public async Task<BuildResult> Build(IBoardDesigner board, string folderOutput)
         {
-            var project = board.ProjectNode;
-            var folderOutput = Path.Combine(project.GetItemFolderFullPath(), "!Output");
             var boardName = Path.GetFileNameWithoutExtension(board.FilePath);
 
             var createGerberAssemblyDrawings = board.BuildOptions.GerberCreateGerberAssemblyDrawings;

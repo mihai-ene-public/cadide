@@ -20,7 +20,7 @@ namespace IDE.Core.Storage
         public string LibraryName { get; set; }
 
         [XmlAttribute("footprintId")]
-        public long footprintId
+        public string footprintId
         {
             get; set;
         }

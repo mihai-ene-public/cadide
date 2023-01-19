@@ -8,7 +8,7 @@ namespace IDE.Core.Interfaces
 {
     public interface ISettingModel
     {
-        string Name { get; set; }
+        string Name { get; }
 
         ISettingData ToData();
 

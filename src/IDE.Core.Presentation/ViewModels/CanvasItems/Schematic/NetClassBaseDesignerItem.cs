@@ -5,7 +5,7 @@ namespace IDE.Core.Designers
 {
     public class NetClassBaseDesignerItem : EditBoxModel
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public NetClassGroupDesignerItem Parent { get; set; }
 

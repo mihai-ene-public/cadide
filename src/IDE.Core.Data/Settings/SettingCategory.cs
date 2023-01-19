@@ -22,6 +22,8 @@ namespace IDE.Core.Settings
         [XmlElement("EnvironmentFolderLibsSetting", typeof(EnvironmentFolderLibsSettingData))]
         [XmlElement("EnvironmentKeyboardSetting", typeof(EnvironmentKeyboardSetting))]
 
+        [XmlElement("PackageManagerSettings", typeof(PackageManagerSettings))]
+
         [XmlElement("BoardEditorGeneralSetting", typeof(BoardEditorGeneralSetting))]
         [XmlElement("BoardEditorColorsSetting", typeof(BoardEditorColorsSetting))]
         [XmlElement("BoardEditorRoutingSetting", typeof(BoardEditorRoutingSetting))]

@@ -38,9 +38,7 @@ namespace IDE.Core.ViewModels
 
             AddMapping("component", typeof(ProjectComponentNodeModel));
             AddMapping("diagram", typeof(ProjectDiagramNodeModel));
-           // AddMapping(typeof(ProjectFolderFile), typeof(ProjectFolderNodeModel));
             AddMapping("footprint", typeof(ProjectFootprintNodeModel));
-            //AddMapping(typeof(ProjectGenericFile), typeof(ProjectGenericFileNodeModel));
             AddMapping("schematic", typeof(ProjectSchematicNodeModel));
             AddMapping("symbol", typeof(ProjectSymbolNodeModel));
             AddMapping("font", typeof(ProjectFontNodeModel));
@@ -51,25 +49,17 @@ namespace IDE.Core.ViewModels
             fileExtension = fileExtension.Replace(".", "");
             var mappedType = GetMapping(fileExtension);
 
-
             if (mappedType != null)
             {
                 var nodeModel = Activator.CreateInstance(mappedType) as ISolutionExplorerNodeModel;
 
                 if (nodeModel != null)
                 {
-                    //   nodeModel.FileItem = fileItem;
-
-                    //if (nodeModel is ISolutionProjectNodeModel)
-                    //    LoadProjectNodeModel(nodeModel, fileItem.RelativePath);
-
                     return nodeModel;
                 }
             }
 
             throw new NotSupportedException();
-
-            //return null;
         }
     }
 }

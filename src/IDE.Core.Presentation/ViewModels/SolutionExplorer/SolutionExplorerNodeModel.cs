@@ -12,6 +12,8 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using IDE.Core.Presentation.Solution;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace IDE.Core.ViewModels;
 
@@ -31,12 +33,28 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
     public SolutionExplorerNodeModel()
     {
         dispatcherHelper = ServiceProvider.Resolve<IDispatcherHelper>();
+        _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
+
         Children = new SortableObservableCollection<ISolutionExplorerNodeModel>(new ExplorerNodeComparer());
         //rename is disabled by default
         IsReadOnly = false;
+
+        StrongReferenceMessenger.Default.Register<ISolutionExplorerNodeModel, FolderPathChangedMessage>(this,
+              (vm, message) =>
+              {
+                  var oldItemPath = GetItemFullPath();
+
+                  if (PathHelper.FolderPathContainsFile(message.OldFolderPath, oldItemPath))
+                  {
+                      var oldFileFolder = Path.GetDirectoryName(oldItemPath);
+                      var oldFileRelativePath = Path.GetRelativePath(message.OldFolderPath, oldItemPath);
+                      fileFullPath = Path.Combine(message.NewFolderPath, oldFileRelativePath);
+                  }
+              });
     }
 
-    IDispatcherHelper dispatcherHelper;
+    private readonly IDispatcherHelper dispatcherHelper;
+    private readonly ISolutionRepository _solutionRepository;
 
     public string Name
     {
@@ -107,25 +125,15 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         }
     }
 
-    protected object document;
-    public object Document
-    {
-        get
-        {
-            return document;
-        }
-        set
-        {
-            document = value;
-            OnPropertyChanged(nameof(Document));
-            //OnDocumentChanged();
-        }
-    }
-
     /// <summary>
     /// the name of the folder or file including extension. Not the full path
     /// </summary>
     public string FileName { get; set; }
+
+    /// <summary>
+    /// the full path to the file in this node
+    /// </summary>
+    protected string fileFullPath;
 
     /// <summary>
     /// if this instance is a file node, it represents the Project node it belongs to
@@ -157,7 +165,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         }
     }
 
-    public SolutionRootNodeModel SolutionNode
+    public ISolutionRootNodeModel SolutionNode
     {
         get
         {
@@ -261,8 +269,6 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
 
     public void BeginRename()
     {
-        //RequestEditMode(RequestEditEvent.StartEditMode);
-
         IsEditing = true;
     }
 
@@ -272,47 +278,41 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         get
         {
             if (openContainingFolderCommand == null)
-                openContainingFolderCommand = CreateCommand((p) => OnOpenContainingFolderCommand());
+                openContainingFolderCommand = CreateCommand((p) => OpenContainingFolder());
 
             return openContainingFolderCommand;
         }
-    }
-
-    //ICommand deleteItemCommand;
-    //public ICommand DeleteItemCommand
-    //{
-    //    get
-    //    {
-    //        if (deleteItemCommand == null)
-    //            deleteItemCommand = CreateCommand(
-    //                                                    p => DeleteItem(),
-    //                                                    p => CanDeleteItem());
-
-    //        return deleteItemCommand;
-    //    }
-    //}
-
-    protected virtual void DeleteItemInternal()
-    {
-        //remove the folder from disk with all the children files
-        var path = GetItemFullPath();
-
-        if (PathHelper.IsDirectory(path))
-        {
-            Directory.Delete(path, true);
-        }
-        else
-        {
-            File.Delete(path);
-        }
-
     }
 
     public void DeleteItem()
     {
         try
         {
-            DeleteItemInternal();
+            if (this is ProjectReferenceNodeModel projectReferenceNodeModel)
+            {
+                var projFilePath = ProjectNode.GetItemFullPath();
+                _solutionRepository.ProjectRemoveReference(projFilePath, projectReferenceNodeModel.Name);
+            }
+            else if (this is SolutionProjectNodeModel projectNode)
+            {
+                var solutionNode = SolutionNode;
+                var solutionPath = solutionNode.GetItemFullPath();
+                _solutionRepository.SolutionRemoveProject(solutionPath, projectNode.Name);
+            }
+            else
+            {
+                //remove the folder from disk with all the children files
+                var path = GetItemFullPath();
+
+                if (PathHelper.IsDirectory(path))
+                {
+                    Directory.Delete(path, true);
+                }
+                else
+                {
+                    File.Delete(path);
+                }
+            }
 
             ParentNode.Children.Remove(this);
         }
@@ -322,23 +322,10 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         }
     }
 
-    //bool CanDeleteItem()
-    //{
-    //    //we can delete an item if it is either a file, a folder or a project (remove)
-    //    return FileItem is ProjectBaseFileRef || Document is ProjectDocument;
-    //}
-
-    public virtual Task Build()
-    {
-        return Task.CompletedTask;
-    }
-
-    public virtual Task Compile() { return Task.CompletedTask; }
-
     /// <summary>
     /// Opens the folder in which this document is stored in the Windows Explorer.
     /// </summary>
-    void OnOpenContainingFolderCommand()
+    private void OpenContainingFolder()
     {
         var filePath = string.Empty;
         try
@@ -358,13 +345,10 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
 
                 if (!Directory.Exists(directory))
                 {
-                    MessageDialog.Show(string.Format(CultureInfo.CurrentCulture, Strings.STR_ACCESS_DIRECTORY_ERROR, directory),
-                                                                          Strings.STR_FILE_FINDING_CAPTION,
-                                                                          XMessageBoxButton.OK, XMessageBoxImage.Error);
+                    throw new Exception($"Folder {directory} could not be found.");
                 }
                 else
                 {
-                    //string argument = @"/select, " + directory;
                     var argument = directory;
 
                     Process.Start("explorer.exe", argument);
@@ -373,9 +357,6 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         }
         catch (Exception ex)
         {
-            //Msg.Show(string.Format(CultureInfo.CurrentCulture, "{0}\n'{1}'.", ex.Message, (filePath == null ? string.Empty : filePath)),
-            //                                Strings.STR_FILE_FINDING_CAPTION,
-            //                                MessageBoxButton.OK, MessageBoxImage.Error);
             MessageDialog.Show(ex.Message);
         }
     }
@@ -387,7 +368,6 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
     /// <returns></returns>
     protected virtual string GetNameInternal()
     {
-        // return Path.GetFileName(FileItem.RelativePath);
         return FileName;
     }
 
@@ -395,8 +375,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
     /// when overridded it will set the name (like renaming a file)
     /// <para>not all names can be changed</para>
     /// </summary>
-    /// <param name="name"></param>
-    protected virtual void SetNameInternal(string name)
+    protected void SetNameInternal(string name)
     {
         //calling this method by property changing seems a bit dangerous, because it's renaming files on disk
         //todo: we should review this approach
@@ -411,25 +390,47 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         //keep the old extension
         var fileName = Path.GetFileNameWithoutExtension(name) + oldExtension;
 
+        var newFilePath = Path.Combine(oldItemFolder, fileName);
 
-        if (Document is ProjectDocument pd)
-        {
-            var solFolder = Path.GetDirectoryName(SolutionManager.SolutionFilePath);
-            //var pd = (ProjectDocument)Document;
-            pd.FilePath = Path.Combine(oldItemFolder, fileName);
-            ( this as SolutionProjectNodeModel ).FileItem.RelativePath = DirectoryName.GetRelativePath(solFolder, pd.FilePath);
-            FileName = fileName;
-            //todo we should rename the project folder
+        var solutionRepo = ServiceProvider.Resolve<ISolutionRepository>();
 
-            SolutionManager.SaveSolution();
-        }
-        else if (Document is SolutionDocument)
+        if (this is ISolutionProjectNodeModel projectNodeModel)
         {
-            SolutionManager.SolutionFilePath = Path.Combine(oldItemFolder, fileName);
+            var solFilePath = SolutionNode.GetItemFullPath();
+
+            solutionRepo.RenameProject(solFilePath, oldItemPath, newFilePath);
         }
-        else
+
+        //if (Document is ProjectDocument pd)//rename project
+        //{
+        //    var solFolder = Path.GetDirectoryName(SolutionManager.SolutionFilePath);
+        //    //var pd = (ProjectDocument)Document;
+        //    pd.FilePath = Path.Combine(oldItemFolder, fileName);
+        //    ( this as SolutionProjectNodeModel ).FileItem.RelativePath = DirectoryName.GetRelativePath(solFolder, pd.FilePath);
+        //    FileName = fileName;
+        //    //todo we should rename the project folder
+
+        //    SolutionManager.SaveSolution();
+        //}
+        //else if (Document is SolutionDocument)//rename solution
+        //{
+        //    SolutionManager.SolutionFilePath = Path.Combine(oldItemFolder, fileName);
+        //}
+        //else//any other file or folder 
+        //{
+        //    FileName = fileName;
+        //}
+
+        FileName = fileName;
+        fileFullPath = newFilePath;
+
+        if (this is ISolutionRootNodeModel)
         {
-            FileName = fileName;
+            //notify solution changed
+            StrongReferenceMessenger.Default.Send(new SolutionFilePathChangedMessage
+            {
+                NewSolutionFilePath = newFilePath
+            });
         }
 
         var newItemPath = GetItemFullPath();
@@ -441,15 +442,27 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         if (PathHelper.IsDirectory(oldItemPath))
         {
             Directory.Move(oldItemPath, newItemPath);
+
+            //notify file changed
+            StrongReferenceMessenger.Default.Send(new FolderPathChangedMessage
+            {
+                NewFolderPath = newFilePath,
+                OldFolderPath = oldItemPath
+            });
         }
         else
         {
             File.Move(oldItemPath, newItemPath);
+
+            //notify file changed
+            StrongReferenceMessenger.Default.Send(new FilePathChangedMessage
+            {
+                NewFilePath = newFilePath,
+                OldFilePath = oldItemPath
+            });
         }
 
-
-        //save the project
-        ProjectNode?.Save();
+       
     }
 
     /// <summary>
@@ -459,47 +472,42 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
     public virtual void Load(string filePath)
     {
         FileName = Path.GetFileName(filePath);
-        //load document
-
-        //update children
+        fileFullPath = filePath;
     }
-
-    //public virtual void Save(string filePath)
-    //{
-
-    //}
 
     public string GetItemFullPath()
     {
-        if (Document is SolutionDocument)
-            return SolutionManager.SolutionFilePath;
-        if (Document is ProjectDocument)
-            return ( Document as ProjectDocument ).FilePath;
+        return fileFullPath;
 
-        // ProjectBaseFile f;f.
+        //if (Document is SolutionDocument)
+        //    return SolutionManager.SolutionFilePath;
+        //if (Document is ProjectDocument)
+        //    return ( Document as ProjectDocument ).FilePath;
 
-        var parent = ParentNode;
-        var filePath = FileName;
+        //// ProjectBaseFile f;f.
 
-        if (string.IsNullOrWhiteSpace(filePath))
-            return null;
+        //var parent = ParentNode;
+        //var filePath = FileName;
 
-        //parent.FileItem.RelativePath
-        while (parent != null)
-        {
-            if (parent.Document is ProjectDocument)
-            {
-                filePath = Path.Combine(Path.GetDirectoryName(( parent.Document as ProjectDocument ).FilePath),
-                                        filePath);
+        //if (string.IsNullOrWhiteSpace(filePath))
+        //    return null;
 
-                return filePath;
-            }
-            filePath = Path.Combine(parent.FileName, filePath);
+        ////parent.FileItem.RelativePath
+        //while (parent != null)
+        //{
+        //    if (parent.Document is ProjectDocument)
+        //    {
+        //        filePath = Path.Combine(Path.GetDirectoryName(( parent.Document as ProjectDocument ).FilePath),
+        //                                filePath);
 
-            parent = parent.ParentNode;
-        }
+        //        return filePath;
+        //    }
+        //    filePath = Path.Combine(parent.FileName, filePath);
 
-        return filePath;
+        //    parent = parent.ParentNode;
+        //}
+
+        //return filePath;
 
     }
 
@@ -532,12 +540,6 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         return f;
     }
 
-    public void RequestEditMode(RequestEditEvent request)
-    {
-        if (RequestEdit != null)
-            RequestEdit(this, new RequestEdit(request));
-    }
-
     public void AddChild(ISolutionExplorerNodeModel child)
     {
         if (dispatcherHelper == null)
@@ -558,17 +560,11 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
 
     public void AddChildren(IEnumerable<ISolutionExplorerNodeModel> children)
     {
-        //Application.Current.Dispatcher.Invoke(new Action(() =>
-        //{
         foreach (var child in children)
         {
             Children.Add(child);
             child.ParentNode = this;
         }
-        // }), DispatcherPriority.Background);
-
-        //throttling
-        //System.Threading.Thread.Sleep(50);
     }
 
     public SolutionExplorerNodeModel CloneNode()

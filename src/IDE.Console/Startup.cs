@@ -1,6 +1,7 @@
 ﻿using IDE.Core;
 using IDE.Core.Collision;
 using IDE.Core.Commands;
+using IDE.Core.Common.FileSystem;
 using IDE.Core.Common.Geometries;
 using IDE.Core.Designers;
 using IDE.Core.Documents;
@@ -53,9 +54,16 @@ internal static class Startup
 
         services.AddTransient<IMemoryCache, MemoryCache>(f => new MemoryCache(new MemoryCacheOptions()));
         services.AddSingleton<ISolutionRepository, SolutionRepository>();
+
         services.AddSingleton(typeof(IObjectRepository<>), typeof(ObjectRepository<>));
+        services.AddSingleton<IObjectRepository, ObjectRepository>();
+
+        services.AddSingleton<ILibraryRepository, LibraryRepository>();
+
         services.AddSingleton(typeof(IObjectFinder<>), typeof(ObjectFinder<>));
         services.AddSingleton<IObjectFinder, ObjectFinder>();
+
+        services.AddSingleton<IFileSystemProvider, FileSystemProvider>();
 
         services.AddSingleton<IServiceCollection>(services);
         services.AddSingleton<IServiceProviderHelper, ServiceProviderHelper>();
@@ -85,7 +93,6 @@ internal static class Startup
         documentTypeManager.RegisterDocumentType("Schematic Editor", "Schematic files", "Schematic file", "schematic", typeof(ISchematicDesigner), typeof(SchematicDocument));
         documentTypeManager.RegisterDocumentType("Board Editor", "Board files", "Board file", "board", typeof(IBoardDesigner), typeof(BoardDocument));
         documentTypeManager.RegisterDocumentType("Solution", "Solution files", "Solution file", "solution", typeof(ISolutionExplorerToolWindow), null);
-
     }
 
     private static void AddDocumentEditors(IServiceCollection services)
@@ -124,6 +131,7 @@ internal static class Startup
     {
         services.AddTransient<IBoardBuilder, BoardBuilder>();
         services.AddTransient<ISchematicBuilder, SchematicBuilder>();
+        services.AddTransient<ISolutionPackageBuilder, SolutionPackageBuilder>();
     }
 
 }

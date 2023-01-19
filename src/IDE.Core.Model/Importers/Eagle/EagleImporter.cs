@@ -372,7 +372,7 @@ namespace IDE.Core.Importers
                     foreach (var g in deviceSet.gates.Gates)
                     {
                         var symbol = symbols.FirstOrDefault(s => s.Name == g.symbol);
-                        var sId = 0L;
+                        var sId = string.Empty;
                         var sName = "symbolName";
                         if (symbol != null)
                         {

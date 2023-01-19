@@ -8,104 +8,32 @@ using System.Xml.Serialization;
 
 namespace IDE.Core.Storage
 {
-    public class ProjectProperties : IProjectProperties
+    public class ProjectProperties //: IProjectProperties
     {
-        #region General
+        #region Pack
 
-        string title;
-        public string Title
-        {
-            get { return title; }
-            set
-            {
-                title = value;
-                //OnPropertyChanged(nameof(Title));
-            }
-        }
+        public string Id { get; set; }
 
-        string description;
-        public string Description
-        {
-            get { return description; }
-            set
-            {
-                description = value;
-                // OnPropertyChanged(nameof(Description));
-            }
-        }
+        public string Version { get; set; }
+        public string Authors { get; set; }
+        public string License { get; set; }
+        public string LicenseUrl { get; set; }
+        public string Icon { get; set; }
+        public string ProjectUrl { get; set; }
+        public string Description { get; set; }
+        public string Copyright { get; set; }
+        public string Tags { get; set; }
 
-        string company;
-        public string Company
-        {
-            get { return company; }
-            set
-            {
-                company = value;
-                // OnPropertyChanged(nameof(Company));
-            }
-        }
-
-        string product;
-        public string Product
-        {
-            get { return product; }
-            set
-            {
-                product = value;
-                //OnPropertyChanged(nameof(Product));
-            }
-        }
-
-        string version;
-        public string Version
-        {
-            get { return version; }
-            set
-            {
-                version = value;
-                //OnPropertyChanged(nameof(Version));
-            }
-        }
-
-        #endregion General
+        #endregion Pack
 
         #region Build
 
-        string buildOutputFolderPath = "!Output";
-        public string BuildOutputFolderPath
-        {
-            get { return buildOutputFolderPath; }
-            set
-            {
-                buildOutputFolderPath = value;
-                //OnPropertyChanged(nameof(BuildOutputFolderPath));
-            }
-        }
+        public string BuildOutputFolderPath{get;set;} = "!Output";
 
         //set only for library
-        string buildOutputFileName;
-        public string BuildOutputFileName
-        {
-            get { return buildOutputFileName; }
-            set
-            {
-                buildOutputFileName = value;
-                //OnPropertyChanged(nameof(BuildOutputFileName));
-            }
-        }
+        public string BuildOutputFileName { get; set; }
 
-
-
-        string buildOutputNamespace;
-        public string BuildOutputNamespace
-        {
-            get { return buildOutputNamespace; }
-            set
-            {
-                buildOutputNamespace = value;
-                // OnPropertyChanged(nameof(BuildOutputNamespace));
-            }
-        }
+        public string BuildOutputNamespace { get; set; }
 
         #endregion
 

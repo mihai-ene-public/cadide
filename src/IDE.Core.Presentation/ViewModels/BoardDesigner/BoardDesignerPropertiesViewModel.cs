@@ -95,9 +95,9 @@ namespace IDE.Documents.Views
         void SetSchematicReference()
         {
             //show list of schematics
-            var itemSelectDlg = new ItemSelectDialogViewModel();
-            itemSelectDlg.TemplateType = TemplateType.Schematic;
-            itemSelectDlg.ProjectModel = ParentProject;
+            var projectInfo = board.GetCurrentProjectInfo();
+            var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Schematic, projectInfo);
+
             if (itemSelectDlg.ShowDialog() == true)
             {
                 var selectedSchematic = itemSelectDlg.SelectedItem as LibraryItemDisplay;
@@ -243,7 +243,7 @@ namespace IDE.Documents.Views
 
         void MoveLayers(int oldIndex, int newIndex)
         {
-            ((ObservableCollection<ILayerDesignerItem>)board.LayerItems).Move(oldIndex, newIndex);
+            ( (ObservableCollection<ILayerDesignerItem>)board.LayerItems ).Move(oldIndex, newIndex);
         }
 
         ICommand moveLayerUpCommand;
@@ -326,7 +326,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
                         dlg.Filter = "Boards (*.board)|*.board";
 
-                        if (dlg.ShowDialog() == true)     
+                        if (dlg.ShowDialog() == true)
                         {
                             var filePath = dlg.FileName;
 
@@ -334,7 +334,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
                             var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
                             var brd = XmlHelper.Load<BoardDocument>(filePath);
-                            var brdLoader = new BoardLoader(dispatcher, ParentProject);
+                            var brdLoader = new BoardLoader(dispatcher);
                             brdLoader.LoadLayers(brd, board);
 
                             //re-assign the new layers
@@ -412,7 +412,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
                             var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
                             var brd = XmlHelper.Load<BoardDocument>(filePath);
-                            var brdLoader = new BoardLoader(dispatcher, ParentProject);
+                            var brdLoader = new BoardLoader(dispatcher);
                             brdLoader.LoadRules(brd, board);
 
                             ////re-assign the new layers
@@ -526,7 +526,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                                      LayerType.Dielectric
                                 };
 
-                            return board.LayerItems.Where(l => stackUpLayers.Contains((l as LayerDesignerItem).LayerType)).ToList();
+                            return board.LayerItems.Where(l => stackUpLayers.Contains(( l as LayerDesignerItem ).LayerType)).ToList();
                         }
 
                 }
@@ -1044,7 +1044,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
             LoadBuildOptions(boardDoc);
 
-            ((INotifyCollectionChanged)board.LayerItems).CollectionChanged += LayerItems_CollectionChanged;
+            ( (INotifyCollectionChanged)board.LayerItems ).CollectionChanged += LayerItems_CollectionChanged;
             foreach (var layer in board.LayerItems)
                 layer.PropertyChanged += Layer_PropertyChanged;
         }
@@ -1107,7 +1107,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
         {
             var hc = 17;
             foreach (var value in Values)
-                hc = hc * 37 + (!ReferenceEquals(value, null) ? value.GetHashCode() : 0);
+                hc = hc * 37 + ( !ReferenceEquals(value, null) ? value.GetHashCode() : 0 );
             return hc;
         }
     }
@@ -1245,7 +1245,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
             get
             {
                 if (originalDescriptor != null)
-                    return (originalDescriptor as PropertyDescriptor).PropertyType;
+                    return ( originalDescriptor as PropertyDescriptor ).PropertyType;
 
                 return typeof(object);
             }

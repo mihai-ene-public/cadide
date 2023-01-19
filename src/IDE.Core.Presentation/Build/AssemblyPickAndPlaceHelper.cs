@@ -244,7 +244,7 @@ namespace IDE.Core.Build
                                     .OrderBy(f => f.PartName, new IndexedNameComparer())
                                     .ToList();
 
-            var project = board.ProjectNode;
+            var project = board.GetCurrentProjectInfo();
 
             foreach (var p in parts)
             {

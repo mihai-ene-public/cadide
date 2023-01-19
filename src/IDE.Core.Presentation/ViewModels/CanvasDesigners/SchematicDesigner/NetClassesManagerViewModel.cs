@@ -102,15 +102,12 @@ namespace IDE.Documents.Views
                 if (removeNetsFromClassCommand == null)
                     removeNetsFromClassCommand = CreateCommand(p =>
                     {
-                        var selectedNets = p as IList;//<NetDesignerItem>;
+                        var selectedNets = p as IList;
                         if (selectedNets == null)
                             return;
-                        //var currentClass = currentClassNode as NetClassDesignerItem;
-                        //if (currentClass == null)
-                        //    return;
 
                         foreach (SchematicNet net in selectedNets)
-                            net.ClassId = 0;
+                            net.ClassId = null;
                         RefreshNetsForClass();
 
                     },
@@ -155,7 +152,7 @@ namespace IDE.Documents.Views
                 return;
 
             AssignedNets.AddRange(allSchematicNets.Where(n => n.ClassId == currentClass.Id).OrderBy(n => n.Name));
-            AvailableNets.AddRange(allSchematicNets.Where(n => n.ClassId == 0).Except(AssignedNets).OrderBy(n => n.Name));
+            AvailableNets.AddRange(allSchematicNets.Where(n => string.IsNullOrEmpty(n.ClassId)).Except(AssignedNets).OrderBy(n => n.Name));
 
         }
 

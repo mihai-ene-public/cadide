@@ -61,15 +61,6 @@ namespace IDE.Documents.Views
 
         #endregion Fields
 
-        public override object Document
-        {
-            get
-            {
-                return componentDocument;
-            }
-        }
-
-
         protected override void RefreshFromCache()
         {
             if (State != DocumentState.IsEditing)
@@ -94,13 +85,9 @@ namespace IDE.Documents.Views
                 if (addGateCommand == null)
                     addGateCommand = CreateCommand((p) =>
                     {
-                        var project = (Item as SolutionExplorerNodeModel).ProjectNode;
-                        if (project == null)
-                            throw new Exception("This component does not belong to any project");
+                        var projectInfo = GetCurrentProjectInfo();
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Symbol;
-                        itemSelectDlg.ProjectModel = project;
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             var symbol = itemSelectDlg.SelectedItem.Document as Symbol;
@@ -122,8 +109,7 @@ namespace IDE.Documents.Views
 
                             if (g.Symbol.Items != null)
                             {
-                                // g.Preview.SetPrimitives(g.Symbol.GetDesignerPrimitiveItems());
-                                g.Preview.PreviewDocument(g.Symbol, null);
+                                g.Preview.PreviewDocument(g.Symbol);
                             }
 
                             Gates.Add(g);
@@ -153,13 +139,9 @@ namespace IDE.Documents.Views
                 {
                     importComponentCommand = CreateCommand(p =>
                       {
-                          var project = (Item as SolutionExplorerNodeModel).ProjectNode;
-                          if (project == null)
-                              throw new Exception("This component does not belong to any project");
+                          var projectInfo = GetCurrentProjectInfo();
 
-                          var itemSelectDlg = new ItemSelectDialogViewModel();
-                          itemSelectDlg.TemplateType = TemplateType.Component;
-                          itemSelectDlg.ProjectModel = project;
+                          var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Component, projectInfo);
 
                           if (itemSelectDlg.ShowDialog() == true)
                           {
@@ -289,17 +271,13 @@ namespace IDE.Documents.Views
                 if (changeSymbolCommand == null)
                     changeSymbolCommand = CreateCommand((p) =>
                     {
-                        var project = (Item as SolutionExplorerNodeModel).ProjectNode;
-                        if (project == null)
-                            throw new Exception("This component does not belong to any project");
-
                         var thisSymbol = p as GateDisplay;
                         if (thisSymbol == null)
                             throw new Exception("There is no gate associated with this item");
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Symbol;
-                        itemSelectDlg.ProjectModel = project;
+                        var projectInfo = GetCurrentProjectInfo();
+
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             thisSymbol.Symbol = itemSelectDlg.SelectedItem.Document as Symbol;
@@ -309,7 +287,7 @@ namespace IDE.Documents.Views
                             if (thisSymbol.Symbol.Items != null)
                             {
                                 //thisSymbol.Preview.SetPrimitives(thisSymbol.Symbol.GetDesignerPrimitiveItems());
-                                thisSymbol.Preview.PreviewDocument(thisSymbol.Symbol, null);
+                                thisSymbol.Preview.PreviewDocument(thisSymbol.Symbol);
                             }
 
                             thisSymbol.Preview.ZoomToFit();
@@ -368,17 +346,9 @@ namespace IDE.Documents.Views
                 if (changeFootprintCommand == null)
                     changeFootprintCommand = CreateCommand(p =>
                     {
-                        var project = (Item as SolutionExplorerNodeModel).ProjectNode;
-                        if (project == null)
-                            throw new Exception("This component does not belong to any project");
+                        var projectInfo = GetCurrentProjectInfo();
 
-                        //var thisFootprint = p as FootprintDisplay;
-                        //if (thisFootprint == null)
-                        //    throw new Exception("There is no footprint associated with this item");
-
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Footprint;
-                        itemSelectDlg.ProjectModel = project;
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Footprint, projectInfo);
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             var fpDoc = itemSelectDlg.SelectedItem.Document as Footprint;
@@ -397,23 +367,7 @@ namespace IDE.Documents.Views
                                 Name = itemSelectDlg.SelectedItem.Name,
                             };
 
-                            //if (footprint.Footprint.Items != null)
-                            //{
-                            //    var layeredDoc = LoadFootprintLayers(fpDoc);
-
-                            //    var primitives = new List<ISelectableItem>();
-                            //    foreach (var primitive in fpDoc.Items)
-                            //    {
-                            //        var canvasItem = (BoardCanvasItemViewModel)primitive.CreateDesignerItem();
-                            //        canvasItem.LayerDocument = layeredDoc;
-                            //        canvasItem.LoadLayers();
-                            //        primitives.Add(canvasItem);
-                            //    }
-                            //    // footprint.Preview.SetPrimitives(primitives);
-                            //    footprint.Preview.PreviewDocument(g.Symbol, null);
-                            //}
-
-                            footprint.Preview.PreviewDocument(fpDoc, null);
+                            footprint.Preview.PreviewDocument(fpDoc);
 
                             footprint.Preview.ZoomToFit();
 
@@ -825,7 +779,7 @@ namespace IDE.Documents.Views
                 componentDocument = XmlHelper.Load<ComponentDocument>(filePath);
 
                 //assign a new id if needed
-                if (componentDocument.Id == 0)
+                if (string.IsNullOrEmpty(componentDocument.Id))
                 {
                     componentDocument.Id = LibraryItem.GetNextId();
                     IsDirty = true;
@@ -913,10 +867,9 @@ namespace IDE.Documents.Views
 
         void LoadFootprint()
         {
-            var project = ProjectNode;
+            var projectInfo = GetCurrentProjectInfo();
 
             //load footprints
-            // Footprints.Clear();
             if (componentDocument.Footprint != null)
             {
                 //foreach (var device in componentDocument.Footprints)
@@ -924,14 +877,12 @@ namespace IDE.Documents.Views
                     var device = componentDocument.Footprint;
                     var footprint = new FootprintDisplay
                     {
-                        // Name = device.footprint,
-                        //Canvas = new DrawingViewModel(),
                         Device = device,
                         Connects = new ObservableCollection<ConnectDisplay>()
                     };
 
                     //var fp = project.FindObject(TemplateType.Footprint, device.footprintId) as Footprint;
-                    var fp = _objectFinder.FindObject<Footprint>(project.Project, device.footprintId);
+                    var fp = _objectFinder.FindObject<Footprint>(projectInfo, device.footprintId);
 
                     if (fp == null)
                     {
@@ -943,24 +894,7 @@ namespace IDE.Documents.Views
                         device.LibraryName = fp.Library;
                         device.footprintName = fp.Name;
 
-                        //if (fp.Items != null)
-                        //{
-
-                        //    var layeredDoc = LoadFootprintLayers(fp);
-
-
-                        //    var primitives = new List<ISelectableItem>();
-                        //    foreach (var primitive in fp.Items)
-                        //    {
-                        //        var canvasItem = (BoardCanvasItemViewModel)primitive.CreateDesignerItem();
-                        //        canvasItem.LayerDocument = layeredDoc;
-                        //        canvasItem.LoadLayers();
-                        //        primitives.Add(canvasItem);
-                        //    }
-                        //    footprint.Preview.SetPrimitives(primitives);
-                        //}
-
-                        footprint.Preview.PreviewDocument(fp, null);
+                        footprint.Preview.PreviewDocument(fp);
                     }
 
                     //footprints connects
@@ -986,7 +920,7 @@ namespace IDE.Documents.Views
 
         private void LoadGates()
         {
-            var project = ProjectNode;
+            var projectInfo = GetCurrentProjectInfo();
 
             //load symbol gates
             var gates = new List<GateDisplay>();
@@ -1001,7 +935,7 @@ namespace IDE.Documents.Views
 
                     //solve symbol
                     //var symbol = project.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
-                    var symbol = _objectFinder.FindObject<Symbol>(project.Project, gate.symbolId);
+                    var symbol = _objectFinder.FindObject<Symbol>(projectInfo, gate.symbolId);
 
                     //todo if the symbol is not solved we should show something and log to output
                     if (symbol == null)
@@ -1014,7 +948,7 @@ namespace IDE.Documents.Views
                         g.Gate.symbolName = symbol.Name;
                         g.Gate.LibraryName = symbol.Library;
 
-                        g.Preview.PreviewDocument(symbol, null);
+                        g.Preview.PreviewDocument(symbol);
                     }
 
                     gates.Add(g);
@@ -1031,6 +965,7 @@ namespace IDE.Documents.Views
 
         private void RefreshGates()
         {
+            var projectInfo = GetCurrentProjectInfo();
             foreach (var gateDisplay in Gates)
             {
                 var gate = gateDisplay.Gate;
@@ -1046,14 +981,14 @@ namespace IDE.Documents.Views
                 }
 
                 //var foundSymbol = ProjectNode.FindObject(TemplateType.Symbol, gate.LibraryName, gate.symbolId, lastModified) as Symbol;
-                var foundSymbol = _objectFinder.FindObject<Symbol>(ProjectNode.Project, gate.LibraryName, gate.symbolId, lastModified);
+                var foundSymbol = _objectFinder.FindObject<Symbol>(projectInfo, gate.LibraryName, gate.symbolId, lastModified);
 
                 if (foundSymbol != null)
                 {
                     gateDisplay.Symbol = foundSymbol;
                     gateDisplay.Gate.symbolName = foundSymbol.Name;
                     gateDisplay.Gate.LibraryName = foundSymbol.Library;
-                    gateDisplay.Preview.PreviewDocument(foundSymbol, null);
+                    gateDisplay.Preview.PreviewDocument(foundSymbol);
                 }
             }
         }
@@ -1073,10 +1008,10 @@ namespace IDE.Documents.Views
                 var oldConnects = footprint.Connects.ToList();
                 footprint.Connects.Clear();
 
-                var pads = ((from p in footprint.Footprint.Items.OfType<Pad>()
-                             select new { p.number })
+                var pads = ( ( from p in footprint.Footprint.Items.OfType<Pad>()
+                               select new { p.number } )
                          .Union(from p in footprint.Footprint.Items.OfType<Smd>()
-                                select new { p.number }))
+                                select new { p.number }) )
                          .OrderBy(p => p.number, new IndexedNameComparer()).ToList();
 
 

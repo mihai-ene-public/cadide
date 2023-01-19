@@ -1,16 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Solution;
 
 namespace IDE.Core.Presentation.Compilers;
 
 public class SymbolCompiler : AbstractCompiler, ISymbolCompiler
 {
+    private readonly ISolutionRepository _solutionRepository;
+
+    public SymbolCompiler(ISolutionRepository solutionRepository)
+    {
+        _solutionRepository = solutionRepository;
+    }
     public async Task<CompilerResult> Compile(ISymbolDesignerViewModel symbol)
     {
-        var project = symbol.ProjectNode;
+        var projectPath = _solutionRepository.GetProjectFilePath(symbol.FilePath);
+        var projectName = Path.GetFileNameWithoutExtension(projectPath);
+
         var canvasModel = symbol.CanvasModel;
         var errors = new List<IErrorMessage>();
         var isValid = true;
@@ -23,7 +33,7 @@ public class SymbolCompiler : AbstractCompiler, ISymbolCompiler
         foreach (var g in gpins)
         {
             var msg = $"Error: There are {g.Count()} pins at the same location: ({g.Key.X}, {g.Key.Y})";
-            errors.Add(BuildErrorMessage(msg, project.Name, symbol));
+            errors.Add(BuildErrorMessage(msg, projectName, symbol));
         }
 
         isValid = gpins.Count() == 0;

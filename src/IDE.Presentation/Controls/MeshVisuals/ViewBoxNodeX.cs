@@ -162,15 +162,15 @@ namespace IDE.Controls
             UpdateModel(UpDirection);
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override bool OnAttach(IEffectsManager effectsManager)
         {
-            if (base.OnAttach(host))
+            if (base.OnAttach(effectsManager))
             {
                 var material = (ViewBoxMeshModel.Material as DiffuseMaterialCore);
                 if (material.DiffuseMap == null)
                 {
                    
-                    material.DiffuseMap = ViewBoxTexture ?? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                    material.DiffuseMap = ViewBoxTexture ?? BitmapExtensions.CreateViewBoxTexture(effectsManager,
                         "FRONT", "BACK",
                         "LEFT", "RIGHT",
                         "UP", "DOWN",

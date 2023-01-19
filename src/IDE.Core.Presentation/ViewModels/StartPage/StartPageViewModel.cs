@@ -95,7 +95,7 @@ namespace IDE.Documents.Views
         {
             try
             {
-                clipBoard.SetText(GetAlternativePath());
+                _clipBoard.SetText(GetAlternativePath());
             }
             catch
             {

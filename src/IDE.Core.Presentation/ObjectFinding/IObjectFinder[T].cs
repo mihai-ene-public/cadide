@@ -9,14 +9,14 @@ namespace IDE.Core.Presentation.ObjectFinding
 {
     public interface IObjectFinder<T> where T : ILibraryItem
     {
-        void LoadCache(IProjectDocument project);
+        void LoadCache(ProjectInfo project);
 
         void ClearCache();
 
-        T FindCachedObject(long id);
+        T FindCachedObject(string id);
 
-        T FindObject(IProjectDocument project, long id);
+        T FindObject(ProjectInfo project, string id);
 
-        T FindObject(IProjectDocument project, string libraryName, long id, DateTime? lastModified = null);
+        T FindObject(ProjectInfo project, string libraryName, string id, DateTime? lastModified = null);
     }
 }

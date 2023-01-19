@@ -8,7 +8,7 @@ namespace IDE.Core.Designers
     public class SchematicBus : BaseViewModel, IBus
     {
         //Id is not used, nor saved
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         string name;
         public string Name

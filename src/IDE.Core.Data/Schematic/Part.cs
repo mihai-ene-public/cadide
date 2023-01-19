@@ -16,7 +16,7 @@ namespace IDE.Core.Storage
     public class Part : BaseViewModel
     {
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         string name;
         /// <summary>
@@ -43,7 +43,7 @@ namespace IDE.Core.Storage
         /// id of the referenced component. Used for solving
         /// </summary>
         [XmlAttribute("compId")]
-        public long ComponentId { get; set; }
+        public string ComponentId { get; set; }
 
         [XmlAttribute("compName")]
         public string ComponentName { get; set; }

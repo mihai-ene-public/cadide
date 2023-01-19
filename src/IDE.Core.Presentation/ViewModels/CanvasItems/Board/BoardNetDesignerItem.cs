@@ -40,7 +40,7 @@ SignalDesignerItem (signal)
         /// <summary>
         ///id of the net.Id from schematic
         /// </summary>
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         string name;
 
@@ -60,7 +60,7 @@ SignalDesignerItem (signal)
         /// <summary>
         /// the net class id this net belongs to
         /// </summary>
-        public long ClassId { get; set; }
+        public string ClassId { get; set; }
 
         bool isHighlighted;
 

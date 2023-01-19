@@ -10,7 +10,7 @@ namespace IDE.Core.Interfaces
     {
         string Number { get; set; }
 
-        long FootprintInstanceId { get; }
+        string FootprintInstanceId { get; }
 
         double Width { get; set; }
 

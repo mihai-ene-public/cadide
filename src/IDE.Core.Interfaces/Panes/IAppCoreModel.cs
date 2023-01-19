@@ -14,10 +14,6 @@
 		/// </summary>
 		string DirAppData { get; }
 
-		/// <summary>
-		/// Get a path to the directory where the user store his documents
-		/// </summary>
-		string MyDocumentsUserDir { get; }
 
 		/// <summary>
 		/// Get the name of the executing assembly (usually name of *.exe file)

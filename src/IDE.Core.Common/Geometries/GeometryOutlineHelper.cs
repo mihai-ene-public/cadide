@@ -49,6 +49,9 @@ public class GeometryOutlineHelper : IGeometryOutlineHelper
         if (rect.IntersectsWith(itemBounds))
         {
             var itemGeometry = GetGeometryInternal(item);
+            if(itemGeometry is null)
+                return false;
+
             itemGeometry.Transform = ( (ISelectableItem)item ).GetTransform();
 
             var center = rect.GetCenter();

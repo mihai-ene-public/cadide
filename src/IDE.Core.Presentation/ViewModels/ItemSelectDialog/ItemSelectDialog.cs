@@ -3,6 +3,7 @@ using IDE.Core.Common;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Presentation.Solution;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
 using IDE.Core.ViewModels;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -18,10 +20,22 @@ namespace IDE.Documents.Views
 {
     public class ItemSelectDialogViewModel : DialogViewModel
     {
-        public ItemSelectDialogViewModel()
+        public ItemSelectDialogViewModel(TemplateType templateType, ProjectInfo projectInfo)
         {
+            _objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+            _objectRepository = ServiceProvider.Resolve<IObjectRepository>();
+            _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
+
             PropertyChanged += ItemSelectDialogViewModel_PropertyChanged;
+
+            TemplateType = templateType;
+            _projectInfo = projectInfo;
         }
+
+        private readonly IObjectFinder _objectFinder;
+        private readonly IObjectRepository _objectRepository;
+        private readonly ISolutionRepository _solutionRepository;
+        private readonly ProjectInfo _projectInfo;
 
         private async void ItemSelectDialogViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -57,11 +71,9 @@ namespace IDE.Documents.Views
 
         public TemplateType TemplateType { get; set; }
 
-        public ISolutionProjectNodeModel ProjectModel { get; set; }
-
         IList<LibraryDisplay> fullSourceLibraries;
 
-        IList<LibraryDisplay> libraries = new ObservableCollection<LibraryDisplay>();
+        IList<LibraryDisplay> libraries = new List<LibraryDisplay>();
         public IList<LibraryDisplay> Libraries
         {
             get { return libraries; }
@@ -84,36 +96,59 @@ namespace IDE.Documents.Views
             }
         }
 
-        ICommand searchItemsFilterCommand;
+        ICommand clearSearchFilterCommand;
 
-        public ICommand SearchItemsFilterCommand
+        public ICommand ClearSearchFilterCommand
         {
             get
             {
-                if (searchItemsFilterCommand == null)
-                    searchItemsFilterCommand = CreateCommand(p => { SearchItemsFilter = null; });
+                if (clearSearchFilterCommand == null)
+                    clearSearchFilterCommand = CreateCommand(p => { SearchItemsFilter = null; });
 
-                return searchItemsFilterCommand;
+                return clearSearchFilterCommand;
             }
         }
 
-        protected override void LoadData()
+        protected override async Task LoadData(object args)
         {
-            LoadItems();
+            await LoadItems();
         }
 
-        void LoadItems()
+        private IList<LibraryItem> LoadObjects(ProjectInfo project)
         {
-            var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+            switch (TemplateType)
+            {
+                case TemplateType.Symbol:
+                    return _objectRepository.LoadObjects<Symbol>(project).Cast<LibraryItem>().ToList();
+
+                case TemplateType.Footprint:
+                    return _objectRepository.LoadObjects<Footprint>(project).Cast<LibraryItem>().ToList();
+
+                case TemplateType.Component:
+                    return _objectRepository.LoadObjects<ComponentDocument>(project).Cast<LibraryItem>().ToList();
+
+                case TemplateType.Schematic:
+                    return _objectRepository.LoadObjects<SchematicDocument>(project).Cast<LibraryItem>().ToList();
+
+                case TemplateType.Model:
+                    return _objectRepository.LoadObjects<ModelDocument>(project).Cast<LibraryItem>().ToList();
+            }
+
+            return new List<LibraryItem>();
+        }
+
+        private Task LoadItems()
+        {
 
             var libraries = new List<LibraryDisplay>();
-            var libraryItems = ProjectModel.LoadObjects(null, TemplateType);
+            var project = _projectInfo;
+
+            var libraryItems = LoadObjects(project);
 
             if (TemplateType == TemplateType.Component)
             {
-                var project = ProjectModel as SolutionProjectNodeModel;
-                objectFinder.LoadCache<Symbol>(project.Project);
-                objectFinder.LoadCache<Footprint>(project.Project);
+                _objectFinder.LoadCache<Symbol>(project);
+                _objectFinder.LoadCache<Footprint>(project);
             }
 
             foreach (var item in libraryItems)
@@ -137,8 +172,7 @@ namespace IDE.Documents.Views
                             continue;
 
                         //solve symbol
-                        //var symbol = ProjectModel.FindObject(TemplateType.Symbol, gate.symbolId) as Symbol;
-                        var symbol = objectFinder.FindCachedObject<Symbol>(gate.symbolId);
+                        var symbol = _objectFinder.FindCachedObject<Symbol>(gate.symbolId);
 
                         //todo if the symbol is not solved we should show something and log to output
                         if (symbol == null)
@@ -147,7 +181,7 @@ namespace IDE.Documents.Views
                         }
                         else
                         {
-                            var symbolItem = new LibraryItemDisplay
+                            var symbolItem = new LibraryItemDisplay(project)
                             {
                                 Name = symbol.Name,
                                 LibraryName = symbol.Library,
@@ -155,15 +189,12 @@ namespace IDE.Documents.Views
                                 Document = symbol
                             };
 
-                            //symbolItem.Preview.PreviewDocument(symbol, ProjectModel);
-
                             LibraryItemDisplay footprintItem = null;
                             if (compDoc.Footprint != null)
                             {
                                 var footprintRef = compDoc.Footprint;
                                 {
-                                    //var fp = ProjectModel.FindObject(TemplateType.Footprint, footprintRef.footprintId) as Footprint;
-                                    var fp = objectFinder.FindCachedObject<Footprint>(footprintRef.footprintId);
+                                    var fp = _objectFinder.FindCachedObject<Footprint>(footprintRef.footprintId);
 
                                     if (fp == null)
                                     {
@@ -171,15 +202,13 @@ namespace IDE.Documents.Views
                                     }
                                     else
                                     {
-                                        footprintItem = new LibraryItemDisplay
+                                        footprintItem = new LibraryItemDisplay(project)
                                         {
                                             Name = fp.Name,
                                             LibraryName = fp.Library,
                                             ItemType = TemplateType.Footprint,
                                             Document = fp
                                         };
-
-                                        //footprintItem.Preview.PreviewDocument(fp, ProjectModel);
 
                                         //if we have footprints add for each
                                         var compItem = new ComponentItemDisplay
@@ -207,7 +236,7 @@ namespace IDE.Documents.Views
                                     ItemType = TemplateType,
                                     Document = item,
                                     Symbol = symbolItem,
-                                    Footprint = new LibraryItemDisplay(),
+                                    Footprint = new LibraryItemDisplay(project),
                                     Description = compDoc.Description
                                 };
                                 lib.Items.Add(compItem);
@@ -218,13 +247,12 @@ namespace IDE.Documents.Views
                 }
                 else
                 {
-                    var docDisplay = new LibraryItemDisplay
+                    var docDisplay = new LibraryItemDisplay(project)
                     {
                         Name = docName,
                         LibraryName = lib.Name,
                         ItemType = TemplateType,
                         Document = item,
-                        ProjectModel = ProjectModel
                     };
 
                     lib.Items.Add(docDisplay);
@@ -235,8 +263,10 @@ namespace IDE.Documents.Views
 
             ApplyFromSource(fullSourceLibraries);
 
-            objectFinder.ClearCache<Symbol>();
-            objectFinder.ClearCache<Footprint>();
+            _objectFinder.ClearCache<Symbol>();
+            _objectFinder.ClearCache<Footprint>();
+
+            return Task.CompletedTask;
         }
 
         private Task PreviewSelectedItem()
@@ -262,7 +292,7 @@ namespace IDE.Documents.Views
 
                 foreach (var lib in fullSourceLibraries)
                 {
-                    var filteredItems = lib.Items.Where(li => li.Name != null && li.Name.Contains(searchItemsFilter, System.StringComparison.OrdinalIgnoreCase))
+                    var filteredItems = lib.Items.Where(li => li.Name != null && li.Name.Contains(searchItemsFilter, StringComparison.OrdinalIgnoreCase))
                                                  .ToList();
 
                     if (filteredItems.Count > 0)

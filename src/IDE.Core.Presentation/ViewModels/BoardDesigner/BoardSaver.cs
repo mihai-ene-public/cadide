@@ -33,7 +33,7 @@ namespace IDE.Documents.Views
                               .ToList();
 
             //add signal items with no signal as plain items
-            var undefinedSignalItems = board.CanvasModel.GetItems().OfType<ISignalPrimitiveCanvasItem>().Where(s => s.Signal == null || s.Signal.Id <= 0);
+            var undefinedSignalItems = board.CanvasModel.GetItems().OfType<ISignalPrimitiveCanvasItem>().Where(s => s.Signal == null || string.IsNullOrEmpty(s.Signal.Id));
             plainItems.AddRange(undefinedSignalItems.OfType<BoardCanvasItemViewModel>().Except(undefinedSignalItems.OfType<ViaCanvasItem>()).Select(p => (LayerPrimitive)p.SaveToPrimitive()));
 
             boardDocument.PlainItems = plainItems;
@@ -66,11 +66,7 @@ namespace IDE.Documents.Views
         void SaveNetList(IBoardDesigner board, BoardDocument boardDocument)
         {
             //items without a net
-            //it was s.Signal!=null; see if we start to lose items
-            //was removed because a poly was saved twice:as a plain item primitive and under 'Undefined' net
-            //var undefinedSignalItems = board.CanvasModel.GetItems().OfType<ISignalPrimitiveCanvasItem>().Where(s => s.Signal == null || s.Signal.Id == 0);
-
-            var nets = board.NetList.Where(n => n.Id != 0).Select(n =>
+            var nets = board.NetList.Where(n => !string.IsNullOrEmpty(n.Id)).Select(n =>
                                              new BoardNet
                                              {
                                                  NetId = n.Id,
@@ -79,11 +75,7 @@ namespace IDE.Documents.Views
                                                  Pads = n.Pads.Select(p => new PadRef { PadNumber = p.Number, FootprintInstanceId = p.FootprintInstanceId }).ToList(),
                                                  Items = n.Items.Cast<BaseCanvasItem>().Select(p => (LayerPrimitive)p.SaveToPrimitive()).ToList()
                                              }).ToList();
-            //nets.Add(new BoardNet
-            //{
-            //    Name = "Undefined",
-            //    Items = undefinedSignalItems.OfType<BoardCanvasItemViewModel>().Select(p => (LayerPrimitive)p.SaveToPrimitive()).ToList()
-            //});
+
             boardDocument.Nets = nets;
         }
 

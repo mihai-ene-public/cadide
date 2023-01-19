@@ -39,7 +39,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                 FillPrimitive = fillPrimitive,
             };
 
-            var board = ( (dynamic)thisItem ).LayerDocument as IBoardDesigner;
+            var board = ((dynamic)thisItem).LayerDocument as IBoardDesigner;
             var excludedItems = GetExcludedItems(thisItem, board);
 
             var thermalCandidates = new List<GeometryPair>();
@@ -114,17 +114,15 @@ namespace IDE.Core.Model.GlobalRepresentation
         {
             var returnItems = new List<ItemWithClearance>();
 
-            //var isEditing = board != null && board.State == DocumentState.IsEditing;
-
-            if (polyItem.IsPlaced
+            if (board != null
+                && polyItem.IsPlaced
                 && polyItem.IsFilled
                 && polyItem.PolygonType != PolygonType.Keepout
-                //&& isEditing
                 )
             {
                 if (polyItem.Layer != null
-                    && ( polyItem.Layer.LayerType == LayerType.Signal
-                        || polyItem.Layer.LayerType == LayerType.Plane ))
+                    && (polyItem.Layer.LayerType == LayerType.Signal
+                        || polyItem.Layer.LayerType == LayerType.Plane))
                 {
                     var defaultClearance = 0.254d;//mm
 
@@ -133,10 +131,10 @@ namespace IDE.Core.Model.GlobalRepresentation
                     var canvasItems = (List<ISelectableItem>)canvasModel.GetItems();
 
                     var footprints = canvasModel.GetItems().OfType<IFootprintBoardCanvasItem>().ToList();
-                    var footprintItems = ( from fp in footprints
-                                           from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<ISingleLayerBoardCanvasItem>()
-                                           where p.ShouldBeOnLayer(polyItem.Layer)//p.Layer == Layer
-                                           select p );
+                    var footprintItems = (from fp in footprints
+                                          from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<ISingleLayerBoardCanvasItem>()
+                                          where p.ShouldBeOnLayer(polyItem.Layer)//p.Layer == Layer
+                                          select p);
 
                     //todo: that is on layer (we could store it on Layer.Items)
                     var vias = canvasItems.OfType<IViaCanvasItem>();
@@ -152,7 +150,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                     //                   .Union(vias);
 
                     var trackItems = items.OfType<ITrackBoardCanvasItem>();
-                    var allItemsExceptTracks = items.Where(p => !( p is ITrackBoardCanvasItem ));
+                    var allItemsExceptTracks = items.Where(p => !(p is ITrackBoardCanvasItem));
 
                     var thisPolyRect = polyItem.GetBoundingRectangle();
 
@@ -186,7 +184,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                         }
 
                         //isPad is a small hack; it doesn't create a proper tranform for the rectangle for a pad
-                        if (( thisPolyRect.Intersects(itemRect) || isPad ) && _geometryHelper.Intersects(polyItem, item))
+                        if ((thisPolyRect.Intersects(itemRect) || isPad) && _geometryHelper.Intersects(polyItem, item))
                         {
                             if (item is ISignalPrimitiveCanvasItem otherSignalItem)
                             {
@@ -270,7 +268,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             const double tolerance = 0.01d;
 
             //east
-            var posEast = new XPoint(0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            var posEast = new XPoint(0.5 * (0.5 * pad.Width + clearance), 0);
             posEast = t.Transform(posEast);
             //thermalGeometries.Add(new PadSmdCanvasItem
             //{
@@ -284,7 +282,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             thermals.Add(GetThermalGeometry(posEast, rot, 0.5 * pad.Width + clearance + tolerance, thermalWidth));
 
             //west
-            var posWest = new XPoint(-0.5 * ( 0.5 * pad.Width + clearance ), 0);
+            var posWest = new XPoint(-0.5 * (0.5 * pad.Width + clearance), 0);
             posWest = t.Transform(posWest);
             //thermalGeometries.Add(new PadSmdCanvasItem
             //{
@@ -298,7 +296,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             thermals.Add(GetThermalGeometry(posWest, rot, 0.5 * pad.Width + clearance + tolerance, thermalWidth));
 
             //north
-            var posNorth = new XPoint(0, -0.5 * ( 0.5 * pad.Height + clearance ));
+            var posNorth = new XPoint(0, -0.5 * (0.5 * pad.Height + clearance));
             posNorth = t.Transform(posNorth);
             //thermalGeometries.Add(new PadSmdCanvasItem
             //{
@@ -312,7 +310,7 @@ namespace IDE.Core.Model.GlobalRepresentation
             thermals.Add(GetThermalGeometry(posNorth, rot, thermalWidth, 0.5 * pad.Height + clearance + tolerance));
 
             //south
-            var posSouth = new XPoint(0, 0.5 * ( 0.5 * pad.Height + clearance ));
+            var posSouth = new XPoint(0, 0.5 * (0.5 * pad.Height + clearance));
             posSouth = t.Transform(posSouth);
             //thermalGeometries.Add(new PadSmdCanvasItem
             //{

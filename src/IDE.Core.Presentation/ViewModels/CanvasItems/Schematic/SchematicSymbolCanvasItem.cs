@@ -10,21 +10,9 @@ using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
 using System.Collections.ObjectModel;
 using IDE.Core.Presentation.ObjectFinding;
-//using System.ComponentModel;
 
 namespace IDE.Core.Designers
 {
-    //todo
-    /*PART
-		Name (designator)
-		nameVis
-		Comment (text)
-		commentVis
-		Locked
-		description (text)
-		Parameters
-			Parameter: Visible | Name | Value | Type
-     */
     //it displays in a canvas all the elements forming the symbol. Cannot move/select elements.
     public class SchematicSymbolCanvasItem : BaseCanvasItem, ISymbolCanvasItem, IContainerSelectableItem
     {
@@ -32,6 +20,9 @@ namespace IDE.Core.Designers
         public SchematicSymbolCanvasItem()
         {
         }
+
+        [Browsable(false)]
+        required public ProjectInfo _Project { get; set; }
 
         [DisplayName("Name")]
         [Display(Order = 1)]
@@ -187,8 +178,6 @@ namespace IDE.Core.Designers
         [Browsable(false)]
         public Instance SymbolPrimitive { get; private set; }
 
-        //SpatialItemsSource items = new SpatialItemsSource();
-
         IList<ISelectableItem> items = new ObservableCollection<ISelectableItem>();
 
         //it will need some items that are not selectable
@@ -208,7 +197,6 @@ namespace IDE.Core.Designers
         [MarksDirty]
         public IPosition SymbolNamePosition { get; set; } = new PositionData();
 
-        // string symbolName = "R1";
 
         /// <summary>
         /// Part name and gate number (R1, Q1, U1-A)
@@ -264,56 +252,8 @@ namespace IDE.Core.Designers
             }
         }
 
-        //double partNameX;
         //[Browsable(false)]
-        //public double PartNameX
-        //{
-        //    get { return partNameX; }
-        //    set
-        //    {
-        //        partNameX = value;
-        //        OnPropertyChanged(nameof(PartNameX));
-        //    }
-        //}
-
-        //double partNameY;
-        //[Browsable(false)]
-        //public double PartNameY
-        //{
-        //    get { return partNameY; }
-        //    set
-        //    {
-        //        partNameY = value;
-        //        OnPropertyChanged(nameof(PartNameY));
-        //    }
-        //}
-
-        //double commentX;
-        //[Browsable(false)]
-        //public double CommentX
-        //{
-        //    get { return commentX; }
-        //    set
-        //    {
-        //        commentX = value;
-        //        OnPropertyChanged(nameof(CommentX));
-        //    }
-        //}
-
-        //double commentY;
-        //[Browsable(false)]
-        //public double CommentY
-        //{
-        //    get { return commentY; }
-        //    set
-        //    {
-        //        commentY = value;
-        //        OnPropertyChanged(nameof(CommentY));
-        //    }
-        //}
-
-        [Browsable(false)]
-        public ISolutionProjectNodeModel ProjectModel { get; set; }
+        //public ISolutionProjectNodeModel ProjectModel { get; set; }
 
         [Browsable(false)]
         public List<PinCanvasItem> Pins { get; private set; } = new List<PinCanvasItem>();
@@ -373,22 +313,6 @@ namespace IDE.Core.Designers
         [Browsable(false)]
         public ComponentDocument ComponentDocument { get { return componentDocument; } }
 
-        ////[ExpandableObject]
-        //[Display(Order = 10000)]
-        //public ComponentInfo ComponentInfo
-        //{
-        //    get
-        //    {
-        //        return new ComponentInfo
-        //        {
-        //            ComponentName = componentDocument?.Name,
-        //            ComponentLibraryName = part?.ComponentLibrary,
-        //            SymbolName = Gate?.symbolName,
-        //            SymbolLibraryName = Gate?.LibraryName
-        //        };
-        //    }
-        //}
-
         [DisplayName("Component name")]
         [Display(Order = 10000)]
         public string ComponentName => componentDocument?.Name;
@@ -419,7 +343,7 @@ namespace IDE.Core.Designers
             {
                 var lastRead = componentDocument?.LastAccessed;
                 var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-                var comp = objectFinder.FindObject<ComponentDocument>(ProjectModel.Project, part.ComponentLibrary, part.ComponentId, lastRead);
+                var comp = objectFinder.FindObject<ComponentDocument>(_Project, part.ComponentLibrary, part.ComponentId, lastRead);
 
                 if (comp != null)
                 {
@@ -516,7 +440,6 @@ namespace IDE.Core.Designers
                 symbol = null;
 
             Gate = gate;
-            //PartName = part.Name;
             var foundSymbol = FindSymbol(gate);
 
             LoadSymbol(foundSymbol);
@@ -596,7 +519,7 @@ namespace IDE.Core.Designers
                     }
                 }
                 var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-                foundSymbol = objectFinder.FindObject<Symbol>(ProjectModel.Project, gate.LibraryName, gate.symbolId, lastModified);
+                foundSymbol = objectFinder.FindObject<Symbol>(_Project, gate.LibraryName, gate.symbolId, lastModified);
             }
 
             return foundSymbol;
@@ -687,17 +610,6 @@ namespace IDE.Core.Designers
             return PartName;
         }
     }
-
-    /*
-    public class ComponentData
-    {
-        public Component Component { get; set; }
-
-        public int CurrentGateIndex { get; set; }
-
-        public Footprint Footprint { get; set; }
-    }
-    */
 
     public class PositionData : BaseViewModel, IPosition
     {

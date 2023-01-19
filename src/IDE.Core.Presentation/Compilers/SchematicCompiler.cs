@@ -6,23 +6,35 @@ using IDE.Core.Interfaces;
 using System.Linq;
 using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Storage;
+using System.ComponentModel;
+using IDE.Core.Presentation.Solution;
+using System.IO;
 
 namespace IDE.Core.Presentation.Compilers
 {
     public class SchematicCompiler : AbstractCompiler, ISchematicCompiler
     {
         private readonly IObjectFinder _objectFinder;
+        private readonly ISolutionRepository _solutionRepository;
 
-        public SchematicCompiler(IObjectFinder objectFinder)
+        public SchematicCompiler(IObjectFinder objectFinder, ISolutionRepository solutionRepository)
         {
             _objectFinder = objectFinder;
+            _solutionRepository = solutionRepository;
         }
 
         public async Task<CompilerResult> Compile(ISchematicDesigner schematic)
         {
-            var project = schematic.ProjectNode;
+            var projectPath = _solutionRepository.GetProjectFilePath(schematic.FilePath);
+            var project = _solutionRepository.LoadProjectDocument(projectPath);
+            var projectName = Path.GetFileNameWithoutExtension(projectPath);
             var canvasModel = schematic.CanvasModel;
             var errors = new List<IErrorMessage>();
+            var projectInfo = new ProjectInfo
+            {
+                Project = project,
+                ProjectPath = projectPath,
+            };
 
             var parts = from s in schematic.Sheets
                         from p in s.Items.OfType<SchematicSymbolCanvasItem>()
@@ -37,7 +49,7 @@ namespace IDE.Core.Presentation.Compilers
                     if (part.PartName != null)
                     {
                         //todo: changing the componentId doesn't report missing component
-                        var cmpSearch = _objectFinder.FindObject<ComponentDocument>(project.Project, part.Part.ComponentLibrary, part.Part.ComponentId);//project.FindObject(TemplateType.Component, part.Part.ComponentLibrary, part.Part.ComponentId);
+                        var cmpSearch = _objectFinder.FindObject<ComponentDocument>(projectInfo, part.Part.ComponentLibrary, part.Part.ComponentId);
                         if (cmpSearch == null)
                             throw new Exception($"Component {part.Part.ComponentName} was not found for part {part.PartName}");
                     }
@@ -45,7 +57,7 @@ namespace IDE.Core.Presentation.Compilers
                 catch (Exception ex)
                 {
                     hasErrors = true;
-                    errors.Add(BuildErrorMessage(ex.Message, project.Name, schematic));
+                    errors.Add(BuildErrorMessage(ex.Message, projectName, schematic));
                 }
             }
 

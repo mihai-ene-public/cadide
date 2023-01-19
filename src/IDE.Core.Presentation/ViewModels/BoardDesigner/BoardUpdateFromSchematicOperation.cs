@@ -30,7 +30,7 @@ namespace IDE.Documents.Views
         private readonly IDispatcherHelper _dispatcher;
         private readonly IObjectFinder _objectFinder;
 
-        public async Task Update(IBoardDesigner board, SchematicDocument schematic, ISolutionProjectNodeModel project)
+        public async Task Update(IBoardDesigner board, SchematicDocument schematic, ProjectInfo project)
         {
             //update parts (footprints)
             var components = await UpdatePartsFromSchematic(board, schematic, project);
@@ -55,7 +55,7 @@ namespace IDE.Documents.Views
 
         }
 
-        private async Task<List<ComponentDocument>> UpdatePartsFromSchematic(IBoardDesigner board, SchematicDocument schematic, ISolutionProjectNodeModel project)
+        private async Task<List<ComponentDocument>> UpdatePartsFromSchematic(IBoardDesigner board, SchematicDocument schematic, ProjectInfo project)
         {
             await Task.CompletedTask;
 
@@ -73,9 +73,6 @@ namespace IDE.Documents.Views
                                           .Where(p => p.FootprintPrimitive == null || !schPartIds.Contains(p.FootprintPrimitive.PartId))
                                           .ToList();
 
-                //ParentProject.CreateCacheItems(TemplateType.Component);
-                //ParentProject.CreateCacheItems(TemplateType.Footprint);
-
                 //add footprints
                 var footprintsToAdd = new List<FootprintBoardCanvasItem>();
                 foreach (var part in schematic.Parts)
@@ -85,7 +82,7 @@ namespace IDE.Documents.Views
                     //we could have an update from libraries command
                     var compId = part.ComponentId;
                     //var component = await Task.Run(() => project.FindObject(TemplateType.Component, part.ComponentLibrary, compId) as Core.Storage.ComponentDocument);
-                    var component =  _objectFinder.FindObject<ComponentDocument>(project.Project, part.ComponentLibrary, compId);
+                    var component =  _objectFinder.FindObject<ComponentDocument>(project, part.ComponentLibrary, compId);
 
                     if (component != null)
                         components.Add(component);
@@ -100,15 +97,6 @@ namespace IDE.Documents.Views
                         var footprintId = component.Footprint.footprintId;
                         var footprintLibrary = component.Footprint.LibraryName;
 
-                        //var footprint = await Task.Run(() => ParentProject.FindObject(TemplateType.Footprint, component.Footprint.LibraryName, component.Footprint.footprintId) as Footprint);
-                        ////compare some hashes between footprint on this board and from component
-                        ////update with the new footprint if they are different
-                        ////add the footprint if this does not exist in our board
-                        //if (footprint == null || footprint.Id == 0)
-                        //{
-                        //    //todo record a message
-                        //    continue;//next part
-                        //}
 
                         var canvasItem = canvasModel.GetFootprints()
                                                       .FirstOrDefault(f => f.FootprintPrimitive != null && f.FootprintPrimitive.PartId == part.Id);
@@ -136,7 +124,6 @@ namespace IDE.Documents.Views
 
                             canvasItem = new FootprintBoardCanvasItem
                             {
-                                ProjectModel = project,
                                 BoardModel = board,
                             };
 

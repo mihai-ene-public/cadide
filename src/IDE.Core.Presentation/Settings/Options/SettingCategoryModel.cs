@@ -12,13 +12,21 @@ namespace IDE.Core.Settings.Options
 
         public List<ISettingModel> Children { get; set; } = new List<ISettingModel>();
 
+        protected override string GetDisplayName()
+        {
+            return null;
+        }
+
+        string categoryName;
+
         public override void LoadFromData(ISettingData settingData)
         {
             var settingCategory = settingData as SettingCategory;
             if (settingCategory == null)
                 throw new NotImplementedException();
 
-            Name = settingCategory.Name;
+            //Name = settingCategory.SystemName;
+            categoryName = settingCategory.SystemName;
             if (settingCategory.Children != null)
             {
                 Children.AddRange(settingCategory.Children.Select(s => s.CreateModelItem()).Where(s => s != null));
@@ -29,7 +37,7 @@ namespace IDE.Core.Settings.Options
         {
             var c = new SettingCategory
             {
-                Name = Name
+                SystemName = categoryName
             };
             if (Children != null)
             {
@@ -92,9 +100,9 @@ namespace IDE.Core.Settings.Options
     //        ApiKey = null;
     //    }
 
-       
 
-       
+
+
 
     //    public override ISettingData ToData()
     //    {

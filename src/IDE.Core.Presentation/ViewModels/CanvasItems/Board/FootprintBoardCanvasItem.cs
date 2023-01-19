@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using IDE.Core.Types.Attributes;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Presentation.ObjectFinding;
+using IDE.Documents.Views;
 
 namespace IDE.Core.Designers
 {
@@ -18,26 +19,11 @@ namespace IDE.Core.Designers
     {
         public FootprintBoardCanvasItem()
         {
-            //primitive is the Instance
-            // primitive = new Instance();
-            //PropertyChanged += FootprintBoardDesignerItem_PropertyChanged;
-
             PartNameFontSize = 1;
         }
 
         //todo: if posible get rid of this dispatcher
         private IDispatcherHelper Dispatcher => ServiceProvider.Resolve<IDispatcherHelper>();
-
-        // public FootprintBoardCanvasItem(bool load)
-
-        ////intention to hide
-        //[Browsable(false)]
-        //public new int ZIndex { get { return GetZIndex(); } }
-
-        //protected override int GetZIndex()
-        //{
-        //    return base.GetZIndex() + 1;
-        //}
 
         FootprintPlacement placement;
         [Display(Order = 2)]
@@ -281,9 +267,6 @@ namespace IDE.Core.Designers
             get { return items; }
         }
 
-        [Browsable(false)]
-        public ISolutionProjectNodeModel ProjectModel { get; set; }
-
         //current board we load this footprint on
         [Browsable(false)]
         public ILayeredViewModel BoardModel { get; set; }
@@ -435,8 +418,11 @@ namespace IDE.Core.Designers
                     }
                 }
 
+                var fileDoc = this.BoardModel as IFileBaseViewModel;
+                var project = fileDoc.GetCurrentProjectInfo();
+
                 var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-                foundFootprint = objectFinder.FindObject<Footprint>(ProjectModel.Project, fpInstance.Library, fpInstance.FootprintId, lastModified);
+                foundFootprint = objectFinder.FindObject<Footprint>(project, fpInstance.Library, fpInstance.FootprintId, lastModified);
             }
             catch { }
 
@@ -466,10 +452,10 @@ namespace IDE.Core.Designers
                         if (canvasItem is IPadCanvasItem padItem)
                         {
                             var board = BoardModel as IBoardDesigner;
-                            var signal = (from s in board.NetList
-                                          from si in s.Pads
-                                          where si.Number == padItem.Number && si.FootprintInstanceId == fpInstance.Id
-                                          select s).FirstOrDefault();
+                            var signal = ( from s in board.NetList
+                                           from si in s.Pads
+                                           where si.Number == padItem.Number && si.FootprintInstanceId == fpInstance.Id
+                                           select s ).FirstOrDefault();
 
                             if (signal != null)
                             {
@@ -544,9 +530,6 @@ namespace IDE.Core.Designers
                 DisplayWidth = rect.Width;
                 DisplayHeight = rect.Height;
             }
-
-
-
         }
 
         void LoadComponent()
@@ -554,11 +537,12 @@ namespace IDE.Core.Designers
             try
             {
                 var fp = FootprintPrimitive;
+                var fileDoc = this.BoardModel as IFileBaseViewModel;
+                var project = fileDoc.GetCurrentProjectInfo();
 
                 var lastRead = componentDocument?.LastAccessed;
                 var objectFinder = ServiceProvider.Resolve<IObjectFinder>();
-                var comp = objectFinder.FindObject<ComponentDocument>(ProjectModel.Project, fp.ComponentLibrary, fp.ComponentId, lastRead);
-
+                var comp = objectFinder.FindObject<ComponentDocument>(project, fp.ComponentLibrary, fp.ComponentId, lastRead);
 
                 if (comp != null)
                 {
@@ -579,7 +563,7 @@ namespace IDE.Core.Designers
 
         IDrawingViewModel GetCanvasModel()
         {
-            var canvas = BoardModel as IDE.Documents.Views.CanvasDesignerFileViewModel;
+            var canvas = BoardModel as CanvasDesignerFileViewModel;
             var canvasModel = canvas?.CanvasModel;
 
             return canvasModel;
@@ -660,7 +644,6 @@ namespace IDE.Core.Designers
             var p = SaveToPrimitive();
             var newFootprint = new FootprintBoardCanvasItem()
             {
-                ProjectModel = ProjectModel,
                 BoardModel = BoardModel,
             };
 
@@ -676,8 +659,4 @@ namespace IDE.Core.Designers
         }
     }
 
-    //class FootprintCache
-    //{
-
-    //}
 }

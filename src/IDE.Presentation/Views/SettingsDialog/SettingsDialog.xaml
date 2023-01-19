@@ -151,6 +151,10 @@
                     <!--<DataTemplate DataType="{x:Type settings:ComponentEditorBOMSettingModel}">
                         <local:ComponentEditorBOMSettingsView/>
                     </DataTemplate>-->
+
+                    <DataTemplate DataType="{x:Type settings:PackageManagerSettingsModel}">
+                        <local:PackageManagerSettingsView />
+                    </DataTemplate>
                 </ContentControl.Resources>
 
 

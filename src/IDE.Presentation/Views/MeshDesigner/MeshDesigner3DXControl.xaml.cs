@@ -183,6 +183,8 @@ namespace IDE.Controls
                 return;
 
             var cursorPosition = CursorPosition;
+            if (cursorPosition.X.IsNaN() || cursorPosition.Y.IsNaN())
+                return;
 
             if (e.LeftButton != MouseButtonState.Pressed)
             {

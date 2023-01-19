@@ -116,30 +116,11 @@ namespace IDE.Core.Designers
             }
             set
             {
-                //var setSignal = value;
-                ////the signal must exist
-                //if (setSignal != null)
-                //{
-                //    var brd = LayerDocument as IBoardModel;
-                //    var s = brd.NetList.FirstOrDefault(n => n.Name == setSignal.Name);
-                //    if (s == null)
-                //        setSignal = null;
-                //}
-
-
-                //if (setSignal == null && signal != null)
-                //    signal.Items.Remove(this);
-
-                //signal = setSignal;
-
-                //if (signal != null && !signal.Items.Contains(this))
-                //    signal.Items.Add(this);
-
                 if (signal != null)
                     signal.Items.Remove(this);
 
                 //todo: we need this assignment on all signal items
-                if (value != null && value.Id <= 0)
+                if (value != null && string.IsNullOrEmpty(value.Id))
                     signal = null;
                 else
                     signal = value;
@@ -327,7 +308,7 @@ namespace IDE.Core.Designers
         {
             get
             {
-                return signal != null && !string.IsNullOrEmpty(signal.Name) && signal.Id != 0;
+                return signal != null && !string.IsNullOrEmpty(signal.Name) && !string.IsNullOrEmpty(signal.Id);
             }
         }
 

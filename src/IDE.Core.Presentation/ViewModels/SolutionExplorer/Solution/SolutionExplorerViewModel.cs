@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using IDE.Core.Interfaces;
 using IDE.Core.Common;
+using CommunityToolkit.Mvvm.Messaging;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Core.ViewModels
 {
@@ -23,13 +25,15 @@ namespace IDE.Core.ViewModels
         public SolutionExplorerViewModel()
             : base("Solution")
         {
-            Solutions = new ObservableCollection<SolutionRootNodeModel>();
             ContentId = ToolContentId;
 
-            dispatcherHelper = ServiceProvider.Resolve<IDispatcherHelper>();
+            StrongReferenceMessenger.Default.Register<ISolutionExplorerToolWindow, SolutionClosedMessage>(this,
+               (vm, message) =>
+               {
+                   IsVisible = false;
+                   CloseSolution();
+               });
         }
-
-        private IDispatcherHelper dispatcherHelper;
 
         public const string DocumentKey = "Solution";
         public const string Description = "Solution files";
@@ -45,13 +49,22 @@ namespace IDE.Core.ViewModels
 
         public override PaneLocation PreferredLocation => PaneLocation.Right;
 
+        IList<SolutionRootNodeModel> _solutions;
         /// <summary>
         /// just one solution, but used as a list for binding in tree;
         /// updated when Document property changes
         /// </summary>
-        public ObservableCollection<SolutionRootNodeModel> Solutions
+        public IList<SolutionRootNodeModel> Solutions
         {
-            get; set;
+            get
+            {
+                return _solutions;
+            }
+            set
+            {
+                _solutions = new ObservableCollection<SolutionRootNodeModel>(value);
+                OnPropertyChanged(nameof(Solutions));
+            }
         }
 
         public ObservableCollection<SolutionExplorerNodeModel> SelectedNodes { get; set; } = new ObservableCollection<SolutionExplorerNodeModel>();
@@ -214,9 +227,7 @@ namespace IDE.Core.ViewModels
                             var container = p as FilesContainerNodeModel;
                             if (container == null)
                                 return;
-                            var project = container.ProjectNode;
-                            if (project == null)
-                                return;
+
                             var itemFolder = container.GetItemFolderFullPath();
 
                             foreach (var pasteItem in clipboardItems)
@@ -248,7 +259,6 @@ namespace IDE.Core.ViewModels
                                     pasteItem.DeleteItem();
                             }
 
-                            project.Save();
                         }
                         catch (Exception ex)
                         {
@@ -294,7 +304,7 @@ namespace IDE.Core.ViewModels
                                 //close open items
                                 foreach (var node in nodesList)
                                 {
-                                    var file = workspace.Files.FirstOrDefault(f => f.Item == node);
+                                    var file = workspace.Files.FirstOrDefault(f => f.FilePath == node.GetItemFullPath());
                                     if (file != null)
                                         workspace.Close(file);
                                 }
@@ -315,48 +325,6 @@ namespace IDE.Core.ViewModels
                     //                    )
                     );
                 return deleteSelectedItemsCommand;
-            }
-        }
-
-        ICommand updateSelectedReferencesCommand;
-        public ICommand UpdateSelectedReferencesCommand
-        {
-            get
-            {
-                if (updateSelectedReferencesCommand == null)
-                    updateSelectedReferencesCommand = CreateCommand(p =>
-                    {
-                        try
-                        {
-                            if (SelectedNodes != null && SelectedNodes.Count > 0)
-                            {
-                                //if (MessageDialog.Show("Are you sure you want to update references?",
-                                //    "Confirm delete",
-                                //     MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                                //    return;
-
-                                IEnumerable<ISolutionExplorerNodeModel> nodes = SelectedNodes;
-                                if (SelectedNodes.Count == 1 && SelectedNodes[0] is ProjectReferencesNodeModel)
-                                {
-                                    nodes = SelectedNodes[0].Children;
-                                }
-
-                                var h = new ProjectReferencesHelper();
-                                h.UpdateReferences(nodes);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageDialog.Show(ex.Message);
-                        }
-                    },
-                    p => SelectedNodes != null
-                        && SelectedNodes.Count > 0
-                        && ((SelectedNodes.Count == 1 && SelectedNodes[0] is ProjectReferencesNodeModel)
-                            || SelectedNodes.All(n => n is ProjectReferenceNodeModel)
-                                            )
-                    );
-                return updateSelectedReferencesCommand;
             }
         }
 
@@ -391,20 +359,20 @@ namespace IDE.Core.ViewModels
                 {
                     collapseAllNodesCommand = CreateCommand(p =>
                     {
-                        if (Solutions != null)
+                        if (Solutions == null)
+                            return;
+
+                        foreach (var s in Solutions)
                         {
-                            foreach (var s in Solutions)
+                            if (s.Children != null)
                             {
-                                if (s.Children != null)
+                                foreach (var proj in s.Children.OfType<FilesContainerNodeModel>())
                                 {
-                                    foreach (var proj in s.Children.OfType<FilesContainerNodeModel>())
-                                    {
-                                        CollapseFilesContainer(proj);
-                                    }
+                                    CollapseFilesContainer(proj);
                                 }
                             }
-
                         }
+
                     });
                 }
 
@@ -420,19 +388,6 @@ namespace IDE.Core.ViewModels
                 foreach (var subFolder in folder.Children.OfType<FilesContainerNodeModel>())
                     CollapseFilesContainer(subFolder);
             }
-        }
-
-        public bool CanSaveData
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public async Task ReOpen()
-        {
-            await LoadFileAsync2(FilePath);
         }
 
         async Task LoadFileAsync2(string path)
@@ -474,45 +429,28 @@ namespace IDE.Core.ViewModels
             {
                 IsLoading = true;
 
-                var isReal = File.Exists(filePath);
-                if (!isReal)
+                var fileExists = File.Exists(filePath);
+                if (!fileExists)
                     throw new FileNotFoundException(filePath);
 
                 FilePath = filePath;
                 ContentId = this.filePath;
-                IsDirty = false; // Mark document loaded from persistence as unedited copy (display without dirty mark '*' in name)
+                IsDirty = false;
 
-                try
-                {
+                var solutionModel = new SolutionRootNodeModel();
+                var solutions = new List<SolutionRootNodeModel>() { solutionModel };
 
+                //dispatcherHelper.RunOnDispatcher(() =>
+                //{
+                //    Solutions.Clear();
+                //    Solutions.Add(solutionModel);
+                //});
 
-                    var solutionModel = new SolutionRootNodeModel();
-
-                    dispatcherHelper.RunOnDispatcher(() =>
-                    {
-                        Solutions.Clear();
-                        Solutions.Add(solutionModel);
-                    });
-
-
-                    solutionModel.Load(filePath);
-
-                    //DocumentModel = solutionModel;//7.634s
+                Solutions = solutions;
+                solutionModel.Load(filePath);
 
 
-                    State = DocumentState.IsEditing;
-                }
-                catch                 // File may be blocked by another process
-                {                    // Try read-only shared method and set file access to read-only
-                    throw;
-                }
-                //}
-                //else
-                //    throw new FileNotFoundException(filePath);   // File does not exist
-            }
-            catch (Exception exp)
-            {
-                throw new Exception(Strings.STR_FILE_OPEN_ERROR_MSG_CAPTION, exp);
+                State = DocumentState.IsEditing;
             }
             finally
             {
@@ -522,118 +460,12 @@ namespace IDE.Core.ViewModels
             return true;
         }
 
-        ///// <summary>
-        ///// Method is executed when the background process finishes and returns here
-        ///// because it was cancelled or is done processing.
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void FileLoaderLoadResultEvent(object sender, ResultEvent e)
-        //{
-        //    mAsyncProcessor.ProcessingResultEvent -= FileLoaderLoadResultEvent;
-        //    mAsyncProcessor = null;
-
-        //    CommandManager.InvalidateRequerySuggested();
-
-        //    // close documents automatically without message when re-loading on startup
-        //    if (State == DocumentState.IsInvalid)
-        //    {
-        //        OnClose();
-        //        return;
-        //    }
-
-        //    // Continue processing in parent of this viewmodel if there is any such requested
-        //    FireFileProcessingResultEvent(e, TypeOfResult.FileLoad);
-        //}
-
-        //bool FireFileProcessingResultEvent(ResultEvent e, TypeOfResult typeOfResult)
-        //{
-        //    // Continue processing in parent of this viewmodel if there is any such requested
-        //    if (ProcessingResultEvent != null)
-        //    {
-        //        ProcessingResultEvent(this, new ProcessResultEvent(e.Message, e.Error, e.Cancel, typeOfResult,
-        //                                                                      e.ResultObjects, e.InnerException));
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
         public bool CanClose()
         {
             if (State == DocumentState.IsLoading)
                 return false;
 
-            //return DocumentEvent != null;
             return true;
-        }
-
-        //public bool CanSave()
-        //{
-        //    return false;
-        // //   return DocumentModel != null;
-        //}
-
-        //public bool CanSaveAs()
-        //{
-        //    return CanSave();
-        //}
-
-        //public bool SaveFile(string filePath)
-        //{
-        //    try
-        //    {
-        //        throw new NotSupportedException("Save operation is not suported for Solution Explorer.");
-
-        //        //this saves the solution file only; don't forget project files and so on
-        //        // Document.Save(filePath);
-
-
-        //        // Set new file name in viewmodel and model
-        //        FilePath = filePath;
-        //        ContentId = filePath;
-        //        documentModel.SetFileNamePath(filePath, true);
-
-        //        IsDirty = false;
-
-        //        return true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        public SolutionExplorerNodeModel FindNodeByFilePath(string filePath)
-        {
-            foreach (var s in Solutions)
-            {
-                var searchNode = FindNodeByPath(s, filePath);
-                if (searchNode != null)
-                    return searchNode;
-            }
-
-            return null;
-        }
-
-        SolutionExplorerNodeModel FindNodeByPath(SolutionExplorerNodeModel currentNode, string filePath)
-        {
-            if (currentNode.GetItemFullPath() == filePath)
-            {
-                return currentNode;
-            }
-            if (currentNode.Children != null)
-            {
-                foreach (SolutionExplorerNodeModel childNode in currentNode.Children)
-                {
-                    var searchNode = FindNodeByPath(childNode, filePath);
-                    if (searchNode != null)
-                        return searchNode;
-                }
-            }
-
-            return null;
         }
 
         public override void Dispose()
@@ -647,16 +479,13 @@ namespace IDE.Core.ViewModels
             await LoadFileAsync2(filePath);
         }
 
-        public void CloseSolution()
+        private void CloseSolution()
         {
             try
             {
-                SolutionManager.CloseSolution();
-
                 //cleanup
                 Solutions.Clear();
                 SelectedNodes.Clear();
-
             }
             catch
             {
@@ -664,9 +493,5 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        public bool CanCloseSolution()
-        {
-            return SolutionManager.Solution != null;
-        }
     }
 }

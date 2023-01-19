@@ -80,14 +80,6 @@ namespace IDE.Core.ViewModels
 
         FontDocument fontDocument;
 
-        public override object Document
-        {
-            get
-            {
-                return fontDocument;
-            }
-        }
-
         public ObservableCollection<FontCharViewModel> Chars { get; set; } = new ObservableCollection<FontCharViewModel>();
 
         FontCharViewModel currentChar;

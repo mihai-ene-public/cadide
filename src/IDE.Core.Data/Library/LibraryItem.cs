@@ -13,7 +13,7 @@ namespace IDE.Core.Storage
 
 
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// item name is given by the filename. Used for display mainly.
@@ -56,20 +56,11 @@ namespace IDE.Core.Storage
 
         [XmlIgnore]
         public DateTime? LastAccessed { get; set; }
-
-      
         
 
-        static long lastId = 0;
-        public static long GetNextId()
+        public static string GetNextId()
         {
-            //max long is 9223372036854775807
-            var candidate = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmssff"))*1000L;
-
-            while (candidate <= lastId)
-                candidate++;
-
-            lastId = candidate;
+            var candidate = Guid.NewGuid().ToString("N");
             return candidate;
         }
     }

@@ -24,8 +24,8 @@ namespace IDE.Core.Designers
 
         public IGroupBoardRuleModel Parent { get; set; }
 
-        long id;
-        public long Id
+        string id;
+        public string Id
         {
             get
             {
@@ -125,9 +125,9 @@ namespace IDE.Core.Designers
             return true;
         }
 
-       
 
-       
+
+
     }
 
 

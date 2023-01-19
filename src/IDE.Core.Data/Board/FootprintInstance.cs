@@ -23,10 +23,10 @@ namespace IDE.Core.Storage
 
         //id of this instance
         [XmlAttribute("id")]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [XmlAttribute("partId")]
-        public long PartId { get; set; }
+        public string PartId { get; set; }
 
         //part name /designator
         [XmlAttribute("partName")]
@@ -42,7 +42,7 @@ namespace IDE.Core.Storage
         /// componentId this footprint belongs to
         /// </summary>
         [XmlAttribute("compId")]
-        public long ComponentId { get; set; }
+        public string ComponentId { get; set; }
 
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace IDE.Core.Storage
         /// the id of the footprint from the component. Needed for solving
         /// </summary>
         [XmlAttribute("footprintId")]
-        public long FootprintId { get; set; }
+        public string FootprintId { get; set; }
 
         /* These might not be needed
         [XmlAttribute("compLibrary")]

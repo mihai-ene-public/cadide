@@ -28,12 +28,6 @@ namespace IDE.Core.Settings
 
         }
 
-        public SchematicEditorPrimitiveDefaults(bool createDefaults)
-        {
-            if (createDefaults)
-                CreateDefaultPrimitives();
-        }
-
         [XmlArray("primitives")]
         [XmlArrayItem("circle", typeof(Circle))]
         [XmlArrayItem("ellipse", typeof(Ellipse))]
@@ -51,7 +45,7 @@ namespace IDE.Core.Settings
             return Primitives.OfType<T>().FirstOrDefault();
         }
 
-        void CreateDefaultPrimitives()
+       public void CreateDefaultPrimitives()
         {
             Primitives = new List<SchematicPrimitive>
             {

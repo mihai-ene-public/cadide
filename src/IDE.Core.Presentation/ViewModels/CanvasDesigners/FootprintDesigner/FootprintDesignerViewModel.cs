@@ -198,14 +198,6 @@ namespace IDE.Documents.Views
             });
         }
 
-        public override object Document
-        {
-            get
-            {
-                return footprintDocument;
-            }
-        }
-
         #region Layer selection
 
         ILayerDesignerItem selectedLayer;
@@ -517,7 +509,7 @@ namespace IDE.Documents.Views
                 footprintDocument = XmlHelper.Load<Footprint>(filePath);
 
                 //assign a new id if needed
-                if (footprintDocument.Id == 0)
+                if (string.IsNullOrEmpty(footprintDocument.Id))
                 {
                     footprintDocument.Id = LibraryItem.GetNextId();
                     IsDirty = true;
@@ -641,9 +633,8 @@ namespace IDE.Documents.Views
                         canvasModel.CancelPlacement();
 
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Footprint;
-                        itemSelectDlg.ProjectModel = ParentProject;
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Footprint, GetCurrentProjectInfo());
+
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             var symbol = itemSelectDlg.SelectedItem.Document as Footprint;
@@ -848,13 +839,8 @@ namespace IDE.Documents.Views
                 {
                     associate3DModelCommand = CreateCommand(p =>
                     {
-                        var project = ( Item as SolutionExplorerNodeModel ).ProjectNode;
-                        if (project == null)
-                            throw new Exception("This footprint does not belong to any project");
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Model, GetCurrentProjectInfo());
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Model;
-                        itemSelectDlg.ProjectModel = project;
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             if (itemSelectDlg.SelectedItem != null)
@@ -916,8 +902,8 @@ namespace IDE.Documents.Views
             if (modelData == null)
                 return;
 
-            //var modelDoc = ParentProject.FindObject(TemplateType.Model, modelData.ModelLibrary, modelData.ModelId) as ModelDocument;
-            var modelDoc = _objectFinder.FindObject<ModelDocument>(ParentProject.Project, modelData.ModelLibrary, modelData.ModelId);
+            var project=GetCurrentProjectInfo();
+            var modelDoc = _objectFinder.FindObject<ModelDocument>(project, modelData.ModelLibrary, modelData.ModelId);
 
             if (modelDoc != null && modelDoc.Items != null)
             {
@@ -946,8 +932,8 @@ namespace IDE.Documents.Views
             {
                 var model = kvp.Value;
                 var lastRead = kvp.Value.LastAccessed;
-                //var modelDoc = ParentProject.FindObject(TemplateType.Model, model.Library, model.Id, lastRead) as ModelDocument;
-                var modelDoc = _objectFinder.FindObject<ModelDocument>(ParentProject.Project, model.Library, model.Id, lastRead);
+                var project = GetCurrentProjectInfo();
+                var modelDoc = _objectFinder.FindObject<ModelDocument>(project, model.Library, model.Id, lastRead);
 
                 if (modelDoc != null)
                 {

@@ -227,6 +227,38 @@ namespace IDE.Core.Commands
             }
         }
 
+        static ICommand packCommand;
+
+        /// <summary>
+        /// Create package from both a Solution or a Project
+        /// </summary>
+        public static ICommand PackCommand
+        {
+            get
+            {
+                if (packCommand == null)
+                    packCommand = CreateUICommand("Pack", "Pack", typeof(AppCommand));
+
+                return packCommand;
+            }
+        }
+
+        static ICommand restorePackagesCommand;
+
+        /// <summary>
+        /// Create package from both a Solution or a Project
+        /// </summary>
+        public static ICommand RestorePackagesCommand
+        {
+            get
+            {
+                if (restorePackagesCommand == null)
+                    restorePackagesCommand = CreateUICommand("RestorePacks", "RestorePacks", typeof(AppCommand));
+
+                return restorePackagesCommand;
+            }
+        }
+
         static ICommand addProjectCommand;
 
         /// <summary>
@@ -256,6 +288,20 @@ namespace IDE.Core.Commands
                 }
 
                 return manageReferencesCommand;
+            }
+        }
+
+        static ICommand showPackageManagerCommand;
+        public static ICommand ShowPackageManagerCommand
+        {
+            get
+            {
+                if (showPackageManagerCommand == null)
+                {
+                    showPackageManagerCommand = CreateUICommand();
+                }
+
+                return showPackageManagerCommand;
             }
         }
 

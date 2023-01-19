@@ -8,6 +8,5 @@ namespace IDE.Core.Interfaces
 {
     public interface ISolutionRootNodeModel : ISolutionExplorerNodeModel
     {
-        ISolutionDocument Solution { get; }
     }
 }

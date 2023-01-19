@@ -65,14 +65,6 @@ namespace IDE.Documents.Views
 
         ModelDocument modelDocument;
 
-        public override object Document
-        {
-            get
-            {
-                return modelDocument;
-            }
-        }
-
         IList<IOverviewSelectNode> BuildCategories()
         {
             var list = new List<IOverviewSelectNode>();
@@ -208,10 +200,8 @@ namespace IDE.Documents.Views
 
                         canvasModel.CancelPlacement();
 
+                        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Model, GetCurrentProjectInfo());
 
-                        var itemSelectDlg = new ItemSelectDialogViewModel();
-                        itemSelectDlg.TemplateType = TemplateType.Model;
-                        itemSelectDlg.ProjectModel = ParentProject;
                         if (itemSelectDlg.ShowDialog() == true)
                         {
                             var symbol = itemSelectDlg.SelectedItem.Document as ModelDocument;
@@ -224,7 +214,6 @@ namespace IDE.Documents.Views
                                 {
                                     Items = canvasItems.Cast<ISelectableItem>().ToList()
                                 };
-                                //canvasModel.AddItem(group);
                                 canvasModel.StartPlacement(group);
                             }
                         }
@@ -240,18 +229,10 @@ namespace IDE.Documents.Views
         string GetOpenFileFilter(IModelImporter modelImporter) //= "3D model files (*.3ds;*.obj;*.lwo;*.stl;*.step)|*.3ds;*.obj;*.objz;*.lwo;*.stl;*.step;*.stp"
         {
 
-            string extensions = string.Join(";", //"*.3ds",
-                                                 //"*.obj",
-                                                 //                                                     "*.stl",
-                                                 //#if DEBUG
-                                                 //                                                     "*.step",
-                                                 //                                                     "*.stp"
-                                                 //#endif
-
-                                                modelImporter.GetSupportedFileFormats()
-                                                );
+            string extensions = string.Join(";", modelImporter.GetSupportedFileFormats());
             return $"3D model files ({extensions})|{extensions}";
         }
+
         public ICommand ImportModelCommand
         {
             get
@@ -268,12 +249,6 @@ namespace IDE.Documents.Views
                         {
 
                             modelImporter.Import(dlg.FileName, canvasModel);
-
-                            //var model = LoadAsync(dlg.FileName, true);
-                            //var modelItem = new SolidBodyMeshItem();
-                            //modelItem.IsPlaced = true;
-                            //modelItem.Model = model;
-                            //canvasModel.AddItem(modelItem);
                         }
                     });
                 }
@@ -281,25 +256,6 @@ namespace IDE.Documents.Views
                 return importModelCommand;
             }
         }
-
-
-        ////async Task<Model3DGroup>
-        //Model3DGroup LoadAsync(string model3DPath, bool freeze)
-        //{
-        //    //return await Task.Factory.StartNew(() =>
-        //    //{
-        //    var mi = new GenericModelImporter();
-
-        //    if (freeze)
-        //    {
-        //        // Alt 1. - freeze the model 
-        //        return mi.Load(model3DPath, null, true);
-        //    }
-
-        //    //// Alt. 2 - create the model on the UI dispatcher
-        //    //return mi.Load(model3DPath, Dispatcher.CurrentDispatcher);//?
-        //    ////});
-        //}
 
         ICommand groupItemsCommand;
 
@@ -517,7 +473,7 @@ namespace IDE.Documents.Views
                 modelDocument = XmlHelper.Load<ModelDocument>(filePath);
 
                 //assign a new id if needed
-                if (modelDocument.Id == 0)
+                if (string.IsNullOrEmpty(modelDocument.Id))
                 {
                     modelDocument.Id = LibraryItem.GetNextId();
                     IsDirty = true;

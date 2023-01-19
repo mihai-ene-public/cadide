@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.IO;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
-using IDE.Core.Interfaces.Compilers;
 using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Presentation.Solution;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 
@@ -13,16 +11,27 @@ namespace IDE.Core.Presentation.Compilers;
 public class BoardCompiler : AbstractCompiler, IBoardCompiler
 {
     private readonly IObjectFinder _objectFinder;
+    private readonly ISolutionRepository _solutionRepository;
 
-    public BoardCompiler(IObjectFinder objectFinder)
+
+    public BoardCompiler(IObjectFinder objectFinder, ISolutionRepository solutionRepository)
     {
         _objectFinder = objectFinder;
+        _solutionRepository = solutionRepository;
     }
 
     public async Task<CompilerResult> Compile(IBoardDesigner board)
     {
         var isValid = true;
-        var project = board.ProjectNode;
+        var projectPath = _solutionRepository.GetProjectFilePath(board.FilePath);
+        var project = _solutionRepository.LoadProjectDocument(projectPath);
+        var projectName = Path.GetFileNameWithoutExtension(projectPath);
+        var projectInfo = new ProjectInfo
+        {
+            Project = project,
+            ProjectPath = projectPath,
+        };
+
         var canvasModel = board.CanvasModel;
         var errors = new List<IErrorMessage>();
 
@@ -39,13 +48,11 @@ public class BoardCompiler : AbstractCompiler, IBoardCompiler
                 if (part.PartName != null)
                 {
                     //todo: changing the componentId and footprintId doesn't report missing component or footprint
-                    //var cmpSearch = project.FindObject(TemplateType.Component, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
-                    var cmpSearch = _objectFinder.FindObject<ComponentDocument>(project.Project, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
+                    var cmpSearch = _objectFinder.FindObject<ComponentDocument>(projectInfo, part.FootprintPrimitive.ComponentLibrary, part.FootprintPrimitive.ComponentId);
                     if (cmpSearch == null)
                         throw new Exception($"Part {part.PartName} was not found");
 
-                    //var fptSearch = project.FindObject(TemplateType.Footprint, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
-                    var fptSearch = _objectFinder.FindObject<Footprint>(project.Project, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
+                    var fptSearch = _objectFinder.FindObject<Footprint>(projectInfo, part.FootprintPrimitive.Library, part.FootprintPrimitive.FootprintId);
                     if (fptSearch == null)
                         throw new Exception($"Footprint for part '{part.PartName}' was not found");
                 }
@@ -53,7 +60,7 @@ public class BoardCompiler : AbstractCompiler, IBoardCompiler
             catch (Exception ex)
             {
                 isValid = false;
-                var error = BuildErrorMessage(ex.Message, project.Name, board);
+                var error = BuildErrorMessage(ex.Message, projectName, board);
                 errors.Add(error);
             }
         }
@@ -63,7 +70,7 @@ public class BoardCompiler : AbstractCompiler, IBoardCompiler
         foreach (var c in unroutedConnections)
         {
             isValid = false;
-            errors.Add(BuildErrorMessage($"Net {c.Net} is not completely routed", project.Name, board));
+            errors.Add(BuildErrorMessage($"Net {c.Net} is not completely routed", projectName, board));
         }
 
 

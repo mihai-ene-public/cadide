@@ -8,7 +8,7 @@ namespace IDE.Core.Interfaces
 {
     public interface IDialogViewModel
     {
-        bool? ShowDialog();
+        bool? ShowDialog(object args = null);
     }
 
     public interface IMessageBoxDialogHelper

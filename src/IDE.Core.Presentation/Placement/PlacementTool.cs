@@ -36,7 +36,7 @@ namespace IDE.Core.Presentation.Placement
 
         public PlacementStatus PlacementStatus { get; set; }
 
-        protected ISolutionProjectNodeModel CurrentProject => CanvasModel.FileDocument.ProjectNode;
+        //protected ISolutionProjectNodeModel CurrentProject => CanvasModel.FileDocument.ProjectNode;
 
         public virtual void PlacementMouseMove(XPoint mousePosition)
         {

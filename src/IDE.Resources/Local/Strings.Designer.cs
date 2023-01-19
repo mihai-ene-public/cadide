@@ -430,6 +430,15 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pack.
+        /// </summary>
+        public static string CmdPackHeader {
+            get {
+                return ResourceManager.GetString("CmdPackHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paste.
         /// </summary>
         public static string CmdPasteHeader {
@@ -471,6 +480,15 @@ namespace IDE.Resources.Local {
         public static string CmdRepourPolysTooltip {
             get {
                 return ResourceManager.GetString("CmdRepourPolysTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore packages.
+        /// </summary>
+        public static string CmdRestorePacksHeader {
+            get {
+                return ResourceManager.GetString("CmdRestorePacksHeader", resourceCulture);
             }
         }
         
@@ -543,6 +561,15 @@ namespace IDE.Resources.Local {
         public static string CmdShowFootprintGeneratorTooltip {
             get {
                 return ResourceManager.GetString("CmdShowFootprintGeneratorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage packages....
+        /// </summary>
+        public static string CmdShowPackageManagerHeader {
+            get {
+                return ResourceManager.GetString("CmdShowPackageManagerHeader", resourceCulture);
             }
         }
         
@@ -916,6 +943,69 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authors.
+        /// </summary>
+        public static string PacakgePropertiesAuthorsLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesAuthorsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string PacakgePropertiesDescriptionLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesDescriptionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Icon.
+        /// </summary>
+        public static string PacakgePropertiesIconLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesIconLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Id.
+        /// </summary>
+        public static string PacakgePropertiesIdLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesIdLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Url.
+        /// </summary>
+        public static string PacakgePropertiesProjectUrlLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesProjectUrlLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        public static string PacakgePropertiesTagsLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesTagsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Version.
+        /// </summary>
+        public static string PacakgePropertiesVersionLabel {
+            get {
+                return ResourceManager.GetString("PacakgePropertiesVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build.
         /// </summary>
         public static string ProjectPropertiesBuildHeader {
@@ -975,6 +1065,15 @@ namespace IDE.Resources.Local {
         public static string ProjectPropertiesOutputFolderLabel {
             get {
                 return ResourceManager.GetString("ProjectPropertiesOutputFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package.
+        /// </summary>
+        public static string ProjectPropertiesPackageHeader {
+            get {
+                return ResourceManager.GetString("ProjectPropertiesPackageHeader", resourceCulture);
             }
         }
         

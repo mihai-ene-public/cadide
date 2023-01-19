@@ -5,117 +5,114 @@ using System.Linq;
 using IDE.Core.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace IDE.Core.Presentation.ObjectFinding
+namespace IDE.Core.Presentation.ObjectFinding;
+
+public class ObjectFinder<T> : IObjectFinder<T> where T : ILibraryItem
 {
-    public class ObjectFinder<T> : IObjectFinder<T> where T : ILibraryItem
+    private readonly IObjectRepository<T> _objectRepository;
+    private readonly IMemoryCache _memoryCache;
+
+
+    IList<T> cachedItems = new List<T>();
+    public ObjectFinder(IObjectRepository<T> objectRepository, IMemoryCache memoryCache)
     {
-        private readonly IObjectRepository<T> _objectRepository;
-        private readonly IMemoryCache _memoryCache;
+        _objectRepository = objectRepository;
+        _memoryCache = memoryCache;
+    }
 
+    public void LoadCache(ProjectInfo project)
+    {
+        cachedItems = _objectRepository.LoadObjects(project);
+    }
+    public void ClearCache()
+    {
+        if (cachedItems != null)
+            cachedItems.Clear();
+    }
 
-        IList<T> cachedItems = new List<T>();
-        public ObjectFinder(IObjectRepository<T> objectRepository, IMemoryCache memoryCache)
+    public T FindCachedObject(string id)
+    {
+
+        if (cachedItems != null && cachedItems.Count > 0)
         {
-            _objectRepository = objectRepository;
-            _memoryCache = memoryCache;
+            return cachedItems.FirstOrDefault(o => o.Id == id);
         }
 
-        public void LoadCache(IProjectDocument project)
-        {
-            cachedItems = _objectRepository.LoadObjects(project, null);
-        }
-        public void ClearCache()
-        {
-            if (cachedItems != null)
-                cachedItems.Clear();
-        }
+        return default(T);
+    }
 
-        public T FindCachedObject(long id)
-        {
+    public T FindObject(ProjectInfo project, string id)
+    {
+        if (project == null)
+            throw new Exception("Project document was not initialized");
 
-            if (cachedItems != null && cachedItems.Count > 0)
+        IList<T> items = null;
+
+        var predicate = new Func<T, bool>(li =>
+        {
+            var idMatched = li.Id == id;
+
+            return idMatched;
+        });
+
+        items = _objectRepository.LoadObjects(project,
+              predicate,
+              stopIfFound: true,
+              lastModified: null);
+
+        var item = items.FirstOrDefault();
+
+        return item;
+    }
+
+    public T FindObject(ProjectInfo project, string libraryName, string id, DateTime? lastModified = null)
+    {
+        if (project == null)
+            throw new Exception("Project document was not initialized");
+
+        //lib name local or null?
+        var isLocal = libraryName == null || libraryName == "local";
+
+        var predicate = new Func<T, bool>(li =>
+        {
+            var idMatched = li.Id == id;
+            if (idMatched)
             {
-                return cachedItems.FirstOrDefault(o => o.Id == id);
+                return isLocal && li.IsLocal || li.Library == libraryName;
             }
 
-            return default(T);
+            return false;
+        });
+
+        if (isLocal)
+        {
+            libraryName = Path.GetFileNameWithoutExtension(project.ProjectPath);
         }
 
-        public T FindObject(IProjectDocument project, long id)
+        var cacheKey = $"{libraryName}.{id}";
+
+        if (lastModified == null)
         {
-            if (project == null)
-                throw new Exception("Project document was not initialized");
+            var cachedItem = _memoryCache.Get<T>(cacheKey);
 
-            IList<T> items = null;
-
-            var predicate = new Func<T, bool>(li =>
+            if (cachedItem != null)
             {
-                var idMatched = li.Id == id;
+                return cachedItem;
+            }
+        }
 
-                return idMatched;
-            });
-
-            items = _objectRepository.LoadObjects(project,
+        var items = _objectRepository.LoadObjects(project,
                   predicate,
                   stopIfFound: true,
-                  lastModified: null);
+                  lastModified: lastModified);
 
-            var item = items.FirstOrDefault();
+        var item = items.FirstOrDefault();
 
-            return item;
-        }
-
-        public T FindObject(IProjectDocument project, string libraryName, long id, DateTime? lastModified = null)
+        if (item != null)
         {
-            if (project == null)
-                throw new Exception("Project document was not initialized");
-
-            //lib name local or null?
-            //var isLocal = string.IsNullOrEmpty(libraryName) || libraryName == "local";
-            var isLocal = libraryName == null || libraryName == "local";
-
-
-            var predicate = new Func<T, bool>(li =>
-            {
-                var idMatched = li.Id == id;
-                if (idMatched)
-                {
-                    return isLocal && li.IsLocal || li.Library == libraryName;
-                }
-
-                return false;
-            });
-
-            if (isLocal)
-            {
-                libraryName = Path.GetFileNameWithoutExtension(project.FilePath);
-            }
-
-            var cacheKey = $"{libraryName}.{id}";
-
-            if (lastModified == null)
-            {
-                var cachedItem = _memoryCache.Get<T>(cacheKey);
-
-                if (cachedItem != null)
-                {
-                    return cachedItem;
-                }
-            }
-
-            var items = _objectRepository.LoadObjects(project,
-                      predicate,
-                      stopIfFound: true,
-                      lastModified: lastModified);
-
-            var item = items.FirstOrDefault();
-
-            if (item != null)
-            {
-                _memoryCache.Set(cacheKey, item);
-            }
-
-            return item;
+            _memoryCache.Set(cacheKey, item);
         }
+
+        return item;
     }
 }

@@ -25,7 +25,6 @@ namespace IDE.Core
                     sw.Flush();
                 }
 
-
                 File.WriteAllBytes(filePath, ms.ToArray());
             }
         }

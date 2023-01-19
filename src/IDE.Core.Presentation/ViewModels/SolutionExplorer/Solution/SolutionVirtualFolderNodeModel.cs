@@ -5,18 +5,15 @@ namespace IDE.Core.ViewModels
 {
     public class SolutionVirtualFolderNodeModel : SolutionExplorerNodeModel
     {
-        GroupFolderItem Folder { get { return Document as GroupFolderItem; } }
 
         public override void Load(string filePath)
         {
+            /*virtual folders are not implemented yet
             foreach (var child in Folder.Children)
             {
                 if (child is GroupFolderItem)
                 {
-                    var folderModel = new SolutionVirtualFolderNodeModel
-                    {
-                        Document = child
-                    };
+                    var folderModel = new SolutionVirtualFolderNodeModel();
                     folderModel.Load(null);
                     AddChild(folderModel);
                 }
@@ -27,6 +24,7 @@ namespace IDE.Core.ViewModels
                     AddChild(projectModel);
                 }
             }
+            */
         }
     }
 }

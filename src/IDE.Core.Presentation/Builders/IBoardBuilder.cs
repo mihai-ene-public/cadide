@@ -6,6 +6,6 @@ namespace IDE.Core.Presentation.Builders
 {
     public interface IBoardBuilder
     {
-        Task<BuildResult> Build(IBoardDesigner board);
+        Task<BuildResult> Build(IBoardDesigner board, string folderOutput);
     }
 }

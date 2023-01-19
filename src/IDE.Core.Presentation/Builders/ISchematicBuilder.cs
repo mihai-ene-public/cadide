@@ -9,6 +9,6 @@ namespace IDE.Core.Presentation.Builders
 {
     public interface ISchematicBuilder
     {
-        Task<BuildResult> Build(ISchematicDesigner schematic);
+        Task<BuildResult> Build(ISchematicDesigner schematic, string outputFolder);
     }
 }

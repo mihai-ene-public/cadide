@@ -201,24 +201,6 @@ public abstract class BaseCanvasItem : BaseViewModel
         get { return true; }
     }
 
-    //protected IPrimitive primitive;
-
-    //[Browsable(false)]
-    //public IPrimitive Primitive
-    //{
-    //    get
-    //    {
-    //        SaveToPrimitive();
-    //        return primitive;
-    //    }
-    //    set
-    //    {
-    //        primitive = value;
-    //        LoadFromPrimitive();
-    //        IsPlaced = true;
-    //    }
-    //}
-
     public abstract XRect GetBoundingRectangle();
 
     public abstract void Translate(double dx, double dy);
@@ -234,7 +216,7 @@ public abstract class BaseCanvasItem : BaseViewModel
         if (rot < 0.0d)
             rot += 360;
 
-        rot = ((int)rot % 360);
+        rot = ( (int)rot % 360 );
 
 
         return rot;
@@ -280,7 +262,7 @@ public abstract class BaseCanvasItem : BaseViewModel
                 myRot = 180.0d - myRot;
 
                 var sign = Math.Sign(rotAngle);
-                rotAngle = sign * (180 - Math.Abs(rotAngle));
+                rotAngle = sign * ( 180 - Math.Abs(rotAngle) );
             }
 
             myRot += rotAngle;
@@ -338,7 +320,6 @@ public abstract class BaseCanvasItem : BaseViewModel
 
     protected virtual XTransform GetGlobalMirror(IContainerSelectableItem parentObject)
     {
-        // if (parentObject != null && parentObject.Placement == FootprintPlacement.Bottom)
         if (parentObject != null && parentObject.IsMirrored())
         {
             var scaleX = parentObject.ScaleX;
@@ -393,22 +374,13 @@ public abstract class BaseCanvasItem : BaseViewModel
 
         var clone = (IPrimitive)SaveToPrimitive().Clone();
 
-        if (this is SchematicSymbolCanvasItem)
+        if (this is SchematicSymbolCanvasItem symbol)
         {
             var instance = (Instance)clone;
-            var symbol = this as SchematicSymbolCanvasItem;
             var part = symbol.Part;
 
-            //Instance
-            //Part
-            //ProjectModel
-
-            //return MemberwiseClone();
-            var schPart = new SchematicSymbolCanvasItem();
-            // schPart.Parent = symbol.Parent;
-            schPart.ProjectModel = symbol.ProjectModel;
+            var schPart = new SchematicSymbolCanvasItem() { _Project = symbol._Project };
             var newPart = part.Clone();
-            //newPart.Name = symbol.GetNextPartName();
             schPart.Part = newPart;
             instance.PartId = newPart.Id;
             instance.Id = LibraryItem.GetNextId();
@@ -421,8 +393,8 @@ public abstract class BaseCanvasItem : BaseViewModel
         }
         if (this is NetSegmentCanvasItem)
         {
-            var netSegment = (NetSegmentCanvasItem)/*(NetSegmentItem)*/clone.CreateDesignerItem();
-            var net = (this as NetSegmentCanvasItem).Net;
+            var netSegment = (NetSegmentCanvasItem)clone.CreateDesignerItem();
+            var net = ( this as NetSegmentCanvasItem ).Net;
             netSegment.AssignNet(net);
             netSegment.IsPlaced = false;
             return netSegment;
@@ -430,14 +402,14 @@ public abstract class BaseCanvasItem : BaseViewModel
         if (this is BusSegmentCanvasItem)
         {
             var netSegment = (BusSegmentCanvasItem)clone.CreateDesignerItem();
-            var net = (this as BusSegmentCanvasItem).Bus;
+            var net = ( this as BusSegmentCanvasItem ).Bus;
             netSegment.AssignBus(net);
             netSegment.IsPlaced = false;
             return netSegment;
         }
         if (clone is SchematicPrimitive)
         {
-            var p = ((SchematicPrimitive)clone).CreateDesignerItem();
+            var p = ( (SchematicPrimitive)clone ).CreateDesignerItem();
             p.IsPlaced = false;
             return p;
         }
@@ -448,7 +420,7 @@ public abstract class BaseCanvasItem : BaseViewModel
             //traces are lost when not having a signal
 
             var thisBrdItem = this as BoardCanvasItemViewModel;
-            var canvasItem = (BoardCanvasItemViewModel)((LayerPrimitive)clone).CreateDesignerItem();
+            var canvasItem = (BoardCanvasItemViewModel)( (LayerPrimitive)clone ).CreateDesignerItem();
             canvasItem.LayerDocument = thisBrdItem.LayerDocument;
             canvasItem.ParentObject = thisBrdItem.ParentObject;
             canvasItem.IsPlaced = false;

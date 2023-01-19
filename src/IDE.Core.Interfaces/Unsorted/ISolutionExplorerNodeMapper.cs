@@ -8,6 +8,6 @@ namespace IDE.Core.Interfaces
 {
     public interface ISolutionExplorerNodeMapper
     {
-        ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(IProjectFileRef fileItem);
+        ISolutionExplorerNodeModel CreateSolutionExplorerNodeModel(IProjectFileRef fileItem, string solutionFolder);
     }
 }

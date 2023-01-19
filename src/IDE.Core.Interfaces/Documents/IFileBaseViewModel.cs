@@ -30,17 +30,6 @@
         DocumentState State { get; set; }
 
         /// <summary>
-        /// this should be a SolutionExplorerNodeModel representing the item in a project being open.
-        /// <para> May be null for items open not belonging to the project</para>
-        /// </summary>
-        /*BaseViewModel*/
-        INotifyPropertyChanged Item { get; set; }
-
-        ISolutionProjectNodeModel ProjectNode { get; }
-
-        object Document { get; }
-
-        /// <summary>
         /// File path of the current document.
         /// </summary>
         string FilePath { get; }
@@ -96,7 +85,7 @@
         /// <returns></returns>
         bool CanSaveAs();
 
-        // bool OpenFile(string filePath);
+        ProjectInfo GetCurrentProjectInfo();
 
         Task OpenFileAsync(string filePath);
 

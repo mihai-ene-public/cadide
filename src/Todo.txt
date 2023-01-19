@@ -23,4 +23,7 @@ Bugs for gerber output:
 
 	- show optimised aperture (regular rect) for pads without rounded corners, not aperture macro
 		- aperture circle for circle shape
+
+Broken from refactoring
+	- renaming a file in sol explorer should rename the filepath and any open documents
 	

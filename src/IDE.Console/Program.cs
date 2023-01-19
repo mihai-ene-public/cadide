@@ -19,14 +19,17 @@ internal class Program
         StrongReferenceMessenger.Default.Register<object, string>(obj, (vm, message) => Console.WriteLine(message));
 
 
-        var res = await Parser.Default.ParseArguments<CompileOptions, BuildOptions>(args)
+        var res = await Parser.Default.ParseArguments<CompileOptions, BuildOptions, PackOptions>(args)
             .MapResult(
           (CompileOptions opts) => Compile(opts, container),
           (BuildOptions opts) => Build(opts, container),
+          (PackOptions opts) => Pack(opts, container),
           errs => Task.FromResult(0));
 
         return res;
     }
+
+
 
     public static async Task<int> Compile(CompileOptions opt, IServiceProvider serviceProvider)
     {
@@ -43,11 +46,9 @@ internal class Program
                     var res = await compiler.CompileSolution(opt.FilePath);
                     return res ? 0 : 1;
 
-                //our current architecture is not compatible with building a simple project
-                //we'll have compile project in the next iteration
-                //case "project":
-                //    await compiler.CompileProject(opt.FilePath);
-                //    break;
+                case "project":
+                    var resp = await compiler.CompileProject(opt.FilePath);
+                    return resp ? 0 : 1;
 
                 default:
                     throw new Exception("This file type is not supported for compiling. Only solution file types allowed.");
@@ -59,7 +60,6 @@ internal class Program
             return 1;
         }
 
-        return 0;
     }
 
     public static async Task<int> Build(BuildOptions opt, IServiceProvider serviceProvider)
@@ -77,11 +77,9 @@ internal class Program
                     await compiler.BuildSolution(opt.FilePath);
                     break;
 
-                //our current architecture is not compatible with building a simple project
-                //we'll have build project in the next iteration
-                //case "project":
-                //    await compiler.BuildProject(opt.FilePath);
-                //    break;
+                case "project":
+                    await compiler.BuildProject(opt.FilePath);
+                    break;
 
                 default:
                     throw new Exception("This file type is not supported for building. Only solution file types allowed.");
@@ -96,5 +94,35 @@ internal class Program
         return 0;
     }
 
+    private static async Task<int> Pack(PackOptions opt, IServiceProvider serviceProvider)
+    {
+        try
+        {
+            var compiler = serviceProvider.GetService<ISolutionPackageBuilder>();
+            var fileExtension = Path.GetExtension(opt.FilePath);
+            if (fileExtension.StartsWith("."))
+                fileExtension = fileExtension.Substring(1);
 
+            switch (fileExtension)
+            {
+                case "solution":
+                    await compiler.BuildSolution(opt.FilePath);
+                    break;
+
+                case "project":
+                    await compiler.BuildProject(opt.FilePath);
+                    break;
+
+                default:
+                    throw new Exception("This file type is not supported for building. Only solution file types allowed.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return 1;
+        }
+
+        return 0;
+    }
 }

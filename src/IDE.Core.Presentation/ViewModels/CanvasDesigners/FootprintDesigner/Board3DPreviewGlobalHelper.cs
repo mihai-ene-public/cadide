@@ -64,9 +64,11 @@ public class Board3DPreviewGlobalHelper
 
         var footprints = canvasItems.OfType<FootprintBoardCanvasItem>().ToList();
 
+        var projectInfo = board.GetCurrentProjectInfo();
+
         foreach (var fp in footprints)
         {
-            await LoadModelForFootprint(fp, models, boardTotalThickness, board.ProjectNode, previewModel);
+            await LoadModelForFootprint(fp, models, boardTotalThickness, projectInfo, previewModel);
         }
 
         previewModel.Preview3DLayers = solidLayers;
@@ -298,7 +300,7 @@ public class Board3DPreviewGlobalHelper
     }
 
     private async Task LoadModelForFootprint(FootprintBoardCanvasItem fp, List<ISelectableItem> models, double boardTotalThickness,
-                                 ISolutionProjectNodeModel parentProject, BoardPreview3DViewModel previewModel)
+                                 ProjectInfo parentProject, BoardPreview3DViewModel previewModel)
     {
         await Task.CompletedTask;
         if (fp == null) return;
@@ -312,8 +314,7 @@ public class Board3DPreviewGlobalHelper
             if (modelData.ModelLibrary == null || modelData.ModelLibrary == "local")
                 modelLibrary = footprint.Library;
 
-            // var modelDoc = await Task.Run(() => parentProject.FindObject(TemplateType.Model, modelLibrary, modelData.ModelId) as ModelDocument);
-            var modelDoc = _objectFinder.FindObject<ModelDocument>(parentProject.Project, modelLibrary, modelData.ModelId);
+            var modelDoc = _objectFinder.FindObject<ModelDocument>(parentProject, modelLibrary, modelData.ModelId);
             // var direction = -2.0;
             var height = 0.04;
             var posZ = modelData.CenterZ;

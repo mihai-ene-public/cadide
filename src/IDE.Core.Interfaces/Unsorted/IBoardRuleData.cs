@@ -8,7 +8,7 @@ namespace IDE.Core.Interfaces
 {
     public interface IBoardRuleData
     {
-        long Id { get; set; }
+        string Id { get; set; }
 
         string Name { get; set; }
 

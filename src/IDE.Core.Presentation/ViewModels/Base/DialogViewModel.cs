@@ -228,14 +228,17 @@ namespace IDE.Core
             {
                 List<Msg> msgs;
                 var bResult = EvaluateInputData(out msgs);
-                
+
                 IsReadyToClose = bResult;
             }
         }
 
-        protected virtual void LoadData() { }
+        protected virtual Task LoadData(object args)
+        {
+            return Task.CompletedTask;
+        }
 
-        public bool? ShowDialog()
+        public bool? ShowDialog(object args = null)
         {
             var mapper = ServiceProvider.Resolve<IDialogModelToWindowMapper>();
             if (mapper == null)
@@ -248,7 +251,8 @@ namespace IDE.Core
             //owner?
             window.DataContext = this;
 
-            Task.Run(() => LoadData());
+            //Task.Run(() => LoadData(args));
+            LoadData(args);
 
             return window.ShowDialog();
         }

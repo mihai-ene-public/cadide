@@ -1,4 +1,5 @@
-﻿using IDE.Core.Interfaces;
+﻿using IDE.Core.Data.Packages;
+using IDE.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,12 +19,6 @@ namespace IDE.Core.Storage
     {
         public const string ProjectExtension = ".project";
 
-
-        public ProjectDocument()
-        {
-            References = new List<ProjectDocumentReference>();
-        }
-
         /// <summary>
         /// OutputType gives the project type
         /// </summary>
@@ -33,38 +28,12 @@ namespace IDE.Core.Storage
         [XmlArray("References")]
         [XmlArrayItem("Library", typeof(LibraryProjectReference))]
         [XmlArrayItem("ProjectReference", typeof(ProjectProjectReference))]
-        public List<ProjectDocumentReference> References { get; set; }
+        [XmlArrayItem("PackageReference", typeof(PackageProjectReference))]
+        public List<ProjectDocumentReference> References { get; set; } = new List<ProjectDocumentReference>();
 
         public ProjectProperties Properties { get; set; } = new ProjectProperties();
 
-        [XmlIgnore]
-        public string FilePath { get; set; }
-
-        public void Save(string filePath)
-        {
-            var ser = new XmlSerializer(GetType());
-            var ns = new XmlSerializerNamespaces();
-            ns.Add(string.Empty, string.Empty);
-            using (var sw = new StreamWriter(filePath))
-            {
-                ser.Serialize(sw, this, ns);
-            }
-        }
-
-        public void Save()
-        {
-            Save(FilePath);
-        }
-
-        public static ProjectDocument Load(string filePath)
-        {
-            var ser = new XmlSerializer(typeof(ProjectDocument));
-            using (var sr = new StreamReader(filePath))
-            {
-                var p = (ProjectDocument)ser.Deserialize(sr);
-                p.FilePath = filePath;
-                return p;
-            }
-        }
+        [XmlElement("package")]
+        public PackageMetadata Package { get; set; }
     }
 }

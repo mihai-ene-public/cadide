@@ -23,7 +23,7 @@ namespace IDE.Core.Storage
     public class NetClassBaseItem: INetClassBaseItem
     {
         [XmlAttribute("id")]
-        public long Id
+        public string Id
         {
             get; set;
         }

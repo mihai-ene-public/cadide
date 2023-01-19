@@ -5,5 +5,5 @@ using System.Reflection;
 
 class AssembliesVersion
 {
-    public const string Version = "0.3.0";
+    public const string Version = "0.5.0";
 }
