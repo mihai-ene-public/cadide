@@ -177,9 +177,9 @@ namespace IDE.Core
         }
 
         /// <summary>
-        /// Method to be executed when user (or program) tries to close the application
+        /// Method to be executed when user (or program) tries to close the dialog
         /// </summary>
-        public void OnRequestClose(bool setWindowCloseResult)
+        protected void OnRequestClose(bool setWindowCloseResult)
         {
             try
             {
@@ -251,7 +251,6 @@ namespace IDE.Core
             //owner?
             window.DataContext = this;
 
-            //Task.Run(() => LoadData(args));
             LoadData(args);
 
             return window.ShowDialog();

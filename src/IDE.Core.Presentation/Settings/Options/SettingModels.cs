@@ -125,8 +125,7 @@ public class EnvironmentFolderLibsSettingModel : BasicSettingModel
     public override void ResetSetting()
     {
         var list = new List<string>();
-        list.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\XNoCAD\Libraries");
-        list.Add("Libraries");//start up folder of IDE.exe
+        list.Add(@"%appdata%\xnocad\libraries");
 
         Folders = new ObservableCollection<FolderName>(list.Select(f => new FolderName { Name = f }));
     }
@@ -621,6 +620,17 @@ public class PackageManagerSettingsModel : BasicSettingModel
         }
     }
 
+    private string packagesCacheFolderPath;
+    public string PackagesCacheFolderPath
+    {
+        get { return packagesCacheFolderPath; }
+        set
+        {
+            packagesCacheFolderPath = value;
+            OnPropertyChanged(nameof(PackagesCacheFolderPath));
+        }
+    }
+
     public override void ResetSetting()
     {
         PackageSources = new List<PackageSourceSettingItemModel>
@@ -632,6 +642,7 @@ public class PackageManagerSettingsModel : BasicSettingModel
                 Source = "https://github.com/mihai-ene-public/xnocad.packages.index/raw/main/index.json"
             }
         };
+        PackagesCacheFolderPath = @"%appdata%\xnocad\packages";
     }
     protected override string GetDisplayName()
     {
@@ -647,7 +658,8 @@ public class PackageManagerSettingsModel : BasicSettingModel
                 IsEnabled = s.IsEnabled,
                 Name = s.Name,
                 Source = s.Source,
-            }).ToList()
+            }).ToList(),
+            PackagesCacheFolderPath = PackagesCacheFolderPath,
         };
     }
 
@@ -662,6 +674,7 @@ public class PackageManagerSettingsModel : BasicSettingModel
                  Name = ps.Name,
                  Source = ps.Source,
              }).ToList();
+        PackagesCacheFolderPath = s.PackagesCacheFolderPath;
     }
 
     public class PackageSourceSettingItemModel

@@ -129,18 +129,6 @@
     <None Update="Templates\Projects\All\Library Project\project.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Templates\Projects\Samples\Arduino 328\Arduino 328.project">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\Projects\Samples\Arduino 328\Board.board">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\Projects\Samples\Arduino 328\project.template">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Templates\Projects\Samples\Arduino 328\Schematic.schematic">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 

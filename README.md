@@ -1,7 +1,17 @@
 # XNoCAD
-A PCB CAD designer software.
+XNoCAD is a PCB CAD designer software, similar to KiCad, DipTrace, etc
 
 [![Build and test on push or pull request](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml)
+
+## How to install
+XNoCAD is currently available for **Windows** only.
+
+To see what's new, see the [Releases Page](https://github.com/mihai-ene-public/cadide/releases)
+
+- On the releases page, for the release of your choice, download the .zip file that starts with XNoCAD.
+- Extract this .zip file in a folder of your choice.
+- In this folder double click on IDE.exe.
+- Optionally, create a Desktop shortcut.
 
 ## How to build
 - Use Visual Studio 2022 Community or higher from [here](https://www.visualstudio.com/)
@@ -61,12 +71,9 @@ A PCB CAD designer software.
     - can define models using generators
 
 ## Milestones for version v1.0
-- Gerber X2
-- Gerber X3
 - Panelization
 - Spice sim
 - Advanced routing: diff pairs
 - Length matching
 - Import from Eagle and KiCad
-- Home manufacturing improvements for creating output
 - Localization

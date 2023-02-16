@@ -29,6 +29,7 @@ using IDE.Core.Presentation.Builders;
 using IDE.Core.Presentation.Messages;
 using Eagle;
 using IDE.Core.Presentation.Packaging;
+using IDE.Dialogs.CheckUpdatesDialog;
 
 namespace IDE.Core.ViewModels;
 
@@ -1123,6 +1124,15 @@ public partial class ApplicationViewModel : BaseViewModel,
         catch (Exception exp)
         {
             MessageDialog.Show(exp.Message);
+        }
+    }
+
+    private void ShowUpdatesDialog()
+    {
+        var dialog = _serviceProvider.GetService<CheckUpdatesDialogViewModel>();
+        if (dialog.ShowDialog() == true)
+        {
+           //start update
         }
     }
 

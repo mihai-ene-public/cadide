@@ -36,9 +36,6 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!--<StackPanel>
-                <Button Click="Button_Click">Show message</Button>
-            </StackPanel>-->
             <Grid Margin="3,20,3,3"
                   Grid.Row="2"
                   Grid.ColumnSpan="2">

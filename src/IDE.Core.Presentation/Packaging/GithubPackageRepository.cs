@@ -96,23 +96,11 @@ public class GithubPackageRepository : IGithubPackageRepository
         }
 
         var downloadUrl = $"{package.PackageFolder}/{packageFileName}";
-        await DownloadFile(downloadUrl, packageDestinationFilePath);
+        await _client.DownloadFile(downloadUrl, packageDestinationFilePath);
 
         ZipFile.ExtractToDirectory(packageDestinationFilePath, packageFolderPath, true);
     }
 
-    private async Task<string> DownloadFile(string downloadUrl, string downloadPath)
-    {
-        using (var downloadStream = await _client.GetStreamAsync(downloadUrl))
-        {
-            using (var fs = new FileStream(downloadPath, FileMode.Create))
-            {
-                await downloadStream.CopyToAsync(fs);
-            }
-        }
-
-        return downloadPath;
-    }
 
     public class PackageInfoIndex
     {

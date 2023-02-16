@@ -235,7 +235,7 @@ public class SettingsManager : ISettingsManager
                                      new KeyboardSetting{ Operation = KeyboardOperations.Redo, Modifiers=XModifierKeys.Control, Key = XKey.Y },
                                 };
         });
-        EnsureSetting<EnvironmentFolderLibsSettingData>("Folders", envCategory);
+        EnsureSetting<EnvironmentFolderLibsSettingData>("Folders", envCategory, s => s.Folders = new List<string> { @"%appdata%\xnocad\libraries" });
 
         var schCategory = EnsureSettingCategory("Schematic", storeSettings);
         EnsureSetting<SchematicEditorColorsSetting>("Colors", schCategory);

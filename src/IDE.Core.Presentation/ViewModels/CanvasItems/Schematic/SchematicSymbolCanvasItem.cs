@@ -22,7 +22,8 @@ namespace IDE.Core.Designers
         }
 
         [Browsable(false)]
-        required public ProjectInfo _Project { get; set; }
+        /*required*/
+        public ProjectInfo _Project { get; set; }
 
         [DisplayName("Name")]
         [Display(Order = 1)]

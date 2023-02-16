@@ -131,7 +131,11 @@ public class PackageManager : IPackageManager
 
     public async Task RestorePackage(PackageInfoRef packageInfoRef)
     {
-        var packagesCacheFolderPath = Environment.ExpandEnvironmentVariables(GetPackagesCacheFolderPath());
+        var folderPath = GetPackagesCacheFolderPath();
+        if (string.IsNullOrEmpty(folderPath))
+            return;
+
+        var packagesCacheFolderPath = Environment.ExpandEnvironmentVariables(folderPath);
         var packRepo = _packageRepositoryFactory.Create(packageInfoRef.PackageSource);
 
         if (packRepo == null)

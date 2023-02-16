@@ -13,6 +13,7 @@ using IDE.Documents.Views;
 using IDE.Core.Presentation;
 using IDE.Presentation.Views.ImporterDialogs;
 using IDE.Core.Presentation.Importers.DXF;
+using IDE.Dialogs.CheckUpdatesDialog;
 
 namespace IDE.Core.ViewModels
 {
@@ -37,6 +38,7 @@ namespace IDE.Core.ViewModels
             AddMapping(typeof(SettingsDialogViewModel), typeof(SettingsDialog));
 
             AddMapping(typeof(PackageManagerDialogViewModel), typeof(PackageManagerDialog));
+            AddMapping(typeof(CheckUpdatesDialogViewModel), typeof(CheckUpdatesDialog));
         }
 
         public IWindow GetWindow(IDialogViewModel viewModel)

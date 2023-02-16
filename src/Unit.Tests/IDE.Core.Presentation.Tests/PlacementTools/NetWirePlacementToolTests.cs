@@ -261,7 +261,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var net = new SchematicNet
             {
                 Name = "GND",
-                Id = 1
+                Id = "1"
             };
             var gndWire = new NetWireCanvasItem
             {
@@ -300,7 +300,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var net = new SchematicNet
             {
                 Name = "Net1",
-                Id = 1
+                Id = "1"
             };
             var gndWire = new NetWireCanvasItem
             {

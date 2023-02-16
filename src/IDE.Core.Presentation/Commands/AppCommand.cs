@@ -305,6 +305,20 @@ namespace IDE.Core.Commands
             }
         }
 
+        static ICommand showUpdatesDialogCommand;
+        public static ICommand ShowUpdatesDialogCommand
+        {
+            get
+            {
+                if (showUpdatesDialogCommand == null)
+                {
+                    showUpdatesDialogCommand = CreateUICommand();
+                }
+
+                return showUpdatesDialogCommand;
+            }
+        }
+
         static ICommand addGroupFolder;
 
         /// <summary>

@@ -55,12 +55,16 @@ public class LibraryRepository : ILibraryRepository
     {
         var libPaths = new List<string>();
 
-        var packagesCacheFolderPath = Environment.ExpandEnvironmentVariables(GetPackagesCacheFolderPath());
-        var packageFolder = Path.Combine(packagesCacheFolderPath, packageId, packageVersion, "lib");
-
-        if (Directory.Exists(packageFolder))
+        var folderPath = GetPackagesCacheFolderPath();
+        if (!string.IsNullOrEmpty(folderPath))
         {
-            libPaths.AddRange(Directory.GetFiles(packageFolder, "*.library", SearchOption.TopDirectoryOnly));
+            var packagesCacheFolderPath = Environment.ExpandEnvironmentVariables(folderPath);
+            var packageFolder = Path.Combine(packagesCacheFolderPath, packageId, packageVersion, "lib");
+
+            if (Directory.Exists(packageFolder))
+            {
+                libPaths.AddRange(Directory.GetFiles(packageFolder, "*.library", SearchOption.TopDirectoryOnly));
+            }
         }
 
         return libPaths;

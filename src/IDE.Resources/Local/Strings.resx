@@ -354,6 +354,12 @@
   <data name="MenuAddHeader" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="MenuCheckUpdatesHeader" xml:space="preserve">
+    <value>Check updates...</value>
+  </data>
+  <data name="MenuCheckUpdatesTooltip" xml:space="preserve">
+    <value>Check for newer versions</value>
+  </data>
   <data name="MenuFileCloseHeader" xml:space="preserve">
     <value>Close</value>
   </data>

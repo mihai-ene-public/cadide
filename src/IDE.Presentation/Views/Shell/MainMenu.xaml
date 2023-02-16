@@ -96,6 +96,10 @@
                 <MenuItem Header="{x:Static resources:Strings.MenuAboutHeader}"
                           Command="cmd:AppCommand.About"
                           ToolTip="{x:Static resources:Strings.MenuAboutTooltip}" />
+                
+                <MenuItem Header="{x:Static resources:Strings.MenuCheckUpdatesHeader}"
+                          Command="{x:Static cmd:AppCommand.ShowUpdatesDialogCommand}"
+                          ToolTip="{x:Static resources:Strings.MenuCheckUpdatesTooltip}" />
 
             </MenuItem>
         </Menu>

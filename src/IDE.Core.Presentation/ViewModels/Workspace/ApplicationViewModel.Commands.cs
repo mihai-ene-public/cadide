@@ -24,6 +24,9 @@
             bindings.Add(new CommandBindingData(AppCommand.About,
                                                 p => ShowAboutDialog()));
 
+            bindings.Add(new CommandBindingData(AppCommand.ShowUpdatesDialogCommand,
+                                               p => ShowUpdatesDialog()));
+
 
             bindings.Add(new CommandBindingData(AppCommand.ProgramSettings,
                                                 p => ShowSettingsDialog()));

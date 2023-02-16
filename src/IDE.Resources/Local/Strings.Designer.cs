@@ -772,6 +772,24 @@ namespace IDE.Resources.Local {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check updates....
+        /// </summary>
+        public static string MenuCheckUpdatesHeader {
+            get {
+                return ResourceManager.GetString("MenuCheckUpdatesHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for newer versions.
+        /// </summary>
+        public static string MenuCheckUpdatesTooltip {
+            get {
+                return ResourceManager.GetString("MenuCheckUpdatesTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string MenuFileCloseHeader {

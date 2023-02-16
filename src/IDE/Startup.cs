@@ -28,6 +28,8 @@ using IDE.Core.Interfaces.Compilers;
 using IDE.Core.Presentation.Placement;
 using IDE.Core.Common.FileSystem;
 using IDE.Core.Presentation.Packaging;
+using IDE.Dialogs.CheckUpdatesDialog;
+using IDE.Core.Presentation.AutoUpdates;
 
 namespace IDE
 {
@@ -103,6 +105,10 @@ namespace IDE
             services.AddSingleton<IPackageRepositoryFactory, PackageRepositoryFactory>();
             services.AddSingleton<IGithubPackageRepository, GithubPackageRepository>();
             services.AddSingleton<IFolderPackageRepository, FolderPackageRepository>();
+
+            services.AddTransient<CheckUpdatesDialogViewModel>();
+            services.AddSingleton<IUpdatesManager, UpdatesManager>();
+            services.AddSingleton<IReleasesManager, GithubReleasesManager>();
 
 
             services.AddSingleton<IServiceCollection>(services);

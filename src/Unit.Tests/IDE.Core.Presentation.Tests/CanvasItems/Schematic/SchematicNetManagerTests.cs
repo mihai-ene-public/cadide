@@ -20,7 +20,8 @@ namespace IDE.Core.Presentation.Tests
             Assert.NotNull(net);
             Assert.Equal(netName, net.Name);
             Assert.Equal(1, nm.Elements.Count);
-            Assert.True(net.Id > 0);
+            Assert.NotNull(net.Id);
+            Assert.True(net.Id?.Length > 0);
         }
 
         [Fact]
@@ -45,14 +46,14 @@ namespace IDE.Core.Presentation.Tests
 
             var gndNet1 = new SchematicNet
             {
-                Id = 1,
+                Id = "1",
                 Name = "GND"
             };
             nm.Add(gndNet1);
 
             var gndNet2 = new SchematicNet
             {
-                Id = 2,
+                Id = "1",
                 Name = "GND"
             };
 
@@ -70,14 +71,14 @@ namespace IDE.Core.Presentation.Tests
 
             var gndNet1 = new SchematicNet
             {
-                Id = 2,
+                Id = "1",
                 Name = "GND"
             };
             nm.Add(gndNet1);
 
             var gndNet2 = new SchematicNet
             {
-                Id = 1,
+                Id = "1",
                 Name = "GND"
             };
 

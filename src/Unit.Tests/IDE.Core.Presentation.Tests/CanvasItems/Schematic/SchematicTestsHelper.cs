@@ -54,7 +54,7 @@ namespace IDE.Core.Presentation.Tests
             {
                 X = x,
                 Y = y,
-                ShowName = false
+                ShowName = false,
             };
             part.LoadSymbol(symbol);
 

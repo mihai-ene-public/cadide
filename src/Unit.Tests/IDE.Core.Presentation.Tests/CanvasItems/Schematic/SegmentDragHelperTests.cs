@@ -63,7 +63,7 @@ namespace IDE.Core.Presentation.Tests
 
             var net = new SchematicNet
             {
-                Id = 1,
+                Id = "1",
                 Name = "Net$1"
             };
             netManager.Add(net);
@@ -117,7 +117,7 @@ namespace IDE.Core.Presentation.Tests
 
             var net = new SchematicNet
             {
-                Id = 1,
+                Id = "1",
                 Name = "Net$1"
             };
             netManager.Add(net);
