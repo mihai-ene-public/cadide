@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Template Type="Footprint">
-  <Name>Footprint</Name>
-  <Description>A new empty footprint</Description>
-  <Icon></Icon>
-  <Extension>footprint</Extension>
-</Template> 

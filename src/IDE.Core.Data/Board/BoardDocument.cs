@@ -132,11 +132,11 @@ namespace IDE.Core.Storage
             //this is the default for a 2 layers board
             return new List<Layer>
             {
-               Layer.GetTopLayer(),
-               Layer.GetBottomLayer(),
+               Layer.GetTopCopperLayer(),
+               Layer.GetBottomCopperLayer(),
 
-               Layer.GetTopOverlayLayer(),
-               Layer.GetBottomOverlayLayer(),
+               Layer.GetTopSilkscreenLayer(),
+               Layer.GetBottomSilkscreenLayer(),
 
                Layer.GetTopPasteLayer(),
                Layer.GetBottomPasteLayer(),

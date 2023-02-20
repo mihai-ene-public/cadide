@@ -49,10 +49,10 @@ namespace IDE.Core.Storage
         {
             return new List<Layer>
             {
-               Layer.GetTopOverlayLayer(),
+               Layer.GetTopSilkscreenLayer(),
                Layer.GetTopPasteLayer(),
                Layer.GetTopSolderLayer(),
-               Layer.GetTopLayer(),
+               Layer.GetTopCopperLayer(),
                Layer.GetTopMechanicalLayer(),
                Layer.GetMillingLayer(),
             };

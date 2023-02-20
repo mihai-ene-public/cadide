@@ -282,7 +282,7 @@ namespace IDE.Core.ViewModels
         //GenericLayeredViewModel layerModel = new GenericLayeredViewModel();
         private void LoadLayers()
         {
-            var silkLayer = Layer.GetTopOverlayLayer();
+            var silkLayer = Layer.GetTopSilkscreenLayer();
             LayerItems.Add(new LayerDesignerItem(this)
             {
                 LayerName = silkLayer.Name,

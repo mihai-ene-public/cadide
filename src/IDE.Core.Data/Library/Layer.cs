@@ -154,55 +154,61 @@ namespace IDE.Core.Storage
         //public bool IsVisible { get; set; }
 
         #region Signal Layers
-        public static Layer GetTopLayer()
+        public static Layer GetTopCopperLayer()
         {
             return new Layer
             {
                 Id = LayerConstants.SignalTopLayerId,
-                Name = "Top layer",
+                Name = "Top",
                 Color = "#FFA52A2A",
                 Type = LayerType.Signal,
-                Plot = true
+                Plot = true,
+                Thickness = 0.035,
             };
         }
 
         //the rest of layers go here
 
-        public static Layer GetBottomLayer()
+        public static Layer GetBottomCopperLayer()
         {
             return new Layer
             {
                 Id = LayerConstants.SignalBottomLayerId,
-                Name = "Bottom layer",
+                Name = "Bottom",
                 Color = "#FF0000CD",
                 Type = LayerType.Signal,
-                Plot = true
+                Plot = true,
+                Thickness = 0.035,
             };
         }
 
         #endregion
 
-        public static Layer GetTopOverlayLayer()
+        public static Layer GetTopSilkscreenLayer()
         {
             return new Layer
             {
                 Id = LayerConstants.SilkscreenTopLayerId,
-                Name = "Top Overlay",
+                Name = "Top Silkscreen",
                 Color = "#FFE1E100",
                 Type = LayerType.SilkScreen,
-                Plot = true
+                Plot = true,
+                Thickness = 0.015,
+                DielectricConstant = 3.2
             };
         }
 
-        public static Layer GetBottomOverlayLayer()
+        public static Layer GetBottomSilkscreenLayer()
         {
             return new Layer
             {
                 Id = LayerConstants.SilkscreenBottomLayerId,
-                Name = "Bottom Overlay",
+                Name = "Bottom Silkscreen",
                 Color = "#FFFFD700",
                 Type = LayerType.SilkScreen,
-                Plot = true
+                Plot = true,
+                Thickness = 0.015,
+                DielectricConstant = 3.2
             };
         }
 
@@ -214,7 +220,8 @@ namespace IDE.Core.Storage
                 Name = "Top Paste",
                 Color = "#FFAAAAAA",
                 Type = LayerType.PasteMask,
-                Plot = true
+                Plot = true,
+                Thickness = 0.2,
             };
         }
 
@@ -225,7 +232,33 @@ namespace IDE.Core.Storage
                 Id = LayerConstants.MultiLayerMillingId,
                 Name = "Milling",
                 Color = "#80FFFFFF",
-                Type = LayerType.MultiLayer
+                Type = LayerType.MultiLayer,
+                Plot = false,
+
+            };
+        }
+
+        public static Layer GetDielectricLayer()
+        {
+            return new Layer
+            {
+                Id = 601,
+                Name = "Dielectric",
+                Color = "#FFD2691E",
+                Type = LayerType.Dielectric,
+                Thickness = 1
+            };
+        }
+
+        public static Layer GetBoardOutlineLayer()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.BoardOutline,
+                Name = "Board Outline",
+                Color = "#FFFFA500",
+                Type = LayerType.BoardOutline,
+                Thickness = 0
             };
         }
 
@@ -234,7 +267,18 @@ namespace IDE.Core.Storage
             return new Layer
             {
                 Id = LayerConstants.MechanicalTopLayerId,
-                Name = "Mechanical",
+                Name = "Mechanical Top",
+                Color = "#80FFFFFF",
+                Type = LayerType.Mechanical
+            };
+        }
+
+        public static Layer GetBottomMechanicalLayer()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.MechanicalBottomLayerId,
+                Name = "Mechanical Bottom",
                 Color = "#80FFFFFF",
                 Type = LayerType.Mechanical
             };
@@ -248,7 +292,8 @@ namespace IDE.Core.Storage
                 Name = "Bottom Paste",
                 Color = "#FFC0C0C0",
                 Type = LayerType.PasteMask,
-                Plot = true
+                Plot = true,
+                Thickness = 0.2,
             };
         }
 
@@ -260,7 +305,8 @@ namespace IDE.Core.Storage
                 Name = "Top Solder",
                 Color = "#FF800080",
                 Type = LayerType.SolderMask,
-                Plot = true
+                Plot = true,
+                Thickness = 0.01
             };
         }
 
@@ -272,7 +318,8 @@ namespace IDE.Core.Storage
                 Name = "Bottom Solder",
                 Color = "#FF8F008F",
                 Type = LayerType.SolderMask,
-                Plot = true
+                Plot = true,
+                Thickness = 0.01
             };
         }
 

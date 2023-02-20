@@ -15,8 +15,6 @@ namespace IDE.Core.Storage
     [XmlRoot("Template")]
     public class TemplateItem
     {
-        [XmlIgnore]
-        public string FilePath { get; set; }
 
         public string Name { get; set; }
 

@@ -61,17 +61,14 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"
                                 Margin="0,5">
-                        <!--<TextBlock Text="A"
-                                   FontSize="20"
-                                   Margin="5"
-                                   VerticalAlignment="Center" />-->
+
                         <Image Width="16"
                                Height="16"
-                               Source="{Binding TemplateType, Converter={x:Static conv:TemplateTypeToImageConverter.Instance}}"
+                               Source="{Binding TemplateItem.TemplateType, Converter={x:Static conv:TemplateTypeToImageConverter.Instance}}"
                                Margin="5,0"
                                VerticalAlignment="Center" />
 
-                        <TextBlock Text="{Binding Name}"
+                        <TextBlock Text="{Binding TemplateItem.Name}"
                                    Margin="10,0,0,0"
                                    VerticalAlignment="Center"
                                    FontSize="16" />
@@ -84,7 +81,7 @@
                    Margin="5"
                    Padding="5"
                    TextWrapping="Wrap"
-                   Text="{Binding SelectedTemplate.Description, UpdateSourceTrigger=PropertyChanged}" />
+                   Text="{Binding SelectedTemplate.TemplateItem.Description, UpdateSourceTrigger=PropertyChanged}" />
 
         <Grid Grid.Row="1"
               Grid.ColumnSpan="3"
