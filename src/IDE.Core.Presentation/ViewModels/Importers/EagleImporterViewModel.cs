@@ -10,6 +10,13 @@ namespace IDE.Core.Presentation
 {
     public class EagleImporterViewModel : DialogViewModel
     {
+        public EagleImporterViewModel()
+        {
+            _eagleImporter = new EagleImporter();
+        }
+
+        private readonly IEagleImporter _eagleImporter;
+
         public string WindowTitle
         {
             get
@@ -28,6 +35,9 @@ namespace IDE.Core.Presentation
             {
                 sourceFile = value;
                 OnPropertyChanged(nameof(SourceFile));
+
+                LayerMappingList = _eagleImporter.GetSuggestedLayerMapping(sourceFile);
+                OnPropertyChanged(nameof(LayerMappingList));
             }
         }
 
@@ -43,7 +53,7 @@ namespace IDE.Core.Presentation
             }
         }
 
-
+        public IList<LayerMappingInfo> LayerMappingList { get; set; }
 
         ICommand selectFileCommand;
 
@@ -97,8 +107,8 @@ namespace IDE.Core.Presentation
             if (string.IsNullOrEmpty(destinationFolder))
                 throw new Exception("You must specify the destination folder");
 
-            var importer = new EagleImporter();
-            importer.Import(sourceFile, destinationFolder);
+            _eagleImporter.SetSuggestedLayerMapping(LayerMappingList);
+            _eagleImporter.Import(sourceFile, destinationFolder);
         }
 
     }

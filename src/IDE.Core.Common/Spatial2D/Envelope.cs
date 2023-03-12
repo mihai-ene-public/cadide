@@ -182,10 +182,10 @@ namespace IDE.Core.Spatial2D
 
         public static bool operator ==(Envelope left, Envelope right)
         {
-            //return DoubleHelper.IsAlmostEqualTo(left.MinX, right.MinX) &&
-            //        DoubleHelper.IsAlmostEqualTo(left.MinY, right.MinY) &&
-            //        DoubleHelper.IsAlmostEqualTo(left.MaxX, right.MaxX) &&
-            //        DoubleHelper.IsAlmostEqualTo(left.MaxY, right.MaxY);
+            if (left == null && right == null)
+                return true;
+            if (left == null || right == null)
+                return false;
 
             return left.MinX == right.MinX &&
                    left.MinY == right.MinY &&

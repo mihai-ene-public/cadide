@@ -13,6 +13,10 @@ namespace IDE.Core.Storage
     {
         //Signals
         public const int SignalTopLayerId = 1;
+        public const int SignalInnerLayerId1 = 2;
+        public const int SignalInnerLayerId2 = 3;
+        public const int SignalInnerLayerId3 = 4;
+        public const int SignalInnerLayerId4 = 5;
         //Middle layers
         //...
         public const int SignalBottomLayerId = 99;//  isSignal = (id / 100 == 0)
@@ -49,6 +53,8 @@ namespace IDE.Core.Storage
 
         //Multilayer
         public const int MultiLayerMillingId = 701;
+
+        public const int Generic1 = 901;
 
         public const int BoardOutline = 1001;
 
@@ -168,6 +174,56 @@ namespace IDE.Core.Storage
         }
 
         //the rest of layers go here
+        public static Layer GetInnerCopperLayer1()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.SignalInnerLayerId1,
+                Name = "Inner Copper 1",
+                Color = "#FFA52A2A",
+                Type = LayerType.Signal,
+                Plot = true,
+                Thickness = 0.018,
+            };
+        }
+        public static Layer GetInnerCopperLayer2()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.SignalInnerLayerId2,
+                Name = "Inner Copper 2",
+                Color = "#FFA52A2A",
+                Type = LayerType.Signal,
+                Plot = true,
+                Thickness = 0.018,
+            };
+        }
+
+        public static Layer GetInnerCopperLayer3()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.SignalInnerLayerId3,
+                Name = "Inner Copper 3",
+                Color = "#FFA52A2A",
+                Type = LayerType.Signal,
+                Plot = true,
+                Thickness = 0.018,
+            };
+        }
+
+        public static Layer GetInnerCopperLayer4()
+        {
+            return new Layer
+            {
+                Id = LayerConstants.SignalInnerLayerId4,
+                Name = "Inner Copper 4",
+                Color = "#FFA52A2A",
+                Type = LayerType.Signal,
+                Plot = true,
+                Thickness = 0.018,
+            };
+        }
 
         public static Layer GetBottomCopperLayer()
         {

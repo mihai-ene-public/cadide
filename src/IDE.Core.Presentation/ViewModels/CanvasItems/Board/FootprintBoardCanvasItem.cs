@@ -508,24 +508,24 @@ namespace IDE.Core.Designers
             //translate all primitives to 0,0; update ItemWidth and ItemHeight
             var rect = XRect.Empty;
 
-            var xOffset = double.MaxValue;
-            var yOffset = double.MaxValue;
+            //var xOffset = double.MaxValue;
+            //var yOffset = double.MaxValue;
             foreach (var item in Pads)
             {
                 var itemRect = item.GetBoundingRectangle();
 
-                if (xOffset > itemRect.X)
-                    xOffset = itemRect.X;
-                if (yOffset > itemRect.Y)
-                    yOffset = itemRect.Y;
+                //if (xOffset > itemRect.X)
+                //    xOffset = itemRect.X;
+                //if (yOffset > itemRect.Y)
+                //    yOffset = itemRect.Y;
 
                 rect.Union(itemRect);
             }
             if (rect != XRect.Empty)
             {
-                //offset relative to the center of the rectangle
-                foreach (BaseCanvasItem item in Items)
-                    item.Translate(-xOffset - rect.Width * 0.5, -yOffset - rect.Height * 0.5);
+                ////offset relative to the center of the rectangle
+                //foreach (BaseCanvasItem item in Items)
+                //    item.Translate(-xOffset - rect.Width * 0.5, -yOffset - rect.Height * 0.5);
 
                 DisplayWidth = rect.Width;
                 DisplayHeight = rect.Height;

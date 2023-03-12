@@ -1,5 +1,4 @@
-﻿using Eagle;
-using IDE.Core.Common.Geometries;
+﻿using IDE.Core.Common.Geometries;
 using IDE.Core.Coordinates;
 using IDE.Core.Interfaces;
 using IDE.Core.Storage;

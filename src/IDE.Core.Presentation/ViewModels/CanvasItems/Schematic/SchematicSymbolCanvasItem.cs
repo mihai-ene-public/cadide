@@ -200,7 +200,7 @@ namespace IDE.Core.Designers
 
 
         /// <summary>
-        /// Part name and gate number (R1, Q1, U1-A)
+        /// Part name and gate number (R1, Q1, U1-A, U1-B, etc)
         /// </summary>
         [Browsable(false)]
         public string SymbolName
@@ -527,27 +527,27 @@ namespace IDE.Core.Designers
         }
         private void OffsetPrimitives()
         {
-            //translate all primitives to 0,0; update ItemWidth and ItemHeight
+            //update ItemWidth and ItemHeight
             var rect = XRect.Empty;
 
-            var xOffset = double.MaxValue;
-            var yOffset = double.MaxValue;
+            //var xOffset = double.MaxValue;
+            //var yOffset = double.MaxValue;
             var boundItems = Pins.Count > 0 ? Pins.Cast<BaseCanvasItem>() : Items.Cast<BaseCanvasItem>();
             foreach (BaseCanvasItem item in boundItems)
             {
                 var itemRect = item.GetBoundingRectangle();
 
-                if (xOffset > itemRect.X)
-                    xOffset = itemRect.X;
-                if (yOffset > itemRect.Y)
-                    yOffset = itemRect.Y;
+                //if (xOffset > itemRect.X)
+                //    xOffset = itemRect.X;
+                //if (yOffset > itemRect.Y)
+                //    yOffset = itemRect.Y;
 
                 rect.Union(itemRect);
             }
             if (rect != XRect.Empty)
             {
-                foreach (BaseCanvasItem item in Items)
-                    item.Translate(-xOffset - rect.Width * 0.5, -yOffset - rect.Height * 0.5);
+                //foreach (BaseCanvasItem item in Items)
+                //    item.Translate(-xOffset - rect.Width * 0.5, -yOffset - rect.Height * 0.5);
 
                 DisplayWidth = rect.Width;
                 DisplayHeight = rect.Height;

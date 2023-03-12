@@ -322,8 +322,14 @@ namespace IDE.Core.Spatial2D
         private static Envelope GetEnclosingEnvelope(IEnumerable<ISpatialData> items)
         {
             var envelope = Envelope.EmptyBounds;
-            foreach (var data in items)
-                envelope.Extend(data.Envelope);
+            foreach (var data in items.ToList())
+            {
+                var env = data?.Envelope;
+                if (env != null)
+                {
+                    envelope.Extend(env);
+                }
+            }
             return envelope;
         }
 

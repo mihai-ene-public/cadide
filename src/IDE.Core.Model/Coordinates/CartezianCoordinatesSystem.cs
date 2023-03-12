@@ -5,67 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDE.Core.Coordinates
+namespace IDE.Core.Coordinates;
+
+
+/// <summary>
+/// X, Y coordinate system
+/// <para>X grows to right</para>
+/// <para>Y grows upwards</para>
+/// <para>Origin is at any arbitrary point relative to Top, Left in Canvas coordinates system</para>
+/// </summary>
+public class CartezianCoordinatesSystem : AbstractCoordinateSystem
 {
 
-    /// <summary>
-    /// X, Y coordinate system
-    /// <para>X grows to right</para>
-    /// <para>Y grows upwards</para>
-    /// <para>Origin is at any arbitrary point relative to Top, Left in Canvas coordinates system</para>
-    /// </summary>
-    public class CartezianCoordinatesSystem : AbstractCoordinateSystem
+    public CartezianCoordinatesSystem()
     {
-
-        public CartezianCoordinatesSystem()
-        {
-            const double defaultOriginTop = 50;
-            const double defaultOriginLeft = 50;
-            Origin = new XPoint(defaultOriginLeft, defaultOriginTop);
-        }
-
-        public override XPoint ConvertValueFrom(XPoint value, AbstractCoordinateSystem other)
-        {
-            if (other is TopLeftCoordinatesSystem)
-            {
-                var x = value.X - Origin.X;
-                var y = Origin.Y - value.Y;
-                return new XPoint(x, y);
-            }
-            else if (other is CartezianCoordinatesSystem)
-            {
-                //value.Offset(-Origin.X, -Origin.Y);
-                return value;
-
-            }
-            return value;
-        }
+        const double defaultOriginTop = 0;
+        const double defaultOriginLeft = 0;
+        Origin = new XPoint(defaultOriginLeft, defaultOriginTop);
     }
 
-    public class CoordinateSystems
+    public override XPoint ConvertValueFrom(XPoint value, AbstractCoordinateSystem other)
     {
-        static CartezianCoordinatesSystem cartezian;
-        
-
-        public static CartezianCoordinatesSystem Cartezian
+        if (other is TopLeftCoordinatesSystem)
         {
-            get
-            {
-                if (cartezian == null)
-                    cartezian = new CartezianCoordinatesSystem();
-                return cartezian;
-            }
+            var x = value.X - Origin.X;
+            var y = Origin.Y - value.Y;
+            return new XPoint(x, y);
         }
-
-        static TopLeftCoordinatesSystem topLeft;
-        public static TopLeftCoordinatesSystem TopLeft
+        else if (other is CartezianCoordinatesSystem)
         {
-            get
-            {
-                if (topLeft == null)
-                    topLeft = new TopLeftCoordinatesSystem();
-                return topLeft;
-            }
+            //value.Offset(-Origin.X, -Origin.Y);
+            return value;
+
         }
+        return value;
     }
 }

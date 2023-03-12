@@ -5,57 +5,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDE.Core.Coordinates
+namespace IDE.Core.Coordinates;
+
+
+/// <summary>
+/// an abstract basic 2D coordinate system
+/// </summary>
+public abstract class AbstractCoordinateSystem// : BaseViewModel
 {
-
-    //public enum CoordinateAxis
-    //{
-    //    /// <summary>
-    //    /// first coodinate in a system: X, Left, rho
-    //    /// </summary>
-    //    Horizontal,
-
-    //    /// <summary>
-    //    /// second coordinate in a system: Y, Top, theta
-    //    /// </summary>
-    //    Vertical
-    //}
-
-    /// <summary>
-    /// an abstract basic 2D coordinate system
-    /// </summary>
-    public abstract class AbstractCoordinateSystem// : BaseViewModel
+    XPoint origin;
+    public XPoint Origin
     {
-        XPoint origin;
-        public XPoint Origin
+        get
         {
-            get
-            {
-                return origin;
-            }
-            set
-            {
-                origin = value;
-                //OnPropertyChanged(nameof(Origin));
-            }
+            return origin;
         }
-
-
-        public abstract XPoint ConvertValueFrom(XPoint value, AbstractCoordinateSystem other);
-
-        public double ConvertValueFrom(double value, Axis axis, AbstractCoordinateSystem other)
+        set
         {
-            var p = new XPoint(value, value);
-            var cp = ConvertValueFrom(p, other);
-            return axis == Axis.X ? cp.X : cp.Y;
+            origin = value;
+            //OnPropertyChanged(nameof(Origin));
         }
-
     }
 
-    public enum Axis
-    {
-        X,
 
-        Y
+    public abstract XPoint ConvertValueFrom(XPoint value, AbstractCoordinateSystem other);
+
+    public double ConvertValueFrom(double value, Axis axis, AbstractCoordinateSystem other)
+    {
+        var p = new XPoint(value, value);
+        var cp = ConvertValueFrom(p, other);
+        return axis == Axis.X ? cp.X : cp.Y;
     }
+
 }
