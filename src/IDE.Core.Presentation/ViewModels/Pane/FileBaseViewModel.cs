@@ -26,11 +26,13 @@ namespace IDE.Core.ViewModels
     public abstract class FileBaseViewModel : PaneViewModel, IFileBaseViewModel
     {
 
-
-        public FileBaseViewModel(string docTypeKey)
-            : this()
+        protected FileBaseViewModel()
         {
-            documentTypeKey = docTypeKey;
+            _clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
+            _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
+            _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
+
+            PropertyChanged += FileBaseViewModel_PropertyChanged;
 
             StrongReferenceMessenger.Default.Register<IFileBaseViewModel, FilePathChangedMessage>(this,
                (vm, message) =>
@@ -57,20 +59,10 @@ namespace IDE.Core.ViewModels
               });
         }
 
-        protected FileBaseViewModel()
-        {
-            _clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
-            _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
-            _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
-
-            PropertyChanged += FileBaseViewModel_PropertyChanged;
-        }
         protected readonly IClipboardAdapter _clipBoard;
 
         protected readonly IApplicationViewModel _applicationViewModel;
         protected readonly ISolutionRepository _solutionRepository;
-
-
 
         async void FileBaseViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -99,27 +91,27 @@ namespace IDE.Core.ViewModels
         ICommand openContainingFolderCommand = null;
         ICommand copyFullPathtoClipboard = null;
 
-        protected string documentTypeKey = string.Empty;
+        //protected string documentTypeKey = string.Empty;
 
-        protected string defaultFileType = "sch";
-        protected string defaultFileName = "Schema";
+        //protected string defaultFileType = "sch";
+        //protected string defaultFileName = "Schema";
 
-        protected string DocumentKey;// = "SchemaEditor";
-        protected string Description;// = "Schematic files";
-        protected string FileFilterName;// = "Schematic file";
-        protected string DefaultFilter;// = "schematic";
+        //protected string DocumentKey;
+        //protected string Description;
+        //protected string FileFilterName;
+        //protected string DefaultFilter;
 
         #endregion Fields
 
         #region properties
 
-        public string DocumentTypeKey
-        {
-            get
-            {
-                return documentTypeKey;
-            }
-        }
+        //public string DocumentTypeKey
+        //{
+        //    get
+        //    {
+        //        return documentTypeKey;
+        //    }
+        //}
 
 
         #region Title
@@ -174,8 +166,6 @@ namespace IDE.Core.ViewModels
         {
             get
             {
-                InternalGetFilePath();
-
                 return filePath;
             }
             protected set
@@ -192,36 +182,24 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        protected void InternalGetFilePath()
-        {
-            // filePath = "untitled";
-            if (string.IsNullOrEmpty(filePath))
-                filePath = GetDefaultFileNewName(1);
-        }
+        //protected void InternalGetFilePath()
+        //{
+        //    if (string.IsNullOrEmpty(filePath))
+        //        filePath = GetDefaultFileNewName(1);
+        //}
 
 
 
         #region FileName
-        /// <summary>
-        /// FileName is the string that is displayed whenever the application refers to this file, as in:
-        /// string.Format(CultureInfo.CurrentCulture, "Would you like to save the '{0}' file", FileName)
-        /// 
-        /// Note the absense of the dirty mark '*'. Use the Title property if you want to display the file
-        /// name with or without dirty mark when the user has edited content.
-        /// </summary>
-        // abstract public string FileName { get; }
 
         public string FileName
         {
             get
             {
                 var fp = FilePath;
-                // This option should never happen - its an emergency break for those cases that never occur
-                if (string.IsNullOrEmpty(fp))
-                    return GetDefaultFileNewName(80085);
 
                 if (fp.ToCharArray().Any(c => Path.GetInvalidPathChars().Any(s => s == c)))
-                    return null; ;
+                    return null;
 
                 return Path.GetFileName(fp);
             }
@@ -330,19 +308,12 @@ namespace IDE.Core.ViewModels
 
         #region methods
         #region abstract methods
-        /// <summary>
-        /// Indicate whether document can be saved in the currennt state.
-        /// </summary>
-        /// <returns></returns>
+
         public virtual bool CanSave()
         {
             return true;
         }
 
-        /// <summary>
-        /// Indicate whether document can be saved as.
-        /// </summary>
-        /// <returns></returns>
         public virtual bool CanSaveAs()
         {
             return CanSave();
@@ -550,22 +521,22 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        protected string GetDefaultFileNewName(int iNewFileCounter,
-                                               string newDefaultFileName = null,
-                                               string newDefaultFileExtension = null
-                                               )
-        {
-            if (newDefaultFileName != null)
-                defaultFileName = newDefaultFileName;
+        //protected string GetDefaultFileNewName(int iNewFileCounter,
+        //                                       string newDefaultFileName = null,
+        //                                       string newDefaultFileExtension = null
+        //                                       )
+        //{
+        //    if (newDefaultFileName != null)
+        //        defaultFileName = newDefaultFileName;
 
-            if (newDefaultFileExtension != null)
-                defaultFileType = newDefaultFileExtension;
+        //    if (newDefaultFileExtension != null)
+        //        defaultFileType = newDefaultFileExtension;
 
-            return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
-                            defaultFileName,
-                            (iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString()),
-                            defaultFileType);
-        }
+        //    return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}",
+        //                    defaultFileName,
+        //                    (iNewFileCounter == 0 ? string.Empty : " " + iNewFileCounter.ToString()),
+        //                    defaultFileType);
+        //}
 
 
         public override void Dispose()

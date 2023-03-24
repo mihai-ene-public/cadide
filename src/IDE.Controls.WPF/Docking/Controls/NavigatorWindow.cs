@@ -16,7 +16,6 @@ public class NavigatorWindow : Window
     private const string PART_AnchorableListBox = "PART_AnchorableListBox";
     private const string PART_DocumentListBox = "PART_DocumentListBox";
 
-    private ResourceDictionary currentThemeResourceDictionary; // = null
     private DockingManager _manager;
     private bool _isSelectingDocument;
     private ListBox _anchorableListBox;

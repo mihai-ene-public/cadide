@@ -16,12 +16,6 @@
     {
 
         #region properties
-        /// <summary>
-        /// Gets the key that is associated with the type of this document.
-        /// This key is relevant for the framework to implement the correct
-        /// file open/save filter settings etc...
-        /// </summary>
-        string DocumentTypeKey { get; }
 
         /// <summary>
         /// Gets the current state of the document. States may differ during

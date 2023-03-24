@@ -141,13 +141,13 @@ namespace IDE.Documents.Views
                         foreach (BoardCanvasItemViewModel item in canvasItems)
                         {
                             item.LoadLayers();
-                            canvasModel.AddItem(item);
 
                             if (item is ISignalPrimitiveCanvasItem s)
                                 s.Signal = brdNetItem;
+
+                            canvasModel.AddItem(item);
                         }
 
-                        //canvasModel.AddItems(canvasItems);
                     });
                 }
             }
@@ -161,6 +161,7 @@ namespace IDE.Documents.Views
             {
                 foreach (var f in footprints)
                 {
+                    f.LoadLayers();
                     canvasModel.AddItem(f);
                 }
             });

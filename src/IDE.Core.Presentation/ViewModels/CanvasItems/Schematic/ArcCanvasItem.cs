@@ -174,8 +174,8 @@ namespace IDE.Core.Designers
         double startPointX;
 
         [Editor(EditorNames.PositionXUnitsEditor, EditorNames.PositionXUnitsEditor)]
-        [MarksDirty]
         [Display(Order = 10)]
+        [MarksDirty]
         public double StartPointX
         {
             get { return startPointX; }

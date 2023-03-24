@@ -23,9 +23,9 @@ namespace IDE.Documents.Views
     public class CanvasDesignerFileViewModel : FileBaseViewModel, ICanvasDesignerFileViewModel
     {
 
-        protected CanvasDesignerFileViewModel() : base(null)
+        protected CanvasDesignerFileViewModel()
         {
-            applicationModel = ServiceProvider.Resolve<IApplicationViewModel>();//ServiceProvider.GetService<IApplicationViewModel>();
+            applicationModel = ServiceProvider.Resolve<IApplicationViewModel>();
 
             _dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
 
@@ -406,9 +406,10 @@ namespace IDE.Documents.Views
         }
 
         bool busyCats = false;
-        async void CanvasModel_DrawingChanged(DrawingChangedReason reason)
+        protected async void CanvasModel_DrawingChanged(object sender, DrawingChangedReason reason)
         {
             IsDirty = true;
+
             try
             {
                 if (reason == DrawingChangedReason.ItemAdded || reason == DrawingChangedReason.ItemRemoved)
@@ -416,7 +417,6 @@ namespace IDE.Documents.Views
                     if (!busyCats)
                     {
                         busyCats = true;
-                        //OnPropertyChanged(nameof(IDocumentOverview.Categories));
                         if (this is IDocumentOverview overview)
                             await overview.RefreshOverview();
 
@@ -451,7 +451,7 @@ namespace IDE.Documents.Views
             canvasModel.MirrorYSelectedItems();
         }
 
-        public void DeleteSelectedItems()
+        public virtual void DeleteSelectedItems()
         {
             canvasModel.DeleteSelectedItems();
         }

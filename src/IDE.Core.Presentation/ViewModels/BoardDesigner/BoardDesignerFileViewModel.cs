@@ -37,16 +37,14 @@ namespace IDE.Documents.Views;
 public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
                                         , IBoardDesigner
 {
-    public BoardDesignerFileViewModel(IObjectFinder objectFinder, IActiveCompiler activeCompiler)
+    public BoardDesignerFileViewModel(
+          IObjectFinder objectFinder
+        , IActiveCompiler activeCompiler
+        , ISettingsManager settingsManager
+        , IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper
+        )
         : base()
     {
-        DocumentKey = "Board Editor";
-        Description = "Board files";
-        FileFilterName = "Board file";
-        DefaultFilter = "board";
-        documentTypeKey = DocumentKey;
-        defaultFileType = "board";
-        defaultFileName = "Board";
 
         _activeCompiler = activeCompiler;
         _objectFinder = objectFinder;
@@ -69,12 +67,12 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
         applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
 
-        dirtyPropertiesProvider = ServiceProvider.Resolve<IDirtyMarkerTypePropertiesMapper>();
-        _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
+        _dirtyPropertiesProvider = dirtyMarkerTypePropertiesMapper;
+        _settingsManager = settingsManager;
 
     }
 
-    private readonly IDirtyMarkerTypePropertiesMapper dirtyPropertiesProvider;
+    private readonly IDirtyMarkerTypePropertiesMapper _dirtyPropertiesProvider;
     private readonly ISettingsManager _settingsManager;
     private readonly IActiveCompiler _activeCompiler;
     private readonly IObjectFinder _objectFinder;
@@ -409,7 +407,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         return !isView3D;
     }
 
-    async void CanvasModel_DrawingChanged(DrawingChangedReason reason)
+    async void CanvasModel_DrawingChanged(object sender, DrawingChangedReason reason)
     {
         //update services: connections, online DRC, etc
         await CheckServices();
@@ -799,11 +797,15 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
         if (State == DocumentState.IsLoading)
             return;
-
-        _dispatcher.RunOnDispatcher(() =>
+        var propertyNames = _dirtyPropertiesProvider.GetPropertyNames(boardProperties);
+        if (propertyNames.Contains(e.PropertyName))
         {
-            IsDirty = true;//maybe not all properties
-        });
+            //_dispatcher.RunOnDispatcher(() =>
+            //       {
+            IsDirty = true;
+            //  });
+        }
+
 
     }
 
@@ -1139,7 +1141,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         }
     }
 
-    //move this in its own class: BoardOutlineUpdater
     void UpdateBoardOutline()
     {
         var layerId = (int)LayerType.BoardOutline + 1;

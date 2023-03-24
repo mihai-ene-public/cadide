@@ -16,7 +16,7 @@ namespace IDE.Core.Interfaces
     /// </summary>
     public interface IDrawingViewModel : INotifyPropertyChanged
     {
-        event Action<DrawingChangedReason> DrawingChanged;
+        event EventHandler<DrawingChangedReason> DrawingChanged;
 
         /// <summary>
         /// raised when selection in canvas was changed

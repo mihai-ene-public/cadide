@@ -17,7 +17,6 @@ public abstract class LayoutFloatingWindowControl : Window, ILayoutControl
 {
     #region Members
 
-    private ResourceDictionary currentThemeResourceDictionary; // = null
     private bool _isInternalChange; //false
     private ILayoutElement _model;
     private bool _attachDrag = false;

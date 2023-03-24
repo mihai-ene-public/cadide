@@ -38,6 +38,9 @@ namespace IDE.Core.Designers
             }
             set
             {
+                if (part?.Name == value)
+                    return;
+
                 if (part != null)
                     part.Name = value;
                 OnPropertyChanged(nameof(PartName));
@@ -55,6 +58,9 @@ namespace IDE.Core.Designers
             get { return showName; }
             set
             {
+                if (showName == value)
+                    return;
+
                 showName = value;
                 OnPropertyChanged(nameof(ShowName));
             }
@@ -73,6 +79,8 @@ namespace IDE.Core.Designers
             get { return comment; }
             set
             {
+                if (comment == value) return;
+
                 comment = value;
                 OnPropertyChanged(nameof(Comment));
             }
@@ -88,6 +96,9 @@ namespace IDE.Core.Designers
             get { return showComment; }
             set
             {
+                if (showComment == value)
+                    return;
+
                 showComment = value;
                 OnPropertyChanged(nameof(ShowComment));
             }
@@ -106,6 +117,9 @@ namespace IDE.Core.Designers
             get { return x; }
             set
             {
+                if (x == value)
+                    return;
+
                 x = value;
                 OnPropertyChanged(nameof(X));
             }
@@ -124,6 +138,9 @@ namespace IDE.Core.Designers
             get { return y; }
             set
             {
+                if (y == value)
+                    return;
+
                 y = value;
                 OnPropertyChanged(nameof(Y));
             }
@@ -141,6 +158,7 @@ namespace IDE.Core.Designers
             {
                 if (rot == value)
                     return;
+
                 rot = value % 360;
                 OnPropertyChanged(nameof(Rot));
             }

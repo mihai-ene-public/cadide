@@ -1,336 +1,304 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
 using System.IO;
 using System.Windows.Input;
-using System.Linq;
-using System.Collections.Generic;
-using IDE.Core.Designers;
-using IDE.Core.Storage;
-using IDE.Core.Commands;
-using IDE.Core.ViewModels;
-using IDE.Core.Toolbars;
-using IDE.Core.Interfaces;
-using IDE.Core.Common;
 using IDE.Core;
-using System.Threading.Tasks;
+using IDE.Core.Common;
+using IDE.Core.Designers;
+using IDE.Core.Interfaces;
+using IDE.Core.Storage;
+using IDE.Core.Toolbars;
 using IDE.Core.Types.Media;
-using System.Collections;
+using IDE.Core.ViewModels;
 
-namespace IDE.Documents.Views
+namespace IDE.Documents.Views;
+
+public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesignerViewModel
 {
-    public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesignerViewModel
+    public SymbolDesignerViewModel()
+        : base()
     {
-        #region ctors
 
-        public SymbolDesignerViewModel()
-            : base()
+        symbolDocument = new Symbol();
+
+        Toolbar = new SymbolToolbar(this);
+
+        var docSize = 25.4 * 10;
+        var halfSize = docSize * 0.5;
+        canvasModel.DocumentWidth = docSize;
+        canvasModel.DocumentHeight = docSize;
+        canvasModel.Origin = new XPoint(halfSize, halfSize);
+
+        canvasGrid.GridSizeModel.SelectedItem = new Core.Units.MilUnit(50);
+    }
+
+    CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
+
+    public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
+    {
+        var tools = new List<IDocumentToolWindow>();
+
+        tools.Add(ServiceProvider.GetToolWindow<DocumentOverviewViewModel>());
+        tools.Add(ServiceProvider.GetToolWindow<SelectionFilterToolViewModel>());
+
+        return tools;
+    }
+
+    IList<IOverviewSelectNode> BuildCategories()
+    {
+        var list = new List<IOverviewSelectNode>();
+        var primitivesCat = new OverviewFolderNode { Name = "Primitives" };
+        list.Add(primitivesCat);
+        var pinsCat = new OverviewFolderNode { Name = "Pins" };
+        list.Add(pinsCat);
+        var pins = canvasModel.Items.OfType<PinCanvasItem>().Select(p => new OverviewSelectNode
         {
-            DocumentKey = "SymbolEditor";
-            Description = "Symbol files";
-            FileFilterName = "Symbol file";
-            DefaultFilter = "symbol";
-            documentTypeKey = DocumentKey;
-            defaultFileType = "symbol";
-            defaultFileName = "Symbol";
+            //FormatText = "Pin {0}",
+            //DisplayPropertyName = nameof(PinCanvasItem.Name),
+            DataItem = p,
+        });
+        pinsCat.Children.AddRange(pins);
 
-            symbolDocument = new Symbol();
+        primitivesCat.Children.AddRange(canvasModel.Items.Except(canvasModel.Items.OfType<PinCanvasItem>()).Select(p => new OverviewSelectNode
+        {
+            DataItem = p
+        }));
 
-            Toolbar = new SymbolToolbar(this);
+        return list;
+    }
 
-            var docSize = 25.4 * 10;
-            var halfSize = docSize * 0.5;
-            canvasModel.DocumentWidth = docSize;
-            canvasModel.DocumentHeight = docSize;
-            canvasModel.Origin = new XPoint(halfSize, halfSize);
-
-            canvasGrid.GridSizeModel.SelectedItem = new Core.Units.MilUnit(50);
+    IList<IOverviewSelectNode> categories;
+    public IList<IOverviewSelectNode> Categories
+    {
+        get
+        {
+            return categories;
         }
-
-        CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
-
-        public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
+        set
         {
-            var tools = new List<IDocumentToolWindow>();
-
-            tools.Add(ServiceProvider.GetToolWindow<DocumentOverviewViewModel>());
-            tools.Add(ServiceProvider.GetToolWindow<SelectionFilterToolViewModel>());
-
-            return tools;
+            categories = value;
+            OnPropertyChanged(nameof(Categories));
         }
+    }
 
-        IList<IOverviewSelectNode> BuildCategories()
+    public Task RefreshOverview()
+    {
+        return Task.Run(() =>
         {
-            var list = new List<IOverviewSelectNode>();
-            var primitivesCat = new OverviewFolderNode { Name = "Primitives" };
-            list.Add(primitivesCat);
-            var pinsCat = new OverviewFolderNode { Name = "Pins" };
-            list.Add(pinsCat);
-            var pins = canvasModel.Items.OfType<PinCanvasItem>().Select(p => new OverviewSelectNode
-            {
-                //FormatText = "Pin {0}",
-                //DisplayPropertyName = nameof(PinCanvasItem.Name),
-                DataItem = p,
-            });
-            pinsCat.Children.AddRange(pins);
+            var nodes = BuildCategories();
 
-            primitivesCat.Children.AddRange(canvasModel.Items.Except(canvasModel.Items.OfType<PinCanvasItem>()).Select(p => new OverviewSelectNode
-            {
-                DataItem = p
-            }));
+            _dispatcher.RunOnDispatcher(() => Categories = nodes);
+        });
+    }
 
-            return list;
-        }
-
-        IList<IOverviewSelectNode> categories;
-        public IList<IOverviewSelectNode> Categories
+    IList canSelectList;
+    public override IList CanSelectList
+    {
+        get
         {
-            get
+            if (canSelectList == null)
+                canSelectList = new List<SelectionFilterItemViewModel>
             {
-                return categories;
-            }
-            set
-            {
-                categories = value;
-                OnPropertyChanged(nameof(Categories));
-            }
-        }
-
-        public Task RefreshOverview()
-        {
-            return Task.Run(() =>
-            {
-                var nodes = BuildCategories();
-
-                _dispatcher.RunOnDispatcher(() => Categories = nodes);
-            });
-        }
-
-        IList canSelectList;
-        public override IList CanSelectList
-        {
-            get
-            {
-                if (canSelectList == null)
-                    canSelectList = new List<SelectionFilterItemViewModel>
+                new SelectionFilterItemViewModel
                 {
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Lines",
-                        Type = typeof(LineSchematicCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Texts",
-                        Type = typeof(TextCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Rectangles",
-                        Type = typeof(RectangleCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Polygons",
-                        Type = typeof(PolygonCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Circles",
-                        Type = typeof(CircleCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Ellipses",
-                        Type = typeof(EllipseCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Arcs",
-                        Type = typeof(ArcCanvasItem)
-                    },
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Images",
-                        Type = typeof(ImageCanvasItem)
-                    },
+                    TooltipText = "Lines",
+                    Type = typeof(LineSchematicCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Texts",
+                    Type = typeof(TextCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Rectangles",
+                    Type = typeof(RectangleCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Polygons",
+                    Type = typeof(PolygonCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Circles",
+                    Type = typeof(CircleCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Ellipses",
+                    Type = typeof(EllipseCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Arcs",
+                    Type = typeof(ArcCanvasItem)
+                },
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Images",
+                    Type = typeof(ImageCanvasItem)
+                },
 
-                    new SelectionFilterItemViewModel
-                    {
-                        TooltipText = "Pins",
-                        Type = typeof(PinCanvasItem)
-                    }
-                };
+                new SelectionFilterItemViewModel
+                {
+                    TooltipText = "Pins",
+                    Type = typeof(PinCanvasItem)
+                }
+            };
 
-                return canSelectList;
-            }
+            return canSelectList;
         }
+    }
 
-        #endregion ctors
+    Symbol symbolDocument;
 
-        #region Fields
+    ICommand addSymbolCommand;
 
-
-
-        Symbol symbolDocument;
-
-        #endregion Fields
-
-        ICommand addSymbolCommand;
-
-        public ICommand AddSymbolCommand
+    public ICommand AddSymbolCommand
+    {
+        get
         {
-            get
-            {
-                if (addSymbolCommand == null)
-                    addSymbolCommand = CreateCommand(p =>
+            if (addSymbolCommand == null)
+                addSymbolCommand = CreateCommand(p =>
+                  {
+                      canvasModel.ClearSelectedItems();
+
+                      canvasModel.CancelPlacement();
+
+
+                      var projectInfo = GetCurrentProjectInfo();
+
+                      var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
+                      if (itemSelectDlg.ShowDialog() == true)
                       {
-                          canvasModel.ClearSelectedItems();
+                          var symbol = itemSelectDlg.SelectedItem.Document as Symbol;
 
-                          canvasModel.CancelPlacement();
-
-
-                          var projectInfo = GetCurrentProjectInfo();
-
-                          var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Symbol, projectInfo);
-                          if (itemSelectDlg.ShowDialog() == true)
+                          if (symbol.Items != null)
                           {
-                              var symbol = itemSelectDlg.SelectedItem.Document as Symbol;
+                              var canvasItems = symbol.Items.Select(c => c.CreateDesignerItem()).ToList();
 
-                              if (symbol.Items != null)
+
+                              var rect = XRect.Empty;
+                              foreach (var item in canvasItems)
+                                  rect.Union(item.GetBoundingRectangle());
+                              var offset = canvasModel.SnapToGrid(new XPoint(rect.X, rect.Y));
+                              canvasItems.ForEach(c => c.Translate(-offset.X, -offset.Y));
+
+                              var group = new VolatileGroupCanvasItem
                               {
-                                  var canvasItems = symbol.Items.Select(c => c.CreateDesignerItem()).ToList();
-
-
-                                  var rect = XRect.Empty;
-                                  foreach (var item in canvasItems)
-                                      rect.Union(item.GetBoundingRectangle());
-                                  var offset = canvasModel.SnapToGrid(new XPoint(rect.X, rect.Y));
-                                  canvasItems.ForEach(c => c.Translate(-offset.X, -offset.Y));
-
-                                  var group = new VolatileGroupCanvasItem
-                                  {
-                                      Items = canvasItems.Cast<ISelectableItem>().ToList()
-                                  };
-                                  //canvasModel.AddItem(group);
-                                  canvasModel.StartPlacement(group);
-                              }
+                                  Items = canvasItems.Cast<ISelectableItem>().ToList()
+                              };
+                              //canvasModel.AddItem(group);
+                              canvasModel.StartPlacement(group);
                           }
                       }
+                  }
 
-                      );
+                  );
 
-                return addSymbolCommand;
-            }
+            return addSymbolCommand;
         }
-
-
-        #region Save File
-
-        protected override void SaveDocumentInternal(string filePath)
-        {
-            //remove the currently adding item so that it won't be saved
-            ISelectableItem placeObjects = null;
-            if (canvasModel.IsPlacingItem())
-            {
-                placeObjects = canvasModel.PlacementTool.CanvasItem;
-                canvasModel.RemoveItem(placeObjects);
-            }
-
-            //assign a new id if needed
-            if (string.IsNullOrEmpty(symbolDocument.Id))
-            {
-                symbolDocument.Id = LibraryItem.GetNextId();
-            }
-            symbolDocument.Name = Path.GetFileNameWithoutExtension(filePath);
-            symbolDocument.Items = canvasModel.Items.Cast<BaseCanvasItem>().Select(d => (SchematicPrimitive)d.SaveToPrimitive()).ToList();
-
-            XmlHelper.Save(symbolDocument, filePath);
-
-            if (placeObjects != null)
-                canvasModel.AddItem(placeObjects);
-        }
-
-        #endregion Save File
-
-        #region LoadFile
-
-        protected override Task LoadDocumentInternal(string filePath)
-        {
-            symbolDocument = XmlHelper.Load<Symbol>(filePath);
-
-            if (symbolDocument.Items != null)
-            {
-                foreach (var primitive in symbolDocument.Items)
-                {
-                    var canvasItem = primitive.CreateDesignerItem();
-                    canvasModel.AddItem(canvasItem);
-                }
-            }
-
-            return Task.CompletedTask;
-        }
-
-        protected override async Task AfterLoadDocumentInternal()
-        {
-            await base.AfterLoadDocumentInternal();
-            await RefreshOverview();
-        }
-
-        #endregion LoadFile
-
-        protected override void InitToolbox()
-        {
-            base.InitToolbox();
-
-            //add the specific primitives for the symbols
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Line",
-                Type = typeof(LineSchematicCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Text",
-                Type = typeof(TextCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Rectangle",
-                Type = typeof(RectangleCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Polygon",
-                Type = typeof(PolygonCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Circle",
-                Type = typeof(CircleCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Ellipse",
-                Type = typeof(EllipseCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Arc",
-                Type = typeof(ArcCanvasItem)
-            });
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Image",
-                Type = typeof(ImageCanvasItem)
-            });
-
-
-
-            Toolbox.Primitives.Add(new PrimitiveItem
-            {
-                TooltipText = "Pin",
-                Type = typeof(PinCanvasItem)
-            });
-        }
-
     }
+
+    protected override void SaveDocumentInternal(string filePath)
+    {
+        //remove the currently adding item so that it won't be saved
+        ISelectableItem placeObjects = null;
+        if (canvasModel.IsPlacingItem())
+        {
+            placeObjects = canvasModel.PlacementTool.CanvasItem;
+            canvasModel.RemoveItem(placeObjects);
+        }
+
+        //assign a new id if needed
+        if (string.IsNullOrEmpty(symbolDocument.Id))
+        {
+            symbolDocument.Id = LibraryItem.GetNextId();
+        }
+        symbolDocument.Name = Path.GetFileNameWithoutExtension(filePath);
+        symbolDocument.Items = canvasModel.Items.Cast<BaseCanvasItem>().Select(d => (SchematicPrimitive)d.SaveToPrimitive()).ToList();
+
+        XmlHelper.Save(symbolDocument, filePath);
+
+        if (placeObjects != null)
+            canvasModel.AddItem(placeObjects);
+    }
+
+    protected override Task LoadDocumentInternal(string filePath)
+    {
+        symbolDocument = XmlHelper.Load<Symbol>(filePath);
+
+        if (symbolDocument.Items != null)
+        {
+            foreach (var primitive in symbolDocument.Items)
+            {
+                var canvasItem = primitive.CreateDesignerItem();
+                canvasModel.AddItem(canvasItem);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    protected override async Task AfterLoadDocumentInternal()
+    {
+        await base.AfterLoadDocumentInternal();
+        await RefreshOverview();
+    }
+
+    protected override void InitToolbox()
+    {
+        base.InitToolbox();
+
+        //add the specific primitives for the symbols
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Line",
+            Type = typeof(LineSchematicCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Text",
+            Type = typeof(TextCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Rectangle",
+            Type = typeof(RectangleCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Polygon",
+            Type = typeof(PolygonCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Circle",
+            Type = typeof(CircleCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Ellipse",
+            Type = typeof(EllipseCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Arc",
+            Type = typeof(ArcCanvasItem)
+        });
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Image",
+            Type = typeof(ImageCanvasItem)
+        });
+
+
+
+        Toolbox.Primitives.Add(new PrimitiveItem
+        {
+            TooltipText = "Pin",
+            Type = typeof(PinCanvasItem)
+        });
+    }
+
 }

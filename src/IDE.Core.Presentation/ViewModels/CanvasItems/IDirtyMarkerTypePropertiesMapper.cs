@@ -14,16 +14,16 @@ namespace IDE.Core.Designers
         /// </summary>
         /// <param name="canvasItemType"></param>
         /// <returns></returns>
-        IList<string> GetPropertyNames(IBaseCanvasItem canvasItem);
+        IList<string> GetPropertyNames(object targetObject);
     }
 
     public class DirtyMarkerTypePropertiesMapper : IDirtyMarkerTypePropertiesMapper
     {
         private Dictionary<Type, IList<string>> types = new Dictionary<Type, IList<string>>();
 
-        public IList<string> GetPropertyNames(IBaseCanvasItem canvasItem)
+        public IList<string> GetPropertyNames(object targetObject)
         {
-            var type = canvasItem.GetType();
+            var type = targetObject.GetType();
 
             if (types.TryGetValue(type, out var list))
             {

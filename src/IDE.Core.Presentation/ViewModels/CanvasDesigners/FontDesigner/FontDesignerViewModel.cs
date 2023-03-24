@@ -24,15 +24,8 @@ namespace IDE.Core.ViewModels
         public FontDesignerViewModel()
             : base()
         {
-            DocumentKey = "FontEditor";
-            Description = "Font files";
-            FileFilterName = "Font file";
-            DefaultFilter = "font";
-            documentTypeKey = DocumentKey;
-            defaultFileType = "font";
-            defaultFileName = "Default";
 
-            this.canvasModel.Scale = 150;
+            canvasModel.Scale = 150;
             var cg = canvasModel.CanvasGrid as CanvasGrid;
             cg.GridSizeModel.CurrentValue = 0.1;//mm
 

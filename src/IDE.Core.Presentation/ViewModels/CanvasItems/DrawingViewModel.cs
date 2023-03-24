@@ -16,7 +16,7 @@ namespace IDE.Core.Designers
     public class DrawingViewModel : BaseViewModel
                                   , IDrawingViewModel
     {
-        public event Action<DrawingChangedReason> DrawingChanged;
+        public event EventHandler<DrawingChangedReason> DrawingChanged;
         public event EventHandler SelectionChanged;
         public event EventHandler HighlightChanged;
 
@@ -31,8 +31,9 @@ namespace IDE.Core.Designers
             getViewPort = () => new XSize(DocumentWidth, DocumentHeight);
 
             _dispatcher = dispatcher;
+            _dirtyMarkerTypePropertiesMapper = new DirtyMarkerTypePropertiesMapper();
         }
-
+        private readonly IDirtyMarkerTypePropertiesMapper _dirtyMarkerTypePropertiesMapper;
         private readonly IDispatcherHelper _dispatcher;
 
         IDebounceDispatcher _selectionDebouncer;
@@ -210,10 +211,26 @@ namespace IDE.Core.Designers
             get { return items; }
             set
             {
+                if (items != null)
+                {
+                    foreach (var item in items)
+                    {
+                        item.PropertyChanged -= DesignerItemBaseViewModel_PropertyChanged;
+                    }
+                }
+
                 if (value is SpatialItemsSource)
                     items = value;
                 else
                     items = new SpatialItemsSource(value);
+
+                if (items != null)
+                {
+                    foreach (var item in items)
+                    {
+                        item.PropertyChanged += DesignerItemBaseViewModel_PropertyChanged;
+                    }
+                }
 
                 OnPropertyChanged(nameof(Items));
             }
@@ -590,6 +607,9 @@ namespace IDE.Core.Designers
         {
             var selectedItems = SelectedItems.ToList();
 
+            if (selectedItems.Count == 0) 
+                return;
+
             if (selectedItems.Count == 1 && selectedItems[0] is ISegmentedPolylineSelectableCanvasItem wire)
             {
                 var segmentRemover = new SegmentRemoverHelper(this, wire, _dispatcher);
@@ -611,7 +631,6 @@ namespace IDE.Core.Designers
             if (item is SingleLayerBoardCanvasItem)
                 return;
             items.Add(item);
-
         }
 
         void DesignerItemBaseViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -619,20 +638,25 @@ namespace IDE.Core.Designers
             var thisItem = sender as ISelectableItem;
             if (thisItem == null)
                 return;
-            var ignorePropNames = new[]
-                                {
-                                    nameof(ISelectableItem.IsSelected),
-                                   nameof(BoardCanvasItemViewModel.IsFaulty),
-                                   nameof(BaseCanvasItem.ZIndex),
-                                   nameof(PolygonBoardCanvasItem.PolygonGeometry),
-                                   nameof(PlaneBoardCanvasItem.RegionGeometry),
-                                   nameof(ISegmentedPolylineSelectableCanvasItem.SelectedPoints)
-                                };
-            if (ignorePropNames.Contains(e.PropertyName))
+            //var ignorePropNames = new[]
+            //                    {
+            //                        nameof(ISelectableItem.IsSelected),
+            //                       nameof(BoardCanvasItemViewModel.IsFaulty),
+            //                       nameof(BaseCanvasItem.ZIndex),
+            //                       nameof(PolygonBoardCanvasItem.PolygonGeometry),
+            //                       nameof(PlaneBoardCanvasItem.RegionGeometry),
+            //                       nameof(ISegmentedPolylineSelectableCanvasItem.SelectedPoints)
+            //                    };
+            //if (ignorePropNames.Contains(e.PropertyName))
+            //    return;
+            var propertyNames = _dirtyMarkerTypePropertiesMapper.GetPropertyNames(sender);
+            if (!propertyNames.Contains(e.PropertyName))
+            {
                 return;
+            }
 
             if (thisItem.IsPlaced)
-                OnDrawingChanged(DrawingChangedReason.ItemModified);
+                OnDrawingChanged(sender, DrawingChangedReason.ItemModified);
         }
 
         public void AddItems(IEnumerable<ISelectableItem> addItems)
@@ -879,12 +903,15 @@ namespace IDE.Core.Designers
             return SnapToGrid(position);
         }
 
-
         public void OnDrawingChanged(DrawingChangedReason reason)
+        {
+            OnDrawingChanged(null, reason);
+        }
+        public void OnDrawingChanged(object sender, DrawingChangedReason reason)
         {
             if (DrawingChanged != null)
             {
-                debounceDrawingChanged.Debounce(300, p => DrawingChanged.Invoke(reason));
+                debounceDrawingChanged.Debounce(300, p => DrawingChanged.Invoke(sender, reason));
 
             }
         }

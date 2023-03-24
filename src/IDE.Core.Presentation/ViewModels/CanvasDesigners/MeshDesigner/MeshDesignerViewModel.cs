@@ -17,13 +17,6 @@ namespace IDE.Documents.Views
     {
         public MeshDesignerViewModel() : base()
         {
-            DocumentKey = "Model Editor";
-            Description = "Model files";
-            FileFilterName = "Model file";
-            DefaultFilter = "model";
-            documentTypeKey = DocumentKey;
-            defaultFileType = "model";
-            defaultFileName = "Model";
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
 
             modelDocument = new ModelDocument();
@@ -247,7 +240,6 @@ namespace IDE.Documents.Views
                         dlg.DefaultExt = ".stl";
                         if (dlg.ShowDialog() == true)
                         {
-
                             modelImporter.Import(dlg.FileName, canvasModel);
                         }
                     });

@@ -4,6 +4,7 @@ using IDE.Core.Common;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Storage;
+using IDE.Core.Types.Attributes;
 using IDE.Core.Types.Media;
 using IDE.Core.Utilities;
 using System;
@@ -28,11 +29,12 @@ namespace IDE.Documents.Views
             ReloadLayers();
         }
 
-
         void LayerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == 0)//added
+            if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove)
+            {
                 OnPropertyChanged(nameof(StackupTotalThickness));
+            }
         }
 
 
@@ -45,22 +47,28 @@ namespace IDE.Documents.Views
         public BoardDesignerFileViewModel Board => board;
 
         Units boardUnits;
+        [MarksDirty]
         public Units BoardUnits
         {
             get { return boardUnits; }
             set
             {
+                if (boardUnits == value) return;
+
                 boardUnits = value;
                 OnPropertyChanged(nameof(BoardUnits));
             }
         }
 
         string description;
+        [MarksDirty]
         public string Description
         {
             get { return description; }
             set
             {
+                if (description == value) return;
+
                 description = value;
                 OnPropertyChanged(nameof(Description));
             }
@@ -72,6 +80,9 @@ namespace IDE.Documents.Views
             get { return schematicReference; }
             set
             {
+                if (schematicReference == value)
+                    return;
+
                 schematicReference = value;
                 OnPropertyChanged(nameof(SchematicReference));
             }
@@ -105,17 +116,20 @@ namespace IDE.Documents.Views
                 {
                     //update schematic ref
                     var sch = selectedSchematic.Document as LibraryItem;
+
+                    //this will be read in the handler
+                    IsUpdateBoardFromSchematicRequired = true;
+
                     SchematicReference = new SchematicRef
                     {
                         schematicId = sch.Id,
                         hintPath = sch.FoundPath
                     };
 
-                    //this will be read in the handler
-                    IsUpdateBoardFromSchematicRequired = true;
-                    OnPropertyChanged(nameof(SchematicReference));
                     //reset
                     IsUpdateBoardFromSchematicRequired = false;
+
+                    board.IsDirty = true;
                 }
             }
 
@@ -138,6 +152,7 @@ namespace IDE.Documents.Views
                     layersAddDrillPairCommand = CreateCommand(p =>
                       {
                           DrillPairs.Add(new LayerPairModel());
+                          board.IsDirty = true;
                       });
                 }
 
@@ -155,6 +170,7 @@ namespace IDE.Documents.Views
                     layersAddLayerPairCommand = CreateCommand(p =>
                     {
                         LayerPairs.Add(new LayerPairModel());
+                        board.IsDirty = true;
                     });
                 }
 
@@ -191,10 +207,10 @@ namespace IDE.Documents.Views
                                 layer.PropertyChanged += Layer_PropertyChanged;
                                 try { board.LayerItems.Add(layer); } catch { }
 
-
-                                // StackLayers.Refresh();
                                 OnPropertyChanged(nameof(StackLayers));
                                 OnPropertyChanged(nameof(StackupTotalThickness));
+
+                                board.IsDirty = true;
                             }
                         }
                         catch { }
@@ -226,12 +242,8 @@ namespace IDE.Documents.Views
                             if (newIndex < board.LayerItems.Count)
                             {
                                 try { MoveLayers(oldIndex, newIndex); } catch { }
-                                //stackLayersView.Refresh();
-                                OnPropertyChanged(nameof(StackLayers));
 
-                                // SynchronizationContext.Current.Send(x => board.LayerItems.Move(oldIndex, newIndex), null);
-                                //if (layerDisplay == LayerStackupSpec.Stackup)
-                                //    OnPropertyChanged(nameof(StackLayers));
+                                OnPropertyChanged(nameof(StackLayers));
                             }
                         }
                     });
@@ -243,7 +255,8 @@ namespace IDE.Documents.Views
 
         void MoveLayers(int oldIndex, int newIndex)
         {
-            ( (ObservableCollection<ILayerDesignerItem>)board.LayerItems ).Move(oldIndex, newIndex);
+            ((ObservableCollection<ILayerDesignerItem>)board.LayerItems).Move(oldIndex, newIndex);
+            board.IsDirty = true;
         }
 
         ICommand moveLayerUpCommand;
@@ -261,7 +274,6 @@ namespace IDE.Documents.Views
                             if (newIndex >= 0)
                             {
                                 try { MoveLayers(oldIndex, newIndex); } catch { }
-                                //stackLayersView.Refresh();
 
                                 OnPropertyChanged(nameof(StackLayers));
                             }
@@ -345,6 +357,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                                     item.LoadLayers();
                                 }
                             });
+
+                            board.IsDirty = true;
                         }
                     });
 
@@ -404,25 +418,16 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
                         dlg.Filter = "Boards (*.board)|*.board";
 
-                        if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
+                        if (dlg.ShowDialog() == true)
                         {
                             var filePath = dlg.FileName;
-
-                            //var currentCanvasItems = board.CanvasModel.GetItems().ToList();
 
                             var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
                             var brd = XmlHelper.Load<BoardDocument>(filePath);
                             var brdLoader = new BoardLoader(dispatcher);
                             brdLoader.LoadRules(brd, board);
 
-                            ////re-assign the new layers
-                            //dispatcher.RunOnDispatcher(() =>
-                            //{
-                            //    foreach (BoardCanvasItemViewModel item in currentCanvasItems)
-                            //    {
-                            //        item.LoadLayers();
-                            //    }
-                            //});
+                            board.IsDirty = true;
                         }
                     });
 
@@ -436,6 +441,16 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
             {
                 case nameof(LayerDesignerItem.Thickness):
                     OnPropertyChanged(nameof(StackupTotalThickness));
+                    board.IsDirty = true;
+                    break;
+
+                case nameof(LayerDesignerItem.GerberExtension):
+                case nameof(LayerDesignerItem.LayerColor):
+                case nameof(LayerDesignerItem.LayerName):
+                case nameof(LayerDesignerItem.LayerType):
+                case nameof(LayerDesignerItem.MirrorPlot):
+                case nameof(LayerDesignerItem.Plot):
+                    board.IsDirty = true;
                     break;
             }
         }
@@ -459,6 +474,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                                   layer.PropertyChanged -= Layer_PropertyChanged;
                                   OnPropertyChanged(nameof(StackLayers));
                                   OnPropertyChanged(nameof(StackupTotalThickness));
+
+                                  board.IsDirty = true;
                               }
                           }
                       },
@@ -495,18 +512,6 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
             }
         }
 
-        //ListCollectionView stackLayersView;
-
-        //public ListCollectionView StackLayers
-        //{
-        //    get
-        //    {
-        //        stackLayersView.Refresh();
-        //        return stackLayersView;
-
-        //    }
-        //}
-
         public IList<ILayerDesignerItem> StackLayers
         {
             get
@@ -521,47 +526,16 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                                 {
                                      LayerType.Signal,
                                      LayerType.Plane,
-                                     //LayerType.SolderMask,
-                                     //LayerType.SilkScreen,
                                      LayerType.Dielectric
                                 };
 
-                            return board.LayerItems.Where(l => stackUpLayers.Contains(( l as LayerDesignerItem ).LayerType)).ToList();
+                            return board.LayerItems.Where(l => stackUpLayers.Contains((l as LayerDesignerItem).LayerType)).ToList();
                         }
-
                 }
 
                 return board.LayerItems;
             }
         }
-
-        //void InitStackView()
-        //{
-        //    stackLayersView = new ListCollectionView((IList)board.LayerItems);
-        //    stackLayersView.Filter = l =>
-        //      {
-        //          switch (layerDisplay)
-        //          {
-        //              case LayerStackupSpec.All:
-        //                  return true;
-        //              case LayerStackupSpec.Stackup:
-        //                  {
-        //                      var stackUpLayers = new List<LayerType>
-        //                        {
-        //                             LayerType.Signal,
-        //                             LayerType.Plane,
-        //                             //LayerType.SolderMask,
-        //                             //LayerType.SilkScreen,
-        //                             LayerType.Dielectric
-        //                        };
-
-        //                      return stackUpLayers.Contains((l as LayerDesignerItem).LayerType);
-        //                  }
-        //          }
-
-        //          return true;
-        //      };
-        //}
 
         LayerDesignerItem selectedStackLayer;
         public LayerDesignerItem SelectedStackLayer
@@ -622,8 +596,6 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
         void ReloadLayers()
         {
-            // InitStackView();
-
             OnPropertyChanged(nameof(StackLayers));
         }
 
@@ -660,6 +632,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                           };
                           board.LayerGroups.Add(newG);
                           SelectedLayerGroup = newG;
+
+                          board.IsDirty = true;
                       });
                 }
 
@@ -679,6 +653,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                     removeLayerGroupCommand = CreateCommand(p =>
                     {
                         board.LayerGroups.Remove(SelectedLayerGroup);
+
+                        board.IsDirty = true;
                     },
                     p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
                      );
@@ -709,6 +685,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                         selectedLayerGroup.Layers.AddRange(selectedLayers.Cast<LayerDesignerItem>());
                         GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
                         OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+
+                        board.IsDirty = true;
                     },
                     p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
                      );
@@ -740,6 +718,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
                         GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
                         OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+
+                        board.IsDirty = true;
                     },
                     p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
                      );
@@ -793,9 +773,6 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
         }
 
         public IList<IBoardRuleModel> Rules { get; set; } = new ObservableCollection<IBoardRuleModel>();
-        public ISolutionProjectNodeModel ParentProject { get; set; }
-
-
 
         #region Board Rules
 
@@ -990,6 +967,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                 parentGroup.AddChild(boardRule);
             else
                 Rules.Add(boardRule);
+
+            board.IsDirty = true;
         }
 
         void RemoveBoardRuleNode(AbstractBoardRule rule)
@@ -998,6 +977,8 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
                 rule.Parent.RemoveChild(rule);
             else
                 Rules.Remove(rule);
+
+            board.IsDirty = true;
         }
 
         #endregion Rules.Commands
@@ -1044,7 +1025,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
             LoadBuildOptions(boardDoc);
 
-            ( (INotifyCollectionChanged)board.LayerItems ).CollectionChanged += LayerItems_CollectionChanged;
+            ((INotifyCollectionChanged)board.LayerItems).CollectionChanged += LayerItems_CollectionChanged;
             foreach (var layer in board.LayerItems)
                 layer.PropertyChanged += Layer_PropertyChanged;
         }
@@ -1107,7 +1088,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
         {
             var hc = 17;
             foreach (var value in Values)
-                hc = hc * 37 + ( !ReferenceEquals(value, null) ? value.GetHashCode() : 0 );
+                hc = hc * 37 + (!ReferenceEquals(value, null) ? value.GetHashCode() : 0);
             return hc;
         }
     }
@@ -1245,7 +1226,7 @@ Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
             get
             {
                 if (originalDescriptor != null)
-                    return ( originalDescriptor as PropertyDescriptor ).PropertyType;
+                    return (originalDescriptor as PropertyDescriptor).PropertyType;
 
                 return typeof(object);
             }

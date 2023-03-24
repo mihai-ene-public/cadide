@@ -12,7 +12,6 @@ namespace IDE.Documents.Views;
 public class SolutionProjectPropertiesViewModel : FileBaseViewModel, ISolutionProjectPropertiesDocument
 {
     public SolutionProjectPropertiesViewModel()
-        : base(null)
     {
         IsDirty = false;
     }
@@ -81,7 +80,6 @@ public class SolutionProjectPropertiesViewModel : FileBaseViewModel, ISolutionPr
 public class SolutionPropertiesViewModel : FileBaseViewModel
 {
     public SolutionPropertiesViewModel()
-       : base(null)
     {
         IsDirty = false;
     }

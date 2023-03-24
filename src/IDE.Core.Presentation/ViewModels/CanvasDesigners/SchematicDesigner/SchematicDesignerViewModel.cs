@@ -29,24 +29,14 @@ namespace IDE.Core.ViewModels
     {
         #region ctor
 
-        public SchematicDesignerViewModel(ISolutionRepository solutionRepository)
-            : base()
+        public SchematicDesignerViewModel(ISettingsManager settingsManager, IActiveCompiler activeCompiler)
         {
-            DocumentKey = "SchemaEditor";
-            Description = "Schematic files";
-            FileFilterName = "Schematic file";
-            DefaultFilter = "schematic";
-            documentTypeKey = DocumentKey;
-            defaultFileType = "schematic";
-            defaultFileName = "Schematic";
 
             schematicDocument = new SchematicDocument();
-            Sheets = new ObservableCollection<ISheetDesignerItem>();
 
             SchematicViewMode = SchematicViewMode.Canvas;
 
             Toolbar = new SchematicToolbar(this);
-            //PropertyChanged += SchematicDesignerViewModel_PropertyChanged;
 
             SchematicProperties = new SchematicDesignerPropertiesViewModel(this);
 
@@ -60,14 +50,12 @@ namespace IDE.Core.ViewModels
 
             canvasGrid.GridSizeModel.SelectedItem = new Units.MilUnit(50);
 
-            _settingsManager = ServiceProvider.Resolve<ISettingsManager>();
-            _activeCompiler = ServiceProvider.Resolve<IActiveCompiler>();
-            _solutionRepository = solutionRepository;
+            _settingsManager = settingsManager;
+            _activeCompiler = activeCompiler;
         }
 
         private readonly ISettingsManager _settingsManager;
         private readonly IActiveCompiler _activeCompiler;
-        private readonly ISolutionRepository _solutionRepository;
 
         CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
 
@@ -150,33 +138,6 @@ namespace IDE.Core.ViewModels
         {
             applicationModel.OnSelectionChanged(sender, e);
         }
-
-        //void SchematicDesignerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    switch (e.PropertyName)
-        //    {
-        //        case nameof(IsActive):
-        //            {
-        //                if (IsActive)
-        //                {
-        //                    var sheetsToolWindow = ServiceProvider.GetToolWindow<SchematicSheetsViewModel>();
-        //                    if (sheetsToolWindow != null)
-        //                    {
-        //                        sheetsToolWindow.Schematic = this;
-        //                        sheetsToolWindow.IsVisible = true;
-        //                    }
-        //                    var toolOverview = ServiceProvider.GetToolWindow<DocumentOverviewViewModel>();
-        //                    if (toolOverview != null)
-        //                    {
-        //                        toolOverview.Document = this;
-        //                        toolOverview.IsVisible = true;
-        //                    }
-
-        //                }
-        //                break;
-        //            }
-        //    }
-        //}
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
         {
@@ -345,7 +306,6 @@ namespace IDE.Core.ViewModels
 
 
         SchematicDocument schematicDocument;
-        // List<NetDesignerItem> netsCache = new List<NetDesignerItem>();
 
         public IList<ISchematicNet> GetNets()
         {
@@ -393,7 +353,7 @@ namespace IDE.Core.ViewModels
 
                             if (symbol.Items != null)
                             {
-                                var canvasItems = symbol.Items.Where(sItem => !( sItem is Pin )).Select(c => c.CreateDesignerItem()).ToList();
+                                var canvasItems = symbol.Items.Where(sItem => !(sItem is Pin)).Select(c => c.CreateDesignerItem()).ToList();
 
                                 var group = new VolatileGroupCanvasItem
                                 {
@@ -547,21 +507,11 @@ namespace IDE.Core.ViewModels
 
         }
 
-        #region Caching
-
-        //protected override LibraryItem GetLibraryItem()
-        //{
-        //    BuildDocument();
-        //    return schematicDocument;
-        //}
-
-
         protected override void RefreshFromCache()
         {
 
             if (State != DocumentState.IsEditing)
                 return;
-
 
             foreach (var sheet in Sheets)
             {
@@ -574,13 +524,9 @@ namespace IDE.Core.ViewModels
             }
         }
 
-        #endregion Caching
-
         #region Toolbox
 
-
-
-        public IList<ISheetDesignerItem> Sheets { get; set; }
+        public IList<ISheetDesignerItem> Sheets { get; set; } = new ObservableCollection<ISheetDesignerItem>();
 
         ISheetDesignerItem currentSheet;
 
@@ -593,7 +539,6 @@ namespace IDE.Core.ViewModels
                 if (currentSheet != null)
                 {
                     canvasModel.Items = currentSheet.Items;
-                    // CurrentSheetSetConnectionStatus();
                 }
 
                 OnPropertyChanged(nameof(CurrentSheet));
@@ -611,9 +556,21 @@ namespace IDE.Core.ViewModels
                           var newSheet = new SheetDesignerItem { Name = "New Sheet" };
                           Sheets.Add(newSheet);
                           CurrentSheet = newSheet;
+
+                          newSheet.PropertyChanged += Sheet_PropertyChanged;
+
+                          IsDirty = true;
                       });
 
                 return addSheetCommand;
+            }
+        }
+
+        private void Sheet_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ISheetDesignerItem.Name))
+            {
+                IsDirty = true;
             }
         }
 
@@ -634,6 +591,10 @@ namespace IDE.Core.ViewModels
                             {
                                 Sheets.Remove(currentSheet);
                                 CurrentSheet = Sheets.FirstOrDefault();
+
+                                currentSheet.PropertyChanged -= Sheet_PropertyChanged;
+
+                                IsDirty = true;
                             }
                         }
 
@@ -655,6 +616,8 @@ namespace IDE.Core.ViewModels
                         try
                         {
                             Sheets.MoveUp(currentSheet);
+
+                            IsDirty = true;
                         }
                         catch { }
 
@@ -675,6 +638,8 @@ namespace IDE.Core.ViewModels
                         try
                         {
                             Sheets.MoveDown(currentSheet);
+
+                            IsDirty = true;
                         }
                         catch { }
 
@@ -950,236 +915,194 @@ namespace IDE.Core.ViewModels
 
         protected override Task LoadDocumentInternal(string filePath)
         {
-            return Task.Run(() =>
+            schematicDocument = XmlHelper.Load<SchematicDocument>(filePath);
+
+            var sheets = new List<ISheetDesignerItem>();
+
+            var project = GetCurrentProjectInfo();
+
+            //assign a new id if needed
+            if (string.IsNullOrEmpty(schematicDocument.Id))
             {
-                schematicDocument = XmlHelper.Load<SchematicDocument>(filePath);
+                schematicDocument.Id = LibraryItem.GetNextId();
+                IsDirty = true;
+            }
 
-                var project = GetCurrentProjectInfo();
 
-                //assign a new id if needed
-                if (string.IsNullOrEmpty(schematicDocument.Id))
+            canvasModel.DocumentWidth = schematicDocument.DocumentWidth;
+            canvasModel.DocumentHeight = schematicDocument.DocumentHeight;
+            canvasModel.DocumentSize = schematicDocument.DocumentSize;
+
+            //load rules
+            Rules.Clear();
+            schematicDocument.EnsureDefaultRules();
+            Rules.AddRange(schematicDocument.Rules.Select(r => r.CreateRuleItem()));
+
+            if (schematicDocument.Sheets != null)
+            {
+                //register all nets and buses from all sheets in the net manager
+                foreach (var sheet in schematicDocument.Sheets)
                 {
-                    schematicDocument.Id = LibraryItem.GetNextId();
-                    IsDirty = true;
-                }
-
-
-                canvasModel.DocumentWidth = schematicDocument.DocumentWidth;
-                canvasModel.DocumentHeight = schematicDocument.DocumentHeight;
-                canvasModel.DocumentSize = schematicDocument.DocumentSize;
-
-                //load rules
-                Rules.Clear();
-                schematicDocument.EnsureDefaultRules();
-                Rules.AddRange(schematicDocument.Rules.Select(r => r.CreateRuleItem()));
-
-                //var netsCache = new List<SchematicNet>();
-                //var buses = new List<SchematicBus>();
-
-                //var projectNode = (SolutionProjectNodeModel)ProjectNode;
-                //if (projectNode != null)
-                //{
-                //    projectNode.CreateCacheItems(TemplateType.Component);
-                //    projectNode.CreateCacheItems(TemplateType.Symbol);
-                //}
-
-                if (schematicDocument.Sheets != null)
-                {
-                    //register all nets and buses from all sheets in the net manager
-                    foreach (var sheet in schematicDocument.Sheets)
+                    //nets
+                    if (sheet.Nets != null)
                     {
-                        //nets
-                        if (sheet.Nets != null)
+                        foreach (var netDoc in sheet.Nets)
                         {
-                            foreach (var netDoc in sheet.Nets)
+                            var net = new SchematicNet
                             {
-                                var net = new SchematicNet
-                                {
-                                    Id = netDoc.Id,
-                                    ClassId = netDoc.ClassId,
-                                    Name = netDoc.Name,
-                                };
-                                netManager.Add(net);
-                            }
-                        }
-
-                        //buses
-                        if (sheet.Busses != null)
-                        {
-                            foreach (var busDoc in sheet.Busses)
-                            {
-                                var bus = new SchematicBus
-                                {
-                                    Name = busDoc.Name,
-                                };
-                                busManager.Add(bus);
-                            }
+                                Id = netDoc.Id,
+                                ClassId = netDoc.ClassId,
+                                Name = netDoc.Name,
+                            };
+                            netManager.Add(net);
                         }
                     }
 
-                    foreach (var sheet in schematicDocument.Sheets)
+                    //buses
+                    if (sheet.Busses != null)
                     {
-                        var sheetItem = new SheetDesignerItem { Name = sheet.Name };
-
-
-                        #region Plain
-
-                        //plain (basic primitives)
-                        if (sheet.PlainItems != null)
+                        foreach (var busDoc in sheet.Busses)
                         {
-                            foreach (var primitive in sheet.PlainItems)
+                            var bus = new SchematicBus
+                            {
+                                Name = busDoc.Name,
+                            };
+                            busManager.Add(bus);
+                        }
+                    }
+                }
+
+                foreach (var sheet in schematicDocument.Sheets)
+                {
+                    var sheetItem = new SheetDesignerItem { Name = sheet.Name };
+
+                    #region Plain
+
+                    //plain (basic primitives)
+                    if (sheet.PlainItems != null)
+                    {
+                        foreach (var primitive in sheet.PlainItems)
+                        {
+                            var canvasItem = primitive.CreateDesignerItem();
+                            sheetItem.Items.Add(canvasItem);
+                        }
+                    }
+
+                    #endregion Plain
+
+                    #region Components
+
+                    if (sheet.Instances != null && schematicDocument.Parts != null)
+                    {
+                        foreach (var instance in sheet.Instances)
+                        {
+                            var part = schematicDocument.Parts.FirstOrDefault(p => p.Id == instance.PartId);
+                            if (part != null)
+                            {
+                                var symbolItem = new SchematicSymbolCanvasItem() { _Project = project };
+                                symbolItem.Part = part;
+                                symbolItem.LoadFromPrimitive(instance);
+                                sheetItem.Items.Add(symbolItem);
+                            }
+
+                        }
+                    }
+
+                    #endregion Components
+
+                    #region Nets
+
+                    //nets
+                    if (sheet.Nets != null)
+                    {
+                        foreach (var netDoc in sheet.Nets)
+                        {
+                            var net = (SchematicNet)netManager.Get(netDoc.Name);
+
+                            if (netDoc.Items != null)
+                            {
+                                foreach (var primitive in netDoc.Items)
+                                {
+                                    if (primitive is PinRef pinRef)
+                                    {
+                                        var part = sheetItem.Items.OfType<SchematicSymbolCanvasItem>()
+                                                                  .FirstOrDefault(p => p.SymbolPrimitive.Id == pinRef.PartInstanceId);
+                                        if (part != null)
+                                        {
+                                            var pin = part.Pins.FirstOrDefault(p => p.Number == pinRef.Pin);
+                                            if (pin != null)
+                                                pin.Net = net;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var canvasItem = primitive.CreateDesignerItem();
+                                        if (canvasItem is NetSegmentCanvasItem netSegment)
+                                        {
+                                            netSegment.Net = net;
+                                        }
+                                        sheetItem.Items.Add(canvasItem);
+
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+
+                    #endregion Nets
+
+                    #region Busses
+
+                    if (sheet.Busses != null)
+                    {
+                        foreach (var busDoc in sheet.Busses)
+                        {
+                            var bus = (SchematicBus)busManager.Get(busDoc.Name);
+
+                            foreach (var net in busDoc.Nets)
+                                bus.AddNet(net.Name);
+
+                            foreach (var primitive in busDoc.Items)
                             {
                                 var canvasItem = primitive.CreateDesignerItem();
+                                if (canvasItem is BusSegmentCanvasItem busSegment)
+                                {
+                                    busSegment.Bus = bus;
+                                }
                                 sheetItem.Items.Add(canvasItem);
                             }
                         }
-
-                        #endregion Plain
-
-                        #region Components
-
-                        if (sheet.Instances != null && schematicDocument.Parts != null)
-                        {
-                            foreach (var instance in sheet.Instances)
-                            {
-                                var part = schematicDocument.Parts.FirstOrDefault(p => p.Id == instance.PartId);
-                                if (part != null)
-                                {
-                                    var symbolItem = new SchematicSymbolCanvasItem() { _Project = project };
-                                    symbolItem.Part = part;
-                                    symbolItem.LoadFromPrimitive(instance);
-                                    sheetItem.Items.Add(symbolItem);
-                                }
-
-                            }
-                        }
-
-                        #endregion Components
-
-                        #region Nets
-
-                        //nets
-                        if (sheet.Nets != null)
-                        {
-
-
-                            foreach (var netDoc in sheet.Nets)
-                            {
-                                var net = (SchematicNet)netManager.Get(netDoc.Name);
-
-                                /* old lookup
-                                ////lookup the reference
-                                //var net = netsCache.FirstOrDefault(n => n.Id == netDoc.Id);
-
-                                //if (net == null)
-                                //{
-                                //    net = new SchematicNet
-                                //    {
-                                //        Id = netDoc.Id,
-                                //        ClassId = netDoc.ClassId,
-                                //        Name = netDoc.Name,
-                                //        CanvasModel = CanvasModel
-                                //    };
-
-                                //    netsCache.Add(net);
-                                //}
-                                */
-
-                                if (netDoc.Items != null)
-                                {
-                                    foreach (var primitive in netDoc.Items)
-                                    {
-                                        if (primitive is PinRef pinRef)
-                                        {
-                                            var part = sheetItem.Items.OfType<SchematicSymbolCanvasItem>()
-                                                                      .FirstOrDefault(p => p.SymbolPrimitive.Id == pinRef.PartInstanceId);
-                                            if (part != null)
-                                            {
-                                                var pin = part.Pins.FirstOrDefault(p => p.Number == pinRef.Pin);
-                                                if (pin != null)
-                                                    pin.Net = net;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            var canvasItem = primitive.CreateDesignerItem();
-                                            if (canvasItem is NetSegmentCanvasItem netSegment)
-                                            {
-                                                netSegment.Net = net;
-                                            }
-                                            sheetItem.Items.Add(canvasItem);
-
-                                        }
-
-                                    }
-                                }
-
-                            }
-                        }
-
-                        #endregion Nets
-
-                        #region Busses
-
-                        if (sheet.Busses != null)
-                        {
-                            foreach (var busDoc in sheet.Busses)
-                            {
-                                ////lookup the reference
-                                //var bus = buses.FirstOrDefault(n => n.Name == busDoc.Name);
-                                //if (bus == null)
-                                //{
-                                //    bus = new SchematicBus
-                                //    {
-                                //        Name = busDoc.Name,
-                                //        CanvasModel = CanvasModel
-                                //    };
-
-                                //    buses.Add(bus);
-                                //}
-                                var bus = (SchematicBus)busManager.Get(busDoc.Name);
-
-                                foreach (var net in busDoc.Nets)
-                                    bus.AddNet(net.Name);
-
-                                foreach (var primitive in busDoc.Items)
-                                {
-                                    var canvasItem = primitive.CreateDesignerItem();
-                                    if (canvasItem is BusSegmentCanvasItem busSegment)
-                                    {
-                                        busSegment.Bus = bus;
-                                    }
-                                    sheetItem.Items.Add(canvasItem);
-                                }
-                            }
-                        }
-
-                        #endregion Busses
-
-
-                        _dispatcher.RunOnDispatcher(() =>
-                        {
-                            Sheets.Add(sheetItem);
-                        });
                     }
+
+                    #endregion Busses
+
+
+                    sheets.Add(sheetItem);
                 }
+            }
 
-                //if (projectNode != null)
-                //    projectNode.ClearCachedItems();
+            //create a new sheet if neeeded
+            if (sheets.Count == 0)
+            {
+                sheets.Add(new SheetDesignerItem { Name = "Main sheet" });
+            }
 
-                //create a new sheet if neeeded
-                if (Sheets.Count == 0)
-                {
-                    Sheets.Add(new SheetDesignerItem { Name = "Main sheet" });
-                }
+            foreach (var sheet in sheets)
+            {
+                sheet.PropertyChanged += Sheet_PropertyChanged;
+            }
 
-                CurrentSheet = Sheets[0];
+            Sheets = new ObservableCollection<ISheetDesignerItem>(sheets);
+            CurrentSheet = sheets[0];
 
-                _dispatcher.RunOnDispatcher(() =>
-                {
-                    schematicProperties.LoadFromSchematic(schematicDocument);
-                });
+            _dispatcher.RunOnDispatcher(() =>
+            {
+                schematicProperties.LoadFromSchematic(schematicDocument);
             });
+
+            return Task.CompletedTask;
         }
 
         protected override async Task AfterLoadDocumentInternal()

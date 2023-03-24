@@ -22,20 +22,22 @@ namespace IDE.Core.Designers
             }
             set
             {
-                if (layer != value)
+                if (layer == value)
                 {
-                    layer?.Items.Remove(this);
-                    layer = value;
-                    if (ParentObject == null)
-                        layer?.Items.Add(this);
-
-                    if (layer != null)
-                    {
-                        LayerId = layer.LayerId;
-                    }
-
-                    OnPropertyChanged(nameof(Layer));
+                    return;
                 }
+
+                layer?.Items.Remove(this);
+                layer = value;
+                if (ParentObject == null)
+                    layer?.Items.Add(this);
+
+                if (layer != null)
+                {
+                    LayerId = layer.LayerId;
+                }
+
+                OnPropertyChanged(nameof(Layer));
             }
         }
 

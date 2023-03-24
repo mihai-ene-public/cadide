@@ -34,18 +34,7 @@ namespace IDE.Documents.Views
 
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
 
-            DocumentKey = "Footprint Editor";
-            Description = "Footprint files";
-            FileFilterName = "Footprint file";
-            DefaultFilter = "footprint";
-            documentTypeKey = DocumentKey;
-            defaultFileType = "footprint";
-            defaultFileName = "Footprint";
-
             footprintDocument = new Footprint();
-
-            //we need this so that the event handler is attached
-            //var c = LayersWindow;
 
             Toolbar = new FootprintToolbar(this);
 
@@ -429,7 +418,19 @@ namespace IDE.Documents.Views
             get { return boardPreview3DViewModel; }
             set
             {
+                if (boardPreview3DViewModel == value) return;
+
+                if (boardPreview3DViewModel != null)
+                {
+                    boardPreview3DViewModel.Model3DCanvasModel.DrawingChanged -= CanvasModel_DrawingChanged;
+                }
+
                 boardPreview3DViewModel = value;
+                if (boardPreview3DViewModel != null)
+                {
+                    boardPreview3DViewModel.Model3DCanvasModel.DrawingChanged += CanvasModel_DrawingChanged;
+                }
+
                 OnPropertyChanged(nameof(BoardPreview3DViewModel));
             }
         }
@@ -465,9 +466,9 @@ namespace IDE.Documents.Views
             }
 
             footprintDocument.Name = Path.GetFileNameWithoutExtension(filePath);
-            var itemsToSave = ( from l in canvasModel.Items.OfType<LayerDesignerItem>()
-                                from s in l.Items
-                                select (LayerPrimitive)( s as BaseCanvasItem ).SaveToPrimitive() )
+            var itemsToSave = (from l in canvasModel.Items.OfType<LayerDesignerItem>()
+                               from s in l.Items
+                               select (LayerPrimitive)(s as BaseCanvasItem).SaveToPrimitive())
                                 .Union(canvasModel.Items.Cast<BaseCanvasItem>()
                                                         .Select(d => (LayerPrimitive)d.SaveToPrimitive()));
             footprintDocument.Items = itemsToSave.ToList();
@@ -524,8 +525,10 @@ namespace IDE.Documents.Views
                         var canvasItem = (BoardCanvasItemViewModel)primitive.CreateDesignerItem();
                         canvasItem.LayerDocument = this;
                         canvasItem.LoadLayers();
-                        if (!( canvasItem is SingleLayerBoardCanvasItem ))
-                            canvasModel.AddItem(canvasItem);
+                        //if (!( canvasItem is SingleLayerBoardCanvasItem ))
+                        //    canvasModel.AddItem(canvasItem);
+
+                        canvasModel.AddItem(canvasItem);
                     }
                 }
 
@@ -668,48 +671,6 @@ namespace IDE.Documents.Views
                        );
 
                 return addFootprintCommand;
-            }
-        }
-        //
-
-
-        //this command is subject to be removed; it will be replaced by the new footprint generator
-        ICommand showWizardCommand;
-
-        public ICommand ShowWizardCommand
-        {
-            get
-            {
-                if (showWizardCommand == null)
-                {
-                    showWizardCommand = CreateCommand((p) =>
-                      {
-                          var wiz = new FootprintSimpleWizardViewModel();
-                          if (wiz.ShowDialog() == true)
-                          {
-                              if (wiz != null)
-                              {
-                                  var items = wiz.BusinessObject.CreateFootprintItems();
-                                  foreach (BoardCanvasItemViewModel item in items)
-                                  {
-                                      item.LayerDocument = this;
-                                      item.LoadLayers();
-                                      if (!( item is SingleLayerBoardCanvasItem ))
-                                          canvasModel.AddItem(item);
-                                  }
-
-                              }
-                          }
-
-                      }
-
-                      ,
-                      p => DesignerViewMode == DesignerViewMode.ViewMode2D
-
-                    );
-                }
-
-                return showWizardCommand;
             }
         }
 
@@ -855,6 +816,8 @@ namespace IDE.Documents.Views
                                 LoadFootprintModel(modelData);
                                 AllignModelWithPads();
                                 RefreshFootprintPreviewModels();
+
+                                IsDirty = true;
                             }
                         }
                     },
@@ -877,17 +840,7 @@ namespace IDE.Documents.Views
                 {
                     remove3DModelCommand = CreateCommand(p =>
                     {
-                        var cm = BoardPreview3DViewModel?.Model3DCanvasModel;
-                        var selectedItems = cm.SelectedItems;
-                        if (selectedItems.Count > 0)
-                        {
-                            cm.RemoveItems(selectedItems);
-                            //todo: we need to remove from the dictionary
-                            foreach (var selectedItem in selectedItems.OfType<GroupMeshItem>())
-                            {
-                                modelsDictionary.Remove(selectedItem);
-                            }
-                        }
+                        RemoveSelected3DModels();
                     },
                     p => DesignerViewMode == DesignerViewMode.ViewMode3D
                     && BoardPreview3DViewModel?.Model3DCanvasModel?.SelectedItems.Count > 0);
@@ -897,12 +850,39 @@ namespace IDE.Documents.Views
             }
         }
 
+        private void RemoveSelected3DModels()
+        {
+            var cm = BoardPreview3DViewModel?.Model3DCanvasModel;
+            var selectedItems = cm.SelectedItems;
+            if (selectedItems.Count > 0)
+            {
+                cm.RemoveItems(selectedItems);
+
+                foreach (var selectedItem in selectedItems.OfType<GroupMeshItem>())
+                {
+                    modelsDictionary.Remove(selectedItem);
+                }
+
+                IsDirty = true;
+            }
+        }
+
+        public override void DeleteSelectedItems()
+        {
+            if(DesignerViewMode == DesignerViewMode.ViewMode3D)
+            {
+                RemoveSelected3DModels();
+                return;
+            }
+            base.DeleteSelectedItems();
+        }
+
         void LoadFootprintModel(ModelData modelData)
         {
             if (modelData == null)
                 return;
 
-            var project=GetCurrentProjectInfo();
+            var project = GetCurrentProjectInfo();
             var modelDoc = _objectFinder.FindObject<ModelDocument>(project, modelData.ModelLibrary, modelData.ModelId);
 
             if (modelDoc != null && modelDoc.Items != null)
@@ -921,7 +901,6 @@ namespace IDE.Documents.Views
                 foreach (var item in groupItem.Items)
                     item.ParentObject = groupItem;
 
-                //model3DCanvasModel.AddItem(groupItem);
                 modelsDictionary.Add(groupItem, modelDoc);
             }
         }
@@ -1006,10 +985,10 @@ namespace IDE.Documents.Views
                         var counts = Math.Truncate(rotZ / gridSize);
                         var delta = Math.Abs(rotZ - counts * gridSize);
 
-                        if (delta <= ( gridSize / 2 ))
+                        if (delta <= (gridSize / 2))
                             rotZ = counts * gridSize;
                         else
-                            rotZ = ( counts + 1 ) * gridSize;
+                            rotZ = (counts + 1) * gridSize;
 
                         groupItem.RotationZ = rotZ;
                     }

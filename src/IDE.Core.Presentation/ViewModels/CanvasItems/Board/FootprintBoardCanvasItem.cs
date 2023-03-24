@@ -33,6 +33,8 @@ namespace IDE.Core.Designers
             get { return placement; }
             set
             {
+                if (placement == value) return;
+
                 placement = value;
                 OnPropertyChanged(nameof(Placement));
 
@@ -84,6 +86,7 @@ namespace IDE.Core.Designers
             {
                 if (showName == value)
                     return;
+
                 showName = value;
                 OnPropertyChanged(nameof(ShowName));
             }
@@ -125,6 +128,8 @@ namespace IDE.Core.Designers
             get { return partNameFontSize; }
             set
             {
+                if (partNameFontSize == value) return;
+
                 partNameFontSize = value;
                 OnPropertyChanged(nameof(PartNameFontSize));
 
@@ -172,9 +177,9 @@ namespace IDE.Core.Designers
             {
                 if (x == value)
                     return;
+
                 x = value;
                 OnPropertyChanged(nameof(X));
-                //OnPropertyChanged(nameof(CenterX));
             }
         }
 
@@ -193,23 +198,11 @@ namespace IDE.Core.Designers
             {
                 if (y == value)
                     return;
+
                 y = value;
                 OnPropertyChanged(nameof(Y));
-                //OnPropertyChanged(nameof(CenterY));
             }
         }
-
-        //[Browsable(false)]
-        //public double CenterX
-        //{
-        //    get { return x - 0.5 * displayWidth; }
-        //}
-
-        //[Browsable(false)]
-        //public double CenterY
-        //{
-        //    get { return y - 0.5 * displayHeight; }
-        //}
 
         double rot;
 
@@ -222,6 +215,7 @@ namespace IDE.Core.Designers
             {
                 if (rot == value)
                     return;
+
                 rot = value % 360;
                 OnPropertyChanged(nameof(Rot));
             }
@@ -320,7 +314,33 @@ namespace IDE.Core.Designers
             }
         }
 
-        void UpdateLayersByPlacement()
+        
+
+        [Browsable(false)]
+        public BoardComponentInstance FootprintPrimitive { get { return currentPrimitive as BoardComponentInstance; } }
+
+
+
+        [Browsable(false)]
+        public PositionData PartNamePosition { get; set; } = new PositionData();
+
+
+        DesignatorBoardCanvasItem designator;
+        [Browsable(false)]
+        public DesignatorBoardCanvasItem Designator
+        {
+            get { return designator; }
+            set
+            {
+                designator = value;
+                OnPropertyChanged(nameof(Designator));
+            }
+        }
+
+        [Browsable(false)]
+        public Footprint CachedFootprint { get; set; }
+
+        private void UpdateLayersByPlacement()
         {
             if (placement == FootprintPlacement.Top)
             {
@@ -333,9 +353,8 @@ namespace IDE.Core.Designers
 
             foreach (var item in items)
             {
-                if (item is SingleLayerBoardCanvasItem)
+                if (item is SingleLayerBoardCanvasItem layerItem)
                 {
-                    var layerItem = item as SingleLayerBoardCanvasItem;
                     //we need the layer pairs for other layers, for now only some pairs are handled
                     try
                     {
@@ -351,32 +370,10 @@ namespace IDE.Core.Designers
             OnPropertyChanged(nameof(SilkscreenLayer));
         }
 
-        [Browsable(false)]
-        public BoardComponentInstance FootprintPrimitive { get { return currentPrimitive as BoardComponentInstance; } }
-
-
-
-        [Browsable(false)]
-        public PositionData PartNamePosition { get; set; } = new PositionData();
-
-
-        DesignatorBoardCanvasItem designator;
-        [Browsable(false)]
-        public //DesignatorBoardCanvasItem
-           DesignatorBoardCanvasItem Designator
+        public override void LoadLayers()
         {
-            get { return designator; }
-            set
-            {
-                designator = value;
-                OnPropertyChanged(nameof(Designator));
-            }
+            UpdateLayersByPlacement();
         }
-
-
-
-        [Browsable(false)]
-        public Footprint CachedFootprint { get; set; }
 
         public override XRect GetBoundingRectangle()
         {
@@ -452,10 +449,10 @@ namespace IDE.Core.Designers
                         if (canvasItem is IPadCanvasItem padItem)
                         {
                             var board = BoardModel as IBoardDesigner;
-                            var signal = ( from s in board.NetList
-                                           from si in s.Pads
-                                           where si.Number == padItem.Number && si.FootprintInstanceId == fpInstance.Id
-                                           select s ).FirstOrDefault();
+                            var signal = (from s in board.NetList
+                                          from si in s.Pads
+                                          where si.Number == padItem.Number && si.FootprintInstanceId == fpInstance.Id
+                                          select s).FirstOrDefault();
 
                             if (signal != null)
                             {
@@ -603,11 +600,6 @@ namespace IDE.Core.Designers
 
             return t;
         }
-
-        //public override Adorner CreateAdorner(UIElement element)
-        //{
-        //    return null;
-        //}
 
         public override void MirrorX()
         {

@@ -25,20 +25,7 @@ namespace IDE.Documents.Views
     {
 
         public ComponentDesignerFileViewModel(IObjectFinder objectFinder)
-            : base(null)
         {
-
-
-            DocumentKey = "Component Editor";
-            Description = "component files";
-            FileFilterName = "component file";
-            DefaultFilter = "component";
-            documentTypeKey = DocumentKey;
-
-            //make these abstract properties
-            defaultFileType = "component";
-            defaultFileName = "Component";
-
 
             IsDirty = false;
 

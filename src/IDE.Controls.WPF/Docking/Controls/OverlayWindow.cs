@@ -11,7 +11,6 @@ public class OverlayWindow : Window, IOverlayWindow
 {
     #region Members
 
-    private ResourceDictionary currentThemeResourceDictionary; // = null
     private Canvas _mainCanvasPanel;
     private Grid _gridDockingManagerDropTargets;
     private Grid _gridAnchorablePaneDropTargets;
