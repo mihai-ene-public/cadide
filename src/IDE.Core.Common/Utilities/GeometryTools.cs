@@ -60,16 +60,22 @@ namespace IDE.Core.Common
             return points;
         }
 
-        public static IList<XPoint> GetRectangleSectionPoints(double width, double height)
+        public static IList<XPoint> GetRectangleSectionPoints(double width, double height, bool close = false)
         {
-            return new List<XPoint>()
+            var points = new List<XPoint>()
                     {
                         new XPoint(-0.5 * width, -0.5 * height),
                         new XPoint(-0.5 * width,  0.5 * height),
                         new XPoint( 0.5 * width,  0.5 * height),
                         new XPoint( 0.5 * width, -0.5 * height),
-                        new XPoint(-0.5 * width, -0.5 * height),
                     };
+
+            if (close)
+            {
+                points.Add(points[0]);
+            }
+
+            return points;
         }
 
         public static IList<XPoint3D> CreateGullWingPathPin(double pathHeight, double upperSegmentLength, double lowerSegmentLength, double bendRadius)
@@ -84,6 +90,7 @@ namespace IDE.Core.Common
             var bend = GetCirclePoints(new XPoint(upperSegmentLength, -bendRadius + pathHeight), 10, 0.5 * Math.PI, 0.5 * Math.PI, bendRadius, false);
 
             path.AddRange(bend.Select(p => new XPoint3D(p.X, 0.0d, p.Y)));
+            // path.AddRange(bend.Select(p => new XPoint3D(Math.Round(p.X, 4), 0.0d, Math.Round(p.Y, 4))));
 
             bend = GetCirclePoints(new XPoint(upperSegmentLength + 2 * bendRadius, bendRadius),
                                                   10,
@@ -92,7 +99,8 @@ namespace IDE.Core.Common
                                                   bendRadius,
                                                   true);
 
-            path.AddRange(bend.Select(p => new XPoint3D(Math.Round(p.X, 4), 0.0d, Math.Round(p.Y, 4))));
+            // path.AddRange(bend.Select(p => new XPoint3D(Math.Round(p.X, 4), 0.0d, Math.Round(p.Y, 4))));
+            path.AddRange(bend.Select(p => new XPoint3D(p.X, 0.0d, p.Y)));
 
             path.Add(new XPoint3D(upperSegmentLength + 2 * bendRadius + lowerSegmentLength, 0, 0));
 

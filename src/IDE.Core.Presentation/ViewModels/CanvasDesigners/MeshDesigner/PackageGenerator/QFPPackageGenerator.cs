@@ -235,7 +235,9 @@ namespace IDE.Documents.Views
 
             var section = GeometryTools.GetRectangleSectionPoints(b, a1);
 
-            dispatcher.RunOnDispatcher(() => padMesh = meshHelper.CreateTube(path, section, true));
+            //dispatcher.RunOnDispatcher(() =>
+            padMesh = meshHelper.CreateTube(path, section, true);
+           // );
 
             var pad = new SolidBodyMeshItem
             {
@@ -262,7 +264,6 @@ namespace IDE.Documents.Views
             var pathHeight = 0.5 * bodyHeight;
             double upperSegmentLength = 0.5 * (d - d1 - 2 * l - 4 * bendRadius);//0.5 * (d - d1) - l;// E - E1 - 2 * L - 2 * bendRadius;
             var lowerSegmentLength = L;
-
 
             var path = GeometryTools.CreateGullWingPathPin(pathHeight, upperSegmentLength, lowerSegmentLength, bendRadius);
 

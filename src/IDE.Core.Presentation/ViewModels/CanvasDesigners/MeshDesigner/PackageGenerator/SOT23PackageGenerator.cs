@@ -216,7 +216,7 @@ namespace IDE.Documents.Views
                         new XPoint(-0.5 * B,  0.5 * pinThickness),
                         new XPoint( 0.5 * B,  0.5 * pinThickness),
                         new XPoint( 0.5 * B, -0.5 * pinThickness),
-                        new XPoint(-0.5 * B, -0.5 * pinThickness),
+                        //new XPoint(-0.5 * B, -0.5 * pinThickness),
                     };
 
             dispatcher.RunOnDispatcher(() => padMesh = meshHelper.CreateTube(path, section, true));

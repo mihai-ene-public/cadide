@@ -136,6 +136,8 @@ namespace IDE.Documents.Views
                     FillColor = XColors.Black
                 });
 
+                //todo: diode marker
+
                 var z = 0.5 * pinThickness;//A1 + 0.5 * (A - A1);
                 //var padOffset = 0.5 * (D - (edgeSize - 1) * EE);
 
@@ -160,7 +162,7 @@ namespace IDE.Documents.Views
                         new XPoint(-0.5 * B,  0.5 * pinThickness),
                         new XPoint( 0.5 * B,  0.5 * pinThickness),
                         new XPoint( 0.5 * B, -0.5 * pinThickness),
-                        new XPoint(-0.5 * B, -0.5 * pinThickness),
+                        //new XPoint(-0.5 * B, -0.5 * pinThickness),
                     };
 
             dispatcher.RunOnDispatcher(() => padMesh = meshHelper.CreateTube(path, section, true));

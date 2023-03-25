@@ -3219,7 +3219,8 @@ namespace IDE.Core.Types.MeshBuilding
         public void AddTube(IList<Point3D> path, double[] values, double[] diameters, int thetaDiv, bool isTubeClosed, bool frontCap = false, bool backCap = false)
         {
             var circle = GetCircle(thetaDiv);
-            this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
+            //this.AddTube(path, values, diameters, circle, isTubeClosed, true, frontCap, backCap);
+            this.AddTube(path, values, diameters, circle, isTubeClosed, false, frontCap, backCap);
         }
         /// <summary>
         /// Adds a tube.
@@ -3368,7 +3369,7 @@ namespace IDE.Core.Types.MeshBuilding
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
 
-            if (frontCap || backCap && path.Count > 1)
+            if (frontCap || backCap)// && path.Count > 1)
             {
                 var normals = new Vector3D[section.Count];
                 var fanTextures = new Point[section.Count];
@@ -3498,7 +3499,7 @@ namespace IDE.Core.Types.MeshBuilding
             }
 
             this.AddRectangularMeshTriangleIndices(index0, pathLength, sectionLength, isSectionClosed, isTubeClosed);
-            if (frontCap || backCap && path.Count > 1)
+            if ((frontCap || backCap) && path.Count > 1)
             {
                 var normals = new Vector3D[section.Count];
                 var fanTextures = new Point[section.Count];

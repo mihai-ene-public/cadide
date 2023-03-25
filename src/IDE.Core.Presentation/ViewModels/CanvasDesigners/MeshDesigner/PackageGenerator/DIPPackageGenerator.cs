@@ -234,8 +234,8 @@ namespace IDE.Documents.Views
 
             var sections = new List<IList<XPoint>>
             {
-                GeometryTools.GetRectangleSectionPoints(width * 2, thickness),
-                GeometryTools.GetRectangleSectionPoints(width , thickness),
+                GeometryTools.GetRectangleSectionPoints(width * 2, thickness, true),
+                GeometryTools.GetRectangleSectionPoints(width , thickness, true),
             };
 
             dispatcher.RunOnDispatcher(() => padMesh = meshHelper.CreateTubes(paths, sections));
