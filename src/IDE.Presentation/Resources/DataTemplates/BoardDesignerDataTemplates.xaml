@@ -260,53 +260,6 @@
         </ctrls:DragThumb>
     </DataTemplate>
 
-    <!--<DataTemplate DataType="{x:Type designers:DesignatorBoardCanvasItem}">
-
-        <Grid SnapsToDevicePixels="True"
-              Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
-              Canvas.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
-            <ItemsControl x:Name="PART_LetterItems"
-                          IsHitTestVisible="True"
-                          ItemsSource="{Binding LetterItems}"
-                          ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-
-                        <ItemsControl x:Name="PART_Items"
-                                      ItemsSource="{Binding Items}"
-                                      ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Grid Width="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}"
-                                          Height="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance},  UpdateSourceTrigger=PropertyChanged}" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <RotateTransform Angle="{Binding Rot}" />
-
-                    <TranslateTransform  X="{Binding X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                         Y="{Binding Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
-                </TransformGroup>
-
-
-            </Grid.RenderTransform>
-        </Grid>
-
-
-    </DataTemplate>-->
-
     <DataTemplate DataType="{x:Type designers:RectangleBoardCanvasItem}">
         <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
                          Panel.ZIndex="{Binding Layer.ZIndex, UpdateSourceTrigger=PropertyChanged}">
@@ -1160,145 +1113,29 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type designers:TrackBoardCanvasItem}">
-
-        <DataTemplate.Resources>
-            <utils:BindingProxy x:Key="trackProxy"
-                                Data="{Binding}" />
-        </DataTemplate.Resources>
-
         <ctrls:DragThumb Visibility="{Binding Layer.IsVisible, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
                          Canvas.ZIndex="{Binding ZIndex, UpdateSourceTrigger=PropertyChanged}">
             <ctrls:DragThumb.Template>
                 <ControlTemplate>
-                    <ContentControl>
-                        <Canvas>
-                            <Polyline x:Name="PART_Track"
-                                      Points="{Binding Points, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{Binding Signal.Name}"
-                                      StrokeEndLineCap="Round"
-                                      StrokeStartLineCap="Round"
-                                      Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                      StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
-                                      StrokeDashCap="Round"
-                                      StrokeLineJoin="Round">
-                            </Polyline>
-                            <Polyline x:Name="PART_TrackSelected"
-                                      Visibility="{Binding SelectedPoints, Converter={x:Static conv:CountToVisibilityConverter.Instance}}"
-                                      Points="{Binding SelectedPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{Binding Signal.Name}"
-                                      StrokeEndLineCap="Round"
-                                      StrokeStartLineCap="Round"
-                                      Stroke="{StaticResource selectedSegmentsBrush}"
-                                      StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
-                                      StrokeDashCap="Round"
-                                      StrokeLineJoin="Round">
-                            </Polyline>
+                    <controls:TrackBoardShape Points="{Binding Points, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedPoints="{Binding SelectedPoints, Converter={x:Static conv:ConnectionPathConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              Stroke="{Binding Layer.LayerColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              StrokeThickness="{Binding Width, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}}"
+                                              DimmedBrush="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
+                                              MaskedBrush="{StaticResource isMaskedBrush}"
+                                              IsMasked="{Binding Layer.IsMasked}"
+                                              DocumentHasHighlightedNets="{Binding LayerDocument.HasHighlightedNets, FallbackValue=False, UpdateSourceTrigger=PropertyChanged}"
+                                              IsHighlighted="{Binding Signal.IsHighlighted}"
+                                              IsFaulty="{Binding IsFaulty}"
+                                              FaultyBrush="{StaticResource isFaultyBrush}"
+                                              SelectedPointsBrush="{StaticResource selectedSegmentsBrush}"
+                                              SignalName="{Binding Signal.Name}"
+                                              TextOptions.TextFormattingMode="Ideal"
+                                              TextOptions.TextHintingMode="Animated"
+                                              TextOptions.TextRenderingMode="ClearType"
+                                              >
 
-                            <ItemsControl ItemsSource="{Binding SignalNames}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Canvas />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <!--<TextBlock x:Name="PART_SignalName"
-                                                   Panel.ZIndex="{Binding TextZIndex}"
-                                                   Visibility="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
-                                                   IsHitTestVisible="False"
-                                                   Foreground="White"
-                                                   FontFamily="Segoe UI"
-                                                   FontSize="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="0"
-                                                   Padding="0"
-                                                   TextAlignment="Center"
-                                                   TextWrapping="NoWrap"
-                                                   TextOptions.TextFormattingMode="Ideal"
-                                                   TextOptions.TextHintingMode="Animated"
-                                                   TextOptions.TextRenderingMode="ClearType"
-                                                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                                   >
-                                            <TextBlock.RenderTransform>
-                                                <TransformGroup>
-                                                    <RotateTransform Angle="{Binding Position.Rotation}" />
-
-                                                    <TranslateTransform  X="{Binding Position.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                                                         Y="{Binding Position.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
-                                                </TransformGroup>
-
-                                            </TextBlock.RenderTransform>
-                                        </TextBlock>-->
-                                        <controls:TextPath x:Name="PART_SignalName"
-                                                           Panel.ZIndex="{Binding TextZIndex}"
-                                                           Visibility="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy}, Converter={x:Static conv:BoolToVisibilityConverter.Instance}}"
-                                                           IsHitTestVisible="False"
-                                                           Fill="White"
-                                                           FontFamily="Segoe UI"
-                                                           FontSize="{Binding FontSize, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                                           Margin="0"
-                                                           TextOptions.TextFormattingMode="Ideal"
-                                                           TextOptions.TextHintingMode="Animated"
-                                                           TextOptions.TextRenderingMode="ClearType"
-                                                           Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
-                                            <controls:TextPath.RenderTransform>
-                                                <TransformGroup>
-                                                    <RotateTransform Angle="{Binding Position.Rotation}" />
-
-                                                    <TranslateTransform  X="{Binding Position.X, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}"
-                                                                         Y="{Binding Position.Y, Converter={x:Static conv:MilimetersToScreenPointsDoubleConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
-                                                </TransformGroup>
-
-                                            </controls:TextPath.RenderTransform>
-                                        </controls:TextPath>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding Data.Layer.IsVisible, Source={StaticResource trackProxy} }"
-                                                         Value="false">
-                                                <Setter TargetName="PART_SignalName"
-                                                        Property="Visibility"
-                                                        Value="Collapsed" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                        </Canvas>
-
-                    </ContentControl>
-
-                    <ControlTemplate.Triggers>
-
-                        <DataTrigger Value="True"
-                                     Binding="{Binding IsFaulty}">
-                            <Setter TargetName="PART_Track"
-                                    Property="Stroke"
-                                    Value="{StaticResource isFaultyBrush}">
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger Value="True"
-                                     Binding="{Binding Layer.IsMasked}">
-                            <Setter TargetName="PART_Track"
-                                    Property="Stroke"
-                                    Value="{StaticResource isMaskedBrush}">
-                            </Setter>
-                        </DataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding LayerDocument.HasHighlightedNets}"
-                                           Value="True" />
-                                <Condition Binding="{Binding Layer.IsMasked}"
-                                           Value="False" />
-                                <Condition Binding="{Binding Signal.IsHighlighted}"
-                                           Value="False" />
-
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Stroke"
-                                        TargetName="PART_Track"
-                                        Value="{Binding Layer.DimmedColor, FallbackValue=#FF000080, Converter={x:Static conv:ColorToBrushConverter.Instance}, UpdateSourceTrigger=PropertyChanged}" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                    </ControlTemplate.Triggers>
+                    </controls:TrackBoardShape>
                 </ControlTemplate>
             </ctrls:DragThumb.Template>
         </ctrls:DragThumb>

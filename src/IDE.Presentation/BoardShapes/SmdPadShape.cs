@@ -344,7 +344,8 @@ DependencyProperty.Register(
             var list = new List<DrawData>();
 
 
-
+            //todo: soldermask expansion
+            //todo: pastemask contraction
             if (SolderVisible)
                 list.Add(new DrawData { ZIndex = GetZIndex(SolderZIndex), Fill = SolderBrush });
 
