@@ -1,28 +1,38 @@
 ﻿using IDE.Core.Types.Media;
 using System;
 
-namespace IDE.Core
+namespace IDE.Core;
+
+public static class SnapHelper
 {
-    public static class SnapHelper
+
+    public static XPoint SnapToGrid(XPoint position, double gridSize)
     {
-        public static double SnapToGrid(double position, double gridSize)
-        {
-            var countsX = Math.Truncate(position / gridSize);
-            var deltaX = Math.Abs(position - countsX * gridSize);
+        var absX = Math.Abs(position.X);
+        var signX = Math.Sign(position.X);
 
-            double snapX = 0;
+        var absY = Math.Abs(position.Y);
+        var signY = Math.Sign(position.Y);
 
-            if (deltaX <= (gridSize / 2))
-                snapX = countsX * gridSize;
-            else
-                snapX = (countsX + 1) * gridSize;
+        var countsX = Math.Truncate(absX / gridSize);
+        var deltaX = absX - countsX * gridSize;
 
-            return snapX;
-        }
+        var countsY = Math.Truncate(absY / gridSize);
+        var deltaY = absY - countsY * gridSize;
 
-        public static XPoint SnapToGrid(XPoint position, double gridSize)
-        {
-            return new XPoint(SnapToGrid(position.X, gridSize), SnapToGrid(position.Y, gridSize));
-        }
+        double snapX = 0;
+        double snapY = 0;
+
+        if (deltaX <= (gridSize * 0.5))
+            snapX = countsX * gridSize;
+        else
+            snapX = (countsX + 1) * gridSize;
+
+        if (deltaY <= (gridSize * 0.5))
+            snapY = countsY * gridSize;
+        else
+            snapY = (countsY + 1) * gridSize;
+
+        return new XPoint(signX * snapX, signY * snapY);
     }
 }

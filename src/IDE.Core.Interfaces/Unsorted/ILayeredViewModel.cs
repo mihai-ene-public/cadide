@@ -15,8 +15,6 @@ namespace IDE.Core.Interfaces
     /// </summary>
     public interface ILayeredViewModel
     {
-        IDrawingViewModel CanvasModel { get; set; }
-
         IList LayerGroups { get; }
 
         IList<ILayerDesignerItem> LayerItems { get; }

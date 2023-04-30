@@ -32,13 +32,13 @@ namespace IDE.Core.Adorners
             rubberbandPen = new Pen(Brushes.LightGray, t);
             rubberbandPen.DashStyle = new DashStyle(new double[] { 2 }, 1);
 
-            canvasModel = designerCanvas.DataContext as IDrawingViewModel;
+            canvasModel = designerCanvas.DataContext as ICanvasDesignerFileViewModel;
 
             GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
         private readonly IGeometryOutlineHelper GeometryHelper;
-        private readonly IDrawingViewModel canvasModel;
+        private readonly ICanvasDesignerFileViewModel canvasModel;
 
         double GetPenThickness()
         {
@@ -108,6 +108,10 @@ namespace IDE.Core.Adorners
 
         void UpdateSelection()
         {
+            if (canvasModel == null)
+            {
+                return;
+            }
 
             var rubberBandRect = new XRect(startPoint.Value.ToXPoint(), endPoint.Value.ToXPoint());
             rubberBandRect = MilimetersToDpiHelper.ConvertToMM(rubberBandRect);
@@ -115,46 +119,35 @@ namespace IDE.Core.Adorners
             rubberBandRect.X -= origin.X;
             rubberBandRect.Y -= origin.Y;
 
-            if (canvasModel != null)
+            foreach (var item in canvasModel.GetItems())
             {
-                var designer = canvasModel.FileDocument as ICanvasDesignerFileViewModel;
-
-                if (designer == null)
-                    return;
-
-                foreach (var item in canvasModel.GetItems())
+                if (canvasModel.CanSelectItem(item))
                 {
-
-                    if (designer.CanSelectItem(item))
+                    if (GeometryHelper.ItemIntersectsRectangle(item, rubberBandRect))
                     {
-                        if (GeometryHelper.ItemIntersectsRectangle(item, rubberBandRect))
-                        {
-                            item.IsSelected = true;
+                        item.IsSelected = true;
 
-                            if (item is ISegmentedPolylineSelectableCanvasItem wire)
+                        if (item is ISegmentedPolylineSelectableCanvasItem wire)
+                        {
+                            var intersectedSegments = wire.GetIntersectedSegmentsWith(rubberBandRect);
+                            if (intersectedSegments.Count > 0)
                             {
-                                var intersectedSegments = wire.GetIntersectedSegmentsWith(rubberBandRect);
-                                if (intersectedSegments.Count > 0)
+                                wire.SelectSegment(intersectedSegments[0]);
+                                if (intersectedSegments.Count > 1)
                                 {
-                                    wire.SelectSegment(intersectedSegments[0]);
-                                    if (intersectedSegments.Count > 1)
-                                    {
-                                        wire.SelectSegmentAppend(intersectedSegments.Last());
-                                    }
+                                    wire.SelectSegmentAppend(intersectedSegments.Last());
                                 }
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                         {
-                            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-                            {
-                                item.IsSelected = false;
-                            }
+                            item.IsSelected = false;
                         }
                     }
                 }
-
-
             }
 
         }

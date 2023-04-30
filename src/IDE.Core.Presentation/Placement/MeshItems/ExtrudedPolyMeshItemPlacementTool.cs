@@ -75,7 +75,7 @@ public class ExtrudedPolyMeshItemPlacementTool : PlacementTool, IExtrudedPolyMes
                     //remove last point
                     item.Points.RemoveAt(item.Points.Count - 1);
                     item.IsPlaced = true;
-                    CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                    CommitPlacement();
 
                     //create another object
                     var newItem = (ExtrudedPolyMeshItem)canvasItem.Clone();

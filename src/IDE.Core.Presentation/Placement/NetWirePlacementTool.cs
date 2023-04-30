@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eagle;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Interfaces.Geometries;
@@ -25,6 +26,10 @@ namespace IDE.Core.Presentation.Placement
 
         NetWireCanvasItem commitedPolyline = new NetWireCanvasItem();
 
+        List<JunctionCanvasItem> _junctionItems = new List<JunctionCanvasItem>();
+
+        private List<NetChanges> _netChanges = new List<NetChanges>();
+
         public NetWireCanvasItem CommitedPolyline => commitedPolyline;
 
         INetManager NetManager
@@ -39,6 +44,7 @@ namespace IDE.Core.Presentation.Placement
         {
             base.SetupCanvasItem();
 
+            _junctionItems.Clear();
             EnsurePoints();
         }
 
@@ -115,6 +121,8 @@ namespace IDE.Core.Presentation.Placement
 
                     item.Points.Clear();
 
+                    CommitPlacement();
+
                     SetupCanvasItem();
 
                     item.StartPoint = mp;
@@ -160,6 +168,42 @@ namespace IDE.Core.Presentation.Placement
             }
         }
 
+        protected override void RegisterUndoActionExecuted()
+        {
+            var item = commitedPolyline;
+            var itemNet = item.Net;
+            var currentChanges = _netChanges.ToList();
+            var junctions = _junctionItems.ToList();
+
+            Func<object, object> undo = (i) =>
+            {
+                CanvasModel.RemoveItem(item);
+                CanvasModel.RemoveItems(junctions);
+
+                foreach (var netChange in currentChanges)
+                {
+                    netChange.OldNetItems.ForEach(n => n.Net = netChange.OldNet);
+                }
+                return item;
+            };
+            Func<object, object> redo = (i) =>
+            {
+                item.Net = itemNet;
+                CanvasModel.AddItem(item);
+
+                junctions.ForEach(j => j.Net = itemNet);
+                CanvasModel.AddItems(junctions);
+
+                foreach (var netChange in currentChanges)
+                {
+                    netChange.OldNetItems.ForEach(n => n.Net = netChange.NewNet);
+                }
+                return item;
+            };
+
+            CanvasModel.RegisterUndoActionExecuted(undo, redo, item);
+        }
+
         private void SimplifyPoints(IList<XPoint> points)
         {
             var simplifiedPoints = new List<XPoint>();
@@ -199,7 +243,13 @@ namespace IDE.Core.Presentation.Placement
             //check if we intersect a point of this wire with other net segments
             #region Wire with other net segments
 
-            var circle = new CircleCanvasItem { Diameter = item.Width, X = linePointMM.X, Y = linePointMM.Y };
+            var circle = new CircleCanvasItem
+            {
+                Diameter = item.Width,
+                X = linePointMM.X,
+                Y = linePointMM.Y,
+                BorderWidth = 0.00d
+            };
             var intersectedWires = new List<NetWireCanvasItem>();
             var addJunction = false;
             var netElements = CanvasModel.Items.OfType<NetSegmentCanvasItem>().Where(ns => ns != item && ns.IsPlaced).ToList();
@@ -279,9 +329,9 @@ namespace IDE.Core.Presentation.Placement
                     junctionItem.Net = item.Net;
                     junctionItem.IsPlaced = true;
                     CanvasModel.AddItem(junctionItem);
+
+                    _junctionItems.Add(junctionItem);
                 }
-
-
             }
 
             #endregion Wire with other net segments
@@ -342,8 +392,6 @@ namespace IDE.Core.Presentation.Placement
             }
 
             #endregion Wire with pins
-
-
         }
 
         private bool TestBusHit(ref XPoint point)
@@ -414,23 +462,12 @@ namespace IDE.Core.Presentation.Placement
         {
             if (!string.IsNullOrWhiteSpace(netName))
             {
-                //var existingNet = CanvasModel.Items.OfType<NetSegmentCanvasItem>().Where(ns => ns.IsPlaced && ns.Net != null && ns.Net.Name == netName)
-                //                .Select(n => n.Net)
-                //                .OrderBy(n => n.Id) //oldest first
-                //                .FirstOrDefault();
-
                 var existingNet = NetManager.Get(netName) as SchematicNet;
 
                 if (existingNet != null)
                     return existingNet;
             }
 
-            //var newNet = new SchematicNet
-            //{
-            //    Id = LibraryItem.GetNextId(),
-            //};
-
-            //newNet.Name = string.IsNullOrWhiteSpace(netName) ? $"Net{newNet.Id}" : netName;
             var newNet = NetManager.AddNew();
             if (!string.IsNullOrWhiteSpace(netName))
                 newNet.Name = netName;
@@ -443,7 +480,7 @@ namespace IDE.Core.Presentation.Placement
         /// </summary>
         /// <param name="sourceNet"></param>
         /// <param name="destNet"></param>
-        void ChangeNet(SchematicNet sourceNet, SchematicNet destNet)
+        private void ChangeNet(SchematicNet sourceNet, SchematicNet destNet)
         {
             if (sourceNet == null || destNet == null)
                 return;
@@ -452,12 +489,17 @@ namespace IDE.Core.Presentation.Placement
 
             //just change the reference
             netItems.ForEach(n => n.Net = destNet);
-        }
 
+            _netChanges.Add(new NetChanges
+            {
+                OldNet = sourceNet,
+                NewNet = destNet,
+                OldNetItems = netItems
+            });
+        }
 
         private void EnsurePoints()
         {
-
             switch (placementMode)
             {
                 case NetPlacementMode.Single:

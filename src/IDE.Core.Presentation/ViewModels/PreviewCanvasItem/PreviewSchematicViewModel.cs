@@ -12,7 +12,7 @@ public class PreviewSchematicViewModel : PreviewLibraryItemViewModel
 {
     public PreviewSchematicViewModel()
     {
-        ( (CanvasGrid)canvasModel.CanvasGrid ).GridSizeModel.SelectedItem = new MilUnit(50);
+        canvasGrid.SetUnit(new MilUnit(50));
     }
 
     public override void PreviewDocument(LibraryItem libraryItem)
@@ -23,18 +23,14 @@ public class PreviewSchematicViewModel : PreviewLibraryItemViewModel
 
     private void PreviewSchematicDocument(SchematicDocument schematicDocument)
     {
-
         if (schematicDocument.Sheets != null)
         {
-
             var netsCache = new List<SchematicNet>();
-
             var sheets = new List<SheetDesignerItem>();
 
             foreach (var sheet in schematicDocument.Sheets)
             {
                 var sheetItem = new SheetDesignerItem { Name = sheet.Name };
-
 
                 #region Plain
 
@@ -64,7 +60,6 @@ public class PreviewSchematicViewModel : PreviewLibraryItemViewModel
                             symbolItem.LoadFromPrimitive(instance);
                             sheetItem.Items.Add(symbolItem);
                         }
-
                     }
                 }
 
@@ -92,9 +87,6 @@ public class PreviewSchematicViewModel : PreviewLibraryItemViewModel
                             netsCache.Add(net);
                         }
 
-
-                        //foreach (var segment in netDoc.Segments)
-                        //{
                         if (netDoc.Items != null)
                         {
                             foreach (var primitive in netDoc.Items)
@@ -123,8 +115,6 @@ public class PreviewSchematicViewModel : PreviewLibraryItemViewModel
 
                             }
                         }
-
-                        //}
                     }
                 }
 

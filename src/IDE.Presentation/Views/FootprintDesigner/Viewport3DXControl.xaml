@@ -82,8 +82,8 @@
         <!--Direction = "-2,-5,-2"-->
         <ctrls:GridLinesVisual3D Width="{Binding BoardPreview3DViewModel.GridWidth}"
                                  Length="{Binding BoardPreview3DViewModel.GridHeight}"
-                                 MajorDistance="{Binding CanvasModel.CanvasGrid.MajorDistance}"
-                                 MinorDistance="{Binding CanvasModel.CanvasGrid.MinorDistance}"
+                                 MajorDistance="{Binding CanvasGrid.MajorDistance}"
+                                 MinorDistance="{Binding CanvasGrid.MinorDistance}"
                                  Thickness="1"
                                  IsRendering="False"/>
 

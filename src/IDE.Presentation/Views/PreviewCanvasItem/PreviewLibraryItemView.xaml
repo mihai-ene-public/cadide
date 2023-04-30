@@ -14,8 +14,8 @@
                       Background="Transparent"
                       HorizontalScrollBarVisibility="Hidden"
                       VerticalScrollBarVisibility="Hidden"
-                      DataContext="{Binding CanvasModel}"
-                     >
+                      
+                     ><!--DataContext="{Binding CanvasModel}"-->
 
             <ItemsControl ItemsSource="{Binding Items}"
                               SnapsToDevicePixels="True"

@@ -19,10 +19,11 @@ namespace IDE.Core.Adorners
     {
         Thumb startThumb;
         Thumb endThumb;
-        Thumb middleThumb;
-
 
         ILineCanvasItem wire;
+
+        XPoint? originalStartPoint;
+        XPoint? originalEndPoint;
 
         public LineAdorner(UIElement adornedElement) : base(adornedElement)
         {
@@ -47,21 +48,16 @@ namespace IDE.Core.Adorners
                 Background = Brushes.Transparent
             };
 
-            middleThumb = new Thumb
-            {
-                Cursor = Cursors.SizeAll,
-                Width = size,
-                Height = size,
-                Opacity = 0,
-                Background = Brushes.Transparent
-            };
 
             startThumb.DragDelta += StartDragDelta;
+            startThumb.PreviewMouseDown += StartThumb_PreviewMouseDown;
+            startThumb.PreviewMouseUp += StartThumb_PreviewMouseUp;
+
             endThumb.DragDelta += EndDragDelta;
-            middleThumb.DragDelta += MiddleDragDelta;
+            endThumb.PreviewMouseDown += EndThumb_PreviewMouseDown;
+            endThumb.PreviewMouseUp += EndThumb_PreviewMouseUp;
 
             visualChildren.Add(startThumb);
-            //visualChildren.Add(middleThumb);
             visualChildren.Add(endThumb);
         }
 
@@ -82,6 +78,77 @@ namespace IDE.Core.Adorners
             }
         }
 
+        private void EndThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newEndPoint = new XPoint(wire.X2, wire.Y2);
+            var oldEndpoint = originalEndPoint.Value;
+            originalEndPoint = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    wire.X2 = oldEndpoint.X;
+                    wire.Y2 = oldEndpoint.Y;
+                    return null;
+                },
+                redo: o =>
+                {
+                    wire.X2 = newEndPoint.X;
+                    wire.Y2 = newEndPoint.Y;
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void EndThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalEndPoint == null)
+                originalEndPoint = new XPoint(wire.X2, wire.Y2);
+        }
+
+        private void StartThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newStartPoint = new XPoint(wire.X1, wire.Y1);
+            var oldStartpoint = originalStartPoint.Value;
+            originalStartPoint = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    wire.X1 = oldStartpoint.X;
+                    wire.Y1 = oldStartpoint.Y;
+                    return null;
+                },
+                redo: o =>
+                {
+                    wire.X1 = newStartPoint.X;
+                    wire.Y1 = newStartPoint.Y;
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void StartThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalStartPoint == null)
+                originalStartPoint = new XPoint(wire.X1, wire.Y1);
+        }
+
+
         // Event for the Thumb Start Point
         private void StartDragDelta(object sender, DragDeltaEventArgs e)
         {
@@ -91,30 +158,6 @@ namespace IDE.Core.Adorners
 
                 wire.X1 = position.X;
                 wire.Y1 = position.Y;
-
-                InvalidateVisual();
-            }
-        }
-
-        void MiddleDragDelta(object sender, DragDeltaEventArgs e)
-        {
-            if (wire != null)
-            {
-                //middle point will snap to grid but the length should stay the same
-                var x1 = MilimetersToDpiHelper.ConvertToDpi(wire.X1);
-                var y1 = MilimetersToDpiHelper.ConvertToDpi(wire.Y1);
-                var x2 = MilimetersToDpiHelper.ConvertToDpi(wire.X2);
-                var y2 = MilimetersToDpiHelper.ConvertToDpi(wire.Y2);
-                var position = canvasModel.SnapToGridFromDpi(Mouse.GetPosition(this).ToXPoint());
-                var oldMiddle = new XPoint(0.5 * (x1 + x2), 0.5 * (y1 + y2));
-                var delta = (XPoint)(position - oldMiddle);
-                //var deltaX = wire.SnapToGrid(delta.X);
-                //var deltaY = wire.SnapToGrid(delta.Y);
-                delta = canvasModel.SnapToGrid(delta);
-                wire.X1 += delta.X;
-                wire.Y1 += delta.Y;
-                wire.X2 += delta.X;
-                wire.Y2 += delta.Y;
 
                 InvalidateVisual();
             }
@@ -181,22 +224,6 @@ namespace IDE.Core.Adorners
             e.Handled = false;
         }
 
-        //protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
-        //{
-        //    base.OnPreviewMouseUp(e);
-
-        //    if (wire is NetWireCanvasItem && e.ChangedButton == MouseButton.Left)
-        //    {
-        //        var netWire = wire as NetWireCanvasItem;
-        //        var mousePos = canvasModel.SnapToGridFromDpi(Mouse.GetPosition(this).ToXPoint());
-
-        //        if (mousePos == netWire.StartPoint)
-        //            netWire.HandleLinePoint(netWire.StartPoint, canvasModel);
-        //        else if (mousePos == netWire.EndPoint)
-        //            netWire.HandleLinePoint(netWire.EndPoint, canvasModel);
-        //    }
-        //}
-
         protected override Size ArrangeOverride(Size finalSize)
         {
             ArrangeWire();
@@ -240,7 +267,6 @@ namespace IDE.Core.Adorners
                 var width = MilimetersToDpiHelper.ConvertToDpi(Math.Max(0.2, wire.Width));
                 //var height = width;
                 startThumb.Width = startThumb.Height = width;
-                middleThumb.Width = middleThumb.Height = width;
                 endThumb.Width = endThumb.Height = width;
 
                 var startRect = new Rect(x1 - 0.5 * width, y1 - 0.5 * width, width, width);
@@ -253,7 +279,6 @@ namespace IDE.Core.Adorners
                                             (y2 + y1) / 2 - 0.5 * width,
                                             width,
                                             width);
-                middleThumb.Arrange(middleRect);
             }
 
             InvalidateVisual();

@@ -21,6 +21,7 @@ using IDE.Core.Presentation.Utilities;
 using System.Collections;
 using IDE.Core.Presentation.Compilers;
 using IDE.Core.Presentation.Solution;
+using IDE.Core.Presentation.Placement;
 
 namespace IDE.Core.ViewModels
 {
@@ -29,7 +30,18 @@ namespace IDE.Core.ViewModels
     {
         #region ctor
 
-        public SchematicDesignerViewModel(ISettingsManager settingsManager, IActiveCompiler activeCompiler)
+        public SchematicDesignerViewModel(
+            ISettingsManager settingsManager,
+            IActiveCompiler activeCompiler,
+            IApplicationViewModel applicationModel,
+            IDispatcherHelper dispatcher,
+            IDebounceDispatcher drawingChangedDebouncer,
+            IDebounceDispatcher selectionDebouncer,
+            IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper,
+            IPlacementToolFactory placementToolFactory
+            )
+            : base(dispatcher, drawingChangedDebouncer, selectionDebouncer, dirtyMarkerTypePropertiesMapper, placementToolFactory)
+
         {
 
             schematicDocument = new SchematicDocument();
@@ -40,15 +52,14 @@ namespace IDE.Core.ViewModels
 
             SchematicProperties = new SchematicDesignerPropertiesViewModel(this);
 
-            CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
-            CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
+            //CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
+            //CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
 
-            if (applicationModel == null)
-                return;
-            applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
-            applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
+            _applicationModel = applicationModel;
+            //_applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
+            //_applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
 
-            canvasGrid.GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            canvasGrid.SetUnit(new Units.MilUnit(50));
 
             _settingsManager = settingsManager;
             _activeCompiler = activeCompiler;
@@ -56,8 +67,7 @@ namespace IDE.Core.ViewModels
 
         private readonly ISettingsManager _settingsManager;
         private readonly IActiveCompiler _activeCompiler;
-
-        CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
+        private readonly IApplicationViewModel _applicationModel;
 
         INetManager netManager = new SchematicNetManager();
         IBusManager busManager = new SchematicBusManager();
@@ -68,23 +78,19 @@ namespace IDE.Core.ViewModels
         bool highlightChangeBusy;
         void ApplicationModel_HighlightChanged(object sender, EventArgs e)
         {
-            if (sender == canvasModel || highlightChangeBusy) return;
+            if (sender == this || highlightChangeBusy) return;
 
             highlightChangeBusy = true;
             try
             {
-
-
                 //highlighted nets from board
-                var brdCanvasModel = sender as DrawingViewModel;
+                var brdCanvasModel = sender as IBoardDesigner;
                 if (brdCanvasModel == null) return;
-                var brdFile = brdCanvasModel.FileDocument as BoardDesignerFileViewModel;
-                if (brdFile == null) return;
 
                 //todo: we need to check if the board uses this schematic
-                var highlightedNets = brdFile.NetList.Where(p => p.IsHighlighted).ToList();
+                var highlightedNets = brdCanvasModel.NetList.Where(p => p.IsHighlighted).ToList();
 
-                var schNets = canvasModel.Items.OfType<NetSegmentCanvasItem>()
+                var schNets = Items.OfType<NetSegmentCanvasItem>()
                                                 .Select(n => n.Net).Distinct().ToList();
 
                 foreach (var schNet in schNets)
@@ -105,18 +111,18 @@ namespace IDE.Core.ViewModels
         bool selectionChangeBusy;
         void ApplicationModel_SelectionChanged(object sender, EventArgs e)
         {
-            if (sender == canvasModel || selectionChangeBusy) return;
+            if (sender == this || selectionChangeBusy) return;
 
             selectionChangeBusy = true;
             //selected parts from board
-            var brdCanvasModel = sender as DrawingViewModel;
+            var brdCanvasModel = sender as ICanvasDesignerFileViewModel;
 
             //todo: we need to check if the board uses this schematic
             var selectedParts = brdCanvasModel.GetFootprints().Where(p => p.IsSelected).ToList();
 
             //canvasModel.ClearSelectedItems();
 
-            var schParts = canvasModel.Items.OfType<SchematicSymbolCanvasItem>().ToList();
+            var schParts = Items.OfType<SchematicSymbolCanvasItem>().ToList();
             foreach (var sp in schParts)
             {
                 var brdPart = selectedParts.FirstOrDefault(s => s.PartName == sp.PartName);
@@ -131,12 +137,12 @@ namespace IDE.Core.ViewModels
 
         void CanvasModel_HighlightChanged(object sender, EventArgs e)
         {
-            applicationModel.OnHighlightChanged(sender, e);
+            _applicationModel.OnHighlightChanged(sender, e);
         }
 
         void CanvasModel_SelectionChanged(object sender, EventArgs e)
         {
-            applicationModel.OnSelectionChanged(sender, e);
+            _applicationModel.OnSelectionChanged(sender, e);
         }
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
@@ -161,15 +167,15 @@ namespace IDE.Core.ViewModels
             list.Add(primitivesCat);
             list.Add(partsCat);
             list.Add(netsCat);
-            var partItems = canvasModel.Items.OfType<SchematicSymbolCanvasItem>().ToList();
+            var partItems = Items.OfType<SchematicSymbolCanvasItem>().ToList();
             var parts = partItems.OrderBy(p => p.PartName)
                                  .Select(p => new OverviewSelectNode
                                  {
                                      DataItem = p,
                                  });
             partsCat.Children.AddRange(parts);
-            var netSegmentItems = canvasModel.Items.OfType<NetSegmentCanvasItem>().ToList();
-            var primitiveItems = canvasModel.Items.Except(partItems).Except(netSegmentItems);
+            var netSegmentItems = Items.OfType<NetSegmentCanvasItem>().ToList();
+            var primitiveItems = Items.Except(partItems).Except(netSegmentItems);
             primitivesCat.Children.AddRange(primitiveItems.Select(p => new OverviewSelectNode
             {
                 DataItem = p
@@ -326,6 +332,10 @@ namespace IDE.Core.ViewModels
         {
             foreach (var net in GetNets())
                 net.HighlightNet(false);
+
+            //todo: notify highlighted
+            //OnHighlightChanged(this, EventArgs.Empty);
+
         }
 
         #endregion Fields
@@ -339,10 +349,10 @@ namespace IDE.Core.ViewModels
                 if (addSymbolCommand == null)
                     addSymbolCommand = CreateCommand(p =>
                     {
-                        canvasModel.ClearSelectedItems();
+                        ClearSelectedItems();
 
                         //remove the object if we had one placing
-                        canvasModel.CancelPlacement();
+                        CancelPlacement();
 
                         var projectInfo = GetCurrentProjectInfo();
 
@@ -359,8 +369,8 @@ namespace IDE.Core.ViewModels
                                 {
                                     Items = canvasItems.Cast<ISelectableItem>().ToList()
                                 };
-                                canvasModel.AddItem(group);
-                                canvasModel.StartPlacement(group);
+                                AddItem(group);
+                                StartPlacement(group);
                             }
                         }
                         //#endif
@@ -407,9 +417,9 @@ namespace IDE.Core.ViewModels
 
         private bool ReplaceSelectedPartsCommandCanExecute()
         {
-            var selectedParts = canvasModel.SelectedItems.OfType<SchematicSymbolCanvasItem>().ToList();
+            var selectedParts = SelectedItems.OfType<SchematicSymbolCanvasItem>().ToList();
             //all are selected parts
-            if (selectedParts.Count == canvasModel.SelectedItems.Count)
+            if (selectedParts.Count == SelectedItems.Count)
             {
                 var partsHaveOneGate = selectedParts.All(p => p.ComponentDocument?.Gates?.Count == 1);
                 if (partsHaveOneGate)
@@ -538,7 +548,7 @@ namespace IDE.Core.ViewModels
                 currentSheet = value;
                 if (currentSheet != null)
                 {
-                    canvasModel.Items = currentSheet.Items;
+                    Items = currentSheet.Items;
                 }
 
                 OnPropertyChanged(nameof(CurrentSheet));
@@ -743,10 +753,10 @@ namespace IDE.Core.ViewModels
         {
             //remove the currently adding item si that it won't be saved
             ISelectableItem placeObjects = null;
-            if (canvasModel.IsPlacingItem())
+            if (IsPlacingItem())
             {
-                placeObjects = canvasModel.PlacementTool.CanvasItem;
-                canvasModel.RemoveItem(placeObjects);
+                placeObjects = PlacementTool.CanvasItem;
+                RemoveItem(placeObjects);
             }
 
             BuildDocument();
@@ -756,16 +766,16 @@ namespace IDE.Core.ViewModels
 
             //add the item back
             if (placeObjects != null)
-                canvasModel.AddItem(placeObjects);
+                AddItem(placeObjects);
         }
 
         void BuildDocument()
         {
             var partsList = new List<Part>();
 
-            schematicDocument.DocumentWidth = canvasModel.DocumentWidth;
-            schematicDocument.DocumentHeight = canvasModel.DocumentHeight;
-            schematicDocument.DocumentSize = canvasModel.DocumentSize;
+            schematicDocument.DocumentWidth = DocumentWidth;
+            schematicDocument.DocumentHeight = DocumentHeight;
+            schematicDocument.DocumentSize = DocumentSize;
 
             schematicDocument.Sheets = new List<Sheet>();
             foreach (var sheet in Sheets)
@@ -928,10 +938,9 @@ namespace IDE.Core.ViewModels
                 IsDirty = true;
             }
 
-
-            canvasModel.DocumentWidth = schematicDocument.DocumentWidth;
-            canvasModel.DocumentHeight = schematicDocument.DocumentHeight;
-            canvasModel.DocumentSize = schematicDocument.DocumentSize;
+            DocumentWidth = schematicDocument.DocumentWidth;
+            DocumentHeight = schematicDocument.DocumentHeight;
+            DocumentSize = schematicDocument.DocumentSize;
 
             //load rules
             Rules.Clear();
@@ -1122,8 +1131,8 @@ namespace IDE.Core.ViewModels
                 if (schColorsSettings == null)
                     return;
 
-                canvasModel.CanvasBackground = XColor.FromHexString(schColorsSettings.CanvasBackground);
-                canvasModel.GridColor = XColor.FromHexString(schColorsSettings.GridColor);
+                CanvasBackground = XColor.FromHexString(schColorsSettings.CanvasBackground);
+                GridColor = XColor.FromHexString(schColorsSettings.GridColor);
             }
 
         }

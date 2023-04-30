@@ -18,14 +18,7 @@ public class PositionXUnitsEditor : ITypeEditor
 
     public FrameworkElement GetEditorElement(PropertyItem propertyItem, string propertyName)
     {
-        //var item = propertyItem.Instance as ISelectableItem;
-        //if (item == null || item.Parent == null)
-        //    return null;
-        IDrawingViewModel parent = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
-        //if (propertyItem.Instance is ISelectableItem)
-        //    parent = (propertyItem.Instance as ISelectableItem).Parent;
-        //else if (propertyItem.Instance is MultipleSelectionObject)
-        //    parent = (propertyItem.Instance as MultipleSelectionObject).Parent;
+        ICanvasDesignerFileViewModel parent = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
 
         if (parent == null)
             return null;

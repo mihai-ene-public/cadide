@@ -10,15 +10,14 @@ namespace IDE.Core.Editors
 {
     public static class CanvasHelper
     {
-        public static IDrawingViewModel GetCanvasModelFromCurrentActiveDocument()
+        public static ICanvasDesignerFileViewModel GetCanvasModelFromCurrentActiveDocument()
         {
             var app = ServiceProvider.Resolve<IApplicationViewModel>();
             if (app != null)
             {
-                var canvas = app.ActiveDocument as CanvasDesignerFileViewModel;
-                var canvasModel = canvas?.CanvasModel;
+                var canvas = app.ActiveDocument as ICanvasDesignerFileViewModel;
 
-                return canvasModel;
+                return canvas;
             }
 
             return null;

@@ -3,6 +3,7 @@ using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Utilities;
+using IDE.Core.Types.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,6 +38,9 @@ namespace IDE.Core.Adorners
                     Tag = vertexIndex
                 };
                 thumb.DragDelta += Thumb_DragDelta;
+                thumb.PreviewMouseDown += Thumb_PreviewMouseDown;
+                thumb.PreviewMouseUp += Thumb_PreviewMouseUp;
+
                 visualChildren.Add(thumb);
                 vertexThumbs.Add(thumb);
             }
@@ -46,21 +50,72 @@ namespace IDE.Core.Adorners
         List<Thumb> vertexThumbs;
 
         IPolylineCanvasItem polyline;
+        XPoint? originalPosition;
 
+        private void Thumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+            var thumb = sender as Thumb;
+            if (thumb == null)
+                return;
+
+            var newPos = GetThumbPoint(thumb).Value;
+            var oldPos = originalPosition.Value;
+            originalPosition = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    SetThumbPoint(thumb, ref oldPos);
+                    return null;
+                },
+                redo: o =>
+                {
+                    SetThumbPoint(thumb, ref newPos);
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void Thumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalPosition == null && sender is Thumb thumb)
+                originalPosition = GetThumbPoint(thumb);
+        }
+
+        private XPoint? GetThumbPoint(Thumb thumb)
+        {
+            if (thumb == null)
+                return null;
+
+            var vIndex = (int)thumb.Tag;
+            return polyline.Points[vIndex];
+        }
+
+        private void SetThumbPoint(Thumb thumb, ref XPoint point)
+        {
+            if (thumb == null)
+                return;
+
+            var vIndex = (int)thumb.Tag;
+            polyline.Points[vIndex] = point;
+
+            polyline.OnPropertyChanged(nameof(polyline.Points));
+            polyline.OnPropertyChanged(nameof(ISegmentedPolylineSelectableCanvasItem.SelectedPoints));
+            InvalidateVisual();
+        }
 
         void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             var position = canvasModel.SnapToGridFromDpi(Mouse.GetPosition(this).ToXPoint());
 
             var thumb = sender as Thumb;
-            if (thumb == null)
-                return;
-
-            var vIndex = (int)thumb.Tag;
-            polyline.Points[vIndex] = position;
-            polyline.OnPropertyChanged(nameof(polyline.Points));
-            polyline.OnPropertyChanged(nameof(ISegmentedPolylineSelectableCanvasItem.SelectedPoints));
-            InvalidateVisual();
+            SetThumbPoint(thumb, ref position);
         }
 
         void Polyline_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -118,7 +173,7 @@ namespace IDE.Core.Adorners
             if (_netWireEndPointCollisionHelper == null)
             {
                 var geometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
-                _netWireEndPointCollisionHelper = new NetWireEndPointCollisionHelper(netWire, canvasModel, geometryHelper);
+                _netWireEndPointCollisionHelper = new NetWireEndPointCollisionHelper(netWire, (ISchematicDesigner)canvasModel, geometryHelper);
             }
         }
 

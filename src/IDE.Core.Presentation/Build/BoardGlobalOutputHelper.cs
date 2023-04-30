@@ -21,7 +21,7 @@ public class BoardGlobalOutputHelper
 
     public BuildGlobalResult Build(IBoardDesigner board, LayerType[] validLayerTypes)
     {
-        var canvasModel = board.CanvasModel;
+        var canvasModel = board;
         var boardContext = _boardContextBuilder.BuildBoardContext(canvasModel);
 
         var layers = BuildLayers(board.LayerItems, boardContext, validLayerTypes);
@@ -46,7 +46,7 @@ public class BoardGlobalOutputHelper
 
     public BuildGlobalResult Build(IFootprintDesigner footprintDesigner, LayerType[] validLayerTypes)
     {
-        var canvasModel = footprintDesigner.CanvasModel;
+        var canvasModel = footprintDesigner;
         var boardContext = _boardContextBuilder.BuildBoardContext(canvasModel);
 
         var rect = GetBoundingRect(boardContext.CanvasItems.Cast<ISelectableItem>());

@@ -44,7 +44,7 @@ namespace IDE.Documents.Views
             //refresh signals for pads
             await Task.Run(() =>
             {
-                foreach (var fp in board.CanvasModel.GetFootprints())
+                foreach (var fp in board.GetFootprints())
                 {
                     //this will refresh the primitive (will save primitive so far: pos, rot, etc)
                     var p = fp.SaveToPrimitive();
@@ -59,8 +59,6 @@ namespace IDE.Documents.Views
         {
             await Task.CompletedTask;
 
-            var canvasModel = board.CanvasModel;
-
             //there are refresh issues when adding new parts(footprints)
             var components = new List<ComponentDocument>();
             //an improvement for new parts is to place/group by position from schematic; it would help placement
@@ -69,7 +67,7 @@ namespace IDE.Documents.Views
                 //footprints in board that are not in schematic
                 var schPartIds = schematic.Parts.Select(p => p.Id).ToList();
 
-                var footprintsToRemove = canvasModel.GetFootprints()
+                var footprintsToRemove = board.GetFootprints()
                                           .Where(p => p.FootprintPrimitive == null || !schPartIds.Contains(p.FootprintPrimitive.PartId))
                                           .ToList();
 
@@ -98,7 +96,7 @@ namespace IDE.Documents.Views
                         var footprintLibrary = component.Footprint.LibraryName;
 
 
-                        var canvasItem = canvasModel.GetFootprints()
+                        var canvasItem = board.GetFootprints()
                                                       .FirstOrDefault(f => f.FootprintPrimitive != null && f.FootprintPrimitive.PartId == part.Id);
                         BoardComponentInstance fpInstance = null;
 
@@ -191,9 +189,9 @@ namespace IDE.Documents.Views
 
                 _dispatcher.RunOnDispatcher(() =>
                 {
-                    canvasModel.RemoveItems(footprintsToRemove);
+                    board.RemoveItems(footprintsToRemove);
                     //add footprints
-                    canvasModel.AddItems(footprintsToAdd);
+                    board.AddItems(footprintsToAdd);
                 });
             }
 
@@ -258,8 +256,6 @@ namespace IDE.Documents.Views
                                 var part = schematic.Parts.FirstOrDefault(p => p.Id == partInstance.PartId);
                                 if (part != null)
                                 {
-                                    // var solvedComp = await Task.Run(() => ParentProject.FindObject(TemplateType.Component, part.ComponentLibrary, part.ComponentId) as ComponentDocument);
-
                                     var compLibrary = part.ComponentLibrary;
                                     if (string.IsNullOrEmpty(compLibrary))
                                         compLibrary = "local";
@@ -270,7 +266,7 @@ namespace IDE.Documents.Views
                                     {
                                         var connect = solvedComp.Footprint.Connects.FirstOrDefault(p => p.gateId == partInstance.GateId
                                                                                                                && p.pin == pin.Pin);
-                                        var fpInstance = board.CanvasModel.GetFootprints()
+                                        var fpInstance = board.GetFootprints()
                                                                         .FirstOrDefault(p => p.FootprintPrimitive.PartId == part.Id && p.FootprintPrimitive.FootprintId == solvedComp.Footprint.footprintId);
 
                                         if (connect != null && fpInstance != null)// && fpInstance.Pads != null)
@@ -350,24 +346,12 @@ namespace IDE.Documents.Views
                 {
                     foreach (var routedItem in en.Items.OfType<ISignalPrimitiveCanvasItem>().ToList())
                     {
-                        //routedItem.Signal = null;
-                        //if (routedItem is SingleLayerBoardCanvasItem)
-                        //{
-                        //    var s = routedItem as SingleLayerBoardCanvasItem;
-                        //    s.Layer = null;//this should remove it from the layer
-                        //}
-                        //else
-                        //{
-                        //    //canvasModel.RemoveItem((ISelectableItem)routedItem);
-                        //}
-
                         toremove.Add(routedItem);
-
                     }
                 }
             }
 
-            board.CanvasModel.RemoveItems(toremove);
+            board.RemoveItems(toremove);
 
             //ensure current actualized signal
             foreach (var net in board.NetList)

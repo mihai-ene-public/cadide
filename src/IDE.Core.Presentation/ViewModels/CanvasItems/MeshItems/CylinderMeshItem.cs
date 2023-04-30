@@ -352,10 +352,10 @@ namespace IDE.Core.Designers
 
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
            // var r = (rotationZ + 90) % 360;
-            RotationZ = RotateSafe(rotationZ);
+            RotationZ = RotateSafe(rotationZ, angle);
         }
 
         public override string ToString()

@@ -9,7 +9,7 @@ namespace IDE.Core.Interfaces
     public interface IBoardDesigner : ILayeredViewModel
                                     , ICanvasWithHighlightedItems
                                     , IDocumentOverview
-                                    , IFileBaseViewModel
+                                    , ICanvasDesignerFileViewModel
     {
         IList<IBoardNetDesignerItem> NetList { get; }
 

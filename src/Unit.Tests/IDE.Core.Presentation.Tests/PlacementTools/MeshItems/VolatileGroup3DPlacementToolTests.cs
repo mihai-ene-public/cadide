@@ -14,8 +14,8 @@ public class VolatileGroup3DPlacementToolTests : PlacementToolTest
         var dispatcherMock = new Mock<IDispatcherHelper>();
         var schMock = new Mock<ISchematicDesigner>();
 
-        _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-        ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+        _canvasModel = CreateCanvasModel();
+        _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
         var canvasItemType = typeof(VolatileGroup3DCanvasItem);
         var canvasItem = new VolatileGroup3DCanvasItem();
@@ -23,7 +23,7 @@ public class VolatileGroup3DPlacementToolTests : PlacementToolTest
         placementTool.CanvasModel = _canvasModel;
         placementTool.StartPlacement(canvasItem);
     }
-    private readonly IDrawingViewModel _canvasModel;
+    private readonly ICanvasDesignerFileViewModel _canvasModel;
 
     [Fact]
     public void PlacementStarted_MouseMoves()

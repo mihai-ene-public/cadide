@@ -74,7 +74,7 @@ namespace IDE.Core.Presentation.Placement
                         //remove last point
                         item.PolygonPoints.RemoveAt(item.PolygonPoints.Count - 1);
                         item.IsPlaced = true;
-                        CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                        CommitPlacement();
 
                         var newItem = (IPolygonCanvasItem)canvasItem.Clone();
                         newItem.PolygonPoints.Clear();

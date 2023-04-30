@@ -1,4 +1,5 @@
 ﻿using IDE.Core.Types.Media;
+using SixLabors.ImageSharp.ColorSpaces;
 using System;
 
 namespace IDE.Core.Spatial2D
@@ -168,11 +169,31 @@ namespace IDE.Core.Spatial2D
 
         public bool Equals(Envelope other)
         {
-            return this == other;
+            if (other is null)
+            {
+                return false;
+            }
+
+            // Optimization for a common success case.
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            // If run-time types are not exactly the same, return false.
+            if (GetType() != other.GetType())
+            {
+                return false;
+            }
+
+            return MinX == other.MinX &&
+                   MinY == other.MinY &&
+                   MaxX == other.MaxX &&
+                   MaxY == other.MaxY;
         }
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return Equals(obj as Envelope);
         }
 
         public override int GetHashCode()
@@ -182,15 +203,19 @@ namespace IDE.Core.Spatial2D
 
         public static bool operator ==(Envelope left, Envelope right)
         {
-            if (left == null && right == null)
-                return true;
-            if (left == null || right == null)
-                return false;
+            if (left is null)
+            {
+                if (right is null)
+                {
+                    return true;
+                }
 
-            return left.MinX == right.MinX &&
-                   left.MinY == right.MinY &&
-                   left.MaxX == right.MaxX &&
-                   left.MaxY == right.MaxY;
+                // Only the left side is null.
+                return false;
+            }
+            return left.Equals(right);
+
+
         }
 
 

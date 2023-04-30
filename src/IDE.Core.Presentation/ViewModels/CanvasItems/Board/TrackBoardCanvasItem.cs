@@ -324,7 +324,7 @@ public class TrackBoardCanvasItem : SingleLayerBoardCanvasItem
         OnPropertyChanged(nameof(Points));
     }
 
-    public override void Rotate()
+    public override void Rotate(double angle = 90)
     {
         var mp = new XPoint();
         foreach (var p in Points)
@@ -335,7 +335,7 @@ public class TrackBoardCanvasItem : SingleLayerBoardCanvasItem
         mp.Y /= Points.Count;
 
         var tg = new XTransformGroup();
-        var rotateTransform = new XRotateTransform(90)
+        var rotateTransform = new XRotateTransform(angle)
         {
             CenterX = mp.X,
             CenterY = mp.Y

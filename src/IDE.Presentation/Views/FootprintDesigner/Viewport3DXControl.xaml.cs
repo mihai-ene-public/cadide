@@ -1,22 +1,15 @@
-﻿using HelixToolkit.Wpf.SharpDX;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using HelixToolkit.Wpf.SharpDX;
+using IDE.Core;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 using IDE.Documents.Views;
 using IDE.Presentation.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace IDE.Controls
 {
@@ -33,11 +26,11 @@ namespace IDE.Controls
 
         RectangleSelectionBehavior rectangleSelection;
 
-        IDrawingViewModel GetCanvasModel()
+        IPreviewEditCanvasViewModel GetCanvasModel()
         {
             var canvas = DataContext as FootprintDesignerFileViewModel;
             if (canvas != null)
-                return canvas.BoardPreview3DViewModel.Model3DCanvasModel;
+                return canvas.BoardPreview3DViewModel;
 
             return null;
         }
@@ -50,8 +43,9 @@ namespace IDE.Controls
                     return new XPoint();
 
                 //var p = helixViewport3D.CurrentPosition;
-                var mousePos = Mouse.GetPosition(helixViewport3D).ToVector2();
-                helixViewport3D.UnProjectOnPlane(mousePos, new SharpDX.Vector3(0, 0, 0), new SharpDX.Vector3(0, 0, 1), out var p);
+                var mousePos = Mouse.GetPosition(helixViewport3D);
+                var mpSharp = new SharpDX.Vector2((float)mousePos.X, (float)mousePos.Y);
+                helixViewport3D.UnProjectOnPlane(mpSharp, new SharpDX.Vector3(0, 0, 0), new SharpDX.Vector3(0, 0, 1), out var p);
 
                 var cursorPosition = new XPoint(p.X, p.Y);
                 return cursorPosition;
@@ -122,7 +116,7 @@ namespace IDE.Controls
                                     selectionHandled = true;
                                     canvasModel.UpdateSelection();
 
-                                    dragStart = canvasModel.SnapToGrid(CursorPosition);
+                                    dragStart = SnapHelper.SnapToGrid(CursorPosition, canvasModel.CanvasGrid.GridSize);
                                     //CaptureMouse();
 
                                 }
@@ -198,7 +192,7 @@ namespace IDE.Controls
             {
                 if (dragStart.HasValue)
                 {
-                    var currentPos = canvasModel.SnapToGrid(cursorPosition);
+                    var currentPos = SnapHelper.SnapToGrid(cursorPosition, canvasModel.CanvasGrid.GridSize);
                     var deltaX = currentPos.X - dragStart.Value.X;
                     var deltaY = currentPos.Y - dragStart.Value.Y;
 
@@ -215,10 +209,10 @@ namespace IDE.Controls
             }
 
             //mouse pos in mm
-            var snappedMousePos = canvasModel.SnapToGrid(cursorPosition);
+            var snappedMousePos = SnapHelper.SnapToGrid(cursorPosition, canvasModel.CanvasGrid.GridSize);
 
-            canvasModel.X = snappedMousePos.X;
-            canvasModel.Y = snappedMousePos.Y;
+            //canvasModel.X = snappedMousePos.X;
+            //canvasModel.Y = snappedMousePos.Y;
         }
 
         private void HelixViewport3D_PreviewMouseUp(object sender, MouseButtonEventArgs e)

@@ -33,10 +33,8 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             fileModelMock.SetupGet(x => x.LayerItems)
                          .Returns(layerItems);
 
-            _canvasModel = new DrawingViewModel(fileModelMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
-
-
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(ViaCanvasItem);
             placementTool = new ViaPlacementTool();
@@ -44,7 +42,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             placementTool.StartPlacement(canvasItemType);
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         [Fact]
         public void PlacementStarted_MouseMoves()

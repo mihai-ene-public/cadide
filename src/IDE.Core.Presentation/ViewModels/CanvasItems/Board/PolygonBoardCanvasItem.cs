@@ -435,7 +435,7 @@ namespace IDE.Core.Designers
             OnPropertyChanged(nameof(PolygonPoints));
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             var mp = new XPoint();
             //start point is equal endpoint so the actual number of points is n-1
@@ -448,7 +448,7 @@ namespace IDE.Core.Designers
             mp.Y /= points.Count;
 
             var tg = new XTransformGroup();
-            var rotateTransform = new XRotateTransform(90)
+            var rotateTransform = new XRotateTransform(angle)
             {
                 CenterX = mp.X,
                 CenterY = mp.Y
@@ -489,9 +489,9 @@ namespace IDE.Core.Designers
 
                     var rulesManger = new BoardRulesCompiler();
 
-                    var canvasItems = (List<ISelectableItem>)thisBoard.CanvasModel.GetItems();
+                    var canvasItems = (List<ISelectableItem>)thisBoard.GetItems();
 
-                    var footprints = thisBoard.CanvasModel.GetFootprints().ToList();
+                    var footprints = thisBoard.GetFootprints().ToList();
                     var footprintItems = ( from fp in footprints
                                            from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<SingleLayerBoardCanvasItem>()
                                            where p.ShouldBeOnLayer(Layer)//p.Layer == Layer

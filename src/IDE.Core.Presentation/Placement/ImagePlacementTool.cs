@@ -1,82 +1,80 @@
 ﻿using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
-namespace IDE.Core.Presentation.Placement
+namespace IDE.Core.Presentation.Placement;
+
+public class ImagePlacementTool : PlacementTool, IImagePlacementTool
 {
-    public class ImagePlacementTool : PlacementTool, IImagePlacementTool
+    IImageCanvasItem GetItem() => canvasItem as IImageCanvasItem;
+
+    const double minWidth = 0.1;
+    const double minHeight = 0.1;
+
+    public override void PlacementMouseMove(XPoint mousePosition)
     {
-        IImageCanvasItem GetItem() => canvasItem as IImageCanvasItem;
+        var mp = CanvasModel.SnapToGrid(mousePosition);
 
-        const double minWidth = 0.1;
-        const double minHeight = 0.1;
+        var item = GetItem();
 
-        public override void PlacementMouseMove(XPoint mousePosition)
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                break;
+            case PlacementStatus.Started:
+                var w = mp.X - item.X;
+                var h = mp.Y - item.Y;
+                if (w < minWidth)
+                    w = minWidth;
+                if (h < minHeight)
+                    h = minHeight;
+                item.Width = w;
+                item.Height = h;
+                break;
+        }
+    }
 
-            var item = GetItem();
+    public override void PlacementMouseUp(XPoint mousePosition)
+    {
+        var mp = CanvasModel.SnapToGrid(mousePosition);
 
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    break;
-                case PlacementStatus.Started:
-                    var w = mp.X - item.X;
-                    var h = mp.Y - item.Y;
-                    if (w < minWidth)
-                        w = minWidth;
-                    if (h < minHeight)
-                        h = minHeight;
+        var item = GetItem();
+
+        switch (PlacementStatus)
+        {
+            //1st click
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                PlacementStatus = PlacementStatus.Started;
+                break;
+
+            //2nd click
+            case PlacementStatus.Started:
+                var w = mp.X - item.X;
+                var h = mp.Y - item.Y;
+                if (w > minWidth && h > minHeight)
+                {
                     item.Width = w;
                     item.Height = h;
-                    break;
-            }
-        }
+                    item.IsPlaced = true;
 
-        public override void PlacementMouseUp(XPoint mousePosition)
-        {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+                    CommitPlacement();
 
-            var item = GetItem();
+                    var newItem = (ISelectableItem)canvasItem.Clone();
 
-            switch (PlacementStatus)
-            {
-                //1st click
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    PlacementStatus = PlacementStatus.Started;
-                    break;
-                //2nd click
-                case PlacementStatus.Started:
-                    var w = mp.X - item.X;
-                    var h = mp.Y - item.Y;
-                    if (w > minWidth && h > minHeight)
-                    {
-                        item.Width = w;
-                        item.Height = h;
-                        item.IsPlaced = true;
-                        CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                    PlacementStatus = PlacementStatus.Ready;
+                    canvasItem = newItem;
 
-
-                        var newItem = (ISelectableItem)canvasItem.Clone();
-                        //newItem.X = mp.X;
-                        //newItem.Y = mp.Y;
-
-                        PlacementStatus = PlacementStatus.Ready;
-                        canvasItem = newItem;
-
-                        SetupCanvasItem();
-                        CanvasModel.AddItem(canvasItem);
-                    }
-                    break;
-            }
+                    SetupCanvasItem();
+                    CanvasModel.AddItem(canvasItem);
+                }
+                break;
         }
     }
+}
 
-    public interface IImagePlacementTool
-    {
-    }
+public interface IImagePlacementTool
+{
 }

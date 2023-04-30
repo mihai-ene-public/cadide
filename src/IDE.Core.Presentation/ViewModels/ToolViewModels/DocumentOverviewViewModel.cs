@@ -186,9 +186,8 @@ namespace IDE.Core.ViewModels
                     {
                         case ISelectableItem si:
                             si.IsSelected = value;
-                            var canvas = OverviewModel?.Document as CanvasDesignerFileViewModel;
-                            var canvasModel = canvas?.CanvasModel;
-                            canvasModel?.UpdateSelection();
+                            var canvas = OverviewModel?.Document as ICanvasDesignerFileViewModel;
+                            canvas?.UpdateSelection();
                             break;
 
                         case IBoardNetDesignerItem net:

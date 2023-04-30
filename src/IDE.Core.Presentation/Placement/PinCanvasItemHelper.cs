@@ -10,7 +10,7 @@ namespace IDE.Core.Presentation.Placement
     public class PinCanvasItemHelper
     {
 
-        public PinCanvasItemHelper(IDrawingViewModel canvasModel)
+        public PinCanvasItemHelper(ICanvasDesignerFileViewModel canvasModel)
         {
             pins = from part in canvasModel.Items.OfType<SchematicSymbolCanvasItem>()
                    from p in part.Pins

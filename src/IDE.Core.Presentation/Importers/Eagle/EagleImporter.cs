@@ -1645,8 +1645,9 @@ public class EagleImporter : IEagleImporter
             var dy = 0d;
 
             var gridSize = 1.27d;
-            dx = SnapHelper.SnapToGrid(-sheetrect.X, gridSize);
-            dy = SnapHelper.SnapToGrid(-sheetrect.Y, gridSize);
+            var snap = SnapHelper.SnapToGrid(new XPoint(-sheetrect.X, -sheetrect.Y), gridSize);
+            dx = snap.X;
+            dy = snap.Y;
 
             if (dx == 0.0d && dy == 0.0d)
                 continue;
@@ -1871,8 +1872,10 @@ public class EagleImporter : IEagleImporter
         var dy = 0d;
 
         var gridSize = 0.1d;
-        dx = SnapHelper.SnapToGrid(-brdRect.X, gridSize);
-        dy = SnapHelper.SnapToGrid(-brdRect.Y, gridSize);
+
+        var snap = SnapHelper.SnapToGrid(new XPoint(-brdRect.X, -brdRect.Y), gridSize);
+        dx = snap.X;
+        dy = snap.Y;
 
         if (dx == 0.0d && dy == 0.0d)
             return;

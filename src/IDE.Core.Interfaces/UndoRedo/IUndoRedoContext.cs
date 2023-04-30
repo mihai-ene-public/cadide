@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -7,13 +8,14 @@ namespace IDE.Core.Interfaces
     /// <summary>
     /// Represents any object that manages Undo/Redo commands, and undoable properties
     /// </summary>
-    public interface IUndoRedoContext
+    public interface IUndoRedoContext : IDisposable
     {
         /// <summary>
         /// Registers an action with the context.
         /// </summary>
         /// <param name="action"></param>
         void RegisterAction(IUndoableAction action);
+
         /// <summary>
         /// Unregisters an action with the context.
         /// </summary>
@@ -46,17 +48,6 @@ namespace IDE.Core.Interfaces
         /// </summary>
         /// <returns></returns>
         bool CanRedo();
-
-        /// <summary>
-        /// Returns this context's undo capabilites in the form of an ICommand.
-        /// </summary>
-        /// <returns></returns>
-        ICommand GetUndoCommand();
-        /// <summary>
-        /// Returns this context's undo capabilites in the form of an ICommand.
-        /// </summary>
-        /// <returns></returns>
-        ICommand GetRedoCommand();
 
         /// <summary>
         /// This event handler provides a way for this context to raise property changed notifications on behalf of the UndoableProperties.

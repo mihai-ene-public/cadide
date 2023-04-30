@@ -43,10 +43,10 @@ namespace IDE.Core.Editors
             return comboBox;
         }
 
-        IDrawingViewModel GetCurrentCanvas()
+        ICanvasDesignerFileViewModel GetCurrentCanvas()
         {
             var canvasDoc = DocumentHelper.GetCurrentDocument<ICanvasDesignerFileViewModel>();
-            return canvasDoc?.CanvasModel;
+            return canvasDoc;
         }
     }
 }

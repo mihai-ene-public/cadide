@@ -5,236 +5,134 @@ using System.Collections.Generic;
 using System.Linq;
 using IDE.Core.Presentation.Utilities;
 using System.Threading.Tasks;
+using IDE.Core.Routing.PathFinding;
+using IDE.Core.Storage;
 
-namespace IDE.Core.Designers
+namespace IDE.Core.Designers;
+
+public abstract class SegmentRemoverHelper<T> : ISegmentRemoverHelper where T : ISegmentedPolylineSelectableCanvasItem, new()
 {
-    public class SegmentRemoverHelper
+    protected readonly IDispatcherHelper _dispatcher;
+
+    public SegmentRemoverHelper(IDispatcherHelper dispatcher)
     {
-        private readonly IDrawingViewModel _canvasModel;
-        private readonly ISegmentedPolylineSelectableCanvasItem _canvasItem;
-        private readonly IDispatcherHelper _dispatcher;
+        _dispatcher = dispatcher;
+    }
 
-        public SegmentRemoverHelper(IDrawingViewModel canvasModel, ISegmentedPolylineSelectableCanvasItem canvasItem, IDispatcherHelper dispatcher)
-        {
-            _canvasModel = canvasModel;
-            _canvasItem = canvasItem;
-            _dispatcher = dispatcher;
-        }
+    protected abstract T CreateAnotherItem(T canvasItem);
 
-        private ISegmentedPolylineSelectableCanvasItem CreateAnother()
+    protected abstract void RunRemoveBehavior(T canvasItem, IList<T> newTracks, ICanvasDesignerFileViewModel canvasModel);
+
+    protected abstract object GetSignal(T canvasItem);
+    protected abstract void SetSignal(T canvasItem, object signal);
+    protected virtual void SetSignalOther(object canvasItem, object signal)
+    {
+
+    }
+    protected virtual object GetSignalOther(object canvasItem)
+    {
+        return null;
+    }
+
+    protected virtual IList<ISelectableItem> GetOtherAffectedItems() { return new List<ISelectableItem>(); }
+
+    public void RemoveSelectedSegments(ICanvasDesignerFileViewModel canvasModel, ISegmentedPolylineSelectableCanvasItem segmentedItem)
+    {
+        var canvasItem = (T)segmentedItem;
+        if (segmentedItem.HasSelectedSegments())
         {
-            switch (_canvasItem)
+            var originalPoints = segmentedItem.Points.ToList();
+            var originalSignal = GetSignal(canvasItem);
+
+            //consider we have to tracks and rebuild points
+            //if we have a track from the points then we build another item
+            var track1Points = new List<XPoint>();
+            for (int pIndex = 0; pIndex <= segmentedItem.SelectedSegmentStart; pIndex++)
             {
-                case NetWireCanvasItem netWire:
-                    return new NetWireCanvasItem
-                    {
-                        ParentObject = netWire.ParentObject,
-                        Width = netWire.Width,
-                        LineColor = netWire.LineColor,
-                        ZIndex = netWire.ZIndex,
-                        IsPlaced = true
-                    };
-
-                case BusWireCanvasItem busWire:
-                    return new BusWireCanvasItem()
-                    {
-                        ParentObject = busWire.ParentObject,
-                        Width = busWire.Width,
-                        LineColor = busWire.LineColor,
-                        Nets = busWire.Nets,
-                        ZIndex = busWire.ZIndex,
-                        IsPlaced = true
-                    };
-
-                case TrackBoardCanvasItem trackWire:
-                    return new TrackBoardCanvasItem()
-                    {
-                        LayerDocument = trackWire.LayerDocument,
-                        ParentObject = trackWire.ParentObject,
-                        Layer = trackWire.Layer,
-                        Signal = trackWire.Signal,//same signal (this is intended)
-                        Width = trackWire.Width,
-                        IsPlaced = true
-                    };
-
+                track1Points.Add(segmentedItem.Points[pIndex]);
             }
 
-            throw new NotImplementedException();
-        }
-
-        private void RunRemoveBehavior(IList<ISegmentedPolylineSelectableCanvasItem> newTracks)
-        {
-            switch (_canvasItem)
+            var track2Points = new List<XPoint>();
+            for (int pIndex = segmentedItem.SelectedSegmentEnd + 1; pIndex < segmentedItem.Points.Count; pIndex++)
             {
-                case NetWireCanvasItem netWire:
-                    RunRemoveNetWireBehavior(netWire, newTracks.Cast<NetWireCanvasItem>().ToList());
-                    break;
-
-                case BusWireCanvasItem busWire:
-                    RunRemoveBusWireBehavior(busWire, newTracks.Cast<BusWireCanvasItem>().ToList());
-                    break;
-
-                case TrackBoardCanvasItem trackWire:
-                    RunRemoveTrackWireBehavior(trackWire, newTracks.Cast<TrackBoardCanvasItem>().ToList());
-                    break;
-            }
-        }
-
-
-
-        private void RunRemoveNetWireBehavior(NetWireCanvasItem canvasItem, IList<NetWireCanvasItem> newTracks)
-        {
-            //assumptions:
-            //one wire net endpoint (start, end) connect to a pin
-            //a pin connects to a single net wire endpoint
-
-            var net = canvasItem.Net;
-
-            if (net == null)
-                return;
-
-            var netManager = _canvasModel.GetNetManager();
-
-            canvasItem.Net = null;
-
-            foreach (var pin in net.NetItems.OfType<PinCanvasItem>().ToList())
-            {
-                if (PinConnectsWithWire(pin, canvasItem))
-                {
-                    pin.Net = null;
-
-                    foreach (var track in newTracks)
-                    {
-                        if (PinConnectsWithWire(pin, track))
-                        {
-                            var newNet = (SchematicNet)netManager.AddNew();
-                            pin.Net = newNet;
-                            track.Net = newNet;
-
-                            break;
-                        }
-                    }
-                }
+                track2Points.Add(segmentedItem.Points[pIndex]);
             }
 
+            var newTracks = new List<T>();
+
+            if (track1Points.Count > 1)
+            {
+                var track1 = CreateAnotherItem(canvasItem);
+                track1.Points = track1Points;
+                newTracks.Add(track1);
+            }
+
+            if (track2Points.Count > 1)
+            {
+                var track2 = CreateAnotherItem(canvasItem);
+                track2.Points = track2Points;
+                newTracks.Add(track2);
+            }
+
+            RunRemoveBehavior(canvasItem, newTracks, canvasModel);
+            var newSignals = new List<object>();
             foreach (var track in newTracks)
             {
-                if (track.Net == null)
-                {
-                    var newNet = (SchematicNet)netManager.AddNew();
-                    track.Net = newNet;
-                }
+                newSignals.Add(GetSignal(track));
             }
 
-            if (net.NetItems?.Count == 0)
+            canvasModel.ClearSelectedItems();
+            canvasModel.UpdateSelection();
+
+            //this is an workaround for a refresh issue
+            //it happens that when you delete a segment in the middle the first portion is not visible; only the second part of the segment is
+            //it exists on the canvas since if you save then reload all segments are where they're supposed to be
+            _dispatcher.RunOnDispatcher(async () =>
             {
-                netManager.Remove(net);
-            }
-        }
+                canvasModel.RemoveItem(segmentedItem);
 
-        private void RunRemoveBusWireBehavior(BusWireCanvasItem canvasItem, IList<BusWireCanvasItem> newTracks)
-        {
-            //assumptions:
-            //one wire net endpoint (start, end) connect to a pin
-            //a pin connects to a single net wire endpoint
+                foreach (ISelectableItem track in newTracks)
+                {
+                    canvasModel.AddItem(track);
+                    await Task.Delay(10);
+                }
 
-            var bus = canvasItem.Bus;
+            });
 
-            var busManager = _canvasModel.GetBusManager();
+            var currentNewTracks = newTracks.ToList();
+            var currentOtherAffectedItems = GetOtherAffectedItems().ToList();
+            var currentOtherNewSignals = currentOtherAffectedItems.Select(s => GetSignalOther(s)).ToList();
 
-            if (bus == null)
-                return;
-
-            canvasItem.Bus = null;
-
-            foreach (var track in newTracks)
+            canvasModel.RegisterUndoActionExecuted(undo: o =>
             {
-                if (track.Points.Count > 1)
-                {
-                    var newBus = (SchematicBus)busManager.AddNew();
-                    track.Bus = newBus;
-                }
-            }
+                canvasModel.RemoveItems(currentNewTracks.Cast<ISelectableItem>());
 
-            if (bus.BusItems?.Count == 0)
+                segmentedItem.Points = originalPoints;
+                SetSignal(canvasItem, originalSignal);
+                foreach (var affectedItem in currentOtherAffectedItems)
+                {
+                    SetSignalOther(affectedItem, originalSignal);
+                }
+
+                canvasModel.AddItem(segmentedItem);
+                return null;
+            },
+            redo: o =>
             {
-                busManager.Remove(bus);
-            }
-        }
+                canvasModel.RemoveItem(segmentedItem);
 
-        private void RunRemoveTrackWireBehavior(TrackBoardCanvasItem canvasItem, IList<TrackBoardCanvasItem> newTracks)
-        {
-            //there is no behavior at the moment; see if we need to do anything
-
-        }
-
-        private bool PinConnectsWithWire(PinCanvasItem pin, NetWireCanvasItem netWire)
-        {
-            var t = pin.GetTransform();
-            var pinPos = t.Transform(new XPoint()).Round();
-
-            //maybe improve this with GeometryHelper.CirclesIntersect
-
-            var sp = netWire.StartPoint.Round();
-            var ep = netWire.EndPoint.Round();
-
-            return pinPos == sp || pinPos == ep;
-        }
-
-        public void RemoveSelectedSegments()
-        {
-            if (_canvasItem.HasSelectedSegments())
-            {
-                //consider we have to tracks and rebuild points
-                //if we have a track from the points then we build another item
-                var track1Points = new List<XPoint>();
-                for (int pIndex = 0; pIndex <= _canvasItem.SelectedSegmentStart; pIndex++)// pIndex <=? canvasItem.SelectedSegmentStart
+                for (int i = 0; i < currentNewTracks.Count; i++)
                 {
-                    track1Points.Add(_canvasItem.Points[pIndex]);
+                    SetSignal(currentNewTracks[i], newSignals[i]);
+                }
+                for (int i = 0; i < currentOtherAffectedItems.Count; i++)
+                {
+                    SetSignalOther(currentOtherAffectedItems[i], currentOtherNewSignals[i]);
                 }
 
-                var track2Points = new List<XPoint>();
-                for (int pIndex = _canvasItem.SelectedSegmentEnd + 1; pIndex < _canvasItem.Points.Count; pIndex++)
-                {
-                    track2Points.Add(_canvasItem.Points[pIndex]);
-                }
-
-                var newTracks = new List<ISegmentedPolylineSelectableCanvasItem>();
-
-                if (track1Points.Count > 1)
-                {
-                    var track1 = CreateAnother();
-                    track1.Points = track1Points;
-                    newTracks.Add(track1);
-                }
-
-                if (track2Points.Count > 1)
-                {
-                    var track2 = CreateAnother();
-                    track2.Points = track2Points;
-                    newTracks.Add(track2);
-                }
-
-                RunRemoveBehavior(newTracks);
-
-                _canvasModel.ClearSelectedItems();
-                _canvasModel.UpdateSelection();
-
-                //this is an workaround for a refresh issue
-                //it happens that when you delete a segment in the middle the first portion is not visible; only the second part of the segment is
-                //it exists on the canvas since if you save then reload all segments are where they're supposed to be
-                //var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-
-                _dispatcher.RunOnDispatcher(async () =>
-                {
-                    foreach (ISelectableItem track in newTracks)
-                    {
-                        _canvasModel.AddItem(track);
-                        await Task.Delay(10);
-                    }
-                    _canvasModel.RemoveItem((ISelectableItem)_canvasItem);
-                });
-            }
+                canvasModel.AddItems(currentNewTracks.Cast<ISelectableItem>());
+                return null;
+            }, null);
         }
     }
 }

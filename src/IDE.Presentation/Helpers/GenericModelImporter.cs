@@ -100,11 +100,10 @@ namespace IDE.Documents.Views
             return mg;
         }
 
-        public void Import(string filePath, IDrawingViewModel canvasModel)
+        public ISelectableItem Import(string filePath)
         {
             var modelGroup = Load(filePath, null, true);
-
-            canvasModel.AddItem(modelGroup);
+            return modelGroup;
         }
     }
 

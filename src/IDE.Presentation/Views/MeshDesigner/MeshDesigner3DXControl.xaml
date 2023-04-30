@@ -63,8 +63,8 @@
         <hx:DirectionalLight3D Color="#777" Direction = "{Binding Camera.LookDirection, ElementName=PART_Viewport}"/> <!--Direction = "-2,-5,-2"-->
         <ctrls:GridLinesVisual3D Width="30"
                                  Length="30"
-                                 MajorDistance="{Binding CanvasModel.CanvasGrid.MajorDistance}"
-                                 MinorDistance="{Binding CanvasModel.CanvasGrid.MinorDistance}"
+                                 MajorDistance="{Binding CanvasGrid.MajorDistance}"
+                                 MinorDistance="{Binding CanvasGrid.MinorDistance}"
                                  Thickness="1" />
 
         <!-- X - axis-->
@@ -92,6 +92,6 @@
         </ctrls:TruncatedConeVisual3D>
 
         <!--<helix:DirectionalHeadLight Brightness="0.65" />-->
-        <ctrls:ItemsModel3D ItemsSource="{Binding CanvasModel.Items}" />
+        <ctrls:ItemsModel3D ItemsSource="{Binding Items}" />
     </hx:Viewport3DX>
 </UserControl>

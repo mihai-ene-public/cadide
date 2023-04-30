@@ -11,14 +11,7 @@ public class SchematicBuilder : ISchematicBuilder
 {
     public async Task<BuildResult> Build(ISchematicDesigner schematic, string outputFolder)
     {
-        var canvasModel = schematic.CanvasModel;
-        //var pdfOutput = new PdfSchematicOutput()
-        //{
-        //    DocumentWidth = canvasModel.DocumentWidth,
-        //    DocumentHeight = canvasModel.DocumentHeight
-        //};
-
-        //await pdfOutput.Build(schematic, schematic.Sheets, outputFolder);
+        var canvasModel = schematic;
 
         var schName = Path.GetFileNameWithoutExtension(schematic.FilePath);
         var savePath = Path.Combine(outputFolder, $"{schName}.pdf");
@@ -30,7 +23,6 @@ public class SchematicBuilder : ISchematicBuilder
             await page.BuildPage();
         }
         pdf.Save(savePath);
-
 
         return new BuildResult
         {

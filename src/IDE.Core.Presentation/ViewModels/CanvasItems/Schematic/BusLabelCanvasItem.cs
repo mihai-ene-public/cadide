@@ -112,10 +112,10 @@ namespace IDE.Core.Designers
             }
         }
 
-        IDrawingViewModel GetCurrentCanvas()
+        ICanvasDesignerFileViewModel GetCurrentCanvas()
         {
             var canvasDoc = DocumentHelper.GetCurrentDocument<ICanvasDesignerFileViewModel>();
-            return canvasDoc?.CanvasModel;
+            return canvasDoc;
         }
 
         [Browsable(false)]
@@ -434,10 +434,10 @@ namespace IDE.Core.Designers
             ScaleY *= -1;
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             var r = Rot;
-            r += 90;
+            r += angle;
             r = ((int)r % 360);
 
             Rot = r;

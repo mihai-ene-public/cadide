@@ -8,6 +8,8 @@ using System.Linq;
 using Xunit;
 using Moq;
 using System;
+using IDE.Core.Presentation.Placement;
+using IDE.Core.Presentation.Tests.PlacementTools;
 
 namespace IDE.Core.Presentation.Tests
 {
@@ -40,12 +42,25 @@ namespace IDE.Core.Presentation.Tests
             schMock.SetupGet(x => x.NetManager)
                     .Returns(new SchematicNetManager());//mock net manager?
 
-            _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-            //_canvasModel.FileDocument = schMock.Object;
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
+
+        protected ICanvasDesignerFileViewModel CreateCanvasModel()
+        {
+            var dispatcherMock = new Mock<IDispatcherHelper>();
+            var drawingDebounceMock = new Mock<IDebounceDispatcher>();
+            var selectionDebounceMock = new Mock<IDebounceDispatcher>();
+            var dirtyMarkerMock = new Mock<IDirtyMarkerTypePropertiesMapper>();
+            var placementFactoryMock = new Mock<IPlacementToolFactory>();
+
+            var canvasModel = new CanvasViewModelMock(dispatcherMock.Object, drawingDebounceMock.Object,
+                selectionDebounceMock.Object, dirtyMarkerMock.Object, placementFactoryMock.Object);
+
+            return canvasModel;
+        }
 
         [Theory]
         [InlineData(36.83, 38.1)]
@@ -59,7 +74,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4 * 2);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {
@@ -113,7 +128,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4 * 2);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {

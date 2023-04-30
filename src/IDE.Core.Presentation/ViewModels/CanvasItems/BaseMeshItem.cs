@@ -230,7 +230,7 @@ namespace IDE.Core.Designers
 
         public abstract void MirrorY();
 
-        public abstract void Rotate();
+        public abstract void Rotate(double angle = 90);
 
         public object Clone()
         {

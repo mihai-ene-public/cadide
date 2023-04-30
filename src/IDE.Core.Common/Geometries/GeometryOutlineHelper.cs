@@ -17,7 +17,7 @@ public class GeometryOutlineHelper : IGeometryOutlineHelper
     public IGeometryOutline GetGeometry(ICanvasItem item, bool applyTransform = false, double clearance = 0)
     {
         var g = GetGeometryInternal(item, clearance);
-        if (applyTransform && item is ISelectableItem s)
+        if (applyTransform && g != null && item is ISelectableItem s)
         {
             g.Transform = s.GetTransform();
         }
@@ -34,25 +34,25 @@ public class GeometryOutlineHelper : IGeometryOutlineHelper
     public bool Intersects(ICanvasItem item1, ICanvasItem item2)
     {
         var geometry1 = GetGeometryInternal(item1);
-        geometry1.Transform = ( (ISelectableItem)item1 ).GetTransform();
+        geometry1.Transform = ((ISelectableItem)item1).GetTransform();
 
         var geometry2 = GetGeometryInternal(item2);
-        geometry2.Transform = ( (ISelectableItem)item2 ).GetTransform();
+        geometry2.Transform = ((ISelectableItem)item2).GetTransform();
 
         return GeometryOutline.Intersects(geometry1, geometry2);
     }
 
     public bool ItemIntersectsRectangle(ICanvasItem item, XRect rect)
     {
-        var itemBounds = ( (ISelectableItem)item ).GetBoundingRectangle();
+        var itemBounds = ((ISelectableItem)item).GetBoundingRectangle();
 
         if (rect.IntersectsWith(itemBounds))
         {
             var itemGeometry = GetGeometryInternal(item);
-            if(itemGeometry is null)
+            if (itemGeometry is null)
                 return false;
 
-            itemGeometry.Transform = ( (ISelectableItem)item ).GetTransform();
+            itemGeometry.Transform = ((ISelectableItem)item).GetTransform();
 
             var center = rect.GetCenter();
             var rectGeom = new RectangleGeometryOutline(center.X, center.Y, rect.Width, rect.Height);
@@ -66,10 +66,10 @@ public class GeometryOutlineHelper : IGeometryOutlineHelper
     public CanvasLocation CheckClearance(ICanvasItem item1, ICanvasItem item2, double clearance)
     {
         var geometry1 = GetGeometryInternal(item1);
-        geometry1.Transform = ( (ISelectableItem)item1 ).GetTransform();
+        geometry1.Transform = ((ISelectableItem)item1).GetTransform();
 
         var geometry2 = GetGeometryInternal(item2);
-        geometry2.Transform = ( (ISelectableItem)item2 ).GetTransform();
+        geometry2.Transform = ((ISelectableItem)item2).GetTransform();
 
         if (GeometryOutline.Intersects(geometry1, geometry2))
         {
@@ -313,6 +313,10 @@ public class GeometryOutlineHelper : IGeometryOutlineHelper
         if (circle.IsFilled)
         {
             return new EllipseGeometryOutline(0, 0, 0.5 * circle.Diameter + 0.5 * circle.BorderWidth + 2 * clearance);
+        }
+        if (circle.BorderWidth == 0.00d)
+        {
+            return new EllipseGeometryOutline(0, 0, 0.5 * circle.Diameter + 2 * clearance);
         }
 
         var outterPath = new EllipseGeometryOutline(0, 0, 0.5 * circle.Diameter + 0.5 * circle.BorderWidth + 2 * clearance);

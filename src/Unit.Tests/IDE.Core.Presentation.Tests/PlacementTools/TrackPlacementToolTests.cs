@@ -34,21 +34,17 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             fileModelMock.SetupGet(x => x.SelectedLayer)
                          .Returns(layerItems[0]);
 
-            _canvasModel = new DrawingViewModel(fileModelMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(TrackBoardCanvasItem);
             var placementToolType = typeof(TrackPlacementTool<SingleTrackRoutingMode>);
-            placementTool = new TrackPlacementTool<SingleTrackRoutingMode>();//PlacementTool.CreateTool(canvasItemType, placementToolType);
+            placementTool = new TrackPlacementTool<SingleTrackRoutingMode>();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
-
-            //BusWirePlacementTool.SetPlacementMode(NetPlacementMode.Single);
         }
 
-        private readonly IDrawingViewModel _canvasModel;
-
-        //BusWirePlacementTool BusWirePlacementTool => (BusWirePlacementTool)placementTool;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         [Theory]
         [InlineData(NetPlacementMode.Single)]

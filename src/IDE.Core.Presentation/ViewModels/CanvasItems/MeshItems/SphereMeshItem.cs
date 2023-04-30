@@ -182,7 +182,7 @@ namespace IDE.Core.Designers
             Y = p.Y;
             Z = p.Z;
         }
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
         }
 

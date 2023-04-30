@@ -35,11 +35,11 @@ namespace IDE.Controls
 
         RectangleSelectionBehavior rectangleSelection;
 
-        IDrawingViewModel GetCanvasModel()
+        ICanvasDesignerFileViewModel GetCanvasModel()
         {
-            var canvas = DataContext as CanvasDesignerFileViewModel;
+            var canvas = DataContext as ICanvasDesignerFileViewModel;
             if (canvas != null)
-                return canvas.CanvasModel;
+                return canvas;
 
             return null;
         }

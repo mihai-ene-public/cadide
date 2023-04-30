@@ -26,10 +26,8 @@ namespace IDE.Documents.Views
                 boardDocument.Id = LibraryItem.GetNextId();
             }
 
-            var canvasModel = board.CanvasModel;
-
-            canvasModel.DocumentWidth = boardDocument.DocumentWidth;
-            canvasModel.DocumentHeight = boardDocument.DocumentHeight;
+            board.DocumentWidth = boardDocument.DocumentWidth;
+            board.DocumentHeight = boardDocument.DocumentHeight;
 
             LoadLayers(boardDocument, board);
 
@@ -52,7 +50,7 @@ namespace IDE.Documents.Views
                 foreach (BoardCanvasItemViewModel item in plainItems)
                 {
                     item.LoadLayers();
-                    canvasModel.AddItem(item);
+                    board.AddItem(item);
                 }
             });
 
@@ -145,7 +143,7 @@ namespace IDE.Documents.Views
                             if (item is ISignalPrimitiveCanvasItem s)
                                 s.Signal = brdNetItem;
 
-                            canvasModel.AddItem(item);
+                            board.AddItem(item);
                         }
 
                     });
@@ -162,14 +160,13 @@ namespace IDE.Documents.Views
                 foreach (var f in footprints)
                 {
                     f.LoadLayers();
-                    canvasModel.AddItem(f);
+                    board.AddItem(f);
                 }
             });
         }
 
         void LoadMissingPlanes(BoardDocument boardDocument, IBoardDesigner board)
         {
-            var canvasModel = board.CanvasModel;
             foreach (var layer in board.LayerItems.Where(l => l.LayerType == LayerType.Plane))
             {
                 var plane = layer.Items.OfType<PlaneBoardCanvasItem>().FirstOrDefault();
@@ -183,7 +180,7 @@ namespace IDE.Documents.Views
                     dispatcher.RunOnDispatcher(() =>
                     {
                         planeBoard.LoadLayers();
-                        canvasModel.AddItem(planeBoard);
+                        board.AddItem(planeBoard);
                     });
                 }
             }
@@ -191,8 +188,6 @@ namespace IDE.Documents.Views
 
         void LoadBoardOutline(BoardDocument boardDocument, IBoardDesigner board)
         {
-            var canvasModel = board.CanvasModel;
-
             var canvasItems = new List<ISelectableItem>();
             RegionBoard boardOutline = null;
             if (boardDocument.BoardOutline == null
@@ -236,15 +231,13 @@ namespace IDE.Documents.Views
                 foreach (BoardCanvasItemViewModel item in canvasItems)
                 {
                     item.LoadLayers();
-                    canvasModel.AddItem(item);
+                    board.AddItem(item);
                 }
             });
         }
 
         public void LoadLayers(BoardDocument boardDocument, IBoardDesigner board)
         {
-            var canvasModel = board.CanvasModel;
-
             IList<Layer> layers = null;
             if (boardDocument.Layers != null && boardDocument.Layers.Count > 0)
             {
@@ -284,8 +277,6 @@ namespace IDE.Documents.Views
                 Plot = l.Plot,
                 MirrorPlot = l.MirrorPlot
             }).ToList();
-            //LayerItems = layerItems;
-
 
             var groupItems = new List<LayerGroupDesignerItem>();
             foreach (var g in groups)
@@ -300,12 +291,11 @@ namespace IDE.Documents.Views
             {
                 board.LayerItems.Clear();
                 board.LayerItems.AddRange(layerItems);
-                canvasModel.AddItems(layerItems);
+                board.AddItems(layerItems);
                 board.LayerGroups.Clear();
                 board.LayerGroups.AddRange(groupItems);
 
                 board.SelectedLayerGroup = (ILayerGroupDesignerItem)board.LayerGroups[0];
-
             });
 
 

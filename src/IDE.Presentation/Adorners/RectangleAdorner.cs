@@ -33,6 +33,8 @@ namespace IDE.Core.Adorners
                 Background = Brushes.Transparent,
             };
             widthResizeThumb.DragDelta += WidthResizeThumb_DragDelta;
+            widthResizeThumb.PreviewMouseDown += WidthResizeRightThumb_PreviewMouseDown;
+            widthResizeThumb.PreviewMouseUp += WidthResizeRightThumb_PreviewMouseUp;
 
             translateThumb = new Thumb
             {
@@ -43,7 +45,8 @@ namespace IDE.Core.Adorners
                 Background = Brushes.Transparent,
             };
             translateThumb.DragDelta += translateThumb_DragDelta;
-
+            translateThumb.PreviewMouseDown += TranslateThumb_PreviewMouseDown;
+            translateThumb.PreviewMouseUp += TranslateThumb_PreviewMouseUp;
 
             widthAndHeightResizeThumb = new Thumb
             {
@@ -54,6 +57,8 @@ namespace IDE.Core.Adorners
                 Background = Brushes.Transparent,
             };
             widthAndHeightResizeThumb.DragDelta += widthAndHeightResizeThumb_DragDelta;
+            widthAndHeightResizeThumb.PreviewMouseDown += WidthAndHeightResizeThumb_PreviewMouseDown;
+            widthAndHeightResizeThumb.PreviewMouseUp += WidthAndHeightResizeThumb_PreviewMouseUp;
 
             visualChildren.Add(widthResizeThumb);
             visualChildren.Add(translateThumb);
@@ -66,9 +71,11 @@ namespace IDE.Core.Adorners
         Thumb widthAndHeightResizeThumb;
         Thumb translateThumb;
 
-
         IRectangleCanvasItem rectangleItem;
 
+        XPoint? originalPosition;
+        double? originalWidth;
+        double? originalHeight;
 
         private void rectangleItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -84,6 +91,127 @@ namespace IDE.Core.Adorners
                 }
             }
         }
+
+        private void WidthAndHeightResizeThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newHeight = rectangleItem.Height;
+            var newWidth = rectangleItem.Width;
+            var oldHeight = originalHeight.Value;
+            var oldWidth = originalWidth.Value;
+            originalHeight = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    rectangleItem.Height = oldHeight;
+                    rectangleItem.Width = oldWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                redo: o =>
+                {
+                    rectangleItem.Height = newHeight;
+                    rectangleItem.Width = newWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void WidthAndHeightResizeThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalHeight == null && originalWidth == null)
+            {
+                originalHeight = rectangleItem.Height;
+                originalWidth = rectangleItem.Width;
+            }
+        }
+
+        private void TranslateThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newPos = new XPoint(rectangleItem.X, rectangleItem.Y);
+            var oldPos = originalPosition.Value;
+            originalPosition = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    rectangleItem.X = oldPos.X;
+                    rectangleItem.Y = oldPos.Y;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                redo: o =>
+                {
+                    rectangleItem.X = newPos.X;
+                    rectangleItem.Y = newPos.Y;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void TranslateThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalPosition == null)
+                originalPosition = new XPoint(rectangleItem.X, rectangleItem.Y);
+        }
+
+        private void WidthResizeRightThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newWidth = rectangleItem.Width;
+            var oldWidth = originalWidth.Value;
+            originalWidth = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    rectangleItem.Width = oldWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                redo: o =>
+                {
+                    rectangleItem.Width = newWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void WidthResizeRightThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalWidth == null)
+                originalWidth = rectangleItem.Width;
+        }
+
 
         private void WidthResizeThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {

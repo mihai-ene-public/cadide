@@ -14,7 +14,6 @@ public class CylinderMeshItemPlacementTool : PlacementTool, ICylinderMeshItemPla
 
         var item = GetItem();
 
-
         switch (PlacementStatus)
         {
             case PlacementStatus.Ready:
@@ -37,7 +36,7 @@ public class CylinderMeshItemPlacementTool : PlacementTool, ICylinderMeshItemPla
                 item.X = mp.X;
                 item.Y = mp.Y;
                 item.IsPlaced = true;
-                CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                CommitPlacement();
 
                 var newItem = (ISelectableItem)canvasItem.Clone();
                 newItem.IsPlaced = false;
@@ -46,8 +45,6 @@ public class CylinderMeshItemPlacementTool : PlacementTool, ICylinderMeshItemPla
 
                 CanvasModel.AddItem(canvasItem);
                 break;
-
-
         }
     }
 }

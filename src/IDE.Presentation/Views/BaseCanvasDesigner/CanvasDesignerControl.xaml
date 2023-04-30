@@ -15,38 +15,6 @@
              mc:Ignorable="d"
              d:DesignHeight="600"
              d:DesignWidth="1200">
-    <!--<UserControl.InputBindings>-->
-
-    <!--<KeyBinding Key="Z"
-                    Modifiers="Ctrl"
-                    Command="{Binding UndoCommand}" />
-
-        <KeyBinding Key="Y"
-                    Modifiers="Ctrl"
-                    Command="{Binding RedoCommand}" />-->
-
-    <!--<KeyBinding Key="Del"
-                    Command="{Binding DeleteSelectedItemsCommand}" />
-
-        <KeyBinding Key="C"
-                    Modifiers="Ctrl"
-                    Command="{Binding CopySelectedItemsCommand}" />
-        <KeyBinding Key="V"
-                    Modifiers="Ctrl"
-                    Command="{Binding PasteSelectedItemsCommand}" />-->
-
-    <!--<KeyBinding Key="X"
-                    Modifiers="Alt"
-                    Command="{Binding CanvasModel.MirrorXCommand}" />
-        <KeyBinding Key="Y"
-                    Modifiers="Alt"
-                    Command="{Binding CanvasModel.MirrorYCommand}" />-->
-
-    <!--<KeyBinding Key="L"
-                    Modifiers="Alt"
-                    Command="{Binding CanvasModel.ChangeFootprintPlacement}" />-->
-
-    <!--</UserControl.InputBindings>-->
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -94,7 +62,7 @@
                       Grid.Row="1"
                       HorizontalScrollBarVisibility="Hidden"
                       VerticalScrollBarVisibility="Hidden"
-                      DataContext="{Binding CanvasModel}">
+                     > <!--DataContext="{Binding CanvasModel}"-->
 
             <ItemsControl ItemsSource="{Binding Items, IsAsync=True}"
                           SnapsToDevicePixels="True"
@@ -102,7 +70,8 @@
                           Grid.Row="1"
                           Name="itemsControl"
                           ClipToBounds="False"
-                          ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}"><!-- we had Items IsAsync=true-->
+                          ItemContainerStyleSelector="{x:Static s:CanvasItemStyleSelector.Instance}">
+                <!-- we had Items IsAsync=true-->
 
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -190,7 +159,7 @@
                                         </Canvas>
                                     </VisualBrush.Visual>
                                 </VisualBrush>
-                                
+
 
                                 <Style TargetType="{x:Type coreControls:DrawingCanvas}">
                                     <Setter Property="Background"
@@ -200,7 +169,7 @@
                                 </Style>
                             </coreControls:DrawingCanvas.Resources>
 
-                           
+
                         </coreControls:DrawingCanvas>
 
                     </ItemsPanelTemplate>

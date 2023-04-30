@@ -39,26 +39,12 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
                                action();
                            });
 
-
-
-            //ServiceProvider.RegisterResolver(t =>
-            //{
-            //    if (t == typeof(IGeometryHelper))
-            //        return new GeometryHelper();
-            //    if (t == typeof(IDebounceDispatcher))
-            //        return debounceMock.Object;
-            //    if (t == typeof(IDispatcherHelper))
-            //        return dispatcherMock.Object;
-
-            //    throw new NotImplementedException();
-            //});
-
             var schMock = new Mock<ISchematicDesigner>();
             schMock.SetupGet(x => x.NetManager)
                     .Returns(new SchematicNetManager());//mock net manager?
 
-            _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(NetWireCanvasItem);
             placementTool = new NetWirePlacementTool();
@@ -68,7 +54,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             ((NetWirePlacementTool)placementTool).SetPlacementMode(NetPlacementMode.Single);
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         NetWirePlacementTool NetWirePlacementTool => (NetWirePlacementTool)placementTool;
 

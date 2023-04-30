@@ -9,10 +9,10 @@ namespace IDE.Core.Designers
 {
     public class SegmentDragHelper
     {
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
         private readonly ISegmentedPolylineSelectableCanvasItem _canvasItem;
 
-        public SegmentDragHelper(IDrawingViewModel canvasModel, ISegmentedPolylineSelectableCanvasItem canvasItem)
+        public SegmentDragHelper(ICanvasDesignerFileViewModel canvasModel, ISegmentedPolylineSelectableCanvasItem canvasItem)
         {
             _canvasModel = canvasModel;
             _canvasItem = canvasItem;

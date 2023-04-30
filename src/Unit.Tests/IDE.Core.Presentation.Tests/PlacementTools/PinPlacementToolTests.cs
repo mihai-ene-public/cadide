@@ -15,15 +15,15 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var dispatcherMock = new Mock<IDispatcherHelper>();
             var schMock = new Mock<ISchematicDesigner>();
 
-            _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(PinCanvasItem);
             placementTool = new PinPlacementTool();
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
         }
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         [Fact]
         public void PlacementStarted_MouseMoves()

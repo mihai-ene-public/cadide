@@ -10,42 +10,26 @@ using IDE.Core.Interfaces;
 using IDE.Core.ViewModels;
 using IDE.Core;
 using IDE.Core.Common;
+using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Presentation.Placement;
 
 namespace IDE.Documents.Views
 {
     public class MeshDesignerViewModel : CanvasDesignerFileViewModel, IMeshDesigner
     {
-        public MeshDesignerViewModel() : base()
+        public MeshDesignerViewModel(
+            IDispatcherHelper dispatcher,
+            IDebounceDispatcher drawingChangedDebouncer,
+            IDebounceDispatcher selectionDebouncer,
+            IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper,
+            IPlacementToolFactory placementToolFactory)
+        : base(dispatcher, drawingChangedDebouncer, selectionDebouncer, dirtyMarkerTypePropertiesMapper, placementToolFactory)
         {
-            dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-
             modelDocument = new ModelDocument();
 
             Toolbar = new ModelToolbar(this);
 
-            //PropertyChanged += MeshDesignerViewModel_PropertyChanged;
         }
-        IDispatcherHelper dispatcher;
-
-        //void MeshDesignerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    switch (e.PropertyName)
-        //    {
-        //        case nameof(IsActive):
-        //            {
-        //                if (IsActive)
-        //                {
-        //                    var toolOverview = ServiceProvider.GetToolWindow<DocumentOverviewViewModel>();
-        //                    if (toolOverview != null)
-        //                    {
-        //                        toolOverview.Document = this;
-        //                        toolOverview.IsVisible = true;
-        //                    }
-        //                }
-        //                break;
-        //            }
-        //    }
-        //}
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
         {
@@ -65,14 +49,14 @@ namespace IDE.Documents.Views
             list.Add(primitivesCat);
             var padsCat = new OverviewFolderNode { Name = "Pads" };
             list.Add(padsCat);
-            var padItems = canvasModel.Items.OfType<BaseMeshItem>().Where(b => b.PadNumber > 0).ToList();
+            var padItems = Items.OfType<BaseMeshItem>().Where(b => b.PadNumber > 0).ToList();
             var pads = padItems.Select(p => new OverviewSelectNode
             {
                 DataItem = p,
             });
             padsCat.Children.AddRange(pads);
 
-            var primitives = canvasModel.Items.Except(padItems).Select(p => new OverviewSelectNode
+            var primitives = Items.Except(padItems).Select(p => new OverviewSelectNode
             {
                 DataItem = p
             });
@@ -81,16 +65,6 @@ namespace IDE.Documents.Views
             {
                 primitivesCat.Children.Add(p);
 
-                //if (p.DataItem is SolidBodyMeshItem solid)
-                //{
-                //    foreach (var m in solid.Models)
-                //    {
-                //        p.Children.Add(new OverviewSelectNode
-                //        {
-                //            DataItem = m
-                //        });
-                //    }
-                //}
                 if (p.DataItem is GroupMeshItem g)
                 {
                     foreach (var child in g.Items)
@@ -124,7 +98,7 @@ namespace IDE.Documents.Views
             {
                 var nodes = BuildCategories();
 
-                dispatcher.RunOnDispatcher(() => Categories = nodes);
+                _dispatcher.RunOnDispatcher(() => Categories = nodes);
             });
         }
 
@@ -189,9 +163,9 @@ namespace IDE.Documents.Views
                 if (addModelCommand == null)
                     addModelCommand = CreateCommand(p =>
                     {
-                        canvasModel.ClearSelectedItems();
+                        ClearSelectedItems();
 
-                        canvasModel.CancelPlacement();
+                        CancelPlacement();
 
                         var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Model, GetCurrentProjectInfo());
 
@@ -207,7 +181,7 @@ namespace IDE.Documents.Views
                                 {
                                     Items = canvasItems.Cast<ISelectableItem>().ToList()
                                 };
-                                canvasModel.StartPlacement(group);
+                                StartPlacement(group);
                             }
                         }
                     }
@@ -238,9 +212,24 @@ namespace IDE.Documents.Views
                         var dlg = ServiceProvider.Resolve<IOpenFileDialog>();//new OpenFileDialog();
                         dlg.Filter = GetOpenFileFilter(modelImporter);
                         dlg.DefaultExt = ".stl";
+
                         if (dlg.ShowDialog() == true)
                         {
-                            modelImporter.Import(dlg.FileName, canvasModel);
+                            var canvasItem = modelImporter.Import(dlg.FileName);
+                            AddItem(canvasItem);
+
+                            RegisterUndoActionExecuted(
+                            undo: o =>
+                            {
+                                RemoveItem(canvasItem);
+                                return canvasItem;
+                            },
+                            redo: o =>
+                            {
+                                AddItem(canvasItem);
+                                return canvasItem;
+                            },
+                            canvasItem);
                         }
                     });
                 }
@@ -259,32 +248,54 @@ namespace IDE.Documents.Views
                 {
                     groupItemsCommand = CreateCommand((p) =>
                     {
-                        var selectedItems = canvasModel.SelectedItems.ToList();
+                        var selectedItems = SelectedItems.ToList();
                         if (selectedItems.Count > 1)//at least 2 selected items
                         {
                             //we should calculate the XYZ for group
-                            var groupItem = new GroupMeshItem();
-                            groupItem.IsPlaced = true;
-                            foreach (var item in selectedItems)
+                            var groupItem = CreateGroupFromItems(selectedItems);
+                            AddItem(groupItem);
+
+                            RegisterUndoActionExecuted(undo: o =>
                             {
-                                item.IsSelected = false;
-                                canvasModel.RemoveItem(item);
-                            }
-                            //groupItem.Items= new selectedItems.Cast<BaseMeshItem>()
+                                UngroupToItems(groupItem);
 
-                            canvasModel.AddItem(groupItem);
-                            canvasModel.OnDrawingChanged(DrawingChangedReason.ItemAdded);
+                                OnDrawingChanged(DrawingChangedReason.ItemAdded);
+                                return groupItem;
+                            },
+                            redo: o =>
+                            {
+                                groupItem = CreateGroupFromItems(selectedItems);
+                                AddItem(groupItem);
 
+                                OnDrawingChanged(DrawingChangedReason.ItemAdded);
+                                return groupItem;
+                            },
+                            null);
 
-                            groupItem.Items.AddRange(selectedItems.Cast<BaseMeshItem>());
-                            foreach (var item in groupItem.Items)
-                                item.ParentObject = groupItem;
+                            OnDrawingChanged(DrawingChangedReason.ItemAdded);
                         }
                     });
                 }
 
                 return groupItemsCommand;
             }
+        }
+
+        private GroupMeshItem CreateGroupFromItems(List<ISelectableItem> items)
+        {
+            var groupItem = new GroupMeshItem();
+            groupItem.IsPlaced = true;
+            foreach (var item in items)
+            {
+                item.IsSelected = false;
+                RemoveItem(item);
+            }
+
+            groupItem.Items.AddRange(items.Cast<BaseMeshItem>());
+            foreach (var item in groupItem.Items)
+                item.ParentObject = groupItem;
+
+            return groupItem;
         }
 
         ICommand ungroupItemsCommand;
@@ -296,30 +307,61 @@ namespace IDE.Documents.Views
                 {
                     ungroupItemsCommand = CreateCommand((p) =>
                     {
-                        var selectedItems = canvasModel.SelectedItems.OfType<GroupMeshItem>().ToList();
+                        var selectedItems = SelectedItems.OfType<GroupMeshItem>().ToList();
                         if (selectedItems.Count == 0)
                             return;
                         foreach (var g in selectedItems)
                         {
-                            canvasModel.RemoveItem(g);
-
-                            foreach (var item in g.Items)
-                            {
-                                item.ParentObject = null;
-                                item.IsSelected = false;
-                                item.IsPlaced = true;
-                                canvasModel.AddItem(item);
-                            }
+                            UngroupToItems(g);
                         }
-                        canvasModel.OnDrawingChanged(DrawingChangedReason.ItemAdded);
+
+                        RegisterUndoActionExecuted(undo: o =>
+                        {
+                            for (int i = 0; i < selectedItems.Count; i++)
+                            {
+                                var groupItem = selectedItems[i];
+                                groupItem = CreateGroupFromItems(groupItem.Items.Cast<ISelectableItem>().ToList());
+                                AddItem(groupItem);
+                                selectedItems[i] = groupItem;
+                            }
+                            OnDrawingChanged(DrawingChangedReason.ItemAdded);
+
+                            return null;
+                        },
+                           redo: o =>
+                           {
+                               foreach (var g in selectedItems)
+                               {
+                                   UngroupToItems(g);
+                               }
+
+                               OnDrawingChanged(DrawingChangedReason.ItemAdded);
+                               return null;
+                           },
+                           null);
+
+                        OnDrawingChanged(DrawingChangedReason.ItemAdded);
                     },
                     p =>
                     {
-                        return canvasModel.SelectedItems.OfType<GroupMeshItem>().Count() > 0;
+                        return SelectedItems.OfType<GroupMeshItem>().Count() > 0;
                     });
                 }
 
                 return ungroupItemsCommand;
+            }
+        }
+
+        private void UngroupToItems(GroupMeshItem g)
+        {
+            RemoveItem(g);
+
+            foreach (var item in g.Items)
+            {
+                item.ParentObject = null;
+                item.IsSelected = false;
+                item.IsPlaced = true;
+                AddItem(item);
             }
         }
 
@@ -333,7 +375,6 @@ namespace IDE.Documents.Views
                                      CloneObject = (BaseMeshItem)s.Clone()
                                  }).ToList();
 
-            //in schematic, for parts: create copy of parts and add them to schematic
             var canvasItems = canvasItemPairs.Select(s => s.CloneObject).ToList();
 
             var group = new VolatileGroup3DCanvasItem
@@ -341,7 +382,7 @@ namespace IDE.Documents.Views
                 Items = canvasItems.Cast<ISelectableItem>().ToList()
             };
 
-            canvasModel.StartPlacement(group);
+            StartPlacement(group);
         }
 
         public PackageGeneratorViewModel PackageGenerator { get; set; }
@@ -356,11 +397,11 @@ namespace IDE.Documents.Views
                 {
                     showPackageGeneratorCommand = CreateCommand(p =>
                       {
-                          canvasModel.ClearSelectedItems();
-                          canvasModel.CancelPlacement();
+                          ClearSelectedItems();
+                          CancelPlacement();
 
 
-                          PackageGenerator = new PackageGeneratorViewModel(canvasModel);
+                          PackageGenerator = new PackageGeneratorViewModel(this);
                           PackageGenerator.Close += () =>
                             {
                                 PackageGenerator = null;
@@ -410,11 +451,10 @@ namespace IDE.Documents.Views
                 {
                     showParametricPackageCommand = CreateCommand(p =>
                     {
-                        canvasModel.ClearSelectedItems();
-                        canvasModel.CancelPlacement();
+                        ClearSelectedItems();
+                        CancelPlacement();
 
-
-                        ParametricPackageVM = new ParametricPackageViewModel(canvasModel);
+                        ParametricPackageVM = new ParametricPackageViewModel(this);
                         ParametricPackageVM.Close += () =>
                         {
                             ParametricPackageVM = null;
@@ -441,21 +481,21 @@ namespace IDE.Documents.Views
         {
             //remove the currently adding item si that it won't be saved
             ISelectableItem placeObjects = null;
-            if (canvasModel.IsPlacingItem())
+            if (IsPlacingItem())
             {
-                placeObjects = canvasModel.PlacementTool.CanvasItem;
-                canvasModel.RemoveItem(placeObjects);
+                placeObjects = PlacementTool.CanvasItem;
+                RemoveItem(placeObjects);
             }
 
             //InternalSaveDocument()
             modelDocument.Name = Path.GetFileNameWithoutExtension(filePath);
-            modelDocument.Items = canvasModel.Items.Cast<BaseMeshItem>().Select(d => (MeshPrimitive)d.SaveToPrimitive()).ToList();
+            modelDocument.Items = Items.Cast<BaseMeshItem>().Select(d => (MeshPrimitive)d.SaveToPrimitive()).ToList();
 
             XmlHelper.Save(modelDocument, filePath);
 
             //PostSave
             if (placeObjects != null)
-                canvasModel.AddItem(placeObjects);
+                AddItem(placeObjects);
         }
 
         protected override Task LoadDocumentInternal(string filePath)
@@ -477,7 +517,7 @@ namespace IDE.Documents.Views
                     foreach (var primitive in modelDocument.Items)
                     {
                         var canvasItem = primitive.CreateDesignerItem();
-                        canvasModel.AddItem(canvasItem);
+                        AddItem(canvasItem);
                     }
                 }
             });

@@ -224,9 +224,9 @@ namespace IDE.Core.Designers
             RotationZ = RotateSafe(rotationZ, rotAngle);
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
-            RotationZ = RotateSafe(rotationZ);
+            RotationZ = RotateSafe(rotationZ, angle);
         }
 
         public abstract Task GenerateItems();

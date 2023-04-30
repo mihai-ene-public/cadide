@@ -603,10 +603,10 @@ namespace IDE.Core.Designers
                 Orientation = pinOrientation.Up;
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             var o = (int)orientation;
-            o = (o + 90) % 360;
+            o = (o + (int)angle) % 360;
             Orientation = (pinOrientation)o;
         }
 

@@ -1,4 +1,5 @@
-﻿using IDE.Core;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using IDE.Core;
 using IDE.Core.Commands;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
@@ -13,11 +14,11 @@ namespace IDE.Documents.Views
     {
 
         public event Action Close;
-        public FootprintGeneratorViewModel(IDrawingViewModel canvas)
+        public FootprintGeneratorViewModel(ICanvasDesignerFileViewModel canvas)
         {
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
             canvasModel = canvas;
-            var doc = canvasModel.FileDocument as ILayeredViewModel;
+            var doc = canvasModel as ILayeredViewModel;
 
             originalItems = canvasModel.GetItems().ToList();
 
@@ -44,14 +45,13 @@ namespace IDE.Documents.Views
                                 canvasModel.AddItem(brdItem);
                             }
 
-                            //  canvasModel.AddItems(newitems);
                         });
                     }
                 }
             };
         }
 
-        IDrawingViewModel canvasModel;
+        ICanvasDesignerFileViewModel canvasModel;
 
         IDispatcherHelper dispatcher;
 
@@ -78,7 +78,7 @@ namespace IDE.Documents.Views
             {
                 if (footprintGenerators == null)
                 {
-                    var doc = canvasModel.FileDocument as ILayeredViewModel;
+                    var doc = canvasModel as ILayeredViewModel;
 
                     if (doc != null)
                     {
@@ -163,6 +163,35 @@ namespace IDE.Documents.Views
                 {
                     okCommand = CreateCommand(p =>
                     {
+                        var doc = canvasModel as ILayeredViewModel;
+                        var currentItems = canvasModel.GetItems().ToList();
+
+                        canvasModel.RegisterUndoActionExecuted(
+                            undo: o =>
+                            {
+                                canvasModel.RemoveItems(currentItems);
+
+                                foreach (BoardCanvasItemViewModel brdItem in originalItems)
+                                {
+                                    brdItem.LayerDocument = doc;
+                                    brdItem.LoadLayers();
+                                    canvasModel.AddItem(brdItem);
+                                }
+
+                                return null;
+                            },
+                            redo: o =>
+                            {
+                                canvasModel.RemoveItems(canvasModel.GetItems().ToList());
+                                foreach (BoardCanvasItemViewModel brdItem in currentItems)
+                                {
+                                    brdItem.LayerDocument = doc;
+                                    brdItem.LoadLayers();
+                                    canvasModel.AddItem(brdItem);
+                                }
+                                return null;
+                            }, null);
+
                         OnClose();
                     });
 
@@ -183,7 +212,7 @@ namespace IDE.Documents.Views
                 {
                     cancelCommand = CreateCommand(p =>
                     {
-                        var doc = canvasModel.FileDocument as ILayeredViewModel;
+                        var doc = canvasModel as ILayeredViewModel;
 
                         //put back original items
                         canvasModel.RemoveItems(canvasModel.GetItems().ToList());

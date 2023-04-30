@@ -41,13 +41,16 @@ namespace IDE.Core.Controls
             }
         }
 
-        IDrawingViewModel canvasModel => this.FindParentDataContext<IDrawingViewModel>();
+        ICanvasDesignerFileViewModel canvasModel => this.FindParentDataContext<ICanvasDesignerFileViewModel>();
 
         XPoint? dragStart;
+        private XPoint originalPosition;
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
-            //base.OnPreviewMouseDown(e);
             if (e.ChangedButton != MouseButton.Left)
+                return;
+
+            if (canvasModel == null)
                 return;
 
             var designerItem = DataContext as BaseCanvasItem;
@@ -61,39 +64,59 @@ namespace IDE.Core.Controls
                 Focus();
                 var drawingCanvas = this.FindParent<DrawingCanvas>();
                 dragStart = canvasModel.SnapToGridFromDpi(e.GetPosition(drawingCanvas).ToXPoint());
+                originalPosition = new XPoint(Position.X, Position.Y);
                 CaptureMouse();
-                //e.Handled = true;
             }
 
         }
 
         protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
         {
-            //base.OnPreviewMouseUp(e);
-
             var designerItem = DataContext as BaseCanvasItem;
             if (designerItem == null || !designerItem.IsPlaced)
                 return;
             if (designerItem.IsEditing)
                 return;
 
-            //if (e.Source is PositionThumb)
-            {
+            dragStart = null;
+            ReleaseMouseCapture();
+            var drawingCanvas = this.FindParent<DrawingCanvas>();
+            drawingCanvas?.Focus();
 
-                dragStart = null;
-                ReleaseMouseCapture();
-                var drawingCanvas = this.FindParent<DrawingCanvas>();
-                drawingCanvas?.Focus();
-                //e.Handled = true;
+            if (canvasModel == null)
+                return;
+
+            var currentPosition = new XPoint(Position.X, Position.Y);
+            if (originalPosition != currentPosition)
+            {
+                canvasModel.RegisterUndoActionExecuted(
+                    undo: o =>
+                    {
+                        Position.X = originalPosition.X;
+                        Position.Y = originalPosition.Y;
+                        return null;
+                    },
+                    redo: o =>
+                    {
+                        Position.X = currentPosition.X;
+                        Position.Y = currentPosition.Y;
+                        return null;
+                    }, null
+                    );
             }
         }
 
         protected override void OnPreviewMouseMove(MouseEventArgs e)
         {
             base.OnPreviewMouseMove(e);
+
+            if (canvasModel == null)
+                return;
+
             var designerItem = DataContext as BaseCanvasItem;
             if (designerItem == null || !designerItem.IsPlaced)
                 return;
+
             if (designerItem.IsEditing)
                 return;
 
@@ -167,14 +190,31 @@ namespace IDE.Core.Controls
             if (designerItem == null || designerItem.IsEditing)
                 return;
 
-            // base.OnPreviewKeyUp(e);
             if (e.Key == Key.Space && Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 var rot = Position.Rotation;
+                var originalRot = rot;
                 rot += 90;
                 rot = ((int)rot % 360);
                 Position.Rotation = rot;
+                var currentRot = rot;
                 e.Handled = true;
+
+                if (currentRot != originalRot)
+                {
+                    canvasModel.RegisterUndoActionExecuted(
+                        undo: o =>
+                        {
+                            Position.Rotation = originalRot;
+                            return null;
+                        },
+                        redo: o =>
+                        {
+                            Position.Rotation = currentRot;
+                            return null;
+                        }, null
+                        );
+                }
             }
         }
     }

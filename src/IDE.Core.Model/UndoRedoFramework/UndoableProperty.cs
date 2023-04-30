@@ -9,7 +9,7 @@ namespace IDE.Core.UndoRedoFramework
     /// Represents the backing store for a property that is automatically undoable.
     /// </summary>
     /// <typeparam name="TPropertyType"></typeparam>
-    public class UndoableProperty<TPropertyType> : UndoableActionBase<TPropertyType>, IUndoableProperty
+    public class UndoableProperty<TPropertyType> : UndoableActionBase, IUndoableProperty
     {
         /// <summary>
         /// Creates a new UndoableProperty.
@@ -86,10 +86,10 @@ namespace IDE.Core.UndoRedoFramework
         /// <param name="undoData"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        protected override TPropertyType Undo(TPropertyType undoData)
+        public override object Undo(object undoData)
         {
             var oldValue = this._internalStore;
-            this._internalStore = undoData;
+            this._internalStore = (TPropertyType)undoData;
             this.Context.RaisePropertyChanged(associatedObject, args);
             
             return oldValue;
@@ -101,10 +101,10 @@ namespace IDE.Core.UndoRedoFramework
         /// <param name="redoData"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        protected override TPropertyType Redo(TPropertyType redoData)
+        public override object Redo(object redoData)
         {
             var oldValue = this._internalStore;
-            this._internalStore = redoData;
+            this._internalStore = (TPropertyType)redoData;
 			this.Context.RaisePropertyChanged(associatedObject , args);
 
             return oldValue;

@@ -183,7 +183,7 @@ namespace IDE.Core.Designers
             Y2 = ep.Y;
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             if (!IsPlaced)
                 return;
@@ -191,7 +191,7 @@ namespace IDE.Core.Designers
             //rotate by 90 deg around middle point
             var mp = new XPoint(0.5 * (x1 + x2), 0.5 * (y1 + y2));
             var tg = new XTransformGroup();
-            var rotateTransform = new XRotateTransform(90)
+            var rotateTransform = new XRotateTransform(angle)
             {
                 CenterX = mp.X,
                 CenterY = mp.Y

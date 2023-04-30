@@ -112,7 +112,7 @@ SignalDesignerItem (signal)
             IsHighlighted = newHighlight;
 
             thisBoard.OnPropertyChanged(nameof(thisBoard.HasHighlightedNets));
-            thisBoard.CanvasModel.OnHighlightChanged(thisBoard.CanvasModel, EventArgs.Empty);
+            thisBoard.OnHighlightChanged(thisBoard, EventArgs.Empty);
         }
 
         public override string ToString()

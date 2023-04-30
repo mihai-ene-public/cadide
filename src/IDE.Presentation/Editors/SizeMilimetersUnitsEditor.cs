@@ -49,11 +49,7 @@ namespace IDE.Core.Editors
                 }
             };
 
-            IDrawingViewModel parent = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
-            //if (propertyItem.Instance is ISelectableItem)
-            //    parent = (propertyItem.Instance as ISelectableItem).Parent;
-            //else if (propertyItem.Instance is MultipleSelectionObject)
-            //    parent = (propertyItem.Instance as MultipleSelectionObject).Parent;
+            var parent = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
 
             if (parent == null)
                 return null;

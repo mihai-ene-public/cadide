@@ -16,17 +16,14 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var dispatcherMock = new Mock<IDispatcherHelper>();
             var schMock = new Mock<ISchematicDesigner>();
 
-            _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            var _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(CircleCanvasItem);
             placementTool = new CirclePlacementTool();//PlacementTool.CreateTool(canvasItemType);
             placementTool.CanvasModel = _canvasModel;
             placementTool.StartPlacement(canvasItemType);
         }
-
-        private readonly IDrawingViewModel _canvasModel;
-
 
         [Fact]
         public void PlacementReady_MouseMoves()

@@ -37,6 +37,6 @@ namespace IDE.Documents.Views
         {
             get; set;
         }
-        public IDrawingViewModel CanvasModel { get; set; }
+       // public IDrawingViewModel CanvasModel { get; set; }
     }
 }

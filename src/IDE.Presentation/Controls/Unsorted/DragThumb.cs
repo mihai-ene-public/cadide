@@ -26,8 +26,13 @@ namespace IDE.Core.Controls
             Cursor = Cursors.SizeAll;
         }
 
-        XPoint? dragStart;
-        bool isSelecting = false;
+        private XPoint? dragStart;
+
+        private double deltaXSum = 0;
+        private double deltaYSum = 0;
+
+        private List<XPoint> originalWirePoints;
+        //private int originalSelectionStart;
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
@@ -40,7 +45,7 @@ namespace IDE.Core.Controls
             if (designerItem == null || !designerItem.IsPlaced || e.Source is PositionThumb)
                 return;
 
-            if (designerItem.IsEditing)// || designerItem.IsLocked)
+            if (designerItem.IsEditing)
                 return;
 
             if (Mouse.Captured != null)
@@ -48,12 +53,15 @@ namespace IDE.Core.Controls
 
             HandleSelectionMouseDown(e);
 
-            //if (e.Handled)
-            //    return;
-
             var drawingCanvas = this.FindParent<DrawingCanvas>();
-            var canvasModel = this.FindParentDataContext<IDrawingViewModel>();
-            dragStart = canvasModel.SnapToGridFromDpi(e.GetPosition(drawingCanvas).ToXPoint());
+            var canvasModel = this.FindParentDataContext<ICanvasViewModel>();
+
+            if (canvasModel == null)
+                return;
+
+            var posDpi = e.GetPosition(drawingCanvas).ToXPoint();
+            var pos = MilimetersToDpiHelper.ConvertToMM(posDpi);
+            dragStart = SnapHelper.SnapToGrid(pos, canvasModel.GridSize);
             CaptureMouse();
             e.Handled = true;
         }
@@ -69,11 +77,87 @@ namespace IDE.Core.Controls
             if (designerItem.IsEditing || designerItem.IsLocked)
                 return;
 
+            var canvasModel = this.FindParentDataContext<ICanvasDesignerFileViewModel>();
+            if (deltaXSum != 0 && deltaYSum != 0)
+            {
+
+                if (canvasModel != null && !canvasModel.IsPlacingItem())
+                {
+                    var designerItems = canvasModel.SelectedItems.Where(c => c.IsLocked == false)
+                                                                 .Cast<BaseCanvasItem>()
+                                                                 .ToList();
+
+                    canvasModel.RegisterUndoActionExecuted(
+                        undo: o =>
+                        {
+                            foreach (var item in designerItems)
+                            {
+                                item.Translate(-deltaXSum, -deltaYSum);
+                            }
+                            return null;
+                        },
+                        redo: o =>
+                        {
+                            foreach (var item in designerItems)
+                            {
+                                item.Translate(deltaXSum, deltaYSum);
+                            }
+                            return null;
+                        }
+                        , null
+                        );
+                }
+            }
+            else if (originalWirePoints != null && designerItem is ISegmentedPolylineSelectableCanvasItem wire)
+            {
+                if (canvasModel != null && !canvasModel.IsPlacingItem())
+                {
+                    var currentPoints = wire.Points.ToList();
+                    var oldPoints = originalWirePoints.ToList();
+                    originalWirePoints = null;
+                    //var currentSelectionStart = wire.SelectedSegmentStart;
+                    //var oldSelectionStart = originalSelectionStart;
+
+                    if (!SamePoints(currentPoints, oldPoints))
+                    {
+                        canvasModel.RegisterUndoActionExecuted(
+                                               undo: o =>
+                                               {
+                                                   wire.Points = oldPoints;
+                                                   wire.ClearSelection();
+                                                   return null;
+                                               },
+                                               redo: o =>
+                                               {
+                                                   wire.Points = currentPoints;
+                                                   wire.ClearSelection();
+                                                   return null;
+                                               }
+                                               , null
+                                               );
+                    }
+
+                }
+            }
+
             dragStart = null;
             ReleaseMouseCapture();
-            //e.Handled = true;
+        }
 
-            HandleSelectionMouseUp(e);
+        private bool SamePoints(IList<XPoint> points1, IList<XPoint> points2)
+        {
+            if (points1.Count != points2.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < points1.Count; i++)
+            {
+                if (points1[i] != points2[i])
+                    return false;
+            }
+
+            return true;
         }
 
         protected override void OnPreviewMouseMove(MouseEventArgs e)
@@ -88,9 +172,13 @@ namespace IDE.Core.Controls
 
             if (dragStart.HasValue && e.LeftButton == MouseButtonState.Pressed)
             {
-
                 var drawingCanvas = this.FindParent<DrawingCanvas>();
-                var canvasModel = this.FindParentDataContext<IDrawingViewModel>();
+                var canvasModel = this.FindParentDataContext<ICanvasDesignerFileViewModel>();
+                if (canvasModel == null)
+                {
+                    return;
+                }
+
                 var currentPos = canvasModel.SnapToGridFromDpi(e.GetPosition(drawingCanvas).ToXPoint());
                 var deltaX = currentPos.X - dragStart.Value.X;
                 var deltaY = currentPos.Y - dragStart.Value.Y;
@@ -105,15 +193,21 @@ namespace IDE.Core.Controls
                     // we only move DesignerItems that are not locked
                     var designerItems = canvasModel.SelectedItems.Where(c => c.IsLocked == false).ToList();
 
-                    if (designerItems == null)
-                        return;//how about dragStart? should be set to null?
+                    if (designerItems.Count == 0)
+                        return;
 
                     if (designerItems.Count == 1 && designerItems[0] is ISegmentedPolylineSelectableCanvasItem wire)
                     {
                         if (wire.HasSelectedSegments() && wire.SelectedSegmentStart == wire.SelectedSegmentEnd)
                         {
+                            if (originalWirePoints == null)
+                            {
+                                originalWirePoints = wire.Points.ToList();
+                                //originalSelectionStart = wire.SelectedSegmentStart;
+                            }
+
                             //drag the first segment
-                            var segmentIndex = wire.SelectedSegmentStart;//wire.GetSegmentAtMousePosition(currentPos);
+                            var segmentIndex = wire.SelectedSegmentStart;
                             var dragHelper = new SegmentDragHelper(canvasModel, wire);
                             dragHelper.DragSegment(currentPos, segmentIndex);
                         }
@@ -124,21 +218,16 @@ namespace IDE.Core.Controls
                         {
                             item.Translate(deltaX, deltaY);
                         }
+
+                        deltaXSum += deltaX;
+                        deltaYSum += deltaY;
                     }
 
                     e.Handled = true;//?
                 }
-
             }
-
-
         }
 
-        /// <summary>
-        /// returns true if we want to skip mouse capture
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
         bool HandleSelectionMouseDown(MouseButtonEventArgs e)
         {
             var originalElement = e.OriginalSource as FrameworkElement;
@@ -149,13 +238,13 @@ namespace IDE.Core.Controls
 
             if (selectableItem != null)
             {
-                var canvasModel = this.FindParentDataContext<IDrawingViewModel>();
+                var canvasModel = this.FindParentDataContext<ICanvasViewModel>();
 
                 if (canvasModel == null)
                     return false;
 
                 //if we are during placing an object ignore all these
-                if (canvasModel.PlacementTool != null)
+                if (canvasModel is ICanvasDesignerFileViewModel cm && cm.PlacementTool != null)
                     return false;
 
                 var kbModifiers = Keyboard.Modifiers;
@@ -166,14 +255,11 @@ namespace IDE.Core.Controls
                     if (kbModifiers.HasFlag(ModifierKeys.Shift))
                     {
                         ToggleHighlightForPinsOrPads(selectableItem, originalItem);
-
                     }
                     else
                     {
                         //toggle select
                         ToggleSelect(selectableItem);
-                        //selectableItem.ToggleSelect();
-                        isSelecting = true;
                     }
                     //don't tunnel
                     e.Handled = true;
@@ -201,11 +287,8 @@ namespace IDE.Core.Controls
 
                     //don't tunnel; this is important because for a poly is always selected and not something under it or above
                     e.Handled = true;
-                    //return true;
 
-                    isSelecting = true;
                 }
-
 
                 canvasModel.UpdateSelection();
 
@@ -220,7 +303,7 @@ namespace IDE.Core.Controls
             return false;
         }
 
-        private XPoint GetCanvasPosition()//MouseButtonEventArgs e)
+        private XPoint GetCanvasPosition()
         {
             var drawingCanvas = this.FindParent<DrawingCanvas>();
             var mousePos = Mouse.GetPosition(drawingCanvas);
@@ -266,7 +349,7 @@ namespace IDE.Core.Controls
             }
         }
 
-        private void SelectSingle(ISelectableItem selectableItem, IDrawingViewModel canvasModel)
+        private void SelectSingle(ISelectableItem selectableItem, ICanvasViewModel canvasModel)
         {
             //deselect all items and select this one
             foreach (var item in canvasModel.GetItems())
@@ -281,57 +364,21 @@ namespace IDE.Core.Controls
 
         private void SelectWireSegment(ISelectableItem selectableItem)
         {
-            if (selectableItem is ISegmentedPolylineSelectableCanvasItem netWire)
+            if (selectableItem is ISegmentedPolylineSelectableCanvasItem wire)
             {
                 var pos = GetCanvasPosition();
 
-                netWire.SelectSegmentAtPosition(pos);
+                wire.SelectSegmentAtPosition(pos);
             }
         }
 
-        void HandleSelectionMouseUp(MouseButtonEventArgs e)
+        private void ShowAdorner(ISelectableItem selectableItem, ICanvasViewModel canvasModel)
         {
-            if (e.ChangedButton != MouseButton.Left)
-                return;
-
-            if (e.Source is PositionThumb)
-                return;
-
-            var selectableItem = DataContext as ISelectableItem;
-            if (selectableItem is LayerDesignerItem)
-                return;
-
-            if (selectableItem != null)
-            {
-                if (isSelecting)
-                {
-                    isSelecting = false;
-                    return;
-                }
-                if (selectableItem.IsEditing)
-                    return;
-
-                var canvasModel = this.FindParentDataContext<IDrawingViewModel>();
-
-                if (canvasModel == null)
-                    return;
-
-                //if we are during placing an object ignore all these
-                if (canvasModel.PlacementTool != null)
-                    return;
-
-                //ShowAdorner(selectableItem, canvasModel);
-            }
-
-        }
-
-        private void ShowAdorner(ISelectableItem selectableItem, IDrawingViewModel canvasModel)
-        {
-            if (selectableItem.IsSelected)
+            if (canvasModel is ICanvasDesignerFileViewModel && selectableItem.IsSelected)
             {
                 if (canvasModel.SelectedItems.Count == 1)
                 {
-                    var adorner = CanvasItemToAdornerMapper.ShowAdorner(selectableItem, this);
+                    CanvasItemToAdornerMapper.ShowAdorner(selectableItem, this);
                 }
             }
         }

@@ -62,7 +62,6 @@ namespace IDE
             services.AddTransient<IModelImporter, GenericModelImporter>();
 
             services.AddTransient<IDispatcherHelper, DispatcherHelper>();
-            services.AddTransient<IClipboardAdapter, ClipboardAdapter>();
 
             services.AddTransient<IBitmapImageHelper, BitmapImageHelper>();
 

@@ -211,7 +211,8 @@ public partial class MainWindow : ModernWindow, ILayoutableWindow
     {
         if (DataContext is IApplicationViewModel application)
         {
-            if (application.ActiveDocument is ICanvasDesignerFileViewModel canvasDesigner)
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.None 
+                && application.ActiveDocument is ICanvasDesignerFileViewModel canvasDesigner)
             {
                 switch (e.Key)
                 {

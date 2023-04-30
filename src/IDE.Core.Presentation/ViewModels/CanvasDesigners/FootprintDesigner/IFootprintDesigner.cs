@@ -4,7 +4,7 @@ using IDE.Core.Storage;
 
 namespace IDE.Documents.Views
 {
-    public interface IFootprintDesigner : IFileBaseViewModel
+    public interface IFootprintDesigner : ICanvasDesignerFileViewModel
                                        , ILayeredViewModel
                                        , IDocumentOverview
     {

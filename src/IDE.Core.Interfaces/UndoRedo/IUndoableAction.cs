@@ -1,26 +1,26 @@
-﻿namespace IDE.Core.Interfaces
-{
-    /// <summary>
-    /// Represents an undoable action.
-    /// </summary>
-    public interface IUndoableAction
-    {
-        /// <summary>
-        /// An optional name.
-        /// </summary>
-        string Name { get; set; }
+﻿using System;
 
-        /// <summary>
-        /// An undo method.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        object Undo(object data);
-        /// <summary>
-        /// A redo method.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        object Redo(object data);
-    }
+namespace IDE.Core.Interfaces;
+
+/// <summary>
+/// Represents an undoable action.
+/// </summary>
+public interface IUndoableAction : IDisposable
+{
+    string Name { get; set; }
+
+
+    object Undo(object data);
+
+    object Redo(object data);
 }
+
+//public interface IUndoableAction<T> : IUndoableAction, IDisposable
+//{
+//    string Name { get; set; }
+
+
+//    T Undo(T data);
+
+//    T Redo(T data);
+//}

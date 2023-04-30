@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
+using IDE.Core.UndoRedoFramework;
 
 namespace IDE.Core.Presentation.Placement
 {
@@ -36,7 +37,8 @@ namespace IDE.Core.Presentation.Placement
                     item.X = mp.X;
                     item.Y = mp.Y;
                     item.IsPlaced = true;
-                    CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+
+                    CommitPlacement();
 
                     var newItem = (IPinCanvasItem)canvasItem.Clone();
 
@@ -64,5 +66,7 @@ namespace IDE.Core.Presentation.Placement
             item.Number = lastPinNumber.GetNextIndexedName();
             item.Name = item.Number;
         }
+
+        
     }
 }

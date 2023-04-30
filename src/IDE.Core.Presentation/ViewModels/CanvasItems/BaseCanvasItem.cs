@@ -359,7 +359,7 @@ public abstract class BaseCanvasItem : BaseViewModel
     public abstract void MirrorY();
 
 
-    public abstract void Rotate();
+    public abstract void Rotate(double angle = 90);
 
     public virtual void RemoveFromCanvas()
     {

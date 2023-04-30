@@ -96,7 +96,7 @@ namespace IDE.Core.Designers
             throw new NotImplementedException("should inherit");
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             throw new NotImplementedException("should inherit");
         }

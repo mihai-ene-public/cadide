@@ -313,13 +313,13 @@ namespace IDE.Core.Designers
         }
 
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             //rotate by 90 deg around circle center point
 
             var mp = GetCenter();
             var tg = new XTransformGroup();
-            var rotateTransform = new XRotateTransform(90)
+            var rotateTransform = new XRotateTransform(angle)
             {
                 CenterX = mp.X,
                 CenterY = mp.Y

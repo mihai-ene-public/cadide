@@ -14,7 +14,7 @@ namespace IDE.Core.Presentation.Utilities
     public class NetWireEndPointCollisionHelper
     {
 
-        public NetWireEndPointCollisionHelper(NetWireCanvasItem netWire, IDrawingViewModel canvasModel, IGeometryOutlineHelper geometryHelper)
+        public NetWireEndPointCollisionHelper(NetWireCanvasItem netWire, ISchematicDesigner canvasModel, IGeometryOutlineHelper geometryHelper)
         {
             _netWire = netWire;
             _canvasModel = canvasModel;
@@ -22,12 +22,12 @@ namespace IDE.Core.Presentation.Utilities
         }
 
         private readonly NetWireCanvasItem _netWire;
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ISchematicDesigner _canvasModel;
         private readonly IGeometryOutlineHelper _geometryHelper;
 
         INetManager GetNetManager()
         {
-            return _canvasModel?.GetNetManager();
+            return _canvasModel?.NetManager;
         }
 
         public void HandleLinePoint(XPoint linePointMM)

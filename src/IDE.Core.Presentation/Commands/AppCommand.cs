@@ -638,6 +638,34 @@ namespace IDE.Core.Commands
             }
         }
 
+        static ICommand undoCommand;
+        public static ICommand UndoCommand
+        {
+            get
+            {
+                if (undoCommand == null)
+                {
+                    undoCommand = CreateUICommand("Undo", "Undo", typeof(AppCommand), XKey.Z, XModifierKeys.Control);
+                }
+
+                return undoCommand;
+            }
+        }
+
+        static ICommand redoCommand;
+        public static ICommand RedoCommand
+        {
+            get
+            {
+                if (redoCommand == null)
+                {
+                    redoCommand = CreateUICommand("Redo", "Redo", typeof(AppCommand), XKey.Y, XModifierKeys.Control);
+                }
+
+                return redoCommand;
+            }
+        }
+
         static ICommand deleteSelectedItemsCommand;
         public static ICommand DeleteSelectedItemsCommand
         {

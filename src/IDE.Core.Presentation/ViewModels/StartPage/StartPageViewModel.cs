@@ -77,32 +77,6 @@ namespace IDE.Documents.Views
             return new List<IDocumentToolWindow>();
         }
 
-        #region CopyFullPathtoClipboard
-        ICommand _copyFullPathtoClipboard = null;
-
-        public new ICommand CopyFullPathtoClipboard
-        {
-            get
-            {
-                if (_copyFullPathtoClipboard == null)
-                    _copyFullPathtoClipboard = CreateCommand((p) => OnCopyFullPathtoClipboardCommand());
-
-                return _copyFullPathtoClipboard;
-            }
-        }
-
-        private void OnCopyFullPathtoClipboardCommand()
-        {
-            try
-            {
-                _clipBoard.SetText(GetAlternativePath());
-            }
-            catch
-            {
-            }
-        }
-        #endregion CopyFullPathtoClipboard
-
         public IRecentFilesViewModel RecentFilesViewModel => _recentFilesViewModel;
 
         public string StartPageTip { get; set; }

@@ -7,59 +7,73 @@ using IDE.Core.Collision;
 using IDE.Core.Interfaces;
 using Moq;
 using IDE.Core.ViewModels;
+using IDE.Core.Designers;
 
-namespace IDE.Core.Presentation.Tests.PlacementTools
+namespace IDE.Core.Presentation.Tests.PlacementTools;
+
+public abstract class PlacementToolTest
 {
-    public abstract class PlacementToolTest
+    static PlacementToolTest()
     {
-        static PlacementToolTest()
+        var meshHelperMock = new Mock<IMeshHelper>();
+
+        var debounceMock = new Mock<IDebounceDispatcher>();
+
+        var dispatcherMock = new Mock<IDispatcherHelper>();
+        dispatcherMock.Setup(x => x.RunOnDispatcher(It.IsAny<Action>()))
+                       .Callback((Action action) =>
+                       {
+                           action();
+                       });
+
+        var toolRegistryMock = new Mock<IToolWindowRegistry>();
+        toolRegistryMock.SetupGet(x => x.Tools)
+            .Returns(new List<IToolWindow>());
+
+        ServiceProvider.RegisterResolver(t =>
         {
-            var meshHelperMock = new Mock<IMeshHelper>();
+            if (t == typeof(IDebounceDispatcher))
+                return debounceMock.Object;
 
-            var debounceMock = new Mock<IDebounceDispatcher>();
+            if (t == typeof(IDispatcherHelper))
+                return dispatcherMock.Object;
 
-            var dispatcherMock = new Mock<IDispatcherHelper>();
-            dispatcherMock.Setup(x => x.RunOnDispatcher(It.IsAny<Action>()))
-                           .Callback((Action action) =>
-                           {
-                               action();
-                           });
+            if (t == typeof(IToolWindowRegistry))
+                return toolRegistryMock.Object;
 
-            var toolRegistryMock = new Mock<IToolWindowRegistry>();
-            toolRegistryMock.SetupGet(x => x.Tools)
-                .Returns(new List<IToolWindow>());
+            if (t == typeof(IPrimitiveToCanvasItemMapper))
+                return new PrimitiveToCanvasItemMapper();
 
-            ServiceProvider.RegisterResolver(t =>
-            {
-                if (t == typeof(IDebounceDispatcher))
-                    return debounceMock.Object;
+            if (t == typeof(IMeshHelper))
+                return meshHelperMock.Object;
 
-                if (t == typeof(IDispatcherHelper))
-                    return dispatcherMock.Object;
+            throw new NotImplementedException();
+        });
+    }
+    protected PlacementTool placementTool;
 
-                if (t == typeof(IToolWindowRegistry))
-                    return toolRegistryMock.Object;
+    protected ICanvasDesignerFileViewModel CreateCanvasModel()
+    {
+        var dispatcherMock = new Mock<IDispatcherHelper>();
+        var drawingDebounceMock = new Mock<IDebounceDispatcher>();
+        var selectionDebounceMock = new Mock<IDebounceDispatcher>();
+        var dirtyMarkerMock = new Mock<IDirtyMarkerTypePropertiesMapper>();
+        var placementFactoryMock = new Mock<IPlacementToolFactory>();
 
-                if (t == typeof(IPrimitiveToCanvasItemMapper))
-                    return new PrimitiveToCanvasItemMapper();
+        var canvasModel = new CanvasViewModelMock(dispatcherMock.Object, drawingDebounceMock.Object,
+            selectionDebounceMock.Object, dirtyMarkerMock.Object, placementFactoryMock.Object);
 
-                if (t == typeof(IMeshHelper))
-                    return meshHelperMock.Object;
+        return canvasModel;
+    }
 
-                throw new NotImplementedException();
-            });
-        }
-        protected PlacementTool placementTool;
+    // Simulates mouse move
+    protected void MouseMove(double x, double y)
+    {
+        placementTool.PlacementMouseMove(new XPoint(x, y));
+    }
 
-        // Simulates mouse move
-        protected void MouseMove(double x, double y)
-        {
-            placementTool.PlacementMouseMove(new XPoint(x, y));
-        }
-
-        protected void MouseClick(double x, double y)
-        {
-            placementTool.PlacementMouseUp(new XPoint(x, y));
-        }
+    protected void MouseClick(double x, double y)
+    {
+        placementTool.PlacementMouseUp(new XPoint(x, y));
     }
 }

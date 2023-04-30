@@ -15,8 +15,9 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             var dispatcherMock = new Mock<IDispatcherHelper>();
             var fileModelMock = new Mock<IFileBaseViewModel>();
 
-            _canvasModel = new DrawingViewModel(fileModelMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
+
 
             var canvasItemType = typeof(HoleCanvasItem);
             placementTool = new HolePlacementTool();
@@ -24,7 +25,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             placementTool.StartPlacement(canvasItemType);
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         [Fact]
         public void PlacementStarted_MouseMoves()

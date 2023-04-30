@@ -42,7 +42,6 @@ public class BoardOutlineUpdater
                             item = sItem;
                             break;
                         }
-
                     }
                     else if (sItem is LineBoardCanvasItem)
                     {
@@ -61,9 +60,6 @@ public class BoardOutlineUpdater
 
                 outlineItems.Remove(item);
             }
-
-
-            //if (regionCanvasItems.Count == outlineItems.Count) break;
 
             BaseRegionItem regionItem = null;
             var cSp = new XPoint();

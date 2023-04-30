@@ -5,6 +5,7 @@ using IDE.Core;
 using IDE.Core.Common;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Placement;
 using IDE.Core.Storage;
 using IDE.Core.Toolbars;
 using IDE.Core.Types.Media;
@@ -14,8 +15,13 @@ namespace IDE.Documents.Views;
 
 public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesignerViewModel
 {
-    public SymbolDesignerViewModel()
-        : base()
+    public SymbolDesignerViewModel(
+            IDispatcherHelper dispatcher,
+            IDebounceDispatcher drawingChangedDebouncer,
+            IDebounceDispatcher selectionDebouncer,
+            IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper,
+            IPlacementToolFactory placementToolFactory)
+        : base(dispatcher, drawingChangedDebouncer, selectionDebouncer, dirtyMarkerTypePropertiesMapper, placementToolFactory)
     {
 
         symbolDocument = new Symbol();
@@ -24,14 +30,12 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
 
         var docSize = 25.4 * 10;
         var halfSize = docSize * 0.5;
-        canvasModel.DocumentWidth = docSize;
-        canvasModel.DocumentHeight = docSize;
-        canvasModel.Origin = new XPoint(halfSize, halfSize);
+        DocumentWidth = docSize;
+        DocumentHeight = docSize;
+        Origin = new XPoint(halfSize, halfSize);
 
-        canvasGrid.GridSizeModel.SelectedItem = new Core.Units.MilUnit(50);
+        canvasGrid.SetUnit(new Core.Units.MilUnit(50));
     }
-
-    CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
 
     public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
     {
@@ -50,15 +54,13 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
         list.Add(primitivesCat);
         var pinsCat = new OverviewFolderNode { Name = "Pins" };
         list.Add(pinsCat);
-        var pins = canvasModel.Items.OfType<PinCanvasItem>().Select(p => new OverviewSelectNode
+        var pins = Items.OfType<PinCanvasItem>().Select(p => new OverviewSelectNode
         {
-            //FormatText = "Pin {0}",
-            //DisplayPropertyName = nameof(PinCanvasItem.Name),
             DataItem = p,
         });
         pinsCat.Children.AddRange(pins);
 
-        primitivesCat.Children.AddRange(canvasModel.Items.Except(canvasModel.Items.OfType<PinCanvasItem>()).Select(p => new OverviewSelectNode
+        primitivesCat.Children.AddRange(Items.Except(Items.OfType<PinCanvasItem>()).Select(p => new OverviewSelectNode
         {
             DataItem = p
         }));
@@ -161,9 +163,8 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
             if (addSymbolCommand == null)
                 addSymbolCommand = CreateCommand(p =>
                   {
-                      canvasModel.ClearSelectedItems();
-
-                      canvasModel.CancelPlacement();
+                      ClearSelectedItems();
+                      CancelPlacement();
 
 
                       var projectInfo = GetCurrentProjectInfo();
@@ -181,15 +182,14 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
                               var rect = XRect.Empty;
                               foreach (var item in canvasItems)
                                   rect.Union(item.GetBoundingRectangle());
-                              var offset = canvasModel.SnapToGrid(new XPoint(rect.X, rect.Y));
+                              var offset = SnapToGrid(new XPoint(rect.X, rect.Y));
                               canvasItems.ForEach(c => c.Translate(-offset.X, -offset.Y));
 
                               var group = new VolatileGroupCanvasItem
                               {
                                   Items = canvasItems.Cast<ISelectableItem>().ToList()
                               };
-                              //canvasModel.AddItem(group);
-                              canvasModel.StartPlacement(group);
+                              StartPlacement(group);
                           }
                       }
                   }
@@ -204,10 +204,10 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
     {
         //remove the currently adding item so that it won't be saved
         ISelectableItem placeObjects = null;
-        if (canvasModel.IsPlacingItem())
+        if (IsPlacingItem())
         {
-            placeObjects = canvasModel.PlacementTool.CanvasItem;
-            canvasModel.RemoveItem(placeObjects);
+            placeObjects = PlacementTool.CanvasItem;
+            RemoveItem(placeObjects);
         }
 
         //assign a new id if needed
@@ -216,12 +216,12 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
             symbolDocument.Id = LibraryItem.GetNextId();
         }
         symbolDocument.Name = Path.GetFileNameWithoutExtension(filePath);
-        symbolDocument.Items = canvasModel.Items.Cast<BaseCanvasItem>().Select(d => (SchematicPrimitive)d.SaveToPrimitive()).ToList();
+        symbolDocument.Items = Items.Cast<BaseCanvasItem>().Select(d => (SchematicPrimitive)d.SaveToPrimitive()).ToList();
 
         XmlHelper.Save(symbolDocument, filePath);
 
         if (placeObjects != null)
-            canvasModel.AddItem(placeObjects);
+            AddItem(placeObjects);
     }
 
     protected override Task LoadDocumentInternal(string filePath)
@@ -233,7 +233,7 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
             foreach (var primitive in symbolDocument.Items)
             {
                 var canvasItem = primitive.CreateDesignerItem();
-                canvasModel.AddItem(canvasItem);
+                AddItem(canvasItem);
             }
         }
 
@@ -291,8 +291,6 @@ public class SymbolDesignerViewModel : CanvasDesignerFileViewModel, ISymbolDesig
             TooltipText = "Image",
             Type = typeof(ImageCanvasItem)
         });
-
-
 
         Toolbox.Primitives.Add(new PrimitiveItem
         {

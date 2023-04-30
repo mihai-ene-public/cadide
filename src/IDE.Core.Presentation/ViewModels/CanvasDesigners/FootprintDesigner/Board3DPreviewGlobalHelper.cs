@@ -3,7 +3,6 @@ using IDE.Core.Build;
 using IDE.Core.Common;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
-using IDE.Core.Model.GlobalRepresentation.Primitives;
 using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
@@ -16,12 +15,15 @@ public class Board3DPreviewGlobalHelper
     {
         _meshHelper = ServiceProvider.Resolve<IMeshHelper>();
         _objectFinder = ServiceProvider.Resolve<IObjectFinder>();
+        _dirtyMarkerTypePropertiesMapper = ServiceProvider.Resolve<IDirtyMarkerTypePropertiesMapper>();
         _dispatcher = dispatcher;
     }
 
     private readonly IMeshHelper _meshHelper;
     private readonly IDispatcherHelper _dispatcher;
     private readonly IObjectFinder _objectFinder;
+    private readonly IDirtyMarkerTypePropertiesMapper _dirtyMarkerTypePropertiesMapper;
+
 
     private readonly Dictionary<LayerType, XColor> _layerTypeColors = new Dictionary<LayerType, XColor>
     {
@@ -31,7 +33,7 @@ public class Board3DPreviewGlobalHelper
         { LayerType.Plane, XColors.Gold},
         { LayerType.Dielectric, XColors.Orange},
     };
-    public async Task<BoardPreview3DViewModel> GeneratePreview(IBoardDesigner board, double boardTotalThickness)
+    public async Task<IPreviewEditCanvasViewModel> GeneratePreview(IBoardDesigner board, double boardTotalThickness)
     {
         var validLayerTypes = new[] { LayerType.Signal,
                                       LayerType.Plane,
@@ -45,7 +47,7 @@ public class Board3DPreviewGlobalHelper
         var stackLayers = BuildLayerOrder(buildResult.Layers);
         var solidLayers = BuildSolidLayers(stackLayers);
 
-        var previewModel = new BoardPreview3DViewModel((ICanvasDesignerFileViewModel)board, _dispatcher);
+        var previewModel = new BoardPreview3DViewModel(_dirtyMarkerTypePropertiesMapper);
 
         //offset
         var brdOutline = board.BoardOutline;
@@ -58,9 +60,7 @@ public class Board3DPreviewGlobalHelper
 
         var models = new List<ISelectableItem>();
 
-        var canvasModel = board.CanvasModel;
-
-        var canvasItems = canvasModel.GetItems().ToList();
+        var canvasItems = board.GetItems().ToList();
 
         var footprints = canvasItems.OfType<FootprintBoardCanvasItem>().ToList();
 
@@ -77,7 +77,7 @@ public class Board3DPreviewGlobalHelper
         return previewModel;
     }
 
-    public async Task<BoardPreview3DViewModel> GeneratePreview(IFootprintDesigner footprintDesigner)
+    public async Task<IPreviewEditCanvasViewModel> GeneratePreview(IFootprintDesigner footprintDesigner)
     {
         var validLayerTypes = new[] { LayerType.Signal,
                                       LayerType.Plane,
@@ -91,7 +91,7 @@ public class Board3DPreviewGlobalHelper
         var stackLayers = BuildLayerOrder(buildResult.Layers);
         var solidLayers = BuildSolidLayers(stackLayers);
 
-        var previewModel = new BoardPreview3DViewModel((ICanvasDesignerFileViewModel)footprintDesigner, _dispatcher);
+        var previewModel = new BoardPreview3DViewModel(_dirtyMarkerTypePropertiesMapper);
 
         //offset
         var bodyRect = buildResult.BodyRectangle;

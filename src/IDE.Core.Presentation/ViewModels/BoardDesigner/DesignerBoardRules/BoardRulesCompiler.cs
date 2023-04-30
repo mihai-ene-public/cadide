@@ -50,7 +50,7 @@ namespace IDE.Core.Designers
                 //var rulesCheckList = new List<BaseRuleCheck>();
                 var itemsWithRulesList = new List<ItemRules>();
                 var pairedItemsRules = new List<PairedItemsRule>();
-                foreach (var canvasItem in board.CanvasModel.GetItems())
+                foreach (var canvasItem in board.GetItems())
                 {
                     //reset fault state
                     if (canvasItem is BoardCanvasItemViewModel boardItem)

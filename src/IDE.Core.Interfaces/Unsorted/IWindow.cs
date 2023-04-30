@@ -31,14 +31,9 @@ namespace IDE.Core.Interfaces
         void SwitchToSelectedTheme();
     }
 
-    public interface IClipboardAdapter
-    {
-        void SetText(string text);
-    }
-
     public interface IModelImporter
     {
         string[] GetSupportedFileFormats();
-        void Import(string filePath, IDrawingViewModel canvasModel);
+        ISelectableItem Import(string filePath);
     }
 }

@@ -38,12 +38,17 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
                                         , IBoardDesigner
 {
     public BoardDesignerFileViewModel(
-          IObjectFinder objectFinder
-        , IActiveCompiler activeCompiler
-        , ISettingsManager settingsManager
-        , IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper
+          IObjectFinder objectFinder,
+          IActiveCompiler activeCompiler,
+          ISettingsManager settingsManager,
+          IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper,
+          IApplicationViewModel applicationModel,
+          IDispatcherHelper dispatcher,
+          IDebounceDispatcher drawingChangedDebouncer,
+          IDebounceDispatcher selectionDebouncer,
+          IPlacementToolFactory placementToolFactory
         )
-        : base()
+        : base(dispatcher, drawingChangedDebouncer, selectionDebouncer, dirtyMarkerTypePropertiesMapper, placementToolFactory)
     {
 
         _activeCompiler = activeCompiler;
@@ -53,19 +58,18 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
         boardDocument = new BoardDocument();
 
-        canvasGrid.GridSizeModel.CurrentValue = 0.25;
+        canvasGrid.SetValue(0.25);
 
         Toolbar = new BoardToolbar(this);
 
         PropertyChanged += BoardDesignerFileViewModel_PropertyChanged;
-        CanvasModel.DrawingChanged += CanvasModel_DrawingChanged;
-        CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
-        CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
+        //CanvasModel.DrawingChanged += CanvasModel_DrawingChanged;
+        //CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
+        //CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
 
-        if (applicationModel == null)
-            return;
-        applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
-        applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
+        _applicationModel = applicationModel;
+        //_applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
+        //_applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
 
         _dirtyPropertiesProvider = dirtyMarkerTypePropertiesMapper;
         _settingsManager = settingsManager;
@@ -76,6 +80,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     private readonly ISettingsManager _settingsManager;
     private readonly IActiveCompiler _activeCompiler;
     private readonly IObjectFinder _objectFinder;
+    private readonly IApplicationViewModel _applicationModel;
 
     protected override async Task AfterLoadDocumentInternal()
     {
@@ -117,7 +122,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
             await p.RepourPolygonAsync();
     }
 
-    CanvasGrid canvasGrid => canvasModel.CanvasGrid as CanvasGrid;
 
     IList canSelectList;
     public override IList CanSelectList
@@ -209,7 +213,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         {
             checkServicesBusy = true;
 
-            foreach (var fp in canvasModel.GetFootprints())
+            foreach (var fp in this.GetFootprints())
             {
                 //this will refresh the primitive (will save primitive so far: pos, rot, etc)
                 var p = fp.SaveToPrimitive();
@@ -232,11 +236,11 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     bool highlightChangeBusy;
     void ApplicationModel_HighlightChanged(object sender, EventArgs e)
     {
-        if (sender == canvasModel || highlightChangeBusy) return;
+        if (sender == this || highlightChangeBusy) return;
 
         highlightChangeBusy = true;
         //highlighted nets from schematic
-        var schCanvasModel = sender as DrawingViewModel;
+        var schCanvasModel = sender as ICanvasDesignerFileViewModel;
 
         //todo: we need to check if this is our schematic
         var highlightedNets = schCanvasModel.Items.OfType<NetSegmentCanvasItem>().Where(p => p.Net != null && p.Net.IsHighlighted)
@@ -259,6 +263,9 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     {
         foreach (var net in NetList)
             net.HighlightNet(false);
+
+        //todo: notify highlighted
+        //OnHighlightChanged(this, EventArgs.Empty);
     }
 
     bool selectionChangeBusy;
@@ -266,18 +273,18 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     List<string> selectedPartNames = new List<string>();
     void ApplicationModel_SelectionChanged(object sender, EventArgs e)
     {
-        if (sender == canvasModel || selectionChangeBusy) return;
+        if (sender == this || selectionChangeBusy) return;
 
         selectionChangeBusy = true;
         //selected parts from schematic
-        var schCanvasModel = sender as DrawingViewModel;
+        var schCanvasModel = sender as ICanvasDesignerFileViewModel;
 
         //todo: we need to check if this is our schematic
         var selectedParts = schCanvasModel.Items.OfType<SchematicSymbolCanvasItem>().Where(p => p.IsSelected).ToList();
 
         //canvasModel.ClearSelectedItems();
 
-        var boardParts = canvasModel.GetFootprints().ToList();
+        var boardParts = this.GetFootprints().ToList();
         foreach (var bp in boardParts)
         {
             var partName = bp.PartName;
@@ -303,7 +310,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
     void UpdateSelectedPartNames()
     {
-        var selecteditems = canvasModel.SelectedItems.OfType<FootprintBoardCanvasItem>().ToList();
+        var selecteditems = SelectedItems.OfType<FootprintBoardCanvasItem>().ToList();
         if (selecteditems.Count == 0)
             selectedPartNames.Clear();
 
@@ -331,13 +338,13 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
     void CanvasModel_HighlightChanged(object sender, EventArgs e)
     {
-        applicationModel.OnHighlightChanged(sender, e);
+        _applicationModel.OnHighlightChanged(sender, e);
     }
 
     void CanvasModel_SelectionChanged(object sender, EventArgs e)
     {
         UpdateSelectedPartNames();
-        applicationModel.OnSelectionChanged(sender, e);
+        _applicationModel.OnSelectionChanged(sender, e);
     }
 
     async void BoardDesignerFileViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -354,9 +361,9 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
                 }
 
             case nameof(SelectedLayer):
-                if (canvasModel.IsPlacingItem())
+                if (IsPlacingItem())
                 {
-                    var placingitem = canvasModel.PlacementTool.CanvasItem as SingleLayerBoardCanvasItem;
+                    var placingitem = PlacementTool.CanvasItem as SingleLayerBoardCanvasItem;
                     if (placingitem != null)
                         placingitem.Layer = SelectedLayer;
                 }
@@ -497,19 +504,19 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
         list.Add(partsCat);
         list.Add(netsCat);
-        var partItems = canvasModel.GetFootprints().ToList();
+        var partItems = this.GetFootprints().ToList();
         var parts = partItems.OrderBy(p => p.PartName)
                              .Select(p => new OverviewSelectNode
                              {
                                  DataItem = p,
                              });
         partsCat.Children.AddRange(parts);
-        var netSegmentItems = canvasModel.GetItems().OfType<ISignalPrimitiveCanvasItem>().Cast<ISelectableItem>().ToList();
+        var netSegmentItems = GetItems().OfType<ISignalPrimitiveCanvasItem>().Cast<ISelectableItem>().ToList();
 
 
         if (showPrimitives)
         {
-            var primitiveItems = canvasModel.GetItems().Except(partItems).Except(netSegmentItems);
+            var primitiveItems = GetItems().Except(partItems).Except(netSegmentItems);
             primitivesCat.Children.AddRange(primitiveItems.Where(p => !(p is BoardNetGraph) && !(p is RegionBoardCanvasItem)).Select(p => new OverviewSelectNode
             {
                 DataItem = p
@@ -668,8 +675,8 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         }
     }
 
-    BoardPreview3DViewModel boardPreview3DViewModel;
-    public BoardPreview3DViewModel BoardPreview3DViewModel
+    private IPreviewCanvasViewModel boardPreview3DViewModel;
+    public IPreviewCanvasViewModel BoardPreview3DViewModel
     {
         get { return boardPreview3DViewModel; }
         set
@@ -868,9 +875,8 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
             if (addFootprintCommand == null)
                 addFootprintCommand = CreateCommand(p =>
                 {
-                    canvasModel.ClearSelectedItems();
-
-                    canvasModel.CancelPlacement();
+                    ClearSelectedItems();
+                    CancelPlacement();
 
                     var projectInfo = GetCurrentProjectInfo();
                     var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Footprint, projectInfo);
@@ -900,7 +906,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
                             group.Items = canvasItems.ToList();
 
-                            canvasModel.StartPlacement(group);
+                            StartPlacement(group);
                         }
                     }
                 },
@@ -946,7 +952,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
                             group.Items = canvasItems.ToList();
 
-                            canvasModel.StartPlacement(group);
+                            StartPlacement(group);
                         }
                     }
                     catch (Exception ex)
@@ -1052,10 +1058,8 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
             return;
 
         var projectInfo = GetCurrentProjectInfo();
-        //var project = projectInfo.Project;
 
         //open the schematic; should be saved
-        //var schematic = await Task.Run(() => ParentProject.FindObject(TemplateType.Schematic, null, boardProperties.SchematicReference.schematicId) as SchematicDocument);
         var schematic = _objectFinder.FindObject<SchematicDocument>(projectInfo, null, boardProperties.SchematicReference.schematicId);
         if (schematic == null)
             return;//we could show a message
@@ -1063,6 +1067,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         State = DocumentState.IsLoading;
         IsLoading = true;
 
+        //todo: need to register undo/redo for this operation
         var brdUpdater = new BoardUpdateFromSchematicOperation(_dispatcher, _objectFinder);
         await brdUpdater.Update(this, schematic, projectInfo);
 
@@ -1094,8 +1099,8 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
             _dispatcher.RunOnDispatcher(() =>
             {
-                canvasModel.RemoveItems(oldConnections);
-                canvasModel.AddItems(newConnections);
+                RemoveItems(oldConnections);
+                AddItems(newConnections);
             });
         });
     }
@@ -1144,12 +1149,35 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     void UpdateBoardOutline()
     {
         var layerId = (int)LayerType.BoardOutline + 1;
-        var outlineLayer = canvasModel.Items.OfType<LayerDesignerItem>().FirstOrDefault(l => l.LayerId == layerId);
+        var outlineLayer = Items.OfType<LayerDesignerItem>().FirstOrDefault(l => l.LayerId == layerId);
         if (outlineLayer == null) return;
 
         var outlineItems = outlineLayer.Items.Cast<BaseCanvasItem>().OfType<SingleLayerBoardCanvasItem>().ToList();
 
+        var originalItems = boardOutlineItem.Items.ToList();
+
         BoardOutlineUpdater.UpdateBoardOutline(boardOutlineItem, outlineItems, layerId);
+
+        var newItems = boardOutlineItem.Items.ToList();
+
+        RegisterUndoActionExecuted(
+            undo: o =>
+            {
+                boardOutlineItem.Items.Clear();
+                boardOutlineItem.Items.AddRange(originalItems);
+                boardOutlineItem.OnPropertyChanged(nameof(boardOutlineItem.Items));
+
+                return null;
+            },
+            redo: o =>
+            {
+                boardOutlineItem.Items.Clear();
+                boardOutlineItem.Items.AddRange(newItems);
+                boardOutlineItem.OnPropertyChanged(nameof(boardOutlineItem.Items));
+
+                return null;
+            }, null
+            );
     }
 
     ICommand repositionSelectedComponentsCommand;
@@ -1170,7 +1198,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
     private void RepositionSelectedComponents()
     {
-        var selecteditems = CanvasModel.SelectedItems.OfType<FootprintBoardCanvasItem>().ToList();
+        var selecteditems = SelectedItems.OfType<FootprintBoardCanvasItem>().ToList();
         if (selecteditems.Count == 0)
             return;
 
@@ -1187,7 +1215,7 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
             return;
 
         var placementTool = new BoardRepositionSelectedComponentsPlacementTool(partsBySelectionOrder);
-        placementTool.CanvasModel = CanvasModel;
+        placementTool.CanvasModel = this;
 
         placementTool.StartPlacement();
     }
@@ -1237,8 +1265,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         }
     }
 
-
-
     async Task Show3D()
     {
         if (DesignerViewMode == DesignerViewMode.ViewMode3D)
@@ -1276,8 +1302,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
         BoardPreview3DViewModel = model;
     }
-
-
 
     #endregion Commands
 
@@ -1327,15 +1351,13 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         });
     }
 
-
-
     async Task RefreshSchematicReferenceStatus()
     {
         IsSchematicReferenceRequired = string.IsNullOrEmpty(boardProperties.SchematicReference.schematicId);
         if (IsSchematicReferenceRequired)//these should not be true at the same time
             IsUpdateBoardFromSchematicRequired = false;
+
         //evaluate when we check what we have in schematic
-        //IsUpdateBoardFromSchematicRequired = true;
         if (boardProperties.IsUpdateBoardFromSchematicRequired)
         {
             _dispatcher.RunOnDispatcher(() => { IsDirty = true; });
@@ -1350,11 +1372,10 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
     public IList<string> OutputFiles { get; private set; } = new List<string>();
 
-
     public List<BoardComponentInstance> GetBoardParts()
     {
 
-        var footprints = CanvasModel.GetFootprints().ToList();
+        var footprints = this.GetFootprints().ToList();
 
         var partsList = footprints.Select(f => f.FootprintPrimitive).ToList();
 
@@ -1365,11 +1386,10 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
 
     public List<FootprintBoardCanvasItem> GetBoardFootprints()
     {
-        return CanvasModel.GetFootprints()
+        return this.GetFootprints()
                                 .OrderBy(f => f.PartName, new IndexedNameComparer())
                                 .ToList();
     }
-
 
     public override void ApplySettings()
     {
@@ -1382,8 +1402,8 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         if (brdColorsSettings == null)
             return;
 
-        canvasModel.CanvasBackground = XColor.FromHexString(brdColorsSettings.CanvasBackground);
-        canvasModel.GridColor = XColor.FromHexString(brdColorsSettings.GridColor);
+        CanvasBackground = XColor.FromHexString(brdColorsSettings.CanvasBackground);
+        GridColor = XColor.FromHexString(brdColorsSettings.GridColor);
 
     }
 }

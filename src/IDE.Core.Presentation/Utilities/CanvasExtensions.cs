@@ -7,18 +7,18 @@ namespace IDE.Core.Presentation.Utilities;
 
 public static class CanvasExtensions
 {
-    public static IEnumerable<FootprintBoardCanvasItem> GetFootprints(this IDrawingViewModel canvasModel)
+    public static IEnumerable<FootprintBoardCanvasItem> GetFootprints(this ICanvasDesignerFileViewModel canvasModel)
     {
         return canvasModel.GetItems().OfType<FootprintBoardCanvasItem>();
     }
 
-    public static INetManager GetNetManager(this IDrawingViewModel canvasModel)
+    public static INetManager GetNetManager(this ICanvasDesignerFileViewModel canvasModel)
     {
-        return (canvasModel.FileDocument as ISchematicDesigner)?.NetManager;
+        return (canvasModel as ISchematicDesigner)?.NetManager;
     }
 
-    public static IBusManager GetBusManager(this IDrawingViewModel canvasModel)
+    public static IBusManager GetBusManager(this ICanvasDesignerFileViewModel canvasModel)
     {
-        return (canvasModel.FileDocument as ISchematicDesigner)?.BusManager;
+        return (canvasModel as ISchematicDesigner)?.BusManager;
     }
 }

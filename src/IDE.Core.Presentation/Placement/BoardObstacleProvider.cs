@@ -14,7 +14,7 @@ namespace IDE.Core.Presentation.Placement
         Dictionary<ILayerDesignerItem, RTree<ObstacleItem>> trees;
 
 
-        public BoardObstacleProvider(IDrawingViewModel drawingViewModel)
+        public BoardObstacleProvider(ICanvasDesignerFileViewModel drawingViewModel)
             : base(drawingViewModel)
         {
 
@@ -26,7 +26,7 @@ namespace IDE.Core.Presentation.Placement
         {
             trees = new Dictionary<ILayerDesignerItem, RTree<ObstacleItem>>();
 
-            var brd = canvasModel.FileDocument as ILayeredViewModel;
+            var brd = canvasModel as ILayeredViewModel;
             if (brd == null)
                 return;
 
@@ -104,12 +104,14 @@ namespace IDE.Core.Presentation.Placement
                 var t = obstacle.CanvasItem.GetTransform();
 
                 var geometry = GeometryHelper.GetGeometry(obstacle.CanvasItem, applyTransform: true);
+                if (geometry == null)
+                    continue;
+
                 obstacle.Geometry = geometry;
 
                 var bounds = geometry.GetBounds();
                 obstacle.Envelope = Envelope.FromRect(bounds);
 
-                //tree.Add(Core.RTree.Rectangle.FromRect(bounds), obstacle);
                 tree.Insert(obstacle);
             }
 
@@ -118,7 +120,7 @@ namespace IDE.Core.Presentation.Placement
 
         ILayerDesignerItem GetCurrentLayer()
         {
-            var brd = canvasModel.FileDocument as ILayeredViewModel;
+            var brd = canvasModel as ILayeredViewModel;
             return brd?.SelectedLayer;
         }
 

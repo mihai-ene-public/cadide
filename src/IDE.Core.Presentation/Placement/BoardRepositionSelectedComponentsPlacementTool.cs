@@ -1,84 +1,118 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using IDE.Core.Designers;
+﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
-using IDE.Core.Storage;
 using IDE.Core.Types.Media;
-using IDE.Documents.Views;
 
-namespace IDE.Core.Presentation.Placement
+namespace IDE.Core.Presentation.Placement;
+
+public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool, IBoardRepositionSelectedComponentsPlacementTool
 {
-    public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool, IBoardRepositionSelectedComponentsPlacementTool
+
+    public BoardRepositionSelectedComponentsPlacementTool(IList<FootprintBoardCanvasItem> selectedItems)
     {
+        selectedParts = selectedItems;
+    }
 
-        public BoardRepositionSelectedComponentsPlacementTool(IList<FootprintBoardCanvasItem> selectedItems)
+    private FootprintBoardCanvasItem GetItem() => canvasItem as FootprintBoardCanvasItem;
+
+    private IList<FootprintBoardCanvasItem> selectedParts;
+
+    private XPoint originalPosition;
+
+    public override void SetupCanvasItem()
+    {
+        if (selectedParts != null && selectedParts.Count > 0)
         {
-            selectedParts = selectedItems;
+            var fp = selectedParts[0];
+            canvasItem = fp;
+            canvasItem.IsPlaced = false;
+            canvasItem.IsSelected = false;
+
+            originalPosition = new XPoint(fp.X, fp.Y);
         }
+        else
+            canvasItem = null;
+    }
 
-        FootprintBoardCanvasItem GetItem() => canvasItem as FootprintBoardCanvasItem;
+    public override void CancelPlacement()
+    {
+        var item = GetItem();
 
-        IList<FootprintBoardCanvasItem> selectedParts;
+        if (item == null)
+            return;
 
-        public override void SetupCanvasItem()
+        //restore position
+        item.X = originalPosition.X;
+        item.Y = originalPosition.Y;
+    }
+
+    public override void PlacementMouseMove(XPoint mousePosition)
+    {
+        var item = GetItem();
+
+        if (item == null)
+            return;
+        var mp = CanvasModel.SnapToGrid(mousePosition);
+
+        switch (PlacementStatus)
         {
-            if (selectedParts != null && selectedParts.Count > 0)
-            {
-                canvasItem = selectedParts[0];
-                canvasItem.IsPlaced = false;
-                canvasItem.IsSelected = false;
-            }
-            else
-                canvasItem = null;
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                break;
         }
+    }
 
-        public override void PlacementMouseMove(XPoint mousePosition)
+    public override void PlacementMouseUp(XPoint mousePosition)
+    {
+        var item = GetItem();
+
+        if (item == null)
+            return;
+
+        var mp = CanvasModel.SnapToGrid(mousePosition);
+
+        switch (PlacementStatus)
         {
-            var item = GetItem();
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                item.IsPlaced = true;
 
-            if (item == null)
-                return;
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+                CommitPlacement();
 
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    break;
-            }
+                if (selectedParts.Count > 0)
+                    selectedParts.RemoveAt(0);
+
+                SetupCanvasItem();
+
+                if (canvasItem == null)
+                {
+                    CanvasModel.CancelPlacement();
+                }
+
+                break;
         }
+    }
 
-        public override void PlacementMouseUp(XPoint mousePosition)
+    protected override void RegisterUndoActionExecuted()
+    {
+        var item = GetItem();
+        var oldPosition = originalPosition;
+        var newPosition= new XPoint(item.X, item.Y);
+
+        Func<object, object> undo = (i) =>
         {
-            var item = GetItem();
+            item.X = oldPosition.X;
+            item.Y = oldPosition.Y;
+            return item;
+        };
+        Func<object, object> redo = (i) =>
+        {
+            item.X = newPosition.X;
+            item.Y = newPosition.Y;
+            return item;
+        };
 
-            if (item == null)
-                return;
-
-            var mp = CanvasModel.SnapToGrid(mousePosition);
-
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    item.IsPlaced = true;
-                    CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
-
-                    if (selectedParts.Count > 0)
-                        selectedParts.RemoveAt(0);
-
-                    SetupCanvasItem();
-
-                    if (canvasItem == null)
-                    {
-                        CanvasModel.CancelPlacement();
-                    }
-
-                    break;
-            }
-        }
+        CanvasModel.RegisterUndoActionExecuted(undo, redo, item);
     }
 }

@@ -46,9 +46,8 @@ namespace IDE.Core.Build
 
         void EnumerateItems()
         {
-            var canvasModel = board.CanvasModel;
 
-            canvasItems = (List<ISelectableItem>)canvasModel.GetItems();
+            canvasItems = (List<ISelectableItem>)board.GetItems();
 
             //smd and pad
             var footprints = canvasItems.OfType<FootprintBoardCanvasItem>().ToList();

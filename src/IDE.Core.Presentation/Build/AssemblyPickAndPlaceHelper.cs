@@ -27,7 +27,7 @@ namespace IDE.Core.Build
             var boardOriginY = boardRectangle.BottomLeft.Y;
             var useImperial = buildOptions.PositionUnits == OutputUnits.inch;
 
-            var parts = board.CanvasModel.GetFootprints()
+            var parts = board.GetFootprints()
                                     .OrderBy(f => f.PartName, new IndexedNameComparer())
                                     .ToList();
 
@@ -240,7 +240,7 @@ namespace IDE.Core.Build
         {
             var items = new List<GlobalPickAndPlacePrimitive>();
 
-            var parts = board.CanvasModel.GetFootprints()
+            var parts = board.GetFootprints()
                                     .OrderBy(f => f.PartName, new IndexedNameComparer())
                                     .ToList();
 

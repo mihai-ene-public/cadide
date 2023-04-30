@@ -23,12 +23,12 @@ namespace IDE.Core.Adorners
         {
             visualChildren = new VisualCollection(this);
 
-            canvasModel = adornedElement.FindParentDataContext<IDrawingViewModel>();
+            canvasModel = adornedElement.FindParentDataContext<ICanvasDesignerFileViewModel>();
         }
 
-       protected VisualCollection visualChildren;
+        protected VisualCollection visualChildren;
 
-        protected IDrawingViewModel canvasModel;
+        protected ICanvasDesignerFileViewModel canvasModel;
 
         protected override int VisualChildrenCount { get { return visualChildren.Count; } }
         protected override Visual GetVisualChild(int index) { return visualChildren[index]; }

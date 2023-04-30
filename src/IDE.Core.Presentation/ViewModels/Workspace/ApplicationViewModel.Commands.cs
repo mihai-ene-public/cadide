@@ -338,6 +338,22 @@
                                    canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
                                    handledAction: p => true));
 
+            bindings.Add(new CommandBindingData(AppCommand.UndoCommand,
+                                   p =>
+                                   {
+                                       Undo();
+                                   },
+                                   canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
+                                   handledAction: p => true));
+
+            bindings.Add(new CommandBindingData(AppCommand.RedoCommand,
+                                  p =>
+                                  {
+                                      Redo();
+                                  },
+                                  canExecute: p => activeDocument is ICanvasDesignerFileViewModel,
+                                  handledAction: p => true));
+
             window.AddCommanBindings(bindings);
         }
 

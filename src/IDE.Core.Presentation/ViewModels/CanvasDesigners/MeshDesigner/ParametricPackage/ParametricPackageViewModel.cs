@@ -11,7 +11,7 @@ namespace IDE.Documents.Views
     public class ParametricPackageViewModel : BaseViewModel
     {
         public event Action Close;
-        public ParametricPackageViewModel(IDrawingViewModel canvas)
+        public ParametricPackageViewModel(ICanvasDesignerFileViewModel canvas)
         {
             canvasModel = canvas;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
@@ -22,22 +22,8 @@ namespace IDE.Documents.Views
             {
                 if (e.PropertyName == nameof(CurrentItem))
                 {
-
                     if (CurrentItem != null)
                     {
-                        //var meshItems = await CurrentPackageGenerator.GeneratePackage();
-
-                        //if (meshItems != null)
-                        //{
-                        //    dispatcher.RunOnDispatcher(() =>
-                        //    {
-
-                        //        canvasModel.RemoveItems(canvasModel.Items.ToList());
-
-                        //        canvasModel.AddItems(meshItems);
-                        //    });
-                        //}
-
                         var packageItem = (ParametricPackageMeshItem)Activator.CreateInstance(currentItem.Type);
                         await packageItem.GenerateItems();
 
@@ -52,7 +38,7 @@ namespace IDE.Documents.Views
         }
 
         protected IDispatcherHelper dispatcher;
-        IDrawingViewModel canvasModel;
+        ICanvasDesignerFileViewModel canvasModel;
 
         List<ISelectableItem> originalItems;
 
@@ -135,6 +121,23 @@ namespace IDE.Documents.Views
                 {
                     okCommand = CreateCommand(p =>
                     {
+                        var currentItems = canvasModel.Items.ToList();
+
+                        canvasModel.RegisterUndoActionExecuted(
+                            undo: o =>
+                            {
+                                canvasModel.RemoveItems(currentItems);
+                                canvasModel.AddItems(originalItems);
+                                return null;
+                            },
+                            redo: o =>
+                            {
+                                canvasModel.RemoveItems(canvasModel.Items.ToList());
+                                canvasModel.AddItems(currentItems);
+                                return null;
+                            }, null);
+                            
+
                         OnClose();
                     });
 

@@ -14,19 +14,19 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
         //todo: hit tests scenarios
         public BusWirePlacementToolTests()
         {
-            var dispatcherMock = new Mock<IDispatcherHelper>();
-            dispatcherMock.Setup(x => x.RunOnDispatcher(It.IsAny<Action>()))
-                           .Callback((Action action) =>
-                           {
-                               action();
-                           });
+            //var dispatcherMock = new Mock<IDispatcherHelper>();
+            //dispatcherMock.Setup(x => x.RunOnDispatcher(It.IsAny<Action>()))
+            //               .Callback((Action action) =>
+            //               {
+            //                   action();
+            //               });
 
-            var schMock = new Mock<ISchematicDesigner>();
-            schMock.SetupGet(x => x.BusManager)
-                    .Returns(new SchematicBusManager());//mock net manager?
+            //var schMock = new Mock<ISchematicDesigner>();
+            //schMock.SetupGet(x => x.BusManager)
+            //        .Returns(new SchematicBusManager());//mock net manager?
 
-            _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
 
             var canvasItemType = typeof(BusWireCanvasItem);
             placementTool = new BusWirePlacementTool();//PlacementTool.CreateTool(canvasItemType);
@@ -36,7 +36,7 @@ namespace IDE.Core.Presentation.Tests.PlacementTools
             BusWirePlacementTool.SetPlacementMode(NetPlacementMode.Single);
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         BusWirePlacementTool BusWirePlacementTool => (BusWirePlacementTool)placementTool;
 

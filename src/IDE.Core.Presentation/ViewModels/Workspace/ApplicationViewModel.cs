@@ -170,7 +170,7 @@ public partial class ApplicationViewModel : BaseViewModel,
         //show selected items in properties
         if (activeDocument is ICanvasDesignerFileViewModel canvas)
         {
-            canvas.CanvasModel?.UpdateSelection();
+            canvas.UpdateSelection();
         }
         else
         {
@@ -1096,6 +1096,20 @@ public partial class ApplicationViewModel : BaseViewModel,
         var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
         if (canvasFileModel != null)
             canvasFileModel.CopySelectedItems();
+    }
+
+    void Undo()
+    {
+        var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
+        if (canvasFileModel != null)
+            canvasFileModel.Undo();
+    }
+
+    void Redo()
+    {
+        var canvasFileModel = activeDocument as CanvasDesignerFileViewModel;
+        if (canvasFileModel != null)
+            canvasFileModel.Redo();
     }
 
     void PasteSelectedItems()

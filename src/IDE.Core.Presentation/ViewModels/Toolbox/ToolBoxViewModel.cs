@@ -10,13 +10,13 @@ namespace IDE.Documents.Views
     public class ToolBoxViewModel : BaseViewModel
     {
 
-        public ToolBoxViewModel(DrawingViewModel canvas)
+        public ToolBoxViewModel(ICanvasDesignerFileViewModel canvasFileDocument)
         {
-            canvasModel = canvas;
+            canvasModel = canvasFileDocument;
         }
 
 
-        DrawingViewModel canvasModel;
+        private readonly ICanvasDesignerFileViewModel canvasModel;
 
         ICommand placeObjectCommand;
         public ICommand PlaceObjectCommand
@@ -26,7 +26,7 @@ namespace IDE.Documents.Views
                 if (placeObjectCommand == null)
                     placeObjectCommand = CreateCommand((p) =>
                                           {
-                                              StartPlacingObject((ToolBoxItem)p);
+                                              StartPlacingObject((IToolboxItem)p);
                                           }
                                        );
 
@@ -39,9 +39,9 @@ namespace IDE.Documents.Views
         public ObservableCollection<ToolBoxItem> Primitives { get; set; } = new ObservableCollection<ToolBoxItem>();
 
 
-        private void StartPlacingObject(ToolBoxItem toolBoxItem)
+        private void StartPlacingObject(IToolboxItem toolBoxItem)
         {
-            canvasModel.StartPlacement(toolBoxItem.Type, toolBoxItem.PlacementToolType);
+            canvasModel.StartPlacement(toolBoxItem);
         }
     }
 }

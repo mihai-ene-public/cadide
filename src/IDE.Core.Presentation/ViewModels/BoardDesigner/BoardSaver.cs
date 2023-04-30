@@ -10,36 +10,33 @@ public class BoardSaver
 {
     public void Save(IBoardDesigner board, BoardDocument boardDocument)
     {
-        var canvasModel = board.CanvasModel;
-
         //remove the currently adding item si that it won't be saved
         ISelectableItem placingObject = null;
-        if (canvasModel.PlacementTool != null && canvasModel.PlacementTool.CanvasItem != null)
+        if (board.PlacementTool != null && board.PlacementTool.CanvasItem != null)
         {
-            placingObject = canvasModel.PlacementTool.CanvasItem;
-            // placeObjects.ForEach(c => canvasModel.RemoveItem(c));
-            canvasModel.RemoveItem(placingObject);
+            placingObject = board.PlacementTool.CanvasItem;
+            board.RemoveItem(placingObject);
         }
 
-        boardDocument.DocumentWidth = canvasModel.DocumentWidth;
-        boardDocument.DocumentHeight = canvasModel.DocumentHeight;
+        boardDocument.DocumentWidth = board.DocumentWidth;
+        boardDocument.DocumentHeight = board.DocumentHeight;
 
         //plain items
-        var plainItems = ((from l in canvasModel.Items.OfType<LayerDesignerItem>()
+        var plainItems = ((from l in board.Items.OfType<LayerDesignerItem>()
                            from s in l.Items.OfType<IPlainDesignerItem>()//.Except(l.Items.OfType<PolygonBoardCanvasItem>().Where(p => p.Signal != null))
                            select (LayerPrimitive)(s as BaseCanvasItem).SaveToPrimitive())
-                           .Union(canvasModel.Items.OfType<IPlainDesignerItem>()
+                           .Union(board.Items.OfType<IPlainDesignerItem>()
                                              .Cast<BaseCanvasItem>().Select(d => (LayerPrimitive)d.SaveToPrimitive())))
                           .ToList();
 
         //add signal items with no signal as plain items
-        var undefinedSignalItems = board.CanvasModel.GetItems().OfType<ISignalPrimitiveCanvasItem>().Where(s => s.Signal == null || string.IsNullOrEmpty(s.Signal.Id));
+        var undefinedSignalItems = board.GetItems().OfType<ISignalPrimitiveCanvasItem>().Where(s => s.Signal == null || string.IsNullOrEmpty(s.Signal.Id));
         plainItems.AddRange(undefinedSignalItems.OfType<BoardCanvasItemViewModel>().Except(undefinedSignalItems.OfType<ViaCanvasItem>()).Select(p => (LayerPrimitive)p.SaveToPrimitive()));
 
         boardDocument.PlainItems = plainItems;
 
         //footprints
-        boardDocument.Components = canvasModel.GetFootprints().Select(d => (BoardComponentInstance)d.SaveToPrimitive()).ToList();
+        boardDocument.Components = board.GetFootprints().Select(d => (BoardComponentInstance)d.SaveToPrimitive()).ToList();
 
         SaveBoardOutline(board, boardDocument);
 
@@ -55,7 +52,7 @@ public class BoardSaver
 
         //PostSave
         if (placingObject != null)
-            canvasModel.AddItem(placingObject);
+            board.AddItem(placingObject);
     }
 
     void SaveBoardOutline(IBoardDesigner board, BoardDocument boardDocument)

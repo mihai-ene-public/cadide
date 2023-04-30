@@ -7,7 +7,7 @@ namespace IDE.Core.Build;
 
 public class BoardContextBuilder
 {
-    public BoardContext BuildBoardContext(IDrawingViewModel canvasModel)
+    public BoardContext BuildBoardContext(ICanvasDesignerFileViewModel canvasModel)
     {
         var boardContext = new BoardContext();
 

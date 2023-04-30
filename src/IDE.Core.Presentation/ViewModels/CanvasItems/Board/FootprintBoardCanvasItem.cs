@@ -558,12 +558,11 @@ namespace IDE.Core.Designers
 
         }
 
-        IDrawingViewModel GetCanvasModel()
+        ICanvasDesignerFileViewModel GetCanvasModel()
         {
-            var canvas = BoardModel as CanvasDesignerFileViewModel;
-            var canvasModel = canvas?.CanvasModel;
+            var canvas = BoardModel as ICanvasDesignerFileViewModel;
 
-            return canvasModel;
+            return canvas;
         }
 
         public override IPrimitive SaveToPrimitive()
@@ -621,9 +620,9 @@ namespace IDE.Core.Designers
 
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
-            Rot = RotateSafe(Rot);
+            Rot = RotateSafe(Rot, angle);
         }
 
         public override string ToString()

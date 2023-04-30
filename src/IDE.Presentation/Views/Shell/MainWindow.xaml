@@ -85,11 +85,6 @@
                               ToolTipService.ShowOnDisabled="True"
                               ToolTip="{x:Static cmdLabel:Strings.STR_AppCommand_OpenContainingFolder_TT}" />
 
-                    <MenuItem Header="{x:Static cmdLabel:Strings.STR_AppCommand_CopyFileURLToClipboard}"
-                              Command="{Binding Model.CopyFullPathtoClipboard}"
-                              ToolTipService.ShowOnDisabled="True"
-                              ToolTip="{x:Static cmdLabel:Strings.STR_AppCommand_CopyFileURLToClipboard_TT}" />
-
                     <Separator />
 
                     <MenuItem Header="Close"

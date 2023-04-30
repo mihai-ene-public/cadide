@@ -126,7 +126,7 @@ namespace IDE.Core.Model.GlobalRepresentation
                 {
                     var defaultClearance = 0.254d;//mm
 
-                    var canvasModel = board.CanvasModel;
+                    var canvasModel = board;
 
                     var canvasItems = (List<ISelectableItem>)canvasModel.GetItems();
 

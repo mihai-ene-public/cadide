@@ -11,6 +11,7 @@ namespace IDE.Core.Interfaces
         IList<XPoint> SelectedPoints { get; }
 
         bool HasSelectedSegments();
+        void ClearSelection();
 
         void SelectSegment(int segmentIndex);
 

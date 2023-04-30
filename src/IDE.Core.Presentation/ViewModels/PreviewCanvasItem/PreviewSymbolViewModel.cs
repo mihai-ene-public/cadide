@@ -13,11 +13,11 @@ namespace IDE.Documents.Views
         {
             var docSize = 25.4 * 10;
             var halfSize = docSize * 0.5;
-            canvasModel.DocumentWidth = docSize;
-            canvasModel.DocumentHeight = docSize;
-            canvasModel.Origin = new XPoint(halfSize, halfSize);
+            DocumentWidth = docSize;
+            DocumentHeight = docSize;
+            Origin = new XPoint(halfSize, halfSize);
 
-            ((CanvasGrid)canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new MilUnit(50);
+            canvasGrid.SetUnit(new MilUnit(50));
         }
 
         public override void PreviewDocument(LibraryItem libraryItem)

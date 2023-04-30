@@ -16,13 +16,13 @@
 
         <TextBlock Text="{x:Static strings:SchematicStrings.DocumentWidth}"
                    Margin="0,10,0,5" />
-        <TextBox Text="{Binding Schematic.CanvasModel.DocumentWidth, UpdateSourceTrigger=PropertyChanged, Delay=700 }"
+        <TextBox Text="{Binding Schematic.DocumentWidth, UpdateSourceTrigger=PropertyChanged, Delay=700 }"
                  HorizontalAlignment="Left"
                  Width="125" />
 
         <TextBlock Text="{x:Static strings:SchematicStrings.DocumentHeight}"
                    Margin="0,10,0,5" />
-        <TextBox Text="{Binding Schematic.CanvasModel.DocumentHeight, UpdateSourceTrigger=PropertyChanged, Delay=700 }"
+        <TextBox Text="{Binding Schematic.DocumentHeight, UpdateSourceTrigger=PropertyChanged, Delay=700 }"
                  HorizontalAlignment="Left"
                  Width="125" />
     </StackPanel>

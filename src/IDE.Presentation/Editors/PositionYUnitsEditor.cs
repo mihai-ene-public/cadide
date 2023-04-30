@@ -18,18 +18,7 @@ public class PositionYUnitsEditor : ITypeEditor
 
     public FrameworkElement GetEditorElement(PropertyItem propertyItem, string propertyName)
     {
-        //var app = ServiceProvider.GetService<IApplicationViewModel>();
-        IDrawingViewModel canvasModel = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
-        //if (app != null)
-        //{
-        //    var currentDoc = app.ActiveDocument as CanvasDesignerFileViewModel;
-        //    canvasModel = currentDoc?.CanvasModel;
-        //}
-
-        //if (propertyItem.Instance is ISelectableItem)
-        //    parent = (propertyItem.Instance as ISelectableItem).Parent;
-        //else if (propertyItem.Instance is MultipleSelectionObject)
-        //    parent = (propertyItem.Instance as MultipleSelectionObject).Parent;
+        ICanvasDesignerFileViewModel canvasModel = CanvasHelper.GetCanvasModelFromCurrentActiveDocument();
 
         if (canvasModel == null)
             return null;

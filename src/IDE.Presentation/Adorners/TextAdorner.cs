@@ -3,6 +3,7 @@ using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 using IDE.Core.Utilities;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,8 @@ namespace IDE.Core.Adorners
             };
 
             widthResizeThumb.DragDelta += WidthResizeThumb_DragDelta;
+            widthResizeThumb.PreviewMouseDown += WidthResizeRightThumb_PreviewMouseDown;
+            widthResizeThumb.PreviewMouseUp += WidthResizeRightThumb_PreviewMouseUp;
 
             translateThumb = new Thumb
             {
@@ -46,6 +49,8 @@ namespace IDE.Core.Adorners
             };
 
             translateThumb.DragDelta += translateThumb_DragDelta;
+            translateThumb.PreviewMouseDown += TranslateThumb_PreviewMouseDown;
+            translateThumb.PreviewMouseUp += TranslateThumb_PreviewMouseUp;
 
             visualChildren.Add(widthResizeThumb);
             visualChildren.Add(translateThumb);
@@ -53,14 +58,13 @@ namespace IDE.Core.Adorners
             textItem.PropertyChanged += textItem_PropertyChanged;
         }
 
-
-
         Thumb widthResizeThumb;
         Thumb translateThumb;
 
-
         ITextCanvasItem textItem;
 
+        XPoint? originalPosition;
+        double? originalWidth;
 
         private void textItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -78,6 +82,83 @@ namespace IDE.Core.Adorners
 
             InvalidateVisual();
         }
+
+        private void TranslateThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newPos = new XPoint(textItem.X, textItem.Y);
+            var oldPos = originalPosition.Value;
+            originalPosition = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    textItem.X = oldPos.X;
+                    textItem.Y = oldPos.Y;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                redo: o =>
+                {
+                    textItem.X = newPos.X;
+                    textItem.Y = newPos.Y;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void TranslateThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalPosition == null)
+                originalPosition = new XPoint(textItem.X, textItem.Y);
+        }
+        private void WidthResizeRightThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newWidth = textItem.Width;
+            var oldWidth = originalWidth.Value;
+            originalWidth = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    textItem.Width = oldWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                redo: o =>
+                {
+                    textItem.Width = newWidth;
+                    InvalidateVisual();
+
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void WidthResizeRightThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalWidth == null)
+                originalWidth = textItem.Width;
+        }
+
+
 
         private void WidthResizeThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {

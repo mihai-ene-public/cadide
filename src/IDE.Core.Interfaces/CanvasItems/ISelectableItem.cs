@@ -48,7 +48,7 @@ namespace IDE.Core.Interfaces
         void MirrorY();
 
 
-        void Rotate();
+        void Rotate(double angle = 90);
 
         /// <summary>
         /// implements cleanup needed to be done when removed from canvas

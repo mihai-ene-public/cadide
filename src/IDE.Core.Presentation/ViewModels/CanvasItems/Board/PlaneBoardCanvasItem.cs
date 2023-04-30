@@ -186,7 +186,7 @@ namespace IDE.Core.Designers
 
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
         }
 
@@ -249,9 +249,9 @@ namespace IDE.Core.Designers
 
                     var rulesManger = new BoardRulesCompiler();
 
-                    var canvasItems = (List<ISelectableItem>)thisBoard.CanvasModel.GetItems();
+                    var canvasItems = (List<ISelectableItem>)thisBoard.GetItems();
 
-                    var footprints = thisBoard.CanvasModel.GetFootprints().ToList();
+                    var footprints = thisBoard.GetFootprints().ToList();
                     var footprintItems = ( from fp in footprints
                                            from p in fp.Items.OfType<ISignalPrimitiveCanvasItem>().Cast<SingleLayerBoardCanvasItem>()
                                            where p.ShouldBeOnLayer(Layer)//p.Layer == Layer

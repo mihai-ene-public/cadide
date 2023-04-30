@@ -16,7 +16,7 @@ namespace IDE.Core.Presentation.PlacementRouting
 
         protected BoardObstacleProvider obstaclesProvider;
 
-        protected IDrawingViewModel canvasModel;
+        protected ICanvasDesignerFileViewModel canvasModel;
 
         public PlacementTool PlacementTool => (PlacementTool)canvasModel.PlacementTool;
 
@@ -26,7 +26,7 @@ namespace IDE.Core.Presentation.PlacementRouting
             set { PlacementTool.PlacementStatus = value; }
         }
 
-        public IDrawingViewModel CanvasModel
+        public ICanvasDesignerFileViewModel CanvasModel
         {
             get { return canvasModel; }
             set { canvasModel = value; }

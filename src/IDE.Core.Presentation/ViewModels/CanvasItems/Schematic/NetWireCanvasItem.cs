@@ -488,7 +488,7 @@ namespace IDE.Core.Designers
         {
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
         }
 

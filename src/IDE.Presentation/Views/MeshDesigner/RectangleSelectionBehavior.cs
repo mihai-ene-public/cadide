@@ -47,8 +47,8 @@ namespace IDE.Documents.Views
         protected override void Started(ManipulationEventArgs e)
         {
             base.Started(e);
-            this.selectionRect = new Rect(this.MouseDownPoint, this.MouseDownPoint);
-            this.ShowRectangle();
+           selectionRect = new Rect(MouseDownPoint, MouseDownPoint);
+           ShowRectangle();
         }
 
         /// <summary>
@@ -58,33 +58,23 @@ namespace IDE.Documents.Views
         protected override void Delta(ManipulationEventArgs e)
         {
             base.Delta(e);
-            this.selectionRect = new Rect(this.MouseDownPoint, e.CurrentPosition);
-            this.UpdateRectangle();
+            selectionRect = new Rect(MouseDownPoint, e.CurrentPosition);
+            UpdateRectangle();
 
             UpdateSelection();
         }
 
         void UpdateSelection()
         {
-            var canvas = Viewport.DataContext as CanvasDesignerFileViewModel;
-            if (canvas != null && canvas.CanvasModel != null)
+            var canvas = Viewport.DataContext as ICanvasDesignerFileViewModel;
+            if (canvas != null)
             {
-                var hitItems = _funcHitItems(selectionRect);//new List<ISelectableItem>();
-
-                //var hitResults = Viewport.FindHits(this.selectionRect);
-
-                //foreach (var hitRes in hitResults)
-                //{
-                //    var itemsVisual = hitRes.FindParent<ItemsVisual3D>();
-                //    var item = itemsVisual.GetItemFromVisual(hitRes) as ISelectableItem;
-                //    if (item != null)
-                //        hitItems.Add(item);
-                //}
+                var hitItems = _funcHitItems(selectionRect);
 
                 if (hitItems?.Count == 0)
                     return;
 
-                foreach (var item in canvas.CanvasModel.Items)
+                foreach (var item in canvas.Items)
                 {
                     var hitItem = hitItems.FirstOrDefault(s => s == item);
                     if (hitItem != null)
@@ -105,7 +95,7 @@ namespace IDE.Documents.Views
         /// </param>
         protected override void Completed(ManipulationEventArgs e)
         {
-            this.HideRectangle();
+            HideRectangle();
         }
 
 
@@ -115,15 +105,15 @@ namespace IDE.Documents.Views
         /// </summary>
         private void HideRectangle()
         {
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            if (this.rectangleAdorner != null)
+            var myAdornerLayer = AdornerLayer.GetAdornerLayer(Viewport);
+            if (rectangleAdorner != null)
             {
-                myAdornerLayer.Remove(this.rectangleAdorner);
+                myAdornerLayer.Remove(rectangleAdorner);
             }
 
-            this.rectangleAdorner = null;
+            rectangleAdorner = null;
 
-            this.Viewport.InvalidateVisual();
+            Viewport.InvalidateVisual();
         }
 
         /// <summary>
@@ -131,13 +121,13 @@ namespace IDE.Documents.Views
         /// </summary>
         private void UpdateRectangle()
         {
-            if (this.rectangleAdorner == null)
+            if (rectangleAdorner == null)
             {
                 return;
             }
 
-            this.rectangleAdorner.Rectangle = this.selectionRect;
-            this.rectangleAdorner.InvalidateVisual();
+            rectangleAdorner.Rectangle = selectionRect;
+            rectangleAdorner.InvalidateVisual();
         }
 
         /// <summary>
@@ -145,14 +135,14 @@ namespace IDE.Documents.Views
         /// </summary>
         private void ShowRectangle()
         {
-            if (this.rectangleAdorner != null)
+            if (rectangleAdorner != null)
             {
                 return;
             }
 
-            var adornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            this.rectangleAdorner = new RectangleAdorner(this.Viewport, this.selectionRect, Colors.LightGray, Colors.Transparent, 1, 1, 0, DashStyles.Dash);
-            adornerLayer.Add(this.rectangleAdorner);
+            var adornerLayer = AdornerLayer.GetAdornerLayer(Viewport);
+            rectangleAdorner = new RectangleAdorner(Viewport, selectionRect, Colors.LightGray, Colors.Transparent, 1, 1, 0, DashStyles.Dash);
+            adornerLayer.Add(rectangleAdorner);
         }
     }
 

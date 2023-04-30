@@ -1,96 +1,92 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
 using IDE.Core.Interfaces.Geometries;
-using IDE.Core.Storage;
 using IDE.Core.Types.Media;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace IDE.Core.Presentation.Placement
+namespace IDE.Core.Presentation.Placement;
+
+public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
 {
-    public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
+    public BusLabelPlacementTool()
     {
-        public BusLabelPlacementTool()
+        GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
+    }
+
+    private readonly IGeometryOutlineHelper GeometryHelper;
+
+    BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
+
+    public override void PlacementMouseMove(XPoint mousePosition)
+    {
+        var mp = CanvasModel.SnapToGrid(mousePosition);
+
+        var item = GetItem();
+
+        switch (PlacementStatus)
         {
-            GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y - 3;//3mm upper
+                break;
         }
+    }
 
-        private readonly IGeometryOutlineHelper GeometryHelper;
+    public override void PlacementMouseUp(XPoint mousePosition)
+    {
+        var mp = CanvasModel.SnapToGrid(mousePosition);
 
-        BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
+        var item = GetItem();
+        var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
 
-        public override void PlacementMouseMove(XPoint mousePosition)
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y - 3;
 
-            var item = GetItem();
+                //buses that intersect at this point
+                var busWires = CanvasModel.Items.OfType<BusWireCanvasItem>().ToList();
+                var intersectedBuses = new List<BusWireCanvasItem>();
+                foreach (var busWire in busWires)
+                {
 
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y - 3;//3mm upper
-                    break;
-            }
-        }
+                    var intersects = GeometryHelper.Intersects(busWire, circle);
+                    if (!intersects)
+                        continue;
 
-        public override void PlacementMouseUp(XPoint mousePosition)
-        {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
-
-            var item = GetItem();
-            var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
-
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y - 3;
-
-                    //nets that intersect at this point
-                    var busWires = CanvasModel.Items.OfType<BusWireCanvasItem>().ToList();
-                    var intersectedBuses = new List<BusWireCanvasItem>();
-                    foreach (var busWire in busWires)
+                    //add a bus that wasn't added before
+                    if (busWire.Bus != null)
                     {
-
-                        var intersects = GeometryHelper.Intersects(busWire, circle);
-                        if (!intersects)
-                            continue;
-
-                        //add a net that wasn't added before
-                        if (busWire.Bus != null)
-                        {
-                            var net = intersectedBuses.FirstOrDefault(n => n.Bus != null && n.Bus.Name == busWire.Bus.Name);
-                            if (net == null)
-                                intersectedBuses.Add(busWire);
-                        }
+                        var net = intersectedBuses.FirstOrDefault(n => n.Bus != null && n.Bus.Name == busWire.Bus.Name);
+                        if (net == null)
+                            intersectedBuses.Add(busWire);
                     }
+                }
 
-                    if (intersectedBuses.Count > 0)
-                    {
-                        //we can select an item, but for now we take the 1st
-                        var netRef = intersectedBuses.FirstOrDefault().Bus;
+                if (intersectedBuses.Count > 0)
+                {
+                    //we can select an item, but for now we take the 1st
+                    var busRef = intersectedBuses.FirstOrDefault().Bus;
 
-                        item.Bus = netRef;
-                        item.OnPropertyChanged(nameof(item.Bus));
-                        item.OnPropertyChanged(nameof(item.BusName));
-                        item.IsPlaced = true;
-                        CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                    item.Bus = busRef;
+                    item.OnPropertyChanged(nameof(item.Bus));
+                    item.OnPropertyChanged(nameof(item.BusName));
+                    item.IsPlaced = true;
+                    CommitPlacement();
 
-                        //create another text
-                        var newItem = (BusLabelCanvasItem)canvasItem.Clone();
+                    //create another text
+                    var newItem = (BusLabelCanvasItem)canvasItem.Clone();
 
-                        PlacementStatus = PlacementStatus.Ready;
-                        canvasItem = newItem;
+                    PlacementStatus = PlacementStatus.Ready;
+                    canvasItem = newItem;
 
-                        CanvasModel.AddItem(canvasItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    break;
-            }
+                    CanvasModel.AddItem(canvasItem);
+                }
+                else
+                {
+                    return;
+                }
+                break;
         }
     }
 }

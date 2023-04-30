@@ -9,9 +9,8 @@ namespace IDE.Core.Interfaces
 {
     public interface ISchematicDesigner : IDocumentOverview
                                         , ICanvasWithHighlightedItems
-                                        , IFileBaseViewModel
+                                        , ICanvasDesignerFileViewModel
     {
-        IDrawingViewModel CanvasModel { get; }
         IList<ISheetDesignerItem> Sheets { get; }
         INetManager NetManager { get; }
         IBusManager BusManager { get; }

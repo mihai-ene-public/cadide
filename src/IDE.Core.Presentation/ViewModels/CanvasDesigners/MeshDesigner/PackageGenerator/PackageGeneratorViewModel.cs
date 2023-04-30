@@ -12,7 +12,7 @@ namespace IDE.Documents.Views
     public class PackageGeneratorViewModel : BaseViewModel
     {
         public event Action Close;
-        public PackageGeneratorViewModel(IDrawingViewModel canvas)
+        public PackageGeneratorViewModel(ICanvasDesignerFileViewModel canvas)
         {
             canvasModel = canvas;
             dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
@@ -29,9 +29,7 @@ namespace IDE.Documents.Views
                     {
                         dispatcher.RunOnDispatcher(() =>
                         {
-
                             canvasModel.RemoveItems(canvasModel.Items.ToList());
-
                             canvasModel.AddItems(meshItems);
                         });
                     }
@@ -40,7 +38,7 @@ namespace IDE.Documents.Views
         }
 
         protected IDispatcherHelper dispatcher;
-        IDrawingViewModel canvasModel;
+        ICanvasDesignerFileViewModel canvasModel;
 
         List<ISelectableItem> originalItems;
 
@@ -148,6 +146,23 @@ namespace IDE.Documents.Views
                 {
                     okCommand = CreateCommand(p =>
                     {
+                        var currentItems = canvasModel.Items.ToList();
+
+                        canvasModel.RegisterUndoActionExecuted(
+                            undo: o =>
+                            {
+                                canvasModel.RemoveItems(currentItems);
+                                canvasModel.AddItems(originalItems);
+                                return null;
+                            },
+                            redo: o =>
+                            {
+                                canvasModel.RemoveItems(canvasModel.Items.ToList());
+                                canvasModel.AddItems(currentItems);
+                                return null;
+                            }, null);
+                            
+
                         OnClose();
                     });
 

@@ -338,7 +338,7 @@ namespace IDE.Core.Designers
             EndPointY = ep.Y.Round(4);
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             //todo: see if we really need this check
             if (!IsPlaced)
@@ -348,7 +348,7 @@ namespace IDE.Core.Designers
 
             var mp = GetCenter();
             var tg = new XTransformGroup();
-            var rotateTransform = new XRotateTransform(90)
+            var rotateTransform = new XRotateTransform(angle)
             {
                 CenterX = mp.X,
                 CenterY = mp.Y

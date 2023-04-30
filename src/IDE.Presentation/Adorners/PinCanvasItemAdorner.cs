@@ -31,6 +31,8 @@ namespace IDE.Core.Adorners
                 Background = Brushes.Transparent,
             };
             translateThumb.DragDelta += translateThumb_DragDelta;
+            translateThumb.PreviewMouseDown += TranslateThumb_PreviewMouseDown;
+            translateThumb.PreviewMouseUp += TranslateThumb_PreviewMouseUp;
 
             visualChildren.Add(translateThumb);
 
@@ -40,6 +42,7 @@ namespace IDE.Core.Adorners
 
         Thumb translateThumb;
 
+        XPoint? originalPosition;
 
         IPinCanvasItem canvasItem;
 
@@ -56,6 +59,41 @@ namespace IDE.Core.Adorners
                     }
                 }
             }
+        }
+
+        private void TranslateThumb_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            var newPos = new XPoint(canvasItem.X, canvasItem.Y);
+            var oldPos = originalPosition.Value;
+            originalPosition = null;
+
+            canvasModel.RegisterUndoActionExecuted(
+                undo: o =>
+                {
+                    canvasItem.X = oldPos.X;
+                    canvasItem.Y = oldPos.Y;
+                    return null;
+                },
+                redo: o =>
+                {
+                    canvasItem.X = newPos.X;
+                    canvasItem.Y = newPos.Y;
+                    return null;
+                },
+                null
+                );
+        }
+
+        private void TranslateThumb_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton != MouseButton.Left || canvasModel == null)
+                return;
+
+            if (originalPosition == null)
+                originalPosition = new XPoint(canvasItem.X, canvasItem.Y);
         }
 
         private void translateThumb_DragDelta(object sender, DragDeltaEventArgs e)

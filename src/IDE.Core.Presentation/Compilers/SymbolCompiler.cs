@@ -21,7 +21,7 @@ public class SymbolCompiler : AbstractCompiler, ISymbolCompiler
         var projectPath = _solutionRepository.GetProjectFilePath(symbol.FilePath);
         var projectName = Path.GetFileNameWithoutExtension(projectPath);
 
-        var canvasModel = symbol.CanvasModel;
+        var canvasModel = symbol;
         var errors = new List<IErrorMessage>();
         var isValid = true;
 

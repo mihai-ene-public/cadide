@@ -14,12 +14,12 @@ namespace IDE.Core.Presentation.Placement
             GeometryHelper = ServiceProvider.Resolve<IGeometryOutlineHelper>();
         }
 
-        public SimpleObstaclesProvider(IDrawingViewModel drawingViewModel) : this()
+        public SimpleObstaclesProvider(ICanvasDesignerFileViewModel drawingViewModel) : this()
         {
             canvasModel = drawingViewModel;
         }
 
-        protected IDrawingViewModel canvasModel;
+        protected ICanvasDesignerFileViewModel canvasModel;
 
         protected IGeometryOutlineHelper GeometryHelper;
 

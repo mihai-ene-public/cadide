@@ -28,7 +28,7 @@ namespace IDE.Core.Presentation.Compilers
             var projectPath = _solutionRepository.GetProjectFilePath(schematic.FilePath);
             var project = _solutionRepository.LoadProjectDocument(projectPath);
             var projectName = Path.GetFileNameWithoutExtension(projectPath);
-            var canvasModel = schematic.CanvasModel;
+            var canvasModel = schematic;
             var errors = new List<IErrorMessage>();
             var projectInfo = new ProjectInfo
             {

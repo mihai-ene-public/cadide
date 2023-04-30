@@ -2,75 +2,118 @@
 using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
-namespace IDE.Core.Presentation.Placement
+namespace IDE.Core.Presentation.Placement;
+
+public class VolatileGroupPlacementTool : PlacementTool, IVolatileGroupPlacementTool
 {
-    public class VolatileGroupPlacementTool : PlacementTool, IVolatileGroupPlacementTool
+    VolatileGroupCanvasItem GetItem() => canvasItem as VolatileGroupCanvasItem;
+
+    public override void PlacementMouseMove(XPoint mousePosition)
     {
-        VolatileGroupCanvasItem GetItem() => canvasItem as VolatileGroupCanvasItem;
+        var mp = CanvasModel.SnapToGrid(mousePosition);
 
-        public override void PlacementMouseMove(XPoint mousePosition)
+        var item = GetItem();
+
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
-
-            var item = GetItem();
-
-
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    break;
-            }
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                break;
         }
+    }
 
-        public override void PlacementMouseUp(XPoint mousePosition)
+    public override void PlacementMouseUp(XPoint mousePosition)
+    {
+        var mp = CanvasModel.SnapToGrid(mousePosition);
+
+        var item = GetItem();
+
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+            case PlacementStatus.Ready:
+                //place all items from this group to the canvas translated by mouse position
+                AddItemsFromGroup(item.Items, item);
 
-            var item = GetItem();
+                CommitPlacement();
 
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    //place all items from this group to the canvas translated by mouse position
-                    item.Items.ForEach(c =>
-                     {
-                         var tg = new XTransformGroup();
+                //stop placing other items
+                CanvasModel.CancelPlacement();
 
-                         var scaleTransform = new XScaleTransform(item.ScaleX, item.ScaleY);
-                         tg.Children.Add(scaleTransform);
-
-                         var rotateTransform = new XRotateTransform(item.Rot);
-                         tg.Children.Add(rotateTransform);
-
-                         tg.Children.Add(new XTranslateTransform(item.X, item.Y));
-
-                         ((BaseCanvasItem)c).TransformBy(tg.Value);
-                         c.IsPlaced = true;
-
-                         if (c is SingleLayerBoardCanvasItem sl)
-                         {
-                             sl.Layer.Items.Add(c);
-                         }
-                         if(c is ISignalPrimitiveCanvasItem signalPrimitive)
-                         {
-                             //we force adding the item to the signal
-                             signalPrimitive.Signal = signalPrimitive.Signal;
-                         }
-                         if (c.ParentObject == item)
-                         {
-                             c.ParentObject = null;
-                         }
-
-                         CanvasModel.AddItem(c);
-                     });
-                    //stop placing other items
-                    CanvasModel.CancelPlacement();
-
-                    CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
-                    break;
-            }
+                break;
         }
+    }
+
+    private void AddItemsFromGroup(List<ISelectableItem> items, VolatileGroupCanvasItem volatileGroup)
+    {
+        items.ForEach(item =>
+        {
+            var tg = new XTransformGroup();
+
+            var scaleTransform = new XScaleTransform(volatileGroup.ScaleX, volatileGroup.ScaleY);
+            tg.Children.Add(scaleTransform);
+
+            var rotateTransform = new XRotateTransform(volatileGroup.Rot);
+            tg.Children.Add(rotateTransform);
+
+            tg.Children.Add(new XTranslateTransform(volatileGroup.X, volatileGroup.Y));
+
+            ((BaseCanvasItem)item).TransformBy(tg.Value);
+            item.IsPlaced = true;
+
+            if (item is SingleLayerBoardCanvasItem sl)
+            {
+                sl.Layer.Items.Add(item);
+            }
+            if (item is ISignalPrimitiveCanvasItem signalPrimitive)
+            {
+                //we force adding the item to the signal
+                signalPrimitive.Signal = signalPrimitive.Signal;
+            }
+            if (item.ParentObject == volatileGroup)
+            {
+                item.ParentObject = null;
+            }
+
+            CanvasModel.AddItem(item);
+        });
+    }
+
+    protected override void RegisterUndoActionExecuted()
+    {
+        var volatileGroup = GetItem();
+
+        var items = volatileGroup.Items.ToList();
+
+        Func<object, object> undo = (i) =>
+        {
+            CanvasModel.RemoveItems(items);
+            return volatileGroup;
+        };
+        Func<object, object> redo = (i) =>
+        {
+            //items are transform inverted so that they are not transformed by the group
+            foreach(var groupItem in items)
+            {
+                var tg = new XTransformGroup();
+
+                var scaleTransform = new XScaleTransform(volatileGroup.ScaleX, volatileGroup.ScaleY);
+                tg.Children.Add(scaleTransform);
+
+                var rotateTransform = new XRotateTransform(volatileGroup.Rot);
+                tg.Children.Add(rotateTransform);
+
+                tg.Children.Add(new XTranslateTransform(volatileGroup.X, volatileGroup.Y));
+                var matrix = tg.Value;
+                matrix.Invert();
+
+                groupItem.TransformBy(matrix);
+            }
+
+            AddItemsFromGroup(items, volatileGroup);
+            return volatileGroup;
+        };
+
+        CanvasModel.RegisterUndoActionExecuted(undo, redo, volatileGroup);
     }
 }

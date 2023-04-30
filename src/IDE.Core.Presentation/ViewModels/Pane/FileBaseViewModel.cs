@@ -28,7 +28,6 @@ namespace IDE.Core.ViewModels
 
         protected FileBaseViewModel()
         {
-            _clipBoard = ServiceProvider.Resolve<IClipboardAdapter>();
             _applicationViewModel = ServiceProvider.Resolve<IApplicationViewModel>();
             _solutionRepository = ServiceProvider.Resolve<ISolutionRepository>();
 
@@ -58,8 +57,6 @@ namespace IDE.Core.ViewModels
                   }
               });
         }
-
-        protected readonly IClipboardAdapter _clipBoard;
 
         protected readonly IApplicationViewModel _applicationViewModel;
         protected readonly ISolutionRepository _solutionRepository;
@@ -285,23 +282,6 @@ namespace IDE.Core.ViewModels
             }
         }
 
-
-        /// <summary>
-        /// Get CopyFullPathtoClipboard command which will copy
-        /// the path of the executable into the windows clipboard.
-        /// </summary>
-        public ICommand CopyFullPathtoClipboard
-        {
-            get
-            {
-                if (copyFullPathtoClipboard == null)
-                    copyFullPathtoClipboard = CreateCommand((p) => OnCopyFullPathtoClipboardCommand());
-
-                return copyFullPathtoClipboard;
-            }
-        }
-
-
         #endregion commands
 
         #endregion properties
@@ -470,17 +450,6 @@ namespace IDE.Core.ViewModels
                 return false;
 
             return true;
-        }
-
-        private void OnCopyFullPathtoClipboardCommand()
-        {
-            try
-            {
-                _clipBoard.SetText(FilePath);
-            }
-            catch
-            {
-            }
         }
 
         /// <summary>

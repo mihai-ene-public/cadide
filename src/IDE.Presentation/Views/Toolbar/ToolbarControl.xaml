@@ -52,7 +52,7 @@
 
             <StackPanel HorizontalAlignment="Left"
                          Orientation="Horizontal"
-                         DataContext="{Binding CanvasModel.CanvasGrid}">
+                         DataContext="{Binding CanvasGrid}">
 
                 <TextBlock Text="Grid:"
                        VerticalAlignment="Center" />
@@ -74,7 +74,7 @@
             <TextBlock Text="Scale:"
                        Margin="10,0,0,0"
                        VerticalAlignment="Center" />
-            <ComboBox Text="{Binding CanvasModel.Scale, StringFormat='{}{0:#,#.00}', UpdateSourceTrigger=PropertyChanged, FallbackValue=1.00}"
+            <ComboBox Text="{Binding Scale, StringFormat='{}{0:#,#.00}', UpdateSourceTrigger=PropertyChanged, FallbackValue=1.00}"
                       Margin="5,0"
                       HorizontalContentAlignment="Right"
                       VerticalContentAlignment="Center"

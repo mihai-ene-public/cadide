@@ -16,1270 +16,1269 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace IDE.Documents.Views
+namespace IDE.Documents.Views;
+
+
+public class BoardPropertiesViewModel : BaseViewModel
 {
-
-    public class BoardPropertiesViewModel : BaseViewModel
+    public BoardPropertiesViewModel(BoardDesignerFileViewModel _board)
     {
-        public BoardPropertiesViewModel(BoardDesignerFileViewModel _board)
-        {
-            board = _board;
-            buildOptions = new BoardBuildOptionsViewModel(board);
+        board = _board;
+        buildOptions = new BoardBuildOptionsViewModel(board);
 
-            ReloadLayers();
+        ReloadLayers();
+    }
+
+    void LayerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            OnPropertyChanged(nameof(StackupTotalThickness));
         }
+    }
 
-        void LayerItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+
+    public PartsBOMViewModel PartsBOMViewModel { get; set; } = new PartsBOMViewModel();
+
+    #region General
+
+    BoardDesignerFileViewModel board;
+
+    public BoardDesignerFileViewModel Board => board;
+
+    Units boardUnits;
+    [MarksDirty]
+    public Units BoardUnits
+    {
+        get { return boardUnits; }
+        set
         {
-            if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                OnPropertyChanged(nameof(StackupTotalThickness));
-            }
+            if (boardUnits == value) return;
+
+            boardUnits = value;
+            OnPropertyChanged(nameof(BoardUnits));
         }
+    }
 
-
-        public PartsBOMViewModel PartsBOMViewModel { get; set; } = new PartsBOMViewModel();
-
-        #region General
-
-        BoardDesignerFileViewModel board;
-
-        public BoardDesignerFileViewModel Board => board;
-
-        Units boardUnits;
-        [MarksDirty]
-        public Units BoardUnits
+    string description;
+    [MarksDirty]
+    public string Description
+    {
+        get { return description; }
+        set
         {
-            get { return boardUnits; }
-            set
-            {
-                if (boardUnits == value) return;
+            if (description == value) return;
 
-                boardUnits = value;
-                OnPropertyChanged(nameof(BoardUnits));
-            }
+            description = value;
+            OnPropertyChanged(nameof(Description));
         }
+    }
 
-        string description;
-        [MarksDirty]
-        public string Description
+    SchematicRef schematicReference;
+    public SchematicRef SchematicReference
+    {
+        get { return schematicReference; }
+        set
         {
-            get { return description; }
-            set
-            {
-                if (description == value) return;
+            if (schematicReference == value)
+                return;
 
-                description = value;
-                OnPropertyChanged(nameof(Description));
-            }
+            schematicReference = value;
+            OnPropertyChanged(nameof(SchematicReference));
         }
+    }
 
-        SchematicRef schematicReference;
-        public SchematicRef SchematicReference
+    #region SetSchematicReferenceCommand
+
+    ICommand setSchematicReferenceCommand;
+    public ICommand SetSchematicReferenceCommand
+    {
+        get
         {
-            get { return schematicReference; }
-            set
-            {
-                if (schematicReference == value)
-                    return;
-
-                schematicReference = value;
-                OnPropertyChanged(nameof(SchematicReference));
-            }
+            if (setSchematicReferenceCommand == null)
+                setSchematicReferenceCommand = CreateCommand(p => SetSchematicReference());
+            return setSchematicReferenceCommand;
         }
+    }
 
-        #region SetSchematicReferenceCommand
+    public bool IsUpdateBoardFromSchematicRequired { get; private set; }
 
-        ICommand setSchematicReferenceCommand;
-        public ICommand SetSchematicReferenceCommand
+    void SetSchematicReference()
+    {
+        //show list of schematics
+        var projectInfo = board.GetCurrentProjectInfo();
+        var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Schematic, projectInfo);
+
+        if (itemSelectDlg.ShowDialog() == true)
         {
-            get
+            var selectedSchematic = itemSelectDlg.SelectedItem as LibraryItemDisplay;
+            if (selectedSchematic != null)
             {
-                if (setSchematicReferenceCommand == null)
-                    setSchematicReferenceCommand = CreateCommand(p => SetSchematicReference());
-                return setSchematicReferenceCommand;
-            }
-        }
+                //update schematic ref
+                var sch = selectedSchematic.Document as LibraryItem;
 
-        public bool IsUpdateBoardFromSchematicRequired { get; private set; }
+                //this will be read in the handler
+                IsUpdateBoardFromSchematicRequired = true;
 
-        void SetSchematicReference()
-        {
-            //show list of schematics
-            var projectInfo = board.GetCurrentProjectInfo();
-            var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Schematic, projectInfo);
-
-            if (itemSelectDlg.ShowDialog() == true)
-            {
-                var selectedSchematic = itemSelectDlg.SelectedItem as LibraryItemDisplay;
-                if (selectedSchematic != null)
+                SchematicReference = new SchematicRef
                 {
-                    //update schematic ref
-                    var sch = selectedSchematic.Document as LibraryItem;
+                    schematicId = sch.Id,
+                    hintPath = sch.FoundPath
+                };
 
-                    //this will be read in the handler
-                    IsUpdateBoardFromSchematicRequired = true;
+                //reset
+                IsUpdateBoardFromSchematicRequired = false;
 
-                    SchematicReference = new SchematicRef
-                    {
-                        schematicId = sch.Id,
-                        hintPath = sch.FoundPath
-                    };
+                board.IsDirty = true;
+            }
+        }
 
-                    //reset
-                    IsUpdateBoardFromSchematicRequired = false;
 
+    }
+    #endregion
+
+    #endregion
+
+    #region Layer Stack Manager
+
+
+    ICommand layersAddDrillPairCommand;
+    public ICommand LayersAddDrillPairCommand
+    {
+        get
+        {
+            if (layersAddDrillPairCommand == null)
+            {
+                layersAddDrillPairCommand = CreateCommand(p =>
+                  {
+                      DrillPairs.Add(new LayerPairModel());
+                      board.IsDirty = true;
+                  });
+            }
+
+            return layersAddDrillPairCommand;
+        }
+    }
+
+    ICommand layersAddLayerPairCommand;
+    public ICommand LayersAddLayerPairCommand
+    {
+        get
+        {
+            if (layersAddLayerPairCommand == null)
+            {
+                layersAddLayerPairCommand = CreateCommand(p =>
+                {
+                    LayerPairs.Add(new LayerPairModel());
                     board.IsDirty = true;
-                }
+                });
             }
 
-
+            return layersAddLayerPairCommand;
         }
-        #endregion
+    }
 
-        #endregion
-
-        #region Layer Stack Manager
-
-
-        ICommand layersAddDrillPairCommand;
-        public ICommand LayersAddDrillPairCommand
+    ICommand addLayerCommand;
+    public ICommand AddLayerCommand
+    {
+        get
         {
-            get
+            if (addLayerCommand == null)
             {
-                if (layersAddDrillPairCommand == null)
+                addLayerCommand = CreateCommand(p =>
                 {
-                    layersAddDrillPairCommand = CreateCommand(p =>
-                      {
-                          DrillPairs.Add(new LayerPairModel());
-                          board.IsDirty = true;
-                      });
-                }
+                    //RunOnDispatcher(() =>
+                    //{
+                    try
+                    {
+                        if (p == null)
+                            return;
+                        var layerType = LayerType.Unknown;
+                        if (Enum.TryParse(p.ToString(), out layerType))
+                        {
+                            var layer = new LayerDesignerItem(board)
+                            {
+                                LayerType = layerType,
+                                LayerName = "New layer",
+                                LayerColor = XColors.Blue,
+                            };
+                            layer.CreateLayerId(board.LayerItems);
 
-                return layersAddDrillPairCommand;
+                            layer.PropertyChanged += Layer_PropertyChanged;
+                            try { board.LayerItems.Add(layer); } catch { }
+
+                            OnPropertyChanged(nameof(StackLayers));
+                            OnPropertyChanged(nameof(StackupTotalThickness));
+
+                            board.IsDirty = true;
+                        }
+                    }
+                    catch { }
+                    //finally { StackLayers.Refresh(); }
+                });
+
+
+                // });
             }
-        }
 
-        ICommand layersAddLayerPairCommand;
-        public ICommand LayersAddLayerPairCommand
+            return addLayerCommand;
+        }
+    }
+
+
+
+    ICommand moveLayerDownCommand;
+    public ICommand MoveLayerDownCommand
+    {
+        get
         {
-            get
-            {
-                if (layersAddLayerPairCommand == null)
+            if (moveLayerDownCommand == null)
+                moveLayerDownCommand = CreateCommand(p =>
                 {
-                    layersAddLayerPairCommand = CreateCommand(p =>
+                    if (selectedStackLayer != null)
                     {
-                        LayerPairs.Add(new LayerPairModel());
-                        board.IsDirty = true;
-                    });
-                }
+                        var oldIndex = board.LayerItems.IndexOf(selectedStackLayer);
+                        var newIndex = oldIndex + 1;
+                        if (newIndex < board.LayerItems.Count)
+                        {
+                            try { MoveLayers(oldIndex, newIndex); } catch { }
 
-                return layersAddLayerPairCommand;
-            }
+                            OnPropertyChanged(nameof(StackLayers));
+                        }
+                    }
+                });
+
+            return moveLayerDownCommand;
         }
 
-        ICommand addLayerCommand;
-        public ICommand AddLayerCommand
+    }
+
+    void MoveLayers(int oldIndex, int newIndex)
+    {
+        ((ObservableCollection<ILayerDesignerItem>)board.LayerItems).Move(oldIndex, newIndex);
+        board.IsDirty = true;
+    }
+
+    ICommand moveLayerUpCommand;
+    public ICommand MoveLayerUpCommand
+    {
+        get
         {
-            get
-            {
-                if (addLayerCommand == null)
+            if (moveLayerUpCommand == null)
+                moveLayerUpCommand = CreateCommand(p =>
                 {
-                    addLayerCommand = CreateCommand(p =>
+                    if (selectedStackLayer != null)
                     {
-                        //RunOnDispatcher(() =>
-                        //{
-                        try
+                        var oldIndex = board.LayerItems.IndexOf(selectedStackLayer);
+                        var newIndex = oldIndex - 1;
+                        if (newIndex >= 0)
                         {
-                            if (p == null)
-                                return;
-                            var layerType = LayerType.Unknown;
-                            if (Enum.TryParse(p.ToString(), out layerType))
-                            {
-                                var layer = new LayerDesignerItem(board)
-                                {
-                                    LayerType = layerType,
-                                    LayerName = "New layer",
-                                    LayerColor = XColors.Blue,
-                                };
-                                layer.CreateLayerId(board.LayerItems);
+                            try { MoveLayers(oldIndex, newIndex); } catch { }
 
-                                layer.PropertyChanged += Layer_PropertyChanged;
-                                try { board.LayerItems.Add(layer); } catch { }
-
-                                OnPropertyChanged(nameof(StackLayers));
-                                OnPropertyChanged(nameof(StackupTotalThickness));
-
-                                board.IsDirty = true;
-                            }
+                            OnPropertyChanged(nameof(StackLayers));
                         }
-                        catch { }
-                        //finally { StackLayers.Refresh(); }
-                    });
 
+                    }
+                });
 
-                    // });
-                }
-
-                return addLayerCommand;
-            }
+            return moveLayerUpCommand;
         }
 
+    }
 
-
-        ICommand moveLayerDownCommand;
-        public ICommand MoveLayerDownCommand
+    ICommand exportLayersCommand;
+    public ICommand ExportLayersCommand
+    {
+        get
         {
-            get
-            {
-                if (moveLayerDownCommand == null)
-                    moveLayerDownCommand = CreateCommand(p =>
+            if (exportLayersCommand == null)
+                exportLayersCommand = CreateCommand(p =>
+                {
+                    var dlg = ServiceProvider.Resolve<ISaveFileDialog>();
+                    dlg.FileName = "board-layers.board";
+
+                    dlg.Filter = "Boards (*.board)|*.board";
+
+                    if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
                     {
-                        if (selectedStackLayer != null)
-                        {
-                            var oldIndex = board.LayerItems.IndexOf(selectedStackLayer);
-                            var newIndex = oldIndex + 1;
-                            if (newIndex < board.LayerItems.Count)
-                            {
-                                try { MoveLayers(oldIndex, newIndex); } catch { }
+                        var filePath = dlg.FileName;
 
-                                OnPropertyChanged(nameof(StackLayers));
-                            }
-                        }
-                    });
+                        var brd = new BoardDocument();
+                        var brdSaver = new BoardSaver();
+                        brdSaver.SaveLayers(board, brd);
 
-                return moveLayerDownCommand;
-            }
+                        XmlHelper.Save(brd, filePath);
+                    }
+                });
 
+            return exportLayersCommand;
         }
+    }
 
-        void MoveLayers(int oldIndex, int newIndex)
+    ICommand importLayersCommand;
+    public ICommand ImportLayersCommand
+    {
+        get
         {
-            ((ObservableCollection<ILayerDesignerItem>)board.LayerItems).Move(oldIndex, newIndex);
-            board.IsDirty = true;
-        }
-
-        ICommand moveLayerUpCommand;
-        public ICommand MoveLayerUpCommand
-        {
-            get
-            {
-                if (moveLayerUpCommand == null)
-                    moveLayerUpCommand = CreateCommand(p =>
-                    {
-                        if (selectedStackLayer != null)
-                        {
-                            var oldIndex = board.LayerItems.IndexOf(selectedStackLayer);
-                            var newIndex = oldIndex - 1;
-                            if (newIndex >= 0)
-                            {
-                                try { MoveLayers(oldIndex, newIndex); } catch { }
-
-                                OnPropertyChanged(nameof(StackLayers));
-                            }
-
-                        }
-                    });
-
-                return moveLayerUpCommand;
-            }
-
-        }
-
-        ICommand exportLayersCommand;
-        public ICommand ExportLayersCommand
-        {
-            get
-            {
-                if (exportLayersCommand == null)
-                    exportLayersCommand = CreateCommand(p =>
-                    {
-                        var dlg = ServiceProvider.Resolve<ISaveFileDialog>();
-                        dlg.FileName = "board-layers.board";
-
-                        dlg.Filter = "Boards (*.board)|*.board";
-
-                        if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
-                        {
-                            var filePath = dlg.FileName;
-
-                            var brd = new BoardDocument();
-                            var brdSaver = new BoardSaver();
-                            brdSaver.SaveLayers(board, brd);
-
-                            XmlHelper.Save(brd, filePath);
-                        }
-                    });
-
-                return exportLayersCommand;
-            }
-        }
-
-        ICommand importLayersCommand;
-        public ICommand ImportLayersCommand
-        {
-            get
-            {
-                if (importLayersCommand == null)
-                    importLayersCommand = CreateCommand(p =>
-                    {
-                        var res = MessageDialog.Show(
+            if (importLayersCommand == null)
+                importLayersCommand = CreateCommand(p =>
+                {
+                    var res = MessageDialog.Show(
 @"This operation might remove items from already existing items.
 It is highly recommended to do this operation in the beginning, when very little work was done on board.
 
 Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
-                        if (res != XMessageBoxResult.Yes)
-                            return;
+                    if (res != XMessageBoxResult.Yes)
+                        return;
 
 
-                        var dlg = ServiceProvider.Resolve<IOpenFileDialog>();
-                        dlg.Multiselect = false;
+                    var dlg = ServiceProvider.Resolve<IOpenFileDialog>();
+                    dlg.Multiselect = false;
 
-                        dlg.Filter = "Boards (*.board)|*.board";
+                    dlg.Filter = "Boards (*.board)|*.board";
 
-                        if (dlg.ShowDialog() == true)
+                    if (dlg.ShowDialog() == true)
+                    {
+                        var filePath = dlg.FileName;
+
+                        var currentCanvasItems = board.GetItems().ToList();
+
+                        var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
+                        var brd = XmlHelper.Load<BoardDocument>(filePath);
+                        var brdLoader = new BoardLoader(dispatcher);
+                        brdLoader.LoadLayers(brd, board);
+
+                        //re-assign the new layers
+                        dispatcher.RunOnDispatcher(() =>
                         {
-                            var filePath = dlg.FileName;
-
-                            var currentCanvasItems = board.CanvasModel.GetItems().ToList();
-
-                            var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-                            var brd = XmlHelper.Load<BoardDocument>(filePath);
-                            var brdLoader = new BoardLoader(dispatcher);
-                            brdLoader.LoadLayers(brd, board);
-
-                            //re-assign the new layers
-                            dispatcher.RunOnDispatcher(() =>
+                            foreach (BoardCanvasItemViewModel item in currentCanvasItems)
                             {
-                                foreach (BoardCanvasItemViewModel item in currentCanvasItems)
-                                {
-                                    item.LoadLayers();
-                                }
-                            });
+                                item.LoadLayers();
+                            }
+                        });
 
-                            board.IsDirty = true;
-                        }
-                    });
+                        board.IsDirty = true;
+                    }
+                });
 
-                return importLayersCommand;
-            }
+            return importLayersCommand;
         }
+    }
 
-        //
-        ICommand exportRulesCommand;
-        public ICommand ExportRulesCommand
+    //
+    ICommand exportRulesCommand;
+    public ICommand ExportRulesCommand
+    {
+        get
         {
-            get
-            {
-                if (exportRulesCommand == null)
-                    exportRulesCommand = CreateCommand(p =>
+            if (exportRulesCommand == null)
+                exportRulesCommand = CreateCommand(p =>
+                {
+                    var dlg = ServiceProvider.Resolve<ISaveFileDialog>();
+                    dlg.FileName = "board-rules.board";
+
+                    dlg.Filter = "Boards (*.board)|*.board";
+
+                    if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
                     {
-                        var dlg = ServiceProvider.Resolve<ISaveFileDialog>();
-                        dlg.FileName = "board-rules.board";
+                        var filePath = dlg.FileName;
 
-                        dlg.Filter = "Boards (*.board)|*.board";
+                        var brd = new BoardDocument();
+                        var brdSaver = new BoardSaver();
+                        brdSaver.SaveRules(board, brd);
 
-                        if (dlg.ShowDialog() == true)     // SaveAs file if user OK'ed it so
-                        {
-                            var filePath = dlg.FileName;
+                        XmlHelper.Save(brd, filePath);
+                    }
+                });
 
-                            var brd = new BoardDocument();
-                            var brdSaver = new BoardSaver();
-                            brdSaver.SaveRules(board, brd);
-
-                            XmlHelper.Save(brd, filePath);
-                        }
-                    });
-
-                return exportRulesCommand;
-            }
+            return exportRulesCommand;
         }
+    }
 
-        ICommand importRulesCommand;
-        public ICommand ImportRulesCommand
+    ICommand importRulesCommand;
+    public ICommand ImportRulesCommand
+    {
+        get
         {
-            get
-            {
-                if (importRulesCommand == null)
-                    importRulesCommand = CreateCommand(p =>
-                    {
-                        var res = MessageDialog.Show(
+            if (importRulesCommand == null)
+                importRulesCommand = CreateCommand(p =>
+                {
+                    var res = MessageDialog.Show(
 @"Existing rules will be lost
 
 Do you really want to continue?", "Warning", XMessageBoxButton.YesNo);
 
-                        if (res != XMessageBoxResult.Yes)
-                            return;
+                    if (res != XMessageBoxResult.Yes)
+                        return;
 
 
-                        var dlg = ServiceProvider.Resolve<IOpenFileDialog>();
-                        dlg.Multiselect = false;
+                    var dlg = ServiceProvider.Resolve<IOpenFileDialog>();
+                    dlg.Multiselect = false;
 
-                        dlg.Filter = "Boards (*.board)|*.board";
+                    dlg.Filter = "Boards (*.board)|*.board";
 
-                        if (dlg.ShowDialog() == true)
-                        {
-                            var filePath = dlg.FileName;
+                    if (dlg.ShowDialog() == true)
+                    {
+                        var filePath = dlg.FileName;
 
-                            var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
-                            var brd = XmlHelper.Load<BoardDocument>(filePath);
-                            var brdLoader = new BoardLoader(dispatcher);
-                            brdLoader.LoadRules(brd, board);
+                        var dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
+                        var brd = XmlHelper.Load<BoardDocument>(filePath);
+                        var brdLoader = new BoardLoader(dispatcher);
+                        brdLoader.LoadRules(brd, board);
 
-                            board.IsDirty = true;
-                        }
-                    });
+                        board.IsDirty = true;
+                    }
+                });
 
-                return importRulesCommand;
-            }
+            return importRulesCommand;
         }
+    }
 
-        void Layer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    void Layer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        switch (e.PropertyName)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(LayerDesignerItem.Thickness):
-                    OnPropertyChanged(nameof(StackupTotalThickness));
-                    board.IsDirty = true;
-                    break;
+            case nameof(LayerDesignerItem.Thickness):
+                OnPropertyChanged(nameof(StackupTotalThickness));
+                board.IsDirty = true;
+                break;
 
-                case nameof(LayerDesignerItem.GerberExtension):
-                case nameof(LayerDesignerItem.LayerColor):
-                case nameof(LayerDesignerItem.LayerName):
-                case nameof(LayerDesignerItem.LayerType):
-                case nameof(LayerDesignerItem.MirrorPlot):
-                case nameof(LayerDesignerItem.Plot):
-                    board.IsDirty = true;
-                    break;
-            }
+            case nameof(LayerDesignerItem.GerberExtension):
+            case nameof(LayerDesignerItem.LayerColor):
+            case nameof(LayerDesignerItem.LayerName):
+            case nameof(LayerDesignerItem.LayerType):
+            case nameof(LayerDesignerItem.MirrorPlot):
+            case nameof(LayerDesignerItem.Plot):
+                board.IsDirty = true;
+                break;
         }
+    }
 
-        ICommand deleteLayerCommand;
-        public ICommand DeleteLayerCommand
+    ICommand deleteLayerCommand;
+    public ICommand DeleteLayerCommand
+    {
+        get
         {
-            get
-            {
-                if (deleteLayerCommand == null)
-                    deleteLayerCommand = CreateCommand(p =>
+            if (deleteLayerCommand == null)
+                deleteLayerCommand = CreateCommand(p =>
+                  {
+                      var layer = p as LayerDesignerItem;
+                      if (layer != null)
                       {
-                          var layer = p as LayerDesignerItem;
-                          if (layer != null)
+                          if (MessageDialog.Show("Are you sure you want to delete this layer?",
+                                                "Confirm delete",
+                                                XMessageBoxButton.YesNo) == XMessageBoxResult.Yes)
                           {
-                              if (MessageDialog.Show("Are you sure you want to delete this layer?",
-                                                    "Confirm delete",
-                                                    XMessageBoxButton.YesNo) == XMessageBoxResult.Yes)
-                              {
-                                  try { board.LayerItems.Remove(layer); } catch { }
-                                  layer.PropertyChanged -= Layer_PropertyChanged;
-                                  OnPropertyChanged(nameof(StackLayers));
-                                  OnPropertyChanged(nameof(StackupTotalThickness));
+                              try { board.LayerItems.Remove(layer); } catch { }
+                              layer.PropertyChanged -= Layer_PropertyChanged;
+                              OnPropertyChanged(nameof(StackLayers));
+                              OnPropertyChanged(nameof(StackupTotalThickness));
 
-                                  board.IsDirty = true;
-                              }
+                              board.IsDirty = true;
                           }
-                      },
-                      p =>
+                      }
+                  },
+                  p =>
+                  {
+                      var layer = p as LayerDesignerItem;
+                      if (layer != null)
                       {
-                          var layer = p as LayerDesignerItem;
-                          if (layer != null)
-                          {
-                              var cannotDelete = new[] { LayerConstants.SignalTopLayerId,
-                                                         LayerConstants.SignalBottomLayerId,
-                                                         LayerConstants.SilkscreenTopLayerId,
-                                                         LayerConstants.SilkscreenBottomLayerId,
-                                                         LayerConstants.SolderTopLayerId,
-                                                         LayerConstants.SolderBottomLayerId,
-                                                        };
-                              return !cannotDelete.Contains(layer.LayerId);
-                          }
-                          return false;
-                      });
+                          var cannotDelete = new[] { LayerConstants.SignalTopLayerId,
+                                                     LayerConstants.SignalBottomLayerId,
+                                                     LayerConstants.SilkscreenTopLayerId,
+                                                     LayerConstants.SilkscreenBottomLayerId,
+                                                     LayerConstants.SolderTopLayerId,
+                                                     LayerConstants.SolderBottomLayerId,
+                                                    };
+                          return !cannotDelete.Contains(layer.LayerId);
+                      }
+                      return false;
+                  });
 
-                return deleteLayerCommand;
-            }
+            return deleteLayerCommand;
         }
+    }
 
-        LayerStackupSpec layerDisplay = LayerStackupSpec.All;
-        public LayerStackupSpec LayerDisplay
+    LayerStackupSpec layerDisplay = LayerStackupSpec.All;
+    public LayerStackupSpec LayerDisplay
+    {
+        get { return layerDisplay; }
+        set
         {
-            get { return layerDisplay; }
-            set
-            {
-                layerDisplay = value;
-                OnPropertyChanged(nameof(LayerDisplay));
-                OnPropertyChanged(nameof(StackLayers));
-            }
-        }
-
-        public IList<ILayerDesignerItem> StackLayers
-        {
-            get
-            {
-                switch (layerDisplay)
-                {
-                    case LayerStackupSpec.All:
-                        return board.LayerItems;
-                    case LayerStackupSpec.Stackup:
-                        {
-                            var stackUpLayers = new List<LayerType>
-                                {
-                                     LayerType.Signal,
-                                     LayerType.Plane,
-                                     LayerType.Dielectric
-                                };
-
-                            return board.LayerItems.Where(l => stackUpLayers.Contains((l as LayerDesignerItem).LayerType)).ToList();
-                        }
-                }
-
-                return board.LayerItems;
-            }
-        }
-
-        LayerDesignerItem selectedStackLayer;
-        public LayerDesignerItem SelectedStackLayer
-        {
-            get { return selectedStackLayer; }
-            set
-            {
-                selectedStackLayer = value;
-                OnPropertyChanged(nameof(SelectedStackLayer));
-            }
-        }
-
-        public double StackupTotalThickness
-        {
-            get
-            {
-                var validLayers = new List<LayerType>
-                                {
-                                     LayerType.Signal,
-                                     LayerType.Plane,
-                                     LayerType.Dielectric,
-                                     //LayerType.SolderMask,
-                                     LayerType.SilkScreen
-                                };
-                return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).Select(l => l.Thickness).Sum();
-            }
-        }
-
-        public IEnumerable<ILayerDesignerItem> AvailableDrillLayers
-        {
-            get
-            {
-                var validLayers = new List<LayerType>
-                                {
-                                     LayerType.Signal,
-                                     LayerType.Plane,
-                                };
-                return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).ToList();
-            }
-        }
-
-        public IEnumerable<ILayerDesignerItem> AvailableLayerPairsLayers
-        {
-            get
-            {
-                var validLayers = new List<LayerType>
-                                {
-                                     LayerType.Mechanical,
-                                };
-                return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).ToList();
-            }
-        }
-
-        //used for via definition
-        public IList<ILayerPairModel> DrillPairs { get; set; } = new ObservableCollection<ILayerPairModel>();
-
-        public IList<ILayerPairModel> LayerPairs { get; set; } = new ObservableCollection<ILayerPairModel>();
-
-        void ReloadLayers()
-        {
+            layerDisplay = value;
+            OnPropertyChanged(nameof(LayerDisplay));
             OnPropertyChanged(nameof(StackLayers));
         }
+    }
 
-        #endregion Layer Stack
-
-        #region Layer groups
-
-        LayerGroupDesignerItem selectedLayerGroup;
-        public LayerGroupDesignerItem SelectedLayerGroup
+    public IList<ILayerDesignerItem> StackLayers
+    {
+        get
         {
-            get { return selectedLayerGroup; }
-            set
+            switch (layerDisplay)
             {
-                selectedLayerGroup = value;
-                OnPropertyChanged(nameof(SelectedLayerGroup));
-                OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+                case LayerStackupSpec.All:
+                    return board.LayerItems;
+                case LayerStackupSpec.Stackup:
+                    {
+                        var stackUpLayers = new List<LayerType>
+                            {
+                                 LayerType.Signal,
+                                 LayerType.Plane,
+                                 LayerType.Dielectric
+                            };
+
+                        return board.LayerItems.Where(l => stackUpLayers.Contains((l as LayerDesignerItem).LayerType)).ToList();
+                    }
             }
+
+            return board.LayerItems;
         }
+    }
 
-        ICommand addLayerGroupCommand;
-
-        public ICommand AddLayerGroupCommand
+    LayerDesignerItem selectedStackLayer;
+    public LayerDesignerItem SelectedStackLayer
+    {
+        get { return selectedStackLayer; }
+        set
         {
-            get
+            selectedStackLayer = value;
+            OnPropertyChanged(nameof(SelectedStackLayer));
+        }
+    }
+
+    public double StackupTotalThickness
+    {
+        get
+        {
+            var validLayers = new List<LayerType>
+                            {
+                                 LayerType.Signal,
+                                 LayerType.Plane,
+                                 LayerType.Dielectric,
+                                 //LayerType.SolderMask,
+                                 LayerType.SilkScreen
+                            };
+            return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).Select(l => l.Thickness).Sum();
+        }
+    }
+
+    public IEnumerable<ILayerDesignerItem> AvailableDrillLayers
+    {
+        get
+        {
+            var validLayers = new List<LayerType>
+                            {
+                                 LayerType.Signal,
+                                 LayerType.Plane,
+                            };
+            return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).ToList();
+        }
+    }
+
+    public IEnumerable<ILayerDesignerItem> AvailableLayerPairsLayers
+    {
+        get
+        {
+            var validLayers = new List<LayerType>
+                            {
+                                 LayerType.Mechanical,
+                            };
+            return board.LayerItems.Where(l => validLayers.Contains(l.LayerType)).ToList();
+        }
+    }
+
+    //used for via definition
+    public IList<ILayerPairModel> DrillPairs { get; set; } = new ObservableCollection<ILayerPairModel>();
+
+    public IList<ILayerPairModel> LayerPairs { get; set; } = new ObservableCollection<ILayerPairModel>();
+
+    void ReloadLayers()
+    {
+        OnPropertyChanged(nameof(StackLayers));
+    }
+
+    #endregion Layer Stack
+
+    #region Layer groups
+
+    LayerGroupDesignerItem selectedLayerGroup;
+    public LayerGroupDesignerItem SelectedLayerGroup
+    {
+        get { return selectedLayerGroup; }
+        set
+        {
+            selectedLayerGroup = value;
+            OnPropertyChanged(nameof(SelectedLayerGroup));
+            OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+        }
+    }
+
+    ICommand addLayerGroupCommand;
+
+    public ICommand AddLayerGroupCommand
+    {
+        get
+        {
+            if (addLayerGroupCommand == null)
             {
-                if (addLayerGroupCommand == null)
-                {
-                    addLayerGroupCommand = CreateCommand(p =>
+                addLayerGroupCommand = CreateCommand(p =>
+                  {
+                      var newG = new LayerGroupDesignerItem
                       {
-                          var newG = new LayerGroupDesignerItem
-                          {
-                              Name = "New group",
-                              IsReadOnly = false
-                          };
-                          board.LayerGroups.Add(newG);
-                          SelectedLayerGroup = newG;
+                          Name = "New group",
+                          IsReadOnly = false
+                      };
+                      board.LayerGroups.Add(newG);
+                      SelectedLayerGroup = newG;
 
-                          board.IsDirty = true;
-                      });
-                }
-
-                return addLayerGroupCommand;
+                      board.IsDirty = true;
+                  });
             }
-        }
 
-        //RemoveLayerGroupCommand
-
-        ICommand removeLayerGroupCommand;
-        public ICommand RemoveLayerGroupCommand
-        {
-            get
-            {
-                if (removeLayerGroupCommand == null)
-                {
-                    removeLayerGroupCommand = CreateCommand(p =>
-                    {
-                        board.LayerGroups.Remove(SelectedLayerGroup);
-
-                        board.IsDirty = true;
-                    },
-                    p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
-                     );
-                }
-
-                return removeLayerGroupCommand;
-            }
-        }
-
-
-        ICommand addLayersToGroupCommand;
-        public ICommand AddLayersToGroupCommand
-        {
-            get
-            {
-                if (addLayersToGroupCommand == null)
-                {
-                    addLayersToGroupCommand = CreateCommand(p =>
-                    {
-                        var selectedLayers = p as IList;
-                        if (selectedLayers == null)
-                            return;
-
-                        if (selectedLayerGroup == null)
-                            return;
-
-                        //foreach (var layer in selectedLayers)
-                        selectedLayerGroup.Layers.AddRange(selectedLayers.Cast<LayerDesignerItem>());
-                        GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
-                        OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
-
-                        board.IsDirty = true;
-                    },
-                    p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
-                     );
-                }
-
-                return addLayersToGroupCommand;
-            }
-        }
-
-
-        ICommand removeLayersFromGroupCommand;
-        public ICommand RemoveLayersFromGroupCommand
-        {
-            get
-            {
-                if (removeLayersFromGroupCommand == null)
-                {
-                    removeLayersFromGroupCommand = CreateCommand(p =>
-                    {
-                        var selectedLayers = p as IList;
-                        if (selectedLayers == null)
-                            return;
-
-                        if (selectedLayerGroup == null)
-                            return;
-
-                        foreach (var layer in selectedLayers.Cast<LayerDesignerItem>().ToList())
-                            selectedLayerGroup.Layers.Remove(layer);
-
-                        GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
-                        OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
-
-                        board.IsDirty = true;
-                    },
-                    p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
-                     );
-                }
-
-                return removeLayersFromGroupCommand;
-            }
-        }
-
-        SortableObservableCollection<ILayerDesignerItem> GetSortableLayers(IList<ILayerDesignerItem> layers)
-        {
-            return layers as SortableObservableCollection<ILayerDesignerItem>;
-        }
-
-
-        public IList<ILayerDesignerItem> LayerGroupsAvailableLayers
-        {
-            get
-            {
-                if (selectedLayerGroup == null)
-                    return null;
-
-                return board.LayerItems.Except(selectedLayerGroup.Layers).ToList();
-            }
-        }
-        #endregion
-
-        public void Show()
-        {
-            ReloadLayers();
-            ReloadRules();
-            ReloadBom();
-            PreviewBom();
-            PreviewAssembly();
-        }
-
-        void ReloadBom()
-        {
-            PartsBOMViewModel.LoadFromCurrentBoard(board);
-        }
-
-
-        void PreviewBom()
-        {
-            buildOptions.PreviewBom();
-        }
-
-        void PreviewAssembly()
-        {
-            buildOptions.PreviewAssembly();
-        }
-
-        public IList<IBoardRuleModel> Rules { get; set; } = new ObservableCollection<IBoardRuleModel>();
-
-        #region Board Rules
-
-        AbstractBoardRule currentRuleNode;
-        public AbstractBoardRule CurrentRuleNode
-        {
-            get { return currentRuleNode; }
-            set
-            {
-                currentRuleNode = value;
-                OnPropertyChanged(nameof(CurrentRuleNode));
-            }
-        }
-
-        #region Board.Rules.Commands
-
-        ICommand removeRuleNodeCommand;
-
-        public ICommand RemoveRuleNodeCommand
-        {
-            get
-            {
-                if (removeRuleNodeCommand == null)
-                    removeRuleNodeCommand = CreateCommand(p =>
-                    {
-                        RemoveBoardRuleNode(CurrentRuleNode);
-                    });
-
-                return removeRuleNodeCommand;
-            }
-        }
-
-        ICommand addGroupRuleCommand;
-
-        public ICommand AddGroupRuleCommand
-        {
-            get
-            {
-                if (addGroupRuleCommand == null)
-                    addGroupRuleCommand = CreateCommand(p =>
-                    {
-                        var newGroup = new GroupRuleModel();// { Id = LibraryItem.GetNextId(), Name = "New group" };
-                        AddBoardRule(newGroup);
-                    });
-
-                return addGroupRuleCommand;
-            }
-        }
-
-        ICommand addElectricalClearanceRuleCommand;
-
-        public ICommand AddElectricalClearanceRuleCommand
-        {
-            get
-            {
-                if (addElectricalClearanceRuleCommand == null)
-                    addElectricalClearanceRuleCommand = CreateCommand(p =>
-                    {
-                        var newRule = new ElectricalClearanceRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addElectricalClearanceRuleCommand;
-            }
-        }
-
-        ICommand addTrackWidthRuleCommand;
-
-        public ICommand AddTrackWidthRuleCommand
-        {
-            get
-            {
-                if (addTrackWidthRuleCommand == null)
-                    addTrackWidthRuleCommand = CreateCommand(p =>
-                    {
-                        var newRule = new TrackWidthRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addTrackWidthRuleCommand;
-            }
-        }
-
-        ICommand addViaDefinitionRuleCommand;
-
-        public ICommand AddViaDefinitionRuleCommand
-        {
-            get
-            {
-                if (addViaDefinitionRuleCommand == null)
-                    addViaDefinitionRuleCommand = CreateCommand(p =>
-                    {
-                        var newRule = new ViaDefinitionRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addViaDefinitionRuleCommand;
-            }
-        }
-
-        ICommand addMinAnnularRingRuleCommand;
-
-        public ICommand AddMinAnnularRingRuleCommand
-        {
-            get
-            {
-                if (addMinAnnularRingRuleCommand == null)
-                    addMinAnnularRingRuleCommand = CreateCommand(p =>
-                    {
-                        //var newRule = new ManufacturingMinAnnularRingRuleModel();
-                        //AddBoardRule(CurrentRuleNode as GroupRuleModel, newRule);
-                    });
-
-                return addMinAnnularRingRuleCommand;
-            }
-        }
-
-        ICommand addHoleSizeRuleCommand;
-
-        public ICommand AddHoleSizeRuleCommand
-        {
-            get
-            {
-                if (addHoleSizeRuleCommand == null)
-                    addHoleSizeRuleCommand = CreateCommand(p =>
-                    {
-                        var newRule = new ManufacturingHoleSizeRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addHoleSizeRuleCommand;
-            }
-        }
-
-        ICommand addMaskExpansionCommand;
-
-        public ICommand AddMaskExpansionCommand
-        {
-            get
-            {
-                if (addMaskExpansionCommand == null)
-                    addMaskExpansionCommand = CreateCommand(p =>
-                    {
-                        var newRule = new MaskExpansionRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addMaskExpansionCommand;
-            }
-        }
-
-        ICommand addManufacturingClearanceRuleCommand;
-
-        public ICommand AddManufacturingClearanceRuleCommand
-        {
-            get
-            {
-                if (addManufacturingClearanceRuleCommand == null)
-                    addManufacturingClearanceRuleCommand = CreateCommand(p =>
-                    {
-                        var newRule = new ManufacturingClearanceRuleModel();
-                        AddBoardRule(newRule);
-                    });
-
-                return addManufacturingClearanceRuleCommand;
-            }
-        }
-
-        ICommand addMatchedLengthsRuleCommand;
-
-        public ICommand AddMatchedLengthsRuleCommand
-        {
-            get
-            {
-                if (addMatchedLengthsRuleCommand == null)
-                    addMatchedLengthsRuleCommand = CreateCommand(p =>
-                    {
-                        //var newRule = new MatchLengthsRuleModel();
-                        //AddBoardRule(CurrentRuleNode as GroupRuleModel, newRule);
-                    });
-
-                return addMatchedLengthsRuleCommand;
-            }
-        }
-
-        void AddBoardRule(AbstractBoardRule boardRule)
-        {
-            boardRule.Load(board);
-            var parentGroup = currentRuleNode as GroupRuleModel;
-
-            if (parentGroup != null)
-                parentGroup.AddChild(boardRule);
-            else
-                Rules.Add(boardRule);
-
-            board.IsDirty = true;
-        }
-
-        void RemoveBoardRuleNode(AbstractBoardRule rule)
-        {
-            if (rule.Parent != null)
-                rule.Parent.RemoveChild(rule);
-            else
-                Rules.Remove(rule);
-
-            board.IsDirty = true;
-        }
-
-        #endregion Rules.Commands
-
-        void ReloadRules()
-        {
-            foreach (var r in Rules)
-                r.Load(board);
-        }
-
-
-
-
-        #endregion Board Rules
-
-        #region Output Options
-
-        BoardBuildOptionsViewModel buildOptions;
-
-        public BoardBuildOptionsViewModel BuildOptions
-        {
-            get { return buildOptions; }
-        }
-
-        void LoadBuildOptions(BoardDocument boardDoc)
-        {
-            buildOptions.LoadFrom(boardDoc);
-        }
-
-        void SaveBuildOptions(BoardDocument boardDoc)
-        {
-            buildOptions.SaveTo(boardDoc);
-        }
-
-        #endregion
-
-        public void LoadFrom(BoardDocument boardDoc)
-        {
-            //general
-            BoardUnits = boardDoc.BoardUnits;
-            if (boardDoc.Description != null)
-                Description = boardDoc.Description.Value;
-            SchematicReference = boardDoc.SchematicReference;
-
-            LoadBuildOptions(boardDoc);
-
-            ((INotifyCollectionChanged)board.LayerItems).CollectionChanged += LayerItems_CollectionChanged;
-            foreach (var layer in board.LayerItems)
-                layer.PropertyChanged += Layer_PropertyChanged;
-        }
-
-        public void SaveTo(BoardDocument board)
-        {
-            //general
-            board.BoardUnits = BoardUnits;
-            board.Description = new Description
-            {
-                Value = Description
-            };
-            board.SchematicReference = SchematicReference;
-
-
-            SaveBuildOptions(board);
+            return addLayerGroupCommand;
         }
     }
 
-    public enum LayerStackupSpec
+    //RemoveLayerGroupCommand
+
+    ICommand removeLayerGroupCommand;
+    public ICommand RemoveLayerGroupCommand
     {
-        All,
-        Stackup
+        get
+        {
+            if (removeLayerGroupCommand == null)
+            {
+                removeLayerGroupCommand = CreateCommand(p =>
+                {
+                    board.LayerGroups.Remove(SelectedLayerGroup);
+
+                    board.IsDirty = true;
+                },
+                p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
+                 );
+            }
+
+            return removeLayerGroupCommand;
+        }
     }
 
-    public class NTuple<T> : IEquatable<NTuple<T>>
+
+    ICommand addLayersToGroupCommand;
+    public ICommand AddLayersToGroupCommand
     {
-        public NTuple(IEnumerable<T> values)
+        get
         {
-            Values = values.ToArray();
+            if (addLayersToGroupCommand == null)
+            {
+                addLayersToGroupCommand = CreateCommand(p =>
+                {
+                    var selectedLayers = p as IList;
+                    if (selectedLayers == null)
+                        return;
+
+                    if (selectedLayerGroup == null)
+                        return;
+
+                    //foreach (var layer in selectedLayers)
+                    selectedLayerGroup.Layers.AddRange(selectedLayers.Cast<LayerDesignerItem>());
+                    GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
+                    OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+
+                    board.IsDirty = true;
+                },
+                p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
+                 );
+            }
+
+            return addLayersToGroupCommand;
         }
+    }
 
-        public readonly T[] Values;
 
-        public override bool Equals(object obj)
+    ICommand removeLayersFromGroupCommand;
+    public ICommand RemoveLayersFromGroupCommand
+    {
+        get
         {
-            if (ReferenceEquals(this, obj))
-                return true;
-            if (obj == null)
-                return false;
-            return Equals(obj as NTuple<T>);
+            if (removeLayersFromGroupCommand == null)
+            {
+                removeLayersFromGroupCommand = CreateCommand(p =>
+                {
+                    var selectedLayers = p as IList;
+                    if (selectedLayers == null)
+                        return;
+
+                    if (selectedLayerGroup == null)
+                        return;
+
+                    foreach (var layer in selectedLayers.Cast<LayerDesignerItem>().ToList())
+                        selectedLayerGroup.Layers.Remove(layer);
+
+                    GetSortableLayers(selectedLayerGroup.Layers).SortAscending(l => l.LayerId);
+                    OnPropertyChanged(nameof(LayerGroupsAvailableLayers));
+
+                    board.IsDirty = true;
+                },
+                p => SelectedLayerGroup != null && SelectedLayerGroup.IsReadOnly == false
+                 );
+            }
+
+            return removeLayersFromGroupCommand;
         }
+    }
 
-        public bool Equals(NTuple<T> other)
+    SortableObservableCollection<ILayerDesignerItem> GetSortableLayers(IList<ILayerDesignerItem> layers)
+    {
+        return layers as SortableObservableCollection<ILayerDesignerItem>;
+    }
+
+
+    public IList<ILayerDesignerItem> LayerGroupsAvailableLayers
+    {
+        get
         {
-            if (ReferenceEquals(this, other))
-                return true;
-            if (other == null)
-                return false;
-            var length = Values.Length;
-            if (length != other.Values.Length)
-                return false;
-            for (var i = 0; i < length; ++i)
-                if (!Equals(Values[i], other.Values[i]))
-                    return false;
+            if (selectedLayerGroup == null)
+                return null;
+
+            return board.LayerItems.Except(selectedLayerGroup.Layers).ToList();
+        }
+    }
+    #endregion
+
+    public void Show()
+    {
+        ReloadLayers();
+        ReloadRules();
+        ReloadBom();
+        PreviewBom();
+        PreviewAssembly();
+    }
+
+    void ReloadBom()
+    {
+        PartsBOMViewModel.LoadFromCurrentBoard(board);
+    }
+
+
+    void PreviewBom()
+    {
+        buildOptions.PreviewBom();
+    }
+
+    void PreviewAssembly()
+    {
+        buildOptions.PreviewAssembly();
+    }
+
+    public IList<IBoardRuleModel> Rules { get; set; } = new ObservableCollection<IBoardRuleModel>();
+
+    #region Board Rules
+
+    AbstractBoardRule currentRuleNode;
+    public AbstractBoardRule CurrentRuleNode
+    {
+        get { return currentRuleNode; }
+        set
+        {
+            currentRuleNode = value;
+            OnPropertyChanged(nameof(CurrentRuleNode));
+        }
+    }
+
+    #region Board.Rules.Commands
+
+    ICommand removeRuleNodeCommand;
+
+    public ICommand RemoveRuleNodeCommand
+    {
+        get
+        {
+            if (removeRuleNodeCommand == null)
+                removeRuleNodeCommand = CreateCommand(p =>
+                {
+                    RemoveBoardRuleNode(CurrentRuleNode);
+                });
+
+            return removeRuleNodeCommand;
+        }
+    }
+
+    ICommand addGroupRuleCommand;
+
+    public ICommand AddGroupRuleCommand
+    {
+        get
+        {
+            if (addGroupRuleCommand == null)
+                addGroupRuleCommand = CreateCommand(p =>
+                {
+                    var newGroup = new GroupRuleModel();// { Id = LibraryItem.GetNextId(), Name = "New group" };
+                    AddBoardRule(newGroup);
+                });
+
+            return addGroupRuleCommand;
+        }
+    }
+
+    ICommand addElectricalClearanceRuleCommand;
+
+    public ICommand AddElectricalClearanceRuleCommand
+    {
+        get
+        {
+            if (addElectricalClearanceRuleCommand == null)
+                addElectricalClearanceRuleCommand = CreateCommand(p =>
+                {
+                    var newRule = new ElectricalClearanceRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addElectricalClearanceRuleCommand;
+        }
+    }
+
+    ICommand addTrackWidthRuleCommand;
+
+    public ICommand AddTrackWidthRuleCommand
+    {
+        get
+        {
+            if (addTrackWidthRuleCommand == null)
+                addTrackWidthRuleCommand = CreateCommand(p =>
+                {
+                    var newRule = new TrackWidthRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addTrackWidthRuleCommand;
+        }
+    }
+
+    ICommand addViaDefinitionRuleCommand;
+
+    public ICommand AddViaDefinitionRuleCommand
+    {
+        get
+        {
+            if (addViaDefinitionRuleCommand == null)
+                addViaDefinitionRuleCommand = CreateCommand(p =>
+                {
+                    var newRule = new ViaDefinitionRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addViaDefinitionRuleCommand;
+        }
+    }
+
+    ICommand addMinAnnularRingRuleCommand;
+
+    public ICommand AddMinAnnularRingRuleCommand
+    {
+        get
+        {
+            if (addMinAnnularRingRuleCommand == null)
+                addMinAnnularRingRuleCommand = CreateCommand(p =>
+                {
+                    //var newRule = new ManufacturingMinAnnularRingRuleModel();
+                    //AddBoardRule(CurrentRuleNode as GroupRuleModel, newRule);
+                });
+
+            return addMinAnnularRingRuleCommand;
+        }
+    }
+
+    ICommand addHoleSizeRuleCommand;
+
+    public ICommand AddHoleSizeRuleCommand
+    {
+        get
+        {
+            if (addHoleSizeRuleCommand == null)
+                addHoleSizeRuleCommand = CreateCommand(p =>
+                {
+                    var newRule = new ManufacturingHoleSizeRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addHoleSizeRuleCommand;
+        }
+    }
+
+    ICommand addMaskExpansionCommand;
+
+    public ICommand AddMaskExpansionCommand
+    {
+        get
+        {
+            if (addMaskExpansionCommand == null)
+                addMaskExpansionCommand = CreateCommand(p =>
+                {
+                    var newRule = new MaskExpansionRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addMaskExpansionCommand;
+        }
+    }
+
+    ICommand addManufacturingClearanceRuleCommand;
+
+    public ICommand AddManufacturingClearanceRuleCommand
+    {
+        get
+        {
+            if (addManufacturingClearanceRuleCommand == null)
+                addManufacturingClearanceRuleCommand = CreateCommand(p =>
+                {
+                    var newRule = new ManufacturingClearanceRuleModel();
+                    AddBoardRule(newRule);
+                });
+
+            return addManufacturingClearanceRuleCommand;
+        }
+    }
+
+    ICommand addMatchedLengthsRuleCommand;
+
+    public ICommand AddMatchedLengthsRuleCommand
+    {
+        get
+        {
+            if (addMatchedLengthsRuleCommand == null)
+                addMatchedLengthsRuleCommand = CreateCommand(p =>
+                {
+                    //var newRule = new MatchLengthsRuleModel();
+                    //AddBoardRule(CurrentRuleNode as GroupRuleModel, newRule);
+                });
+
+            return addMatchedLengthsRuleCommand;
+        }
+    }
+
+    void AddBoardRule(AbstractBoardRule boardRule)
+    {
+        boardRule.Load(board);
+        var parentGroup = currentRuleNode as GroupRuleModel;
+
+        if (parentGroup != null)
+            parentGroup.AddChild(boardRule);
+        else
+            Rules.Add(boardRule);
+
+        board.IsDirty = true;
+    }
+
+    void RemoveBoardRuleNode(AbstractBoardRule rule)
+    {
+        if (rule.Parent != null)
+            rule.Parent.RemoveChild(rule);
+        else
+            Rules.Remove(rule);
+
+        board.IsDirty = true;
+    }
+
+    #endregion Rules.Commands
+
+    void ReloadRules()
+    {
+        foreach (var r in Rules)
+            r.Load(board);
+    }
+
+
+
+
+    #endregion Board Rules
+
+    #region Output Options
+
+    BoardBuildOptionsViewModel buildOptions;
+
+    public BoardBuildOptionsViewModel BuildOptions
+    {
+        get { return buildOptions; }
+    }
+
+    void LoadBuildOptions(BoardDocument boardDoc)
+    {
+        buildOptions.LoadFrom(boardDoc);
+    }
+
+    void SaveBuildOptions(BoardDocument boardDoc)
+    {
+        buildOptions.SaveTo(boardDoc);
+    }
+
+    #endregion
+
+    public void LoadFrom(BoardDocument boardDoc)
+    {
+        //general
+        BoardUnits = boardDoc.BoardUnits;
+        if (boardDoc.Description != null)
+            Description = boardDoc.Description.Value;
+        SchematicReference = boardDoc.SchematicReference;
+
+        LoadBuildOptions(boardDoc);
+
+        ((INotifyCollectionChanged)board.LayerItems).CollectionChanged += LayerItems_CollectionChanged;
+        foreach (var layer in board.LayerItems)
+            layer.PropertyChanged += Layer_PropertyChanged;
+    }
+
+    public void SaveTo(BoardDocument board)
+    {
+        //general
+        board.BoardUnits = BoardUnits;
+        board.Description = new Description
+        {
+            Value = Description
+        };
+        board.SchematicReference = SchematicReference;
+
+
+        SaveBuildOptions(board);
+    }
+}
+
+public enum LayerStackupSpec
+{
+    All,
+    Stackup
+}
+
+public class NTuple<T> : IEquatable<NTuple<T>>
+{
+    public NTuple(IEnumerable<T> values)
+    {
+        Values = values.ToArray();
+    }
+
+    public readonly T[] Values;
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
             return true;
-        }
-
-        public override int GetHashCode()
-        {
-            var hc = 17;
-            foreach (var value in Values)
-                hc = hc * 37 + (!ReferenceEquals(value, null) ? value.GetHashCode() : 0);
-            return hc;
-        }
-    }
-
-    public class CustomType : CustomTypeDescriptor
-    {
-        private readonly ICollection<PropertyDescriptor> _propertyDescriptors = new List<PropertyDescriptor>();
-
-
-        public CustomType(IEnumerable<PropertyNameDisplayMapping> propertyNames, object targetObject)
-        {
-            Owner = targetObject;
-
-            var allProps = TypeDescriptor.GetProperties(targetObject).Cast<PropertyDescriptor>().ToList();
-
-            foreach (var propName in propertyNames)
-            {
-                var prop = allProps.FirstOrDefault(p => p.Name == propName.PropertyName);
-                if (prop != null)
-                    _propertyDescriptors.Add(new CustomPropertyDescriptor(prop, targetObject, propName.DisplayName));
-            }
-
-        }
-
-        public object Owner { get; set; }
-
-        //public ReadOnlyCollection<ItemPropertyInfo> ItemProperties => _propertyDescriptors.Select(p=>
-        //    new ItemPropertyInfo(p.Name,p.PropertyType,null)
-        //).ToList().AsReadOnly();
-
-        //void AddProperty(string name)
-        //{
-        //    _propertyDescriptors.Add(new CustomPropertyDescriptor(name));
-        //}
-
-        public override PropertyDescriptorCollection GetProperties()
-        {
-            return new PropertyDescriptorCollection(_propertyDescriptors.ToArray());
-        }
-
-        public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
-        {
-            return GetProperties();
-        }
-
-        public override object GetPropertyOwner(PropertyDescriptor pd)
-        {
-            return Owner;
-        }
-
-        public override EventDescriptorCollection GetEvents()
-        {
-            return null;
-        }
-
-        public override EventDescriptorCollection GetEvents(Attribute[] attributes)
-        {
-            return null;
-        }
-
-        //public string GetListName(PropertyDescriptor[] listAccessors)
-        //{
-        //    return "awesome";
-        //}
-
-        //public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors)
-        //{
-        //    return GetProperties();
-        //}
-
-
-    }
-
-    public class PropertyNameDisplayMapping
-    {
-        public string PropertyName { get; set; }
-        public string DisplayName { get; set; }
-    }
-
-    class CustomPropertyDescriptor : PropertyDescriptor
-    {
-
-        public CustomPropertyDescriptor(MemberDescriptor descriptor, object owner, string displayName)
-            : base(descriptor)
-        {
-            Owner = owner;
-            originalDescriptor = descriptor;
-
-            _displayName = displayName;
-            _propertyName = descriptor.Name;
-        }
-
-        //public CustomPropertyDescriptor(string name) : base(name, null)
-        //{
-
-        //}
-
-        public object Owner { get; set; }
-
-        MemberDescriptor originalDescriptor;
-        private readonly string _displayName;
-        private readonly string _propertyName;
-
-        public override bool CanResetValue(object component)
-        {
+        if (obj == null)
             return false;
-        }
+        return Equals(obj as NTuple<T>);
+    }
 
-        public override Type ComponentType
+    public bool Equals(NTuple<T> other)
+    {
+        if (ReferenceEquals(this, other))
+            return true;
+        if (other == null)
+            return false;
+        var length = Values.Length;
+        if (length != other.Values.Length)
+            return false;
+        for (var i = 0; i < length; ++i)
+            if (!Equals(Values[i], other.Values[i]))
+                return false;
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        var hc = 17;
+        foreach (var value in Values)
+            hc = hc * 37 + (!ReferenceEquals(value, null) ? value.GetHashCode() : 0);
+        return hc;
+    }
+}
+
+public class CustomType : CustomTypeDescriptor
+{
+    private readonly ICollection<PropertyDescriptor> _propertyDescriptors = new List<PropertyDescriptor>();
+
+
+    public CustomType(IEnumerable<PropertyNameDisplayMapping> propertyNames, object targetObject)
+    {
+        Owner = targetObject;
+
+        var allProps = TypeDescriptor.GetProperties(targetObject).Cast<PropertyDescriptor>().ToList();
+
+        foreach (var propName in propertyNames)
         {
-            get
-            {
-                if (Owner != null)
-                    return Owner.GetType();
-
-                return typeof(object);
-            }
-        }
-
-        public override object GetValue(object component)
-        {
-            //need base.Name to take the real name of the property
-            var pi = Owner.GetType().GetProperty(_propertyName, PropertyType);
-            return pi?.GetValue(Owner);
-
-        }
-
-        public override bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        public override Type PropertyType
-        {
-            get
-            {
-                if (originalDescriptor != null)
-                    return (originalDescriptor as PropertyDescriptor).PropertyType;
-
-                return typeof(object);
-            }
-        }
-
-        //public override string Name => _displayName?? base.Name;//datagrid displays this header
-
-        public override string DisplayName => _displayName;
-
-        public override void ResetValue(object component)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetValue(object component, object value)
-        {
-        }
-
-        public override bool ShouldSerializeValue(object component)
-        {
-            throw new NotImplementedException();
+            var prop = allProps.FirstOrDefault(p => p.Name == propName.PropertyName);
+            if (prop != null)
+                _propertyDescriptors.Add(new CustomPropertyDescriptor(prop, targetObject, propName.DisplayName));
         }
 
     }
 
-    public class DynamicList : List<CustomType>, ITypedList
+    public object Owner { get; set; }
+
+    //public ReadOnlyCollection<ItemPropertyInfo> ItemProperties => _propertyDescriptors.Select(p=>
+    //    new ItemPropertyInfo(p.Name,p.PropertyType,null)
+    //).ToList().AsReadOnly();
+
+    //void AddProperty(string name)
+    //{
+    //    _propertyDescriptors.Add(new CustomPropertyDescriptor(name));
+    //}
+
+    public override PropertyDescriptorCollection GetProperties()
     {
-        public DynamicList(IEnumerable<PropertyNameDisplayMapping> propertyNames, IList<CustomType> list)
+        return new PropertyDescriptorCollection(_propertyDescriptors.ToArray());
+    }
+
+    public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+    {
+        return GetProperties();
+    }
+
+    public override object GetPropertyOwner(PropertyDescriptor pd)
+    {
+        return Owner;
+    }
+
+    public override EventDescriptorCollection GetEvents()
+    {
+        return null;
+    }
+
+    public override EventDescriptorCollection GetEvents(Attribute[] attributes)
+    {
+        return null;
+    }
+
+    //public string GetListName(PropertyDescriptor[] listAccessors)
+    //{
+    //    return "awesome";
+    //}
+
+    //public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors)
+    //{
+    //    return GetProperties();
+    //}
+
+
+}
+
+public class PropertyNameDisplayMapping
+{
+    public string PropertyName { get; set; }
+    public string DisplayName { get; set; }
+}
+
+class CustomPropertyDescriptor : PropertyDescriptor
+{
+
+    public CustomPropertyDescriptor(MemberDescriptor descriptor, object owner, string displayName)
+        : base(descriptor)
+    {
+        Owner = owner;
+        originalDescriptor = descriptor;
+
+        _displayName = displayName;
+        _propertyName = descriptor.Name;
+    }
+
+    //public CustomPropertyDescriptor(string name) : base(name, null)
+    //{
+
+    //}
+
+    public object Owner { get; set; }
+
+    MemberDescriptor originalDescriptor;
+    private readonly string _displayName;
+    private readonly string _propertyName;
+
+    public override bool CanResetValue(object component)
+    {
+        return false;
+    }
+
+    public override Type ComponentType
+    {
+        get
         {
-            var c = list.FirstOrDefault();
-            var allProps = TypeDescriptor.GetProperties(c).Cast<PropertyDescriptor>().ToList();
+            if (Owner != null)
+                return Owner.GetType();
 
-            foreach (var propName in propertyNames)
-            {
-                var prop = allProps.FirstOrDefault(p => p.Name == propName.PropertyName);
-                if (prop != null)
-                    propertyDescriptors.Add(new CustomPropertyDescriptor(prop, null, propName.DisplayName));
-            }
+            return typeof(object);
+        }
+    }
 
-            AddRange(list);
+    public override object GetValue(object component)
+    {
+        //need base.Name to take the real name of the property
+        var pi = Owner.GetType().GetProperty(_propertyName, PropertyType);
+        return pi?.GetValue(Owner);
+
+    }
+
+    public override bool IsReadOnly
+    {
+        get { return false; }
+    }
+
+    public override Type PropertyType
+    {
+        get
+        {
+            if (originalDescriptor != null)
+                return (originalDescriptor as PropertyDescriptor).PropertyType;
+
+            return typeof(object);
+        }
+    }
+
+    //public override string Name => _displayName?? base.Name;//datagrid displays this header
+
+    public override string DisplayName => _displayName;
+
+    public override void ResetValue(object component)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void SetValue(object component, object value)
+    {
+    }
+
+    public override bool ShouldSerializeValue(object component)
+    {
+        throw new NotImplementedException();
+    }
+
+}
+
+public class DynamicList : List<CustomType>, ITypedList
+{
+    public DynamicList(IEnumerable<PropertyNameDisplayMapping> propertyNames, IList<CustomType> list)
+    {
+        var c = list.FirstOrDefault();
+        var allProps = TypeDescriptor.GetProperties(c).Cast<PropertyDescriptor>().ToList();
+
+        foreach (var propName in propertyNames)
+        {
+            var prop = allProps.FirstOrDefault(p => p.Name == propName.PropertyName);
+            if (prop != null)
+                propertyDescriptors.Add(new CustomPropertyDescriptor(prop, null, propName.DisplayName));
         }
 
-        private readonly ICollection<PropertyDescriptor> propertyDescriptors = new List<PropertyDescriptor>();
+        AddRange(list);
+    }
 
-        public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors)
-        {
-            return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
-            //return TypeDescriptor.GetProperties(typeof(CustomType));
-        }
+    private readonly ICollection<PropertyDescriptor> propertyDescriptors = new List<PropertyDescriptor>();
 
-        public string GetListName(PropertyDescriptor[] listAccessors)
-        {
-            return null;
-        }
+    public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors)
+    {
+        return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
+        //return TypeDescriptor.GetProperties(typeof(CustomType));
+    }
+
+    public string GetListName(PropertyDescriptor[] listAccessors)
+    {
+        return null;
     }
 }

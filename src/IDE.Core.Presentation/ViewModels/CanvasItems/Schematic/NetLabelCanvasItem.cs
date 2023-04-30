@@ -102,10 +102,10 @@ namespace IDE.Core.Designers
             }
         }
 
-        IDrawingViewModel GetCurrentCanvas()
+        ICanvasDesignerFileViewModel GetCurrentCanvas()
         {
             var canvasDoc = DocumentHelper.GetCurrentDocument<ICanvasDesignerFileViewModel>();
-            return canvasDoc?.CanvasModel;
+            return canvasDoc;
         }
 
         [Display(Order = 2)]
@@ -314,7 +314,7 @@ namespace IDE.Core.Designers
             return wire;
         }
 
-        List<NetSegmentCanvasItem> BuildNetSegment(IDrawingViewModel canvasModel, NetWireCanvasItem startingWire, IList<NetSegmentCanvasItem> candidates)
+        List<NetSegmentCanvasItem> BuildNetSegment(ICanvasDesignerFileViewModel canvasModel, NetWireCanvasItem startingWire, IList<NetSegmentCanvasItem> candidates)
         {
             var returnSegment = new List<NetSegmentCanvasItem>();
             if (startingWire == null)
@@ -447,10 +447,10 @@ namespace IDE.Core.Designers
             ScaleY *= -1;
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
             var r = Rot;
-            r += 90;
+            r += angle;
             r = ((int)r % 360);
 
             Rot = r;

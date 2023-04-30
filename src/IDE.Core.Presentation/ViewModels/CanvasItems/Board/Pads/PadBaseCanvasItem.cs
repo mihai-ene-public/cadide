@@ -445,9 +445,9 @@ namespace IDE.Core.Designers
             return new XTranslateTransform(X, Y);
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
-            Rot = RotateSafe(Rot);
+            Rot = RotateSafe(Rot, angle);
         }
 
         public override void RemoveFromCanvas()

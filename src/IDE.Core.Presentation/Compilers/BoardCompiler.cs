@@ -32,7 +32,7 @@ public class BoardCompiler : AbstractCompiler, IBoardCompiler
             ProjectPath = projectPath,
         };
 
-        var canvasModel = board.CanvasModel;
+        var canvasModel = board;
         var errors = new List<IErrorMessage>();
 
         //todo: check schematic if exists

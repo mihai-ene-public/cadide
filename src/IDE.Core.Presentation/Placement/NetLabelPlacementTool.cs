@@ -77,7 +77,7 @@ namespace IDE.Core.Presentation.Placement
                         item.OnPropertyChanged(nameof(item.Net));
                         item.OnPropertyChanged(nameof(item.NetName));
                         item.IsPlaced = true;
-                        CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                        CommitPlacement();
 
                         //create another text
                         var newItem = (NetLabelCanvasItem)canvasItem.Clone();

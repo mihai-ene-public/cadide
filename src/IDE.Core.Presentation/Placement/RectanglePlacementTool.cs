@@ -59,7 +59,7 @@ namespace IDE.Core.Presentation.Placement
                         item.Width = w;
                         item.Height = h;
                         item.IsPlaced = true;
-                        CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                        CommitPlacement();
 
 
                         var newItem = (IRectangleCanvasItem)canvasItem.Clone();

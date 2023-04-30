@@ -255,9 +255,9 @@ namespace IDE.Core.Designers
             ScaleY *= -1;
         }
 
-        public override void Rotate()
+        public override void Rotate(double angle = 90)
         {
-            Rot = RotateSafe(Rot);
+            Rot = RotateSafe(Rot, angle);
         }
 
         public override string ToString()

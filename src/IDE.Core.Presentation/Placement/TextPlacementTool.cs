@@ -34,7 +34,7 @@ namespace IDE.Core.Presentation.Placement
                     item.X = mp.X;
                     item.Y = mp.Y;
                     item.IsPlaced = true;
-                    CanvasModel.OnDrawingChanged(DrawingChangedReason.ItemPlacementFinished);
+                    CommitPlacement();
 
                     var newItem = (ITextBaseCanvasItem)canvasItem.Clone();
 

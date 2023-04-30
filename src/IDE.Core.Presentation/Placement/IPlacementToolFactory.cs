@@ -1,7 +1,9 @@
-﻿namespace IDE.Core.Presentation.Placement
+﻿using IDE.Core.Interfaces;
+
+namespace IDE.Core.Presentation.Placement;
+
+public interface IPlacementToolFactory
 {
-    public interface IPlacementToolFactory
-    {
-        PlacementTool Create(Type canvasItemType);
-    }
+    IPlacementTool Create(Type canvasItemType);
+    IPlacementTool Create(IToolboxItem toolboxItem);
 }

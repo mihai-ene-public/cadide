@@ -15,8 +15,9 @@ public class ExtrudedPolyMeshItemPlacementToolTests : PlacementToolTest
         var dispatcherMock = new Mock<IDispatcherHelper>();
         var schMock = new Mock<ISchematicDesigner>();
 
-        _canvasModel = new DrawingViewModel(schMock.Object, dispatcherMock.Object);
-        ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+        _canvasModel = CreateCanvasModel();
+        _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
+
 
         var canvasItemType = typeof(ExtrudedPolyMeshItem);
         placementTool = new ExtrudedPolyMeshItemPlacementTool();
@@ -24,7 +25,7 @@ public class ExtrudedPolyMeshItemPlacementToolTests : PlacementToolTest
         placementTool.StartPlacement(canvasItemType);
     }
 
-    private readonly IDrawingViewModel _canvasModel;
+    private readonly ICanvasDesignerFileViewModel _canvasModel;
 
 
     [Fact]

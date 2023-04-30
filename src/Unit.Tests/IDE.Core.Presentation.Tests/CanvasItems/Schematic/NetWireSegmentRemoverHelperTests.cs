@@ -8,6 +8,8 @@ using System.Linq;
 using Xunit;
 using Moq;
 using System;
+using IDE.Core.Presentation.Placement;
+using IDE.Core.Presentation.Tests.PlacementTools;
 
 namespace IDE.Core.Presentation.Tests
 {
@@ -30,8 +32,8 @@ namespace IDE.Core.Presentation.Tests
             {
                 if (t == typeof(IDebounceDispatcher))
                     return debounceMock.Object;
-                //if (t == typeof(IDispatcherHelper))
-                //    return dispatcherMock.Object;
+                //if (t == typeof(IClipboardAdapter))
+                //    return clipboardAdapterMock.Object;
 
                 throw new NotImplementedException();
             });
@@ -40,13 +42,29 @@ namespace IDE.Core.Presentation.Tests
             schMock.SetupGet(x => x.NetManager)
                     .Returns(new SchematicNetManager());//mock net manager?
 
-            _canvasModel = new DrawingViewModel(schMock.Object, _dispatcher);
-            ((CanvasGrid)_canvasModel.CanvasGrid).GridSizeModel.SelectedItem = new Units.MilUnit(50);
+            _canvasModel = CreateCanvasModel();
+            _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));
+
         }
 
-        private readonly IDrawingViewModel _canvasModel;
+        private readonly ICanvasDesignerFileViewModel _canvasModel;
 
         private readonly IDispatcherHelper _dispatcher;
+
+        protected ICanvasDesignerFileViewModel CreateCanvasModel()
+        {
+            var dispatcherMock = new Mock<IDispatcherHelper>();
+            var drawingDebounceMock = new Mock<IDebounceDispatcher>();
+            var selectionDebounceMock = new Mock<IDebounceDispatcher>();
+            var dirtyMarkerMock = new Mock<IDirtyMarkerTypePropertiesMapper>();
+            var placementFactoryMock = new Mock<IPlacementToolFactory>();
+
+            var canvasModel = new CanvasViewModelMock(dispatcherMock.Object, drawingDebounceMock.Object,
+                selectionDebounceMock.Object, dirtyMarkerMock.Object, placementFactoryMock.Object);
+
+            return canvasModel;
+        }
+
 
         [Fact]
         public void RemoveSelectedSegments_WhenNetWithSingleSegmentRemovesConnectionBetweenPins()
@@ -55,7 +73,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {
@@ -83,8 +101,8 @@ namespace IDE.Core.Presentation.Tests
             netWire.SelectSegment(0);
 
             //act
-            var segmentRemover = new SegmentRemoverHelper(_canvasModel, netWire, _dispatcher);
-            segmentRemover.RemoveSelectedSegments();
+            var segmentRemover = new NetWireSegmentRemover(_dispatcher);
+            segmentRemover.RemoveSelectedSegments(_canvasModel, netWire);
 
             //assert
 
@@ -109,7 +127,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4 * 2);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {
@@ -139,8 +157,8 @@ namespace IDE.Core.Presentation.Tests
             netWire.SelectSegmentAppend(1);
 
             //act
-            var segmentRemover = new SegmentRemoverHelper(_canvasModel, netWire, _dispatcher);
-            segmentRemover.RemoveSelectedSegments();
+            var segmentRemover = new NetWireSegmentRemover(_dispatcher);
+            segmentRemover.RemoveSelectedSegments(_canvasModel, netWire);
 
             //assert
 
@@ -167,7 +185,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4 * 2);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {
@@ -196,8 +214,8 @@ namespace IDE.Core.Presentation.Tests
             netWire.SelectSegmentAppend(selectedSegment);
 
             //act
-            var segmentRemover = new SegmentRemoverHelper(_canvasModel, netWire, _dispatcher);
-            segmentRemover.RemoveSelectedSegments();
+            var segmentRemover = new NetWireSegmentRemover(_dispatcher);
+            segmentRemover.RemoveSelectedSegments(_canvasModel, netWire);
 
             //assert
             //no net wires
@@ -221,7 +239,7 @@ namespace IDE.Core.Presentation.Tests
             var part1 = PlacePart(vccSymbol, 25.4, 25.4);
             var part2 = PlacePart(vccSymbol, 25.4 * 2, 25.4 * 2);
 
-            var netManager = (_canvasModel.FileDocument as ISchematicDesigner).NetManager;
+            var netManager = (_canvasModel as ISchematicDesigner).NetManager;
 
             var net = new SchematicNet
             {
@@ -251,8 +269,8 @@ namespace IDE.Core.Presentation.Tests
             netWire.SelectSegmentAppend(1);
 
             //act
-            var segmentRemover = new SegmentRemoverHelper(_canvasModel, netWire, _dispatcher);
-            segmentRemover.RemoveSelectedSegments();
+            var segmentRemover = new NetWireSegmentRemover(_dispatcher);
+            segmentRemover.RemoveSelectedSegments(_canvasModel, netWire);
 
             //assert
             //no net wires
