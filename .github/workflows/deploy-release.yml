@@ -31,7 +31,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
         
     - name: Restore dependencies
       run: dotnet restore $env:SolutionPath
@@ -41,7 +41,7 @@ jobs:
       
       #zip
     - name: Create archive
-      run: Compress-Archive -Path src\ide\bin\Release\net6.0-windows\win-x64\publish\* -DestinationPath src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
+      run: Compress-Archive -Path src\ide\bin\Release\net7.0-windows\win-x64\publish\* -DestinationPath src\ide\bin\Release\net7.0-windows\win-x64\publish\Binaries.zip
       
       #create Release (disabled)
       # Create the release:  https://github.com/actions/create-release
@@ -65,6 +65,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}  
-        asset_path: src\ide\bin\Release\net6.0-windows\win-x64\publish\Binaries.zip
+        asset_path: src\ide\bin\Release\net7.0-windows\win-x64\publish\Binaries.zip
         asset_name: XNoCAD-${{ env._Platform }}-${{ github.event.inputs.releaseName }}.zip
         asset_content_type: application/zip
