@@ -27,7 +27,7 @@ namespace IDE.Core.ViewModels
         {
             ContentId = ToolContentId;
 
-            StrongReferenceMessenger.Default.Register<ISolutionExplorerToolWindow, SolutionClosedMessage>(this,
+            Messenger.Register<ISolutionExplorerToolWindow, SolutionClosedMessage>(this,
                (vm, message) =>
                {
                    IsVisible = false;

@@ -22,6 +22,7 @@ using System.Collections;
 using IDE.Core.Presentation.Compilers;
 using IDE.Core.Presentation.Solution;
 using IDE.Core.Presentation.Placement;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Core.ViewModels
 {
@@ -33,7 +34,6 @@ namespace IDE.Core.ViewModels
         public SchematicDesignerViewModel(
             ISettingsManager settingsManager,
             IActiveCompiler activeCompiler,
-            IApplicationViewModel applicationModel,
             IDispatcherHelper dispatcher,
             IDebounceDispatcher drawingChangedDebouncer,
             IDebounceDispatcher selectionDebouncer,
@@ -43,21 +43,19 @@ namespace IDE.Core.ViewModels
             : base(dispatcher, drawingChangedDebouncer, selectionDebouncer, dirtyMarkerTypePropertiesMapper, placementToolFactory)
 
         {
-
             schematicDocument = new SchematicDocument();
 
             SchematicViewMode = SchematicViewMode.Canvas;
 
             Toolbar = new SchematicToolbar(this);
 
+            netManager = new SchematicNetManager(this);
+            busManager = new SchematicBusManager();
+
             SchematicProperties = new SchematicDesignerPropertiesViewModel(this);
 
-            //CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
-            //CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
-
-            _applicationModel = applicationModel;
-            //_applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
-            //_applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
+            Messenger.Register<ISchematicDesigner, CanvasSelectionChangedMessage>(this, (vm, m) => CanvasSelectionChangedHandler(m));
+            Messenger.Register<ISchematicDesigner, CanvasHighlightChangedMessage>(this, (vm, m) => CanvasHighlightChangedHandler(m));
 
             canvasGrid.SetUnit(new Units.MilUnit(50));
 
@@ -67,17 +65,17 @@ namespace IDE.Core.ViewModels
 
         private readonly ISettingsManager _settingsManager;
         private readonly IActiveCompiler _activeCompiler;
-        private readonly IApplicationViewModel _applicationModel;
 
-        INetManager netManager = new SchematicNetManager();
-        IBusManager busManager = new SchematicBusManager();
+        private readonly INetManager netManager;
+        private readonly IBusManager busManager;
 
         public INetManager NetManager => netManager;
         public IBusManager BusManager => busManager;
 
         bool highlightChangeBusy;
-        void ApplicationModel_HighlightChanged(object sender, EventArgs e)
+        private void CanvasHighlightChangedHandler(CanvasHighlightChangedMessage message)
         {
+            var sender = message.Sender;
             if (sender == this || highlightChangeBusy) return;
 
             highlightChangeBusy = true;
@@ -109,8 +107,9 @@ namespace IDE.Core.ViewModels
         }
 
         bool selectionChangeBusy;
-        void ApplicationModel_SelectionChanged(object sender, EventArgs e)
+        private void CanvasSelectionChangedHandler(CanvasSelectionChangedMessage message)
         {
+            var sender = message.Sender;
             if (sender == this || selectionChangeBusy) return;
 
             selectionChangeBusy = true;
@@ -133,16 +132,6 @@ namespace IDE.Core.ViewModels
             }
 
             selectionChangeBusy = false;
-        }
-
-        void CanvasModel_HighlightChanged(object sender, EventArgs e)
-        {
-            _applicationModel.OnHighlightChanged(sender, e);
-        }
-
-        void CanvasModel_SelectionChanged(object sender, EventArgs e)
-        {
-            _applicationModel.OnSelectionChanged(sender, e);
         }
 
         public override IList<IDocumentToolWindow> GetToolWindowsWhenActive()
@@ -309,8 +298,6 @@ namespace IDE.Core.ViewModels
 
         #region Fields
 
-
-
         SchematicDocument schematicDocument;
 
         public IList<ISchematicNet> GetNets()
@@ -333,9 +320,7 @@ namespace IDE.Core.ViewModels
             foreach (var net in GetNets())
                 net.HighlightNet(false);
 
-            //todo: notify highlighted
-            //OnHighlightChanged(this, EventArgs.Empty);
-
+            OnHighlightChanged(this, EventArgs.Empty);
         }
 
         #endregion Fields

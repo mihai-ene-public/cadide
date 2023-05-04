@@ -8,6 +8,7 @@ using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Utilities;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
+using IDE.Core.ViewModels;
 
 namespace IDE.Core.Presentation.Placement
 {

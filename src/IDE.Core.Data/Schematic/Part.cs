@@ -66,8 +66,8 @@ namespace IDE.Core.Storage
         }
 
 
-            [XmlElement("bom")]
-            public BomSpec Bom { get; set; }
+        [XmlElement("bom")]
+        public BomSpec Bom { get; set; }
 
 #if VERSION20
         //[XmlElement("variant")]

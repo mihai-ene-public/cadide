@@ -60,8 +60,11 @@ public class SchematicNet : BaseViewModel, ISchematicNet
 
 }
 
-public interface ISchematicNet : INet, INotifyPropertyChanged
+public interface ISchematicNet : IUniqueName, INotifyPropertyChanged
 {
+    bool IsHighlighted { get; set; }
     IList<NetSegmentCanvasItem> NetItems { get; }
     void HighlightNet(bool newHighlight);
 }
+
+

@@ -104,11 +104,6 @@ SignalDesignerItem (signal)
             if (IsHighlighted == newHighlight)
                 return;
 
-            //foreach (var item in Items)
-            //    item.IsHighLighted = newHighlight;
-            //foreach (var pad in Pads)
-            //    pad.IsHighLighted = newHighlight;
-
             IsHighlighted = newHighlight;
 
             thisBoard.OnPropertyChanged(nameof(thisBoard.HasHighlightedNets));

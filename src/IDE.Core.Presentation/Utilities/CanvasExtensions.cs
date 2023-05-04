@@ -1,5 +1,6 @@
 ﻿using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 

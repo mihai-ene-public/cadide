@@ -5,6 +5,7 @@ using IDE.Core.Common.Extensions;
 using IDE.Core.Interfaces;
 using IDE.Core.Presentation.Builders;
 using IDE.Core.Presentation.Compilers;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Cli;
 
@@ -16,7 +17,7 @@ internal class Program
 
         var obj = new object();
 
-        StrongReferenceMessenger.Default.Register<object, string>(obj, (vm, message) => Console.WriteLine(message));
+        Messenger.Register<object, string>(obj, (vm, message) => Console.WriteLine(message));
 
 
         var res = await Parser.Default.ParseArguments<CompileOptions, BuildOptions, PackOptions>(args)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDE.Core.Designers;
+using IDE.Core.ViewModels;
 
 namespace IDE.Core.Interfaces
 {

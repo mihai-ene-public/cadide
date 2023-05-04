@@ -18,6 +18,7 @@ namespace IDE.Core.ViewModels
     using IDE.Core.Types.Media;
     using IDE.Core.Presentation.Solution;
     using CommunityToolkit.Mvvm.Messaging;
+    using IDE.Core.Presentation.Messages;
 
     /// <summary>
     /// Base class that shares common properties, methods, and intefaces
@@ -33,7 +34,7 @@ namespace IDE.Core.ViewModels
 
             PropertyChanged += FileBaseViewModel_PropertyChanged;
 
-            StrongReferenceMessenger.Default.Register<IFileBaseViewModel, FilePathChangedMessage>(this,
+            Messenger.Register<IFileBaseViewModel, FilePathChangedMessage>(this,
                (vm, message) =>
                {
                    var oldItemPath = FilePath;
@@ -44,7 +45,7 @@ namespace IDE.Core.ViewModels
                    }
                });
 
-            StrongReferenceMessenger.Default.Register<IFileBaseViewModel, FolderPathChangedMessage>(this,
+            Messenger.Register<IFileBaseViewModel, FolderPathChangedMessage>(this,
               (vm, message) =>
               {
                   var oldItemPath = FilePath;

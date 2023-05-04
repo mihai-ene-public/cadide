@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using IDE.Core.Presentation.Solution;
 using CommunityToolkit.Mvvm.Messaging;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Core.ViewModels;
 
@@ -39,7 +40,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         //rename is disabled by default
         IsReadOnly = false;
 
-        StrongReferenceMessenger.Default.Register<ISolutionExplorerNodeModel, FolderPathChangedMessage>(this,
+        Messenger.Register<ISolutionExplorerNodeModel, FolderPathChangedMessage>(this,
               (vm, message) =>
               {
                   var oldItemPath = GetItemFullPath();
@@ -427,7 +428,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
         if (this is ISolutionRootNodeModel)
         {
             //notify solution changed
-            StrongReferenceMessenger.Default.Send(new SolutionFilePathChangedMessage
+            Messenger.Send(new SolutionFilePathChangedMessage
             {
                 NewSolutionFilePath = newFilePath
             });
@@ -444,7 +445,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
             Directory.Move(oldItemPath, newItemPath);
 
             //notify file changed
-            StrongReferenceMessenger.Default.Send(new FolderPathChangedMessage
+            Messenger.Send(new FolderPathChangedMessage
             {
                 NewFolderPath = newFilePath,
                 OldFolderPath = oldItemPath
@@ -455,7 +456,7 @@ public class SolutionExplorerNodeModel : BaseViewModel, IEditBox, ISolutionExplo
             File.Move(oldItemPath, newItemPath);
 
             //notify file changed
-            StrongReferenceMessenger.Default.Send(new FilePathChangedMessage
+            Messenger.Send(new FilePathChangedMessage
             {
                 NewFilePath = newFilePath,
                 OldFilePath = oldItemPath

@@ -4,6 +4,7 @@ using IDE.Core.Interfaces.Geometries;
 using IDE.Core.Presentation.Placement;
 using IDE.Core.Storage;
 using IDE.Core.Types.Media;
+using IDE.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

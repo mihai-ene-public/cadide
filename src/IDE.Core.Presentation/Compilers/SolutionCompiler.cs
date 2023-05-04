@@ -5,6 +5,7 @@ using IDE.Core.Designers;
 using IDE.Core.Presentation.Solution;
 using System.IO;
 using System.Text.Json.Nodes;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Core.Presentation.Compilers;
 
@@ -91,12 +92,12 @@ public class SolutionCompiler : ISolutionCompiler
 
     private void SendOutputMessage(string message)
     {
-        StrongReferenceMessenger.Default.Send(message);
+        Messenger.Send(message);
     }
 
     private void SendErrorMessage(IErrorMessage errorMessage)
     {
-        StrongReferenceMessenger.Default.Send(errorMessage);
+        Messenger.Send(errorMessage);
     }
     private void SendErrorMessage(string message, string fileName, string projectName)
     {
@@ -107,6 +108,6 @@ public class SolutionCompiler : ISolutionCompiler
             File = fileName,
             Project = projectName
         };
-        StrongReferenceMessenger.Default.Send(errorMessage);
+        Messenger.Send(errorMessage);
     }
 }

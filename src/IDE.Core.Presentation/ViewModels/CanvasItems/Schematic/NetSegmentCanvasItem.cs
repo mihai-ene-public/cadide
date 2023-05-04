@@ -35,12 +35,8 @@ namespace IDE.Core.Designers
 
             net.IsHighlighted = newHighlight;
             
-            //todo: last cross highlight
-            /*
-            var canvasModel = net.CanvasModel;
-
-            canvasModel.OnHighlightChanged(canvasModel, EventArgs.Empty);
-            */
+            //var canvasModel = net.CanvasModel;
+            //canvasModel.OnHighlightChanged(canvasModel, EventArgs.Empty);
         }
 
         SchematicNet net;

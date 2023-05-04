@@ -5,6 +5,7 @@ using IDE.Core;
 using IDE.Core.Converters;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Messages;
 using IDE.Core.Presentation.Placement;
 using IDE.Core.Storage;
 using IDE.Core.Toolbars;
@@ -801,7 +802,6 @@ public abstract class CanvasDesignerFileViewModel : FileBaseViewModel, ICanvasDe
 
         if (selectedItems.Count == 1 && selectedItems[0] is ISegmentedPolylineSelectableCanvasItem wire)
         {
-            //todo: implement undo
             var segmentRemoverFactory = new SegmentRemoverFactory();
             var segmentRemover = segmentRemoverFactory.Create(wire, _dispatcher);
             segmentRemover.RemoveSelectedSegments(this, wire);
@@ -992,62 +992,14 @@ public abstract class CanvasDesignerFileViewModel : FileBaseViewModel, ICanvasDe
         _selectionDebouncer.Debounce(50, p => UpdateSelectionInternal());
     }
 
-    private void UpdateSelectionInternal()
+    protected virtual void UpdateSelectionInternal()
     {
-        var pw = ServiceProvider.GetToolWindow<PropertiesToolWindowViewModel>();
-        if (pw != null)
-        {
-            var oldSelected = pw.SelectedObject;
-            pw.SelectedObject = null;
-
-            if (PlacementTool != null)// && PlacementTool.CanvasItem != null)
-                AssignSelected(pw, PlacementTool.CanvasItem);
-            else
-            {
-                AssignSelected(pw, SelectedItems);
-            }
-
-            //show properties to view (this could be an option)
-            if (pw.SelectedObject != null)
-            {
-                pw.IsVisible = true;
-
-                if (oldSelected != pw.SelectedObject)
-                    pw.IsActive = true;
-            }
-        }
-
-        OnSelectionChanged(this, EventArgs.Empty);
-    }
-
-    protected virtual void OnSelectionChanged(object sender, EventArgs args)
-    {
-
+        Messenger.Send(new CanvasSelectionChangedMessage { Sender = this });
     }
 
     public void OnHighlightChanged(object sender, EventArgs e)
     {
-
-    }
-
-    void AssignSelected(PropertiesToolWindowViewModel pw, IList<ISelectableItem> items)
-    {
-        if (items.Count == 1)
-        {
-            pw.SelectedObject = items.FirstOrDefault();
-        }
-        else if (items.Count > 1)
-        {
-            pw.SelectedObject = new MultipleSelectionObject()
-            {
-                SelectedObjects = (IList)items,
-            };
-        }
-    }
-
-    void AssignSelected(PropertiesToolWindowViewModel pw, ISelectableItem item)
-    {
-        pw.SelectedObject = item;
+        Messenger.Send(new CanvasHighlightChangedMessage { Sender = this });
     }
 
     /// <summary>

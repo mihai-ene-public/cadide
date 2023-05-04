@@ -76,7 +76,7 @@ public partial class ApplicationViewModel : BaseViewModel,
         _solutionRepository = solutionRepository;
         dispatcher = ServiceProvider.Resolve<IDispatcherHelper>();
 
-        StrongReferenceMessenger.Default.Register<IApplicationViewModel, SolutionFilePathChangedMessage>(this,
+        Messenger.Register<IApplicationViewModel, SolutionFilePathChangedMessage>(this,
                 (vm, message) =>
                 {
                     currentSolutionFilePath = message.NewSolutionFilePath;
@@ -476,7 +476,7 @@ public partial class ApplicationViewModel : BaseViewModel,
                 CloseFiles(Files);
                 CloseSolutionInternal();
 
-                StrongReferenceMessenger.Default.Send(new SolutionClosedMessage());
+                Messenger.Send(new SolutionClosedMessage());
 
                 OnPropertyChanged(nameof(ApplicationTitle));
             }
@@ -605,15 +605,15 @@ public partial class ApplicationViewModel : BaseViewModel,
 
     private void NotifyClearErrors()
     {
-        StrongReferenceMessenger.Default.Send(new ClearErrorsMessage());
+        Messenger.Send(new ClearErrorsMessage());
     }
     private void NotifyClearOutput()
     {
-        StrongReferenceMessenger.Default.Send(new ClearOutputMessage());
+        Messenger.Send(new ClearOutputMessage());
     }
     private void NotifyActivateOutput()
     {
-        StrongReferenceMessenger.Default.Send(new ActivateOutputToolWindowMessage
+        Messenger.Send(new ActivateOutputToolWindowMessage
         {
             IsActive = true,
             IsVisible = true,
@@ -622,7 +622,7 @@ public partial class ApplicationViewModel : BaseViewModel,
 
     private void NotifyActivateErrors()
     {
-        StrongReferenceMessenger.Default.Send(new ActivateErrorsToolWindow
+        Messenger.Send(new ActivateErrorsToolWindow
         {
             IsActive = true,
             IsVisible = true,

@@ -3,6 +3,7 @@ using System.IO;
 using CommunityToolkit.Mvvm.Messaging;
 using IDE.Core.Designers;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Messages;
 using IDE.Core.Presentation.ObjectFinding;
 using IDE.Core.Presentation.Solution;
 using IDE.Core.Storage;
@@ -304,7 +305,7 @@ public class SolutionBuilder : ISolutionBuilder
 
     private void OutputMessage(string message)
     {
-        StrongReferenceMessenger.Default.Send(message);
+        Messenger.Send(message);
     }
 
 

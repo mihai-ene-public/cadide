@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using IDE.Core.Errors;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Messages;
 using IDE.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ public class ActiveCompiler : IActiveCompiler
             {
                 try
                 {
-                    StrongReferenceMessenger.Default.Send(new ClearErrorsMessage());
+                    Messenger.Send(new ClearErrorsMessage());
 
                     var result = await _fileCompiler.Compile(file);
 
@@ -45,10 +46,10 @@ public class ActiveCompiler : IActiveCompiler
                         {
                             foreach (var error in result.Errors)
                             {
-                                StrongReferenceMessenger.Default.Send(error);
+                                Messenger.Send(error);
                             }
 
-                            StrongReferenceMessenger.Default.Send(new ActivateErrorsToolWindow
+                            Messenger.Send(new ActivateErrorsToolWindow
                             {
                                 IsActive = true,
                                 IsVisible = true,

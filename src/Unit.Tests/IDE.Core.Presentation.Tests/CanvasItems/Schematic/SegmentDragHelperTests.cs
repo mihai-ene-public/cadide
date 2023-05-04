@@ -40,7 +40,7 @@ namespace IDE.Core.Presentation.Tests
 
             var schMock = new Mock<ISchematicDesigner>();
             schMock.SetupGet(x => x.NetManager)
-                    .Returns(new SchematicNetManager());//mock net manager?
+                    .Returns(new SchematicNetManager(schMock.Object));//mock net manager?
 
             _canvasModel = CreateCanvasModel();
             _canvasModel.CanvasGrid.SetUnit(new Units.MilUnit(50));

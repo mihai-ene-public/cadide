@@ -31,6 +31,7 @@ using IDE.Core.Presentation.Utilities;
 using IDE.Core.Presentation.Importers.DXF;
 using IDE.Core.Presentation.Compilers;
 using IDE.Core.Presentation.ObjectFinding;
+using IDE.Core.Presentation.Messages;
 
 namespace IDE.Documents.Views;
 
@@ -42,7 +43,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
           IActiveCompiler activeCompiler,
           ISettingsManager settingsManager,
           IDirtyMarkerTypePropertiesMapper dirtyMarkerTypePropertiesMapper,
-          IApplicationViewModel applicationModel,
           IDispatcherHelper dispatcher,
           IDebounceDispatcher drawingChangedDebouncer,
           IDebounceDispatcher selectionDebouncer,
@@ -63,13 +63,9 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         Toolbar = new BoardToolbar(this);
 
         PropertyChanged += BoardDesignerFileViewModel_PropertyChanged;
-        //CanvasModel.DrawingChanged += CanvasModel_DrawingChanged;
-        //CanvasModel.SelectionChanged += CanvasModel_SelectionChanged;
-        //CanvasModel.HighlightChanged += CanvasModel_HighlightChanged;
 
-        _applicationModel = applicationModel;
-        //_applicationModel.SelectionChanged += ApplicationModel_SelectionChanged;
-        //_applicationModel.HighlightChanged += ApplicationModel_HighlightChanged;
+        Messenger.Register<IBoardDesigner, CanvasSelectionChangedMessage>(this, (vm, m) => CanvasSelectionChangedHandler(m));
+        Messenger.Register<IBoardDesigner, CanvasHighlightChangedMessage>(this, (vm, m) => CanvasHighlightChangedHandler(m));
 
         _dirtyPropertiesProvider = dirtyMarkerTypePropertiesMapper;
         _settingsManager = settingsManager;
@@ -80,7 +76,6 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     private readonly ISettingsManager _settingsManager;
     private readonly IActiveCompiler _activeCompiler;
     private readonly IObjectFinder _objectFinder;
-    private readonly IApplicationViewModel _applicationModel;
 
     protected override async Task AfterLoadDocumentInternal()
     {
@@ -234,8 +229,9 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     }
 
     bool highlightChangeBusy;
-    void ApplicationModel_HighlightChanged(object sender, EventArgs e)
+    private void CanvasHighlightChangedHandler(CanvasHighlightChangedMessage message)
     {
+        var sender = message.Sender;
         if (sender == this || highlightChangeBusy) return;
 
         highlightChangeBusy = true;
@@ -271,8 +267,9 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
     bool selectionChangeBusy;
 
     List<string> selectedPartNames = new List<string>();
-    void ApplicationModel_SelectionChanged(object sender, EventArgs e)
+    private void CanvasSelectionChangedHandler(CanvasSelectionChangedMessage message)
     {
+        var sender = message.Sender;
         if (sender == this || selectionChangeBusy) return;
 
         selectionChangeBusy = true;
@@ -336,15 +333,10 @@ public class BoardDesignerFileViewModel : CanvasDesignerFileViewModel
         }
     }
 
-    void CanvasModel_HighlightChanged(object sender, EventArgs e)
-    {
-        _applicationModel.OnHighlightChanged(sender, e);
-    }
-
-    void CanvasModel_SelectionChanged(object sender, EventArgs e)
+    protected override void UpdateSelectionInternal()
     {
         UpdateSelectedPartNames();
-        _applicationModel.OnSelectionChanged(sender, e);
+        base.UpdateSelectionInternal();
     }
 
     async void BoardDesignerFileViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

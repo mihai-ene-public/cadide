@@ -1,12 +1,8 @@
-﻿namespace IDE.Core.Interfaces
+﻿namespace IDE.Core.Interfaces;
+
+
+
+public interface IBusManager : IUniqueNameManager<IBus>
 {
-    public interface INetManager : IUniqueNameManager<INet>
-    {
 
-    }
-
-    public interface IBusManager : IUniqueNameManager<IBus>
-    {
-
-    }
 }

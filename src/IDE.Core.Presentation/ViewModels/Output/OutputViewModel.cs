@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using IDE.Core.Interfaces;
+using IDE.Core.Presentation.Messages;
 using IDE.Core.ViewModels;
 using System.Text;
 
@@ -24,10 +25,10 @@ public class OutputToolWindow : ToolViewModel, IOutputToolWindow
 
         ContentId = ToolContentId;
 
-        StrongReferenceMessenger.Default.Register<IOutputToolWindow, string>(this, (vm, message) => AppendLine(message));
-        StrongReferenceMessenger.Default.Register<IOutputToolWindow, ClearOutputMessage>(this, (vm, message) => Clear());
-        
-        StrongReferenceMessenger.Default.Register<IOutputToolWindow, ActivateOutputToolWindowMessage>(this, 
+        Messenger.Register<IOutputToolWindow, string>(this, (vm, message) => AppendLine(message));
+        Messenger.Register<IOutputToolWindow, ClearOutputMessage>(this, (vm, message) => Clear());
+
+        Messenger.Register<IOutputToolWindow, ActivateOutputToolWindowMessage>(this, 
             (vm, message) =>
         {
             IsVisible = message.IsVisible;
