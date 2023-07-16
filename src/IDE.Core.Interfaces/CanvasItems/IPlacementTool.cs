@@ -19,11 +19,13 @@ Placement of object from a toolbox works as following
 
 public interface IPlacementTool
 {
-    ISelectableItem CanvasItem { get; }
+    ISelectableItem CanvasItem { get; set; }
 
     ICanvasDesignerFileViewModel CanvasModel { get; set; }
 
     PlacementStatus PlacementStatus { get; set; }
+
+    void SetupCanvasItem();
 
     void StartPlacement(Type canvasItemType);
 

@@ -4,10 +4,8 @@ using System;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class EllipsePlacementTool : PlacementTool, IEllipsePlacementTool
+public class EllipsePlacementTool : PlacementTool<IEllipseCanvasItem>, IEllipsePlacementTool
 {
-    IEllipseCanvasItem GetItem() => canvasItem as IEllipseCanvasItem;
-
     const double minDiameter = 0.1;
 
     public override void PlacementMouseMove(XPoint mousePosition)

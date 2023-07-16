@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class PolygonPlacementTool : PlacementTool, IPolygonPlacementTool
+    public class PolygonPlacementTool : PlacementTool<IPolygonCanvasItem>, IPolygonPlacementTool
     {
-        IPolygonCanvasItem GetItem() => canvasItem as IPolygonCanvasItem;
-
         public override void PlacementMouseMove(XPoint mousePosition)
         {
             var mp = CanvasModel.SnapToGrid(mousePosition);

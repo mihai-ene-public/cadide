@@ -5,7 +5,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
+public class BusLabelPlacementTool : PlacementTool<BusLabelCanvasItem>, IBusLabelPlacementTool
 {
     public BusLabelPlacementTool()
     {
@@ -13,8 +13,6 @@ public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
     }
 
     private readonly IGeometryOutlineHelper GeometryHelper;
-
-    BusLabelCanvasItem GetItem() => canvasItem as BusLabelCanvasItem;
 
     public override void PlacementMouseMove(XPoint mousePosition)
     {
@@ -36,7 +34,7 @@ public class BusLabelPlacementTool : PlacementTool, IBusLabelPlacementTool
         var mp = CanvasModel.SnapToGrid(mousePosition);
 
         var item = GetItem();
-        var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
+        var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y, BorderWidth = 0.0 };
 
         switch (PlacementStatus)
         {

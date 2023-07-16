@@ -4,11 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class CirclePlacementTool : PlacementTool, ICirclePlacementTool
+public class CirclePlacementTool : PlacementTool<ICircleCanvasItem>, ICirclePlacementTool
 {
-    ICircleCanvasItem GetItem() => canvasItem as ICircleCanvasItem;
-
-
     const double minDiameter = 0.1;
     public override void PlacementMouseMove(XPoint mousePosition)
     {

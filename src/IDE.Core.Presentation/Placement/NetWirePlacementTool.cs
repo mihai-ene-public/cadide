@@ -12,7 +12,7 @@ using IDE.Core.ViewModels;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class NetWirePlacementTool : PlacementTool, INetWirePlacementTool
+    public class NetWirePlacementTool : PlacementTool<NetWireCanvasItem>, INetWirePlacementTool
     {
         public NetWirePlacementTool()
         {
@@ -20,8 +20,6 @@ namespace IDE.Core.Presentation.Placement
         }
 
         private readonly IGeometryOutlineHelper GeometryHelper;
-
-        NetWireCanvasItem GetItem() => canvasItem as NetWireCanvasItem;
 
         static NetPlacementMode placementMode = NetPlacementMode.Single;
 
@@ -398,7 +396,7 @@ namespace IDE.Core.Presentation.Placement
         private bool TestBusHit(ref XPoint point)
         {
             var item = GetItem();
-            var circle = new CircleCanvasItem { Diameter = item.Width, X = point.X, Y = point.Y };
+            var circle = new CircleCanvasItem { Diameter = item.Width, X = point.X, Y = point.Y, BorderWidth = 0.0 };
             var busItems = CanvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
 
             foreach (var busItem in busItems)

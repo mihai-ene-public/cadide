@@ -50,7 +50,7 @@ public abstract class PlacementToolTest
             throw new NotImplementedException();
         });
     }
-    protected PlacementTool placementTool;
+    protected IPlacementTool placementTool;
 
     protected ICanvasDesignerFileViewModel CreateCanvasModel()
     {

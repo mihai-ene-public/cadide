@@ -3,10 +3,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public class RectanglePlacementTool : PlacementTool, IRectanglePlacementTool
+    public class RectanglePlacementTool : PlacementTool<IRectangleCanvasItem>, IRectanglePlacementTool
     {
-
-        IRectangleCanvasItem GetItem() => canvasItem as IRectangleCanvasItem;
 
         const double minWidth = 0.1;
         const double minHeight = 0.1;

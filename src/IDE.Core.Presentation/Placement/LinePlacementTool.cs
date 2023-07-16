@@ -3,16 +3,13 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class LinePlacementTool : PlacementTool, ILinePlacementTool
+public class LinePlacementTool : PlacementTool<ILineCanvasItem>, ILinePlacementTool
 {
-    ILineCanvasItem GetItem() => canvasItem as ILineCanvasItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
 
         var item = GetItem();
-
 
         switch (PlacementStatus)
         {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace IDE.Core.Presentation.Placement;
 
-public abstract class PlacementTool : IPlacementTool
+public abstract class PlacementTool<T> : IPlacementTool where T: ISelectableItem
 {
 
     public PlacementTool()
@@ -25,6 +25,8 @@ public abstract class PlacementTool : IPlacementTool
         get { return canvasItem; }
         set { canvasItem = value; }
     }
+
+    protected T GetItem() => (T)canvasItem;
 
     /// <summary>
     /// in the case we show a dialog (addding a part in schematic) the selectedItem from the dialog is stored here

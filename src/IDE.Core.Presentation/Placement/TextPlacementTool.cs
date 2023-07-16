@@ -1,50 +1,47 @@
 ﻿using IDE.Core.Interfaces;
 using IDE.Core.Types.Media;
 
-namespace IDE.Core.Presentation.Placement
+namespace IDE.Core.Presentation.Placement;
+
+public class TextPlacementTool : PlacementTool<ITextBaseCanvasItem>, ITextPlacementTool
 {
-    public class TextPlacementTool : PlacementTool, ITextPlacementTool
+    public override void PlacementMouseMove(XPoint mousePosition)
     {
-        ITextBaseCanvasItem GetItem() => canvasItem as ITextBaseCanvasItem;
+        var mp = CanvasModel.SnapToGrid(mousePosition);
 
-        public override void PlacementMouseMove(XPoint mousePosition)
+        var item = GetItem();
+
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
-
-            var item = GetItem();
-
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    break;
-            }
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                break;
         }
+    }
 
-        public override void PlacementMouseUp(XPoint mousePosition)
+    public override void PlacementMouseUp(XPoint mousePosition)
+    {
+        var mp = CanvasModel.SnapToGrid(mousePosition);
+
+        var item = GetItem();
+
+        switch (PlacementStatus)
         {
-            var mp = CanvasModel.SnapToGrid(mousePosition);
+            case PlacementStatus.Ready:
+                item.X = mp.X;
+                item.Y = mp.Y;
+                item.IsPlaced = true;
+                CommitPlacement();
 
-            var item = GetItem();
+                var newItem = (ITextBaseCanvasItem)canvasItem.Clone();
 
-            switch (PlacementStatus)
-            {
-                case PlacementStatus.Ready:
-                    item.X = mp.X;
-                    item.Y = mp.Y;
-                    item.IsPlaced = true;
-                    CommitPlacement();
+                PlacementStatus = PlacementStatus.Ready;
+                canvasItem = newItem;
 
-                    var newItem = (ITextBaseCanvasItem)canvasItem.Clone();
-
-                    PlacementStatus = PlacementStatus.Ready;
-                    canvasItem = newItem;
-
-                    SetupCanvasItem();
-                    CanvasModel.AddItem(canvasItem);
-                    break;
-            }
+                SetupCanvasItem();
+                CanvasModel.AddItem(canvasItem);
+                break;
         }
     }
 }

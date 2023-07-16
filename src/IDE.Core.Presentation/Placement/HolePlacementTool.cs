@@ -3,16 +3,13 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class HolePlacementTool : PlacementTool, IHolePlacementTool
+public class HolePlacementTool : PlacementTool<IHoleCanvasItem>, IHolePlacementTool
 {
-    IHoleCanvasItem GetItem() => canvasItem as IHoleCanvasItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
 
         var item = GetItem();
-
 
         switch (PlacementStatus)
         {

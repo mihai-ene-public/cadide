@@ -4,16 +4,13 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class TextMeshItemPlacementTool : PlacementTool, ITextMeshItemPlacementTool
+public class TextMeshItemPlacementTool : PlacementTool<TextMeshItem>, ITextMeshItemPlacementTool
 {
-    TextMeshItem GetItem() => canvasItem as TextMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
 
         var item = GetItem();
-
 
         switch (PlacementStatus)
         {
@@ -46,8 +43,6 @@ public class TextMeshItemPlacementTool : PlacementTool, ITextMeshItemPlacementTo
 
                 CanvasModel.AddItem(canvasItem);
                 break;
-
-
         }
     }
 }

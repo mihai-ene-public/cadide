@@ -4,15 +4,13 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool, IBoardRepositionSelectedComponentsPlacementTool
+public class BoardRepositionSelectedComponentsPlacementTool : PlacementTool<FootprintBoardCanvasItem>, IBoardRepositionSelectedComponentsPlacementTool
 {
 
     public BoardRepositionSelectedComponentsPlacementTool(IList<FootprintBoardCanvasItem> selectedItems)
     {
         selectedParts = selectedItems;
     }
-
-    private FootprintBoardCanvasItem GetItem() => canvasItem as FootprintBoardCanvasItem;
 
     private IList<FootprintBoardCanvasItem> selectedParts;
 

@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class BoxMeshItemPlacementTool : PlacementTool, IBoxMeshItemPlacementTool
+public class BoxMeshItemPlacementTool : PlacementTool<BoxMeshItem>, IBoxMeshItemPlacementTool
 {
-    BoxMeshItem GetItem() => canvasItem as BoxMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class CylinderMeshItemPlacementTool : PlacementTool, ICylinderMeshItemPlacementTool
+public class CylinderMeshItemPlacementTool : PlacementTool<CylinderMeshItem>, ICylinderMeshItemPlacementTool
 {
-    CylinderMeshItem GetItem() => canvasItem as CylinderMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

@@ -5,10 +5,8 @@ using IDE.Core.Types.Media3D;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class VolatileGroup3DPlacementTool : PlacementTool, IVolatileGroup3DPlacementTool
+public class VolatileGroup3DPlacementTool : PlacementTool<VolatileGroup3DCanvasItem>, IVolatileGroup3DPlacementTool
 {
-    VolatileGroup3DCanvasItem GetItem() => canvasItem as VolatileGroup3DCanvasItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement
 {
-    public  class NetLabelPlacementTool : PlacementTool, INetLabelPlacementTool
+    public  class NetLabelPlacementTool : PlacementTool<NetLabelCanvasItem>, INetLabelPlacementTool
     {
         public NetLabelPlacementTool()
         {
@@ -16,7 +16,6 @@ namespace IDE.Core.Presentation.Placement
         }
 
         private readonly IGeometryOutlineHelper GeometryHelper;
-        NetLabelCanvasItem GetItem() => canvasItem as NetLabelCanvasItem;
 
         public override void PlacementMouseMove(XPoint mousePosition)
         {
@@ -38,7 +37,7 @@ namespace IDE.Core.Presentation.Placement
             var mp = CanvasModel.SnapToGrid(mousePosition);
 
             var item = GetItem();
-            var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y };
+            var circle = new CircleCanvasItem { Diameter = 0.5, X = mp.X, Y = mp.Y, BorderWidth = 0.0 };
 
             switch (PlacementStatus)
             {

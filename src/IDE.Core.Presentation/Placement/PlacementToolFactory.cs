@@ -19,7 +19,7 @@ public class PlacementToolFactory : IPlacementToolFactory
         if (mapping.ContainsKey(canvasItemType))
         {
             var placementToolType = mapping[canvasItemType];
-            var placementTool = _serviceProvider.GetService(placementToolType) as PlacementTool;
+            var placementTool = _serviceProvider.GetService(placementToolType) as IPlacementTool;
             return placementTool;
         }
 

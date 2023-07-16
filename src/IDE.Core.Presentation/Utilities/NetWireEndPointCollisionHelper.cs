@@ -45,7 +45,7 @@ namespace IDE.Core.Presentation.Utilities
         {
 
             var busItems = _canvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
-            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y };
+            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y, BorderWidth = 0.0 };
 
             foreach (var busItem in busItems)
             {
@@ -109,7 +109,7 @@ namespace IDE.Core.Presentation.Utilities
 
         private bool TestOtherNetSegments(XPoint point)
         {
-            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y };
+            var circle = new CircleCanvasItem { Diameter = _netWire.Width, X = point.X, Y = point.Y, BorderWidth = 0.0 };
             var intersectedWires = new List<NetWireCanvasItem>();
             var addJunction = false;
             var netElements = _canvasModel.Items.OfType<NetSegmentCanvasItem>().Where(ns => ns != _netWire && ns.IsPlaced).ToList();

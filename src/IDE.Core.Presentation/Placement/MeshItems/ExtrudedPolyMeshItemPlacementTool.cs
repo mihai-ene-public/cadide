@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ExtrudedPolyMeshItemPlacementTool : PlacementTool, IExtrudedPolyMeshItemPlacementTool
+public class ExtrudedPolyMeshItemPlacementTool : PlacementTool<ExtrudedPolyMeshItem>, IExtrudedPolyMeshItemPlacementTool
 {
-    ExtrudedPolyMeshItem GetItem() => canvasItem as ExtrudedPolyMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

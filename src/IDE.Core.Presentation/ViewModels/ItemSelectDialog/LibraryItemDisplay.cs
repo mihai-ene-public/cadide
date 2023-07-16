@@ -5,7 +5,7 @@ namespace IDE.Documents.Views;
 
 public class LibraryItemDisplay : ItemDisplay
 {
-   
+
 
     public LibraryItemDisplay(ProjectInfo project)
     {
@@ -23,6 +23,11 @@ public class LibraryItemDisplay : ItemDisplay
     public override void PreviewDocument()
     {
         var libItem = Document as LibraryItem;
+        if (libItem == null)
+        {
+            return;
+        }
+
         if (Preview == null)
         {
             Preview = PreviewLibraryItemViewModel.CreateFromDocument(libItem);

@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ConeMeshItemPlacementTool : PlacementTool, IConeMeshItemPlacementTool
+public class ConeMeshItemPlacementTool : PlacementTool<ConeMeshItem>, IConeMeshItemPlacementTool
 {
-    ConeMeshItem GetItem() => canvasItem as ConeMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

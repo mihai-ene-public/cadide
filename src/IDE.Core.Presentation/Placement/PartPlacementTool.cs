@@ -7,10 +7,8 @@ using IDE.Documents.Views;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class PartPlacementTool : PlacementTool, IPartPlacementTool
+public class PartPlacementTool : PlacementTool<SchematicSymbolCanvasItem>, IPartPlacementTool
 {
-    SchematicSymbolCanvasItem GetItem() => canvasItem as SchematicSymbolCanvasItem;
-
     public override bool Show()
     {
         var itemSelectDlg = new ItemSelectDialogViewModel(TemplateType.Component, CanvasModel.GetCurrentProjectInfo());

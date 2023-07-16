@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ViaPlacementTool : PlacementTool, IViaPlacementTool
+public class ViaPlacementTool : PlacementTool<ViaCanvasItem>, IViaPlacementTool
 {
     public ViaPlacementTool()
     {
@@ -15,8 +15,6 @@ public class ViaPlacementTool : PlacementTool, IViaPlacementTool
     }
 
     private readonly IGeometryOutlineHelper GeometryHelper;
-
-    ViaCanvasItem GetItem() => canvasItem as ViaCanvasItem;
 
     BoardObstacleProvider obstaclesProvider;
 

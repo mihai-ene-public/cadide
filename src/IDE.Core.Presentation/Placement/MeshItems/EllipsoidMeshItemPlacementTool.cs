@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class EllipsoidMeshItemPlacementTool : PlacementTool, IEllipsoidMeshItemPlacementTool
+public class EllipsoidMeshItemPlacementTool : PlacementTool<EllipsoidMeshItem>, IEllipsoidMeshItemPlacementTool
 {
-    EllipsoidMeshItem GetItem() => canvasItem as EllipsoidMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

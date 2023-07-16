@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class SphereMeshItemPlacementTool : PlacementTool, ISphereMeshItemPlacementTool
+public class SphereMeshItemPlacementTool : PlacementTool<SphereMeshItem>, ISphereMeshItemPlacementTool
 {
-    SphereMeshItem GetItem() => canvasItem as SphereMeshItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);

@@ -14,7 +14,7 @@ public class BuiltInTemplateRepository : IBuiltInTemplateRepository
         //var destFolder = Path.GetDirectoryName(itemFilePath);
         var filePath = $"{itemFilePath}.{templateItemInfo.TemplateItem.Extension}";
 
-        if(File.Exists(filePath))
+        if (File.Exists(filePath))
         {
             throw new Exception($"File already exists: {filePath}");
         }
@@ -308,7 +308,10 @@ public class BuiltInTemplateRepository : IBuiltInTemplateRepository
             },
 
         };
-
+        if (templateType == TemplateType.Solution)
+        {
+            templateType = TemplateType.Project;
+        }
         return templates.Where(t => t.TemplateItem.TemplateType == templateType).ToList();
     }
 }

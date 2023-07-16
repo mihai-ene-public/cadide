@@ -4,16 +4,15 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ArcPlacementTool : PlacementTool, IArcPlacementTool
+public class ArcPlacementTool : PlacementTool<IArcCanvasItem>, IArcPlacementTool
 {
-    IArcCanvasItem GetArcItem() => canvasItem as IArcCanvasItem;
 
     bool sweepChangedDuringPlacement = false;
 
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
-        var item = GetArcItem();
+        var item = GetItem();
 
         switch (PlacementStatus)
         {
@@ -66,7 +65,7 @@ public class ArcPlacementTool : PlacementTool, IArcPlacementTool
     public override void PlacementMouseUp(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
-        var item = GetArcItem();
+        var item = GetItem();
 
         switch (PlacementStatus)
         {
@@ -107,7 +106,7 @@ public class ArcPlacementTool : PlacementTool, IArcPlacementTool
 
     public override void CyclePlacement()
     {
-        var item = GetArcItem();
+        var item = GetItem();
         item.SweepDirection = (XSweepDirection)(1 - (int)item.SweepDirection);
         sweepChangedDuringPlacement = true;
     }

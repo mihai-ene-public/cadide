@@ -10,7 +10,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class BusWirePlacementTool : PlacementTool, IBusWirePlacementTool
+public class BusWirePlacementTool : PlacementTool<BusWireCanvasItem>, IBusWirePlacementTool
 {
     public BusWirePlacementTool()
     {
@@ -18,8 +18,6 @@ public class BusWirePlacementTool : PlacementTool, IBusWirePlacementTool
     }
 
     private readonly IGeometryOutlineHelper GeometryHelper;
-
-    BusWireCanvasItem GetItem() => canvasItem as BusWireCanvasItem;
 
     static NetPlacementMode placementMode = NetPlacementMode.Single;
 
@@ -186,7 +184,7 @@ public class BusWirePlacementTool : PlacementTool, IBusWirePlacementTool
     void HandleLinePoint(XPoint linePointMM)
     {
         var item = GetItem();
-        var circle = new CircleCanvasItem { Diameter = item.Width, X = linePointMM.X, Y = linePointMM.Y };
+        var circle = new CircleCanvasItem { Diameter = item.Width, X = linePointMM.X, Y = linePointMM.Y, BorderWidth = 0.0 };
         var busItems = CanvasModel.Items.OfType<BusWireCanvasItem>().Where(b => b.IsPlaced).ToList();
 
         foreach (var busItem in busItems)

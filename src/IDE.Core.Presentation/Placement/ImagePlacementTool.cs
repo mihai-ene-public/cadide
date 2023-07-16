@@ -3,10 +3,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class ImagePlacementTool : PlacementTool, IImagePlacementTool
+public class ImagePlacementTool : PlacementTool<IImageCanvasItem>, IImagePlacementTool
 {
-    IImageCanvasItem GetItem() => canvasItem as IImageCanvasItem;
-
     const double minWidth = 0.1;
     const double minHeight = 0.1;
 

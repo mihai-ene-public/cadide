@@ -7,7 +7,7 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class JunctionPlacementTool : PlacementTool, IJunctionPlacementTool
+public class JunctionPlacementTool : PlacementTool<JunctionCanvasItem>, IJunctionPlacementTool
 {
     public JunctionPlacementTool()
     {
@@ -15,8 +15,6 @@ public class JunctionPlacementTool : PlacementTool, IJunctionPlacementTool
     }
 
     private readonly IGeometryOutlineHelper GeometryHelper;
-    JunctionCanvasItem GetItem() => canvasItem as JunctionCanvasItem;
-
     private List<NetChanges> _netChanges = new List<NetChanges>();
 
     public override void PlacementMouseMove(XPoint mousePosition)

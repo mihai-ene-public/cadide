@@ -4,10 +4,8 @@ using IDE.Core.Types.Media;
 
 namespace IDE.Core.Presentation.Placement;
 
-public class PadPlacementTool : PlacementTool, IPadPlacementTool
+public class PadPlacementTool : PlacementTool<IPadCanvasItem>, IPadPlacementTool
 {
-    IPadCanvasItem GetItem() => canvasItem as IPadCanvasItem;
-
     public override void PlacementMouseMove(XPoint mousePosition)
     {
         var mp = CanvasModel.SnapToGrid(mousePosition);
