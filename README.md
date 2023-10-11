@@ -1,6 +1,8 @@
 # XNoCAD
 XNoCAD is a PCB CAD designer software, similar to KiCad, DipTrace, etc
 
+Moved to another repo (https://github.com/xnocad/xnocad-ide)
+
 [![Build and test on push or pull request](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/mihai-ene-public/cadide/actions/workflows/build-and-test.yml)
 
 ## How to install
